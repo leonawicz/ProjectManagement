@@ -1,0 +1,131 @@
+---
+title: "Project Management"
+author: Matthew Leonawicz
+output:
+  html_document:
+    toc: true
+    theme: united
+    keep_md: true
+  ioslides_presentation:
+    widescreen: true
+    keep_md: true
+  pdf_document:
+    toc: true
+    highlight: zenburn
+---
+
+```{r knitr_setup, echo=FALSE}
+opts_chunk$set(cache=FALSE, eval=FALSE, tidy=TRUE, messages=FALSE, warnings=FALSE)
+read_chunk("X:/Leonawicz/Projects/2014/ProjectManagement/code/proj_sankey.R")
+read_chunk("X:/Leonawicz/Projects/2014/ProjectManagement/code/projman.R")
+```
+
+
+## Introduction
+This is a project management project.
+While current projects are shown in the chart below, the aim of this project is the development of convenient **R**-related project management tools.
+
+### Motivation
+I am working on these tools to enhance my own workflow across multiple **R** projects.
+
+### Details
+**R** code for the project will be compiled into an **R** package, `projman` for easy use.
+This is a personal package and will not be available anywhere but my github repository,
+but you are welcome to explore the package and functions.
+It is unlikely that you would manage your **R** projects in the same manner that I do,
+but if you do, or just want some ideas, feel free to explore.
+
+#### Capabilities
+`projman` can create a new project. This essentially generates a specific directory structure which I use often to manage project files.
+For an existing project, once **R** scripts have been created, `projman` can generate template ```.Rmd``` files for each.
+For existing ```.Rmd``` files, `projman` can conveniently append these **R** Markdown files with a list of any new `knitr` code chunk names
+in project **R** scripts being developed which have not yet been included in the respective ```.Rmd``` files.
+
+#### Limitations
+While `projman` assists with project documentation, this mainly takes the form of file generation and appending.
+Documentation is unique to every project of course. Every script is different.
+The most that is possible is to auto-fill commonly used code chunk names and metadata.
+Each document must be written individually by the author, but when a project has many **R** scripts requiring documentation,
+it is nice to not have to create all the corresponding ```.Rmd``` files by hand and copy and paste generic contents.
+
+The project management code is not yet in package form.
+Many additional features are yet to be incorporated.
+Generic code relating to the further processing of ```.Rmd``` files into various other output files via `rmarkdown` and `knitr` will fold into this project,
+but this has not been done yet.
+
+## Related items
+Currently there is only this unpackaged **R** script and accompanying code for a projects hierarchy diagram.
+No additional related items are available at this time, but those referenced above will eventually be included.
+
+### Files and Data
+This project does not use any data. ```sankey.R``` is used to produce of project hierarchy diagram of my current projects.
+
+### Code flow
+The Sankey diagram has become part of project management.
+Each project has its own, detailing the relationships among **R** code and data relevent to the project,
+and in some cases, how they relate to code and data files which are more general and span multiple projects.
+This diagram be available for this project once more project code has been developed.
+
+### Current projects
+Here is a project hierarchy diagram showing the relationships among all my current projects.
+
+```{r sankey, echo=F, eval=T, tidy=F}
+```
+
+```{r sankey_embed, echo=F, eval=T, comment=NA, results="asis", tidy=F}
+```
+<style>iframe.rChart{ width: 100%; height: 640px;}</style>
+
+## R code
+
+### Template objects
+Character string objects are defined which are used to fill templates when generating new files for a project.
+A tentative default path is also included since this code relates to my own work.
+
+```{r template_objects}
+```
+
+### Package functions
+Functions are defined for creating new projects, generating ```.Rmd``` files for project **R** scripts,
+and appending these **R** Markdown files with updated information from the corresponding **R** scripts as their development continues.
+Additional functions will be incorporated later.
+
+#### newProject
+```newProject``` creates a new named project directory structure at the specified file path.
+If a directory with this project name already exists in this location on the file system, the function will abort.
+Default project subdirectories are created unless a different vector of folder names is explicitly passed to ```newProject```.
+If one of the subdirectories is `docs` then the default vector of subdirectories under `docs` is also created.
+This argument can also be set explicitly.
+
+```{r function1}
+```
+
+#### genRmd
+```genRmd``` works on existing projects. It checks for existing **R** scripts.
+If not ```.R``` files exist in the project's `code` directory, the function will abort.
+Otherwise it will generate ```.Rmd``` template files for each of the **R** scripts it finds.
+The ```.Rmd``` files are placed in the `/docs/Rmd` directory.
+This function assumes this project directory exists.
+
+```{r function2}
+```
+
+#### chunkNames
+```chunkNames``` can be used in two ways.
+It can return a list with length equal to the number of ```.R``` files,
+where each list element is a vector of **R** code chunk names found in each **R** script.
+
+Alternatively, with ```append.new=TRUE```, this list has each vector matched element-wise against chunk names found in existing ```.Rmd``` files.
+If no ```.Rmd``` files have yet been generated, the function will abort.
+Otherwise, for the ```.Rmd``` files which do exist (and this may correspond to a subset of the ```.R``` files),
+these ```.Rmd``` files are appended with a list of code chunk names found in the current corresponding ```.R``` files
+which have not yet been integrated into the current state of the ```.Rmd``` files.
+This fascilitates updating of ```.Rmd``` documentation when it falls behind scripts which have been updated.
+
+```{r function3}
+```
+
+Regarding the creation and updating of ```.Rmd``` files, `projman` simply assumes that there will be one **R** Markdown file corresponding to one **R** script.
+This is not always the case for a given project, but again, the purpose is to generate basic templates.
+Unnecessary files can always be deleted later, or edits made such that one **R** Markdown file reads multiple **R** scripts,
+as is the case with the ```.Rmd``` file used to generate this document.

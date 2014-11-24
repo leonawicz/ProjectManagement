@@ -1,0 +1,47 @@
+---
+title: "Matt's Projects"
+author: Matthew Leonawicz
+output:
+  html_document:
+    toc: true
+    theme: united
+    keep_md: true
+  ioslides_presentation:
+    widescreen: true
+    keep_md: true
+  pdf_document:
+    toc: true
+    highlight: zenburn
+---
+
+```{r knitr_setup, echo=FALSE}
+opts_chunk$set(cache=FALSE, eval=FALSE, tidy=TRUE, messages=FALSE, warnings=FALSE)
+read_chunk("X:/Leonawicz/Projects/2014/ProjectManagement/code/proj_sankey.R")
+```
+
+
+## Introduction
+ADD_TEXT_HERE
+
+### Motivation
+ADD_TEXT_HERE
+
+### Details
+ADD_TEXT_HERE
+
+#### Capabilities
+ADD_TEXT_HERE
+
+#### Limitations
+ADD_TEXT_HERE
+
+## Project hierarchy R code
+Here is the code used to generate the current project hierarchy Sankey diagram.
+Current projects are hardcoded and are updated by hand when my work changes.
+
+```{r sankey, eval=T, tidy=F}
+```
+
+```{r sankey_embed, eval=T, comment=NA, results="asis", tidy=F}
+```
+<style>iframe.rChart{ width: 100%; height: 640px;}</style>
