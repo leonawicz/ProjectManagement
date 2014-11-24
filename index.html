@@ -38,10 +38,269 @@
           <span class="credits right">Hosted on GitHub Pages &mdash; Theme by <a href="https://twitter.com/michigangraham">mattgraham</a></span>
         </div>
 
-        <h1>
-<a id="projectmanagement" class="anchor" href="#projectmanagement" aria-hidden="true"><span class="octicon octicon-link"></span></a>ProjectManagement</h1>
+        <h2>
+<a id="introduction" class="anchor" href="#introduction" aria-hidden="true"><span class="octicon octicon-link"></span></a>Introduction</h2>
 
-<p>Project management project</p>
+<p>This is a project management project. While current projects are shown
+in the chart below, the aim of this project is the development of
+convenient <strong>R</strong>-related project management tools.</p>
+
+<h3>
+<a id="motivation" class="anchor" href="#motivation" aria-hidden="true"><span class="octicon octicon-link"></span></a>Motivation</h3>
+
+<p>I am working on these tools to enhance my own workflow across multiple
+<strong>R</strong> projects.</p>
+
+<h3>
+<a id="details" class="anchor" href="#details" aria-hidden="true"><span class="octicon octicon-link"></span></a>Details</h3>
+
+<p><strong>R</strong> code for the project will be compiled into an <strong>R</strong> package,
+<code>projman</code> for easy use. This is a personal package and will not be
+available anywhere but my github repository, but you are welcome to
+explore the package and functions. It is unlikely that you would manage
+your <strong>R</strong> projects in the same manner that I do, but if you do, or just
+want some ideas, feel free to explore.</p>
+
+<h4>
+<a id="capabilities" class="anchor" href="#capabilities" aria-hidden="true"><span class="octicon octicon-link"></span></a>Capabilities</h4>
+
+<p><code>projman</code> can create a new project. This essentially generates a
+specific directory structure which I use often to manage project files.
+For an existing project, once <strong>R</strong> scripts have been created, <code>projman</code>
+can generate template <code>.Rmd</code> files for each. For existing <code>.Rmd</code> files,
+<code>projman</code> can conveniently append these <strong>R</strong> Markdown files with a list
+of any new <code>knitr</code> code chunk names in project <strong>R</strong> scripts being
+developed which have not yet been included in the respective <code>.Rmd</code>
+files.</p>
+
+<h4>
+<a id="limitations" class="anchor" href="#limitations" aria-hidden="true"><span class="octicon octicon-link"></span></a>Limitations</h4>
+
+<p>While <code>projman</code> assists with project documentation, this mainly takes
+the form of file generation and appending. Documentation is unique to
+every project of course. Every script is different. The most that is
+possible is to auto-fill commonly used code chunk names and metadata.
+Each document must be written individually by the author, but when a
+project has many <strong>R</strong> scripts requiring documentation, it is nice to
+not have to create all the corresponding <code>.Rmd</code> files by hand and copy
+and paste generic contents.</p>
+
+<p>The project management code is not yet in package form. Many additional
+features are yet to be incorporated. Generic code relating to the
+further processing of <code>.Rmd</code> files into various other output files via
+<code>rmarkdown</code> and <code>knitr</code> will fold into this project, but this has not
+been done yet.</p>
+
+<h2>
+<a id="related-items" class="anchor" href="#related-items" aria-hidden="true"><span class="octicon octicon-link"></span></a>Related items</h2>
+
+<p>Currently there is only this unpackaged <strong>R</strong> script and accompanying
+code for a projects hierarchy diagram. No additional related items are
+available at this time, but those referenced above will eventually be
+included.</p>
+
+<h3>
+<a id="files-and-data" class="anchor" href="#files-and-data" aria-hidden="true"><span class="octicon octicon-link"></span></a>Files and Data</h3>
+
+<p>This project does not use any data. <code>sankey.R</code> is used to produce of
+project hierarchy diagram of my current projects.</p>
+
+<h3>
+<a id="code-flow" class="anchor" href="#code-flow" aria-hidden="true"><span class="octicon octicon-link"></span></a>Code flow</h3>
+
+<p>The Sankey diagram has become part of project management. Each project
+has its own, detailing the relationships among <strong>R</strong> code and data
+relevent to the project, and in some cases, how they relate to code and
+data files which are more general and span multiple projects. This
+diagram be available for this project once more project code has been
+developed.</p>
+
+<h3>
+<a id="current-projects" class="anchor" href="#current-projects" aria-hidden="true"><span class="octicon octicon-link"></span></a>Current projects</h3>
+
+<p>Here is a project hierarchy diagram showing the relationships among all
+my current projects.</p>
+
+
+
+
+iframe.rChart{ width: 100%; height: 400px;}
+
+iframe.rChart{ width: 100%; height: 640px;}
+
+<h2>
+<a id="r-code" class="anchor" href="#r-code" aria-hidden="true"><span class="octicon octicon-link"></span></a>R code</h2>
+
+<h3>
+<a id="template-objects" class="anchor" href="#template-objects" aria-hidden="true"><span class="octicon octicon-link"></span></a>Template objects</h3>
+
+<p>Character string objects are defined which are used to fill templates
+when generating new files for a project. A tentative default path is
+also included since this code relates to my own work.</p>
+
+<pre><code># For package 'projman'
+
+# data
+rmd.header &lt;- "---\ntitle: \"INSERT_TITLE_HERE\"\nauthor: Matthew Leonawicz\noutput:\n  html_document:\n    toc: true\n    theme: united\n    keep_md: true\n  ioslides_presentation:\n    widescreen: true\n    keep_md: true\n  pdf_document:\n    toc: true\n    highlight: zenburn\n---\n"
+
+rmd.knitr.setup &lt;- "\n```{r knitr_setup, echo=FALSE}\nopts_chunk$set(cache=FALSE, eval=FALSE, tidy=TRUE, messages=FALSE, warnings=FALSE)\nread_chunk(\"\")\n```\n"
+
+rmd.template &lt;- "\n\n## Introduction\nADD_TEXT_HERE\n\n### Motivation\nADD_TEXT_HERE\n\n### Details\nADD_TEXT_HERE\n\n#### Capabilities\nADD_TEXT_HERE\n\n#### Limitations\nADD_TEXT_HERE\n\n## Related items\n\n### Files and Data\nADD_TEXT_HERE\n\n### Code flow\nADD_TEXT_HERE\n\n```{r code_sankey, echo=F, eval=T}\n```\n\n```{r code_sankey_embed, echo=F, eval=T, comment=NA, results=\"asis\", tidy=F}\n```\n\n## R code\n\n### Setup\nADD_TEXT_HERE: EXAMPLE\nSetup consists of loading required **R** packages and additional files, preparing any command line arguments for use, and defining functions and other **R** objects.\n\n"
+
+# default path
+matt.proj.path &lt;- "C:/github"
+</code></pre>
+
+<h3>
+<a id="package-functions" class="anchor" href="#package-functions" aria-hidden="true"><span class="octicon octicon-link"></span></a>Package functions</h3>
+
+<p>Functions are defined for creating new projects, generating <code>.Rmd</code> files
+for project <strong>R</strong> scripts, and appending these <strong>R</strong> Markdown files with
+updated information from the corresponding <strong>R</strong> scripts as their
+development continues. Additional functions will be incorporated later.</p>
+
+<h4>
+<a id="newproject" class="anchor" href="#newproject" aria-hidden="true"><span class="octicon octicon-link"></span></a>newProject</h4>
+
+<p><code>newProject</code> creates a new named project directory structure at the
+specified file path. If a directory with this project name already
+exists in this location on the file system, the function will abort.
+Default project subdirectories are created unless a different vector of
+folder names is explicitly passed to <code>newProject</code>. If one of the
+subdirectories is <code>docs</code> then the default vector of subdirectories under
+<code>docs</code> is also created. This argument can also be set explicitly.</p>
+
+<pre><code>newProject &lt;- function(name, path, dirs = c("code", "data", "docs", "plots", 
+    "workspaces"), docs.dirs = c("all", "diagrams", "ioslides", "md", "notebook", 
+    "pdf", "Rmd", "timeline", "tufte")) {
+
+    stopifnot(is.character(name))
+    name &lt;- file.path(path, name)
+    if (file.exists(name)) 
+        stop("This project already exists.")
+    dir.create(name, recursive = TRUE, showWarnings = FALSE)
+    if (!file.exists(name)) 
+        stop("Directory appears invalid.")
+
+    path.dirs &lt;- file.path(name, dirs)
+    sapply(path.dirs, dir.create, showWarnings = FALSE)
+    path.docs &lt;- file.path(name, "docs", docs.dirs)
+    if ("docs" %in% dirs) 
+        sapply(path.docs, dir.create, showWarnings = FALSE)
+    cat("Project created.\n")
+}
+</code></pre>
+
+<h4>
+<a id="genrmd" class="anchor" href="#genrmd" aria-hidden="true"><span class="octicon octicon-link"></span></a>genRmd</h4>
+
+<p><code>genRmd</code> works on existing projects. It checks for existing <strong>R</strong>
+scripts. If not <code>.R</code> files exist in the project's <code>code</code> directory, the
+function will abort. Otherwise it will generate <code>.Rmd</code> template files
+for each of the <strong>R</strong> scripts it finds. The <code>.Rmd</code> files are placed in
+the <code>/docs/Rmd</code> directory. This function assumes this project directory
+exists.</p>
+
+<pre><code>genRmd &lt;- function(path, replace = FALSE, ...) {
+    stopifnot(is.character(path))
+    files &lt;- list.files(path, pattern = ".R$", full = TRUE)
+    stopifnot(length(files) &gt; 0)
+    rmd &lt;- gsub(".R", ".Rmd", basename(files))
+    rmd &lt;- file.path(dirname(path), "docs/Rmd", rmd)
+    if (!replace) 
+        rmd &lt;- rmd[!sapply(rmd, file.exists)]
+
+    sinkRmd &lt;- function(x, ...) {
+        y1 &lt;- list(...)$rmd.header
+        y2 &lt;- list(...)$rmd.knitr.setup
+        y3 &lt;- list(...)$rmd.template
+        if (is.null(y1)) 
+            y1 &lt;- rmd.header
+        if (is.null(y2)) 
+            y2 &lt;- rmd.knitr.setup
+        if (is.null(y3)) 
+            y3 &lt;- rmd.template
+        sink(x)
+        sapply(c(y1, y2, y3), function(y) if (is.character(y)) 
+            cat(y))
+        sink()
+    }
+
+    if (length(rmd)) {
+        sapply(rmd, sinkRmd, ...)
+        cat(".Rmd files created for each .R file.\n")
+    } else {
+        cat("No new .Rmd files created.\n")
+    }
+}
+</code></pre>
+
+<h4>
+<a id="chunknames" class="anchor" href="#chunknames" aria-hidden="true"><span class="octicon octicon-link"></span></a>chunkNames</h4>
+
+<p><code>chunkNames</code> can be used in two ways. It can return a list with length
+equal to the number of <code>.R</code> files, where each list element is a vector
+of <strong>R</strong> code chunk names found in each <strong>R</strong> script.</p>
+
+<p>Alternatively, with <code>append.new=TRUE</code>, this list has each vector matched
+element-wise against chunk names found in existing <code>.Rmd</code> files. If no
+<code>.Rmd</code> files have yet been generated, the function will abort.
+Otherwise, for the <code>.Rmd</code> files which do exist (and this may correspond
+to a subset of the <code>.R</code> files), these <code>.Rmd</code> files are appended with a
+list of code chunk names found in the current corresponding <code>.R</code> files
+which have not yet been integrated into the current state of the <code>.Rmd</code>
+files. This fascilitates updating of <code>.Rmd</code> documentation when it falls
+behind scripts which have been updated.</p>
+
+<pre><code>chunkNames &lt;- function(path, rChunkID = "# @knitr", rmdChunkID = "```{r", append.new = FALSE) {
+    files &lt;- list.files(path, pattern = ".R$", full = TRUE)
+    stopifnot(length(files) &gt; 0)
+    l1 &lt;- lapply(files, readLines)
+    l1 &lt;- rapply(l1, function(x) x[substr(x, 1, nchar(rChunkID)) == rChunkID], 
+        how = "replace")
+    l1 &lt;- rapply(l1, function(x, p) gsub(paste0(p, " "), "", x), how = "replace", 
+        p = rChunkID)
+    if (!append.new) 
+        return(l1)
+
+    appendRmd &lt;- function(x, rmd.files, rChunks, rmdChunks, ID) {
+        r1 &lt;- rmdChunks[[x]]
+        r2 &lt;- rChunks[[x]]
+        r.new &lt;- r2[!(r2 %in% r1)]
+        if (length(r.new)) {
+            r.new &lt;- paste0(ID, " ", r.new, "}\n```\n", collapse = "")  # Hard coded brace and backticks
+            sink(rmd.files[x], append = TRUE)
+            cat("\nNEW_CODE_CHUNKS\n")
+            cat(r.new)
+            sink()
+            paste(basename(rmd.files[x]), "appended with new chunk names from .R file")
+        } else paste("No new chunk names appended to", basename(rmd.files[x]))
+    }
+
+    rmd &lt;- gsub(".R", ".Rmd", basename(files))
+    rmd &lt;- file.path(dirname(path), "docs/Rmd", rmd)
+    rmd &lt;- rmd[sapply(rmd, file.exists)]
+    stopifnot(length(rmd) &gt; 0)  # Rmd files must exist
+    files.ind &lt;- match(gsub(".Rmd", "", basename(rmd)), gsub(".R", "", basename(files)))  # Rmd exist for which R script
+    l2 &lt;- lapply(rmd, readLines)
+    l2 &lt;- rapply(l2, function(x) x[substr(x, 1, nchar(rmdChunkID)) == rmdChunkID], 
+        how = "replace")
+    l2 &lt;- rapply(l2, function(x, p) gsub(paste0(p, " "), "", x), how = "replace", 
+        p = gsub("\\{", "\\\\{", rmdChunkID))
+    l2 &lt;- rapply(l2, function(x) gsub("}", "", sapply(strsplit(x, ","), "[[", 
+        1)), how = "replace")
+    sapply(1:length(rmd), appendRmd, rmd.files = rmd, rChunks = l1[files.ind], 
+        rmdChunks = l2, ID = rmdChunkID)
+}
+</code></pre>
+
+<p>Regarding the creation and updating of <code>.Rmd</code> files, <code>projman</code> simply
+assumes that there will be one <strong>R</strong> Markdown file corresponding to one
+<strong>R</strong> script. This is not always the case for a given project, but
+again, the purpose is to generate basic templates. Unnecessary files can
+always be deleted later, or edits made such that one <strong>R</strong> Markdown file
+reads multiple <strong>R</strong> scripts, as is the case with the <code>.Rmd</code> file used
+to generate this document.</p>
       </section>
 
     </div>
