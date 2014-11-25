@@ -1,87 +1,80 @@
-Introduction
-------------
+---
+title: "Project Management"
+author: Matthew Leonawicz
+output:
+  html_document:
+    toc: true
+    theme: united
+    keep_md: true
+  ioslides_presentation:
+    widescreen: true
+    keep_md: true
+  pdf_document:
+    toc: true
+    highlight: zenburn
+---
 
-This is a project management project. While current projects are shown
-in the chart below, the aim of this project is the development of
-convenient **R**-related project management tools.
+
+
+
+## Introduction
+This is a project management project.
+While current projects are shown in the chart below, the aim of this project is the development of convenient **R**-related project management tools.
 
 ### Motivation
-
-I am working on these tools to enhance my own workflow across multiple
-**R** projects.
+I am working on these tools to enhance my own workflow across multiple **R** projects.
 
 ### Details
-
-**R** code for the project will be compiled into an **R** package,
-`projman` for easy use. This is a personal package and will not be
-available anywhere but my github repository, but you are welcome to
-explore the package and functions. It is unlikely that you would manage
-your **R** projects in the same manner that I do, but if you do, or just
-want some ideas, feel free to explore.
+**R** code for the project will be compiled into an **R** package, `projman` for easy use.
+This is a personal package and will not be available anywhere but my github repository,
+but you are welcome to explore the package and functions.
+It is unlikely that you would manage your **R** projects in the same manner that I do,
+but if you do, or just want some ideas, feel free to explore.
 
 #### Capabilities
-
-`projman` can create a new project. This essentially generates a
-specific directory structure which I use often to manage project files.
-For an existing project, once **R** scripts have been created, `projman`
-can generate template `.Rmd` files for each. For existing `.Rmd` files,
-`projman` can conveniently append these **R** Markdown files with a list
-of any new `knitr` code chunk names in project **R** scripts being
-developed which have not yet been included in the respective `.Rmd`
-files.
+`projman` can create a new project. This essentially generates a specific directory structure which I use often to manage project files.
+For an existing project, once **R** scripts have been created, `projman` can generate template ```.Rmd``` files for each.
+For existing ```.Rmd``` files, `projman` can conveniently append these **R** Markdown files with a list of any new `knitr` code chunk names
+in project **R** scripts being developed which have not yet been included in the respective ```.Rmd``` files.
 
 #### Limitations
+While `projman` assists with project documentation, this mainly takes the form of file generation and appending.
+Documentation is unique to every project of course. Every script is different.
+The most that is possible is to auto-fill commonly used code chunk names and metadata.
+Each document must be written individually by the author, but when a project has many **R** scripts requiring documentation,
+it is nice to not have to create all the corresponding ```.Rmd``` files by hand and copy and paste generic contents.
 
-While `projman` assists with project documentation, this mainly takes
-the form of file generation and appending. Documentation is unique to
-every project of course. Every script is different. The most that is
-possible is to auto-fill commonly used code chunk names and metadata.
-Each document must be written individually by the author, but when a
-project has many **R** scripts requiring documentation, it is nice to
-not have to create all the corresponding `.Rmd` files by hand and copy
-and paste generic contents.
+The project management code is not yet in package form.
+Many additional features are yet to be incorporated.
+Generic code relating to the further processing of ```.Rmd``` files into various other output files via `rmarkdown` and `knitr` will fold into this project,
+but this has not been done yet.
 
-The project management code is not yet in package form. Many additional
-features are yet to be incorporated. Generic code relating to the
-further processing of `.Rmd` files into various other output files via
-`rmarkdown` and `knitr` will fold into this project, but this has not
-been done yet.
-
-Related items
--------------
-
-Currently there is only this unpackaged **R** script and accompanying
-code for a projects hierarchy diagram. No additional related items are
-available at this time, but those referenced above will eventually be
-included.
+## Related items
+Currently there is only this unpackaged **R** script and accompanying code for a projects hierarchy diagram.
+No additional related items are available at this time, but those referenced above will eventually be included.
 
 ### Files and Data
-
-This project does not use any data. `sankey.R` is used to produce of
-project hierarchy diagram of my current projects.
+This project does not use any data. ```sankey.R``` is used to produce of project hierarchy diagram of my current projects.
 
 ### Code flow
-
-The Sankey diagram has become part of project management. Each project
-has its own, detailing the relationships among **R** code and data
-relevent to the project, and in some cases, how they relate to code and
-data files which are more general and span multiple projects. This
-diagram be available for this project once more project code has been
-developed.
+The Sankey diagram has become part of project management.
+Each project has its own, detailing the relationships among **R** code and data relevent to the project,
+and in some cases, how they relate to code and data files which are more general and span multiple projects.
+This diagram be available for this project once more project code has been developed.
 
 ### Current projects
+Here is a project hierarchy diagram showing the relationships among all my current projects.
 
-Here is a project hierarchy diagram showing the relationships among all
-my current projects.
 
-<iframe srcdoc=" &lt;!doctype HTML&gt;
-&lt;meta charset = 'utf-8'&gt;
+
+<iframe srcdoc=' &lt;!doctype HTML&gt;
+&lt;meta charset = &#039;utf-8&#039;&gt;
 &lt;html&gt;
   &lt;head&gt;
-    &lt;link rel='stylesheet' href='http://timelyportfolio.github.io/rCharts_d3_sankey/css/sankey.css'&gt;
+    &lt;link rel=&#039;stylesheet&#039; href=&#039;http://timelyportfolio.github.io/rCharts_d3_sankey/css/sankey.css&#039;&gt;
     
-    &lt;script src='http://d3js.org/d3.v3.min.js' type='text/javascript'&gt;&lt;/script&gt;
-    &lt;script src='http://timelyportfolio.github.io/rCharts_d3_sankey/js/sankey.js' type='text/javascript'&gt;&lt;/script&gt;
+    &lt;script src=&#039;http://d3js.org/d3.v3.min.js&#039; type=&#039;text/javascript&#039;&gt;&lt;/script&gt;
+    &lt;script src=&#039;http://timelyportfolio.github.io/rCharts_d3_sankey/js/sankey.js&#039; type=&#039;text/javascript&#039;&gt;&lt;/script&gt;
     
     &lt;style&gt;
     .rChart {
@@ -96,8 +89,8 @@ my current projects.
   &lt;/head&gt;
   &lt;body &gt;
     
-    &lt;div id = 'chart162056bf42e0' class = 'rChart d3_sankey'&gt;&lt;/div&gt;    
-    ï»¿&lt;!--Attribution:
+    &lt;div id = &#039;chart11247a15515&#039; class = &#039;rChart d3_sankey&#039;&gt;&lt;/div&gt;    
+    ﻿&lt;!--Attribution:
 Mike Bostock https://github.com/d3/d3-plugins/tree/master/sankey
 Mike Bostock http://bost.ocks.org/mike/sankey/
 --&gt;
@@ -105,7 +98,7 @@ Mike Bostock http://bost.ocks.org/mike/sankey/
 &lt;script&gt;
 (function(){
 var params = {
- &quot;dom&quot;: &quot;chart162056bf42e0&quot;,
+ &quot;dom&quot;: &quot;chart11247a15515&quot;,
 &quot;width&quot;:    900,
 &quot;height&quot;:    600,
 &quot;data&quot;: {
@@ -122,8 +115,8 @@ var params = {
 &quot;bottom&quot;:     20,
 &quot;top&quot;:     20 
 },
-&quot;title&quot;: &quot;Matt's Projects&quot;,
-&quot;id&quot;: &quot;chart162056bf42e0&quot; 
+&quot;title&quot;: &quot;Matt&#039;s Projects&quot;,
+&quot;id&quot;: &quot;chart11247a15515&quot; 
 };
 
 params.units ? units = &quot; &quot; + params.units : units = &quot;&quot;;
@@ -137,7 +130,7 @@ if(params.labelFormat){
   formatNumber = d3.format(&quot;.2%&quot;);
 }
 
-var svg = d3.select('#' + params.id).append(&quot;svg&quot;)
+var svg = d3.select(&#039;#&#039; + params.id).append(&quot;svg&quot;)
     .attr(&quot;width&quot;, params.width)
     .attr(&quot;height&quot;, params.height);
     
@@ -195,7 +188,7 @@ var link = svg.append(&quot;g&quot;).selectAll(&quot;.link&quot;)
   .sort(function (a, b) { return b.dy - a.dy; });
 
 link.append(&quot;title&quot;)
-  .text(function (d) { return d.source.name + &quot; â†’ &quot; + d.target.name + &quot;\n&quot; + format(d.value); });
+  .text(function (d) { return d.source.name + &quot; → &quot; + d.target.name + &quot;\n&quot; + format(d.value); });
 
 var node = svg.append(&quot;g&quot;).selectAll(&quot;.node&quot;)
   .data(nodes)
@@ -245,8 +238,8 @@ node.append(&quot;text&quot;)
       var cscale = d3.scale.category20b();
     
       // to be specific in case you have more than one chart
-      d3.selectAll('#chart162056bf42e0 svg path.link')
-        .style('stroke', function(d){
+      d3.selectAll(&#039;#chart11247a15515 svg path.link&#039;)
+        .style(&#039;stroke&#039;, function(d){
           //here we will use the source color
           //if you want target then sub target for source
           //or if you want something other than gray
@@ -259,180 +252,175 @@ node.append(&quot;text&quot;)
        //to do uncomment below but will affect mouseover
        //so will need to define mouseover and mouseout
        //happy to show how to do this also
-       // .style('stroke-opacity', .7)
-      d3.selectAll('#chart162056bf42e0 svg .node rect')
-        .style('fill', function(d){
+       // .style(&#039;stroke-opacity&#039;, .7)
+      d3.selectAll(&#039;#chart11247a15515 svg .node rect&#039;)
+        .style(&#039;fill&#039;, function(d){
           return cscale(d.name)
         })
-        .style('stroke', 'none')
+        .style(&#039;stroke&#039;, &#039;none&#039;)
     &lt;/script&gt;
         
   &lt;/body&gt;
-&lt;/html&gt; " scrolling="no" frameBorder="0" seamless class="rChart  http://timelyportfolio.github.io/rCharts_d3_sankey/libraries/widgets/d3_sankey  " id="iframe-chart162056bf42e0">
-</iframe>
-<style>iframe.rChart{ width: 100%; height: 400px;}</style>
+&lt;/html&gt; ' scrolling='no' frameBorder='0' seamless class='rChart  http://timelyportfolio.github.io/rCharts_d3_sankey/libraries/widgets/d3_sankey  ' id='iframe-chart11247a15515'> </iframe>
+ <style>iframe.rChart{ width: 100%; height: 400px;}</style>
 <style>iframe.rChart{ width: 100%; height: 640px;}</style>
-R code
-------
+
+## R code
 
 ### Template objects
+Character string objects are defined which are used to fill templates when generating new files for a project.
+A tentative default path is also included since this code relates to my own work.
 
-Character string objects are defined which are used to fill templates
-when generating new files for a project. A tentative default path is
-also included since this code relates to my own work.
 
-    # For package 'projman'
+```r
+# For package 'projman'
 
-    # data
-    rmd.header <- "---\ntitle: \"INSERT_TITLE_HERE\"\nauthor: Matthew Leonawicz\noutput:\n  html_document:\n    toc: true\n    theme: united\n    keep_md: true\n  ioslides_presentation:\n    widescreen: true\n    keep_md: true\n  pdf_document:\n    toc: true\n    highlight: zenburn\n---\n"
+# data
+rmd.header <- "---\ntitle: \"INSERT_TITLE_HERE\"\nauthor: Matthew Leonawicz\noutput:\n  html_document:\n    toc: true\n    theme: united\n    keep_md: true\n  ioslides_presentation:\n    widescreen: true\n    keep_md: true\n  pdf_document:\n    toc: true\n    highlight: zenburn\n---\n"
 
-    rmd.knitr.setup <- "\n```{r knitr_setup, echo=FALSE}\nopts_chunk$set(cache=FALSE, eval=FALSE, tidy=TRUE, messages=FALSE, warnings=FALSE)\nread_chunk(\"\")\n```\n"
+rmd.knitr.setup <- "\n```{r knitr_setup, echo=FALSE}\nopts_chunk$set(cache=FALSE, eval=FALSE, tidy=TRUE, messages=FALSE, warnings=FALSE)\nread_chunk(\"\")\n```\n"
 
-    rmd.template <- "\n\n## Introduction\nADD_TEXT_HERE\n\n### Motivation\nADD_TEXT_HERE\n\n### Details\nADD_TEXT_HERE\n\n#### Capabilities\nADD_TEXT_HERE\n\n#### Limitations\nADD_TEXT_HERE\n\n## Related items\n\n### Files and Data\nADD_TEXT_HERE\n\n### Code flow\nADD_TEXT_HERE\n\n```{r code_sankey, echo=F, eval=T}\n```\n\n```{r code_sankey_embed, echo=F, eval=T, comment=NA, results=\"asis\", tidy=F}\n```\n\n## R code\n\n### Setup\nADD_TEXT_HERE: EXAMPLE\nSetup consists of loading required **R** packages and additional files, preparing any command line arguments for use, and defining functions and other **R** objects.\n\n"
+rmd.template <- "\n\n## Introduction\nADD_TEXT_HERE\n\n### Motivation\nADD_TEXT_HERE\n\n### Details\nADD_TEXT_HERE\n\n#### Capabilities\nADD_TEXT_HERE\n\n#### Limitations\nADD_TEXT_HERE\n\n## Related items\n\n### Files and Data\nADD_TEXT_HERE\n\n### Code flow\nADD_TEXT_HERE\n\n```{r code_sankey, echo=F, eval=T}\n```\n\n```{r code_sankey_embed, echo=F, eval=T, comment=NA, results=\"asis\", tidy=F}\n```\n\n## R code\n\n### Setup\nADD_TEXT_HERE: EXAMPLE\nSetup consists of loading required **R** packages and additional files, preparing any command line arguments for use, and defining functions and other **R** objects.\n\n"
 
-    # default path
-    matt.proj.path <- "C:/github"
+# default path
+matt.proj.path <- "C:/github"
+```
 
 ### Package functions
-
-Functions are defined for creating new projects, generating `.Rmd` files
-for project **R** scripts, and appending these **R** Markdown files with
-updated information from the corresponding **R** scripts as their
-development continues. Additional functions will be incorporated later.
+Functions are defined for creating new projects, generating ```.Rmd``` files for project **R** scripts,
+and appending these **R** Markdown files with updated information from the corresponding **R** scripts as their development continues.
+Additional functions will be incorporated later.
 
 #### newProject
+```newProject``` creates a new named project directory structure at the specified file path.
+If a directory with this project name already exists in this location on the file system, the function will abort.
+Default project subdirectories are created unless a different vector of folder names is explicitly passed to ```newProject```.
+If one of the subdirectories is `docs` then the default vector of subdirectories under `docs` is also created.
+This argument can also be set explicitly.
 
-`newProject` creates a new named project directory structure at the
-specified file path. If a directory with this project name already
-exists in this location on the file system, the function will abort.
-Default project subdirectories are created unless a different vector of
-folder names is explicitly passed to `newProject`. If one of the
-subdirectories is `docs` then the default vector of subdirectories under
-`docs` is also created. This argument can also be set explicitly.
 
-    newProject <- function(name, path, dirs = c("code", "data", "docs", "plots", 
-        "workspaces"), docs.dirs = c("all", "diagrams", "ioslides", "md", "notebook", 
-        "pdf", "Rmd", "timeline", "tufte")) {
-        
-        stopifnot(is.character(name))
-        name <- file.path(path, name)
-        if (file.exists(name)) 
-            stop("This project already exists.")
-        dir.create(name, recursive = TRUE, showWarnings = FALSE)
-        if (!file.exists(name)) 
-            stop("Directory appears invalid.")
-        
-        path.dirs <- file.path(name, dirs)
-        sapply(path.dirs, dir.create, showWarnings = FALSE)
-        path.docs <- file.path(name, "docs", docs.dirs)
-        if ("docs" %in% dirs) 
-            sapply(path.docs, dir.create, showWarnings = FALSE)
-        cat("Project created.\n")
-    }
+```r
+newProject <- function(name, path, dirs = c("code", "data", "docs", "plots", 
+    "workspaces"), docs.dirs = c("all", "diagrams", "ioslides", "md", "notebook", 
+    "pdf", "Rmd", "timeline", "tufte")) {
+    
+    stopifnot(is.character(name))
+    name <- file.path(path, name)
+    if (file.exists(name)) 
+        stop("This project already exists.")
+    dir.create(name, recursive = TRUE, showWarnings = FALSE)
+    if (!file.exists(name)) 
+        stop("Directory appears invalid.")
+    
+    path.dirs <- file.path(name, dirs)
+    sapply(path.dirs, dir.create, showWarnings = FALSE)
+    path.docs <- file.path(name, "docs", docs.dirs)
+    if ("docs" %in% dirs) 
+        sapply(path.docs, dir.create, showWarnings = FALSE)
+    cat("Project created.\n")
+}
+```
 
 #### genRmd
+```genRmd``` works on existing projects. It checks for existing **R** scripts.
+If not ```.R``` files exist in the project's `code` directory, the function will abort.
+Otherwise it will generate ```.Rmd``` template files for each of the **R** scripts it finds.
+The ```.Rmd``` files are placed in the `/docs/Rmd` directory.
+This function assumes this project directory exists.
 
-`genRmd` works on existing projects. It checks for existing **R**
-scripts. If not `.R` files exist in the project's `code` directory, the
-function will abort. Otherwise it will generate `.Rmd` template files
-for each of the **R** scripts it finds. The `.Rmd` files are placed in
-the `/docs/Rmd` directory. This function assumes this project directory
-exists.
 
-    genRmd <- function(path, replace = FALSE, ...) {
-        stopifnot(is.character(path))
-        files <- list.files(path, pattern = ".R$", full = TRUE)
-        stopifnot(length(files) > 0)
-        rmd <- gsub(".R", ".Rmd", basename(files))
-        rmd <- file.path(dirname(path), "docs/Rmd", rmd)
-        if (!replace) 
-            rmd <- rmd[!sapply(rmd, file.exists)]
-        
-        sinkRmd <- function(x, ...) {
-            y1 <- list(...)$rmd.header
-            y2 <- list(...)$rmd.knitr.setup
-            y3 <- list(...)$rmd.template
-            if (is.null(y1)) 
-                y1 <- rmd.header
-            if (is.null(y2)) 
-                y2 <- rmd.knitr.setup
-            if (is.null(y3)) 
-                y3 <- rmd.template
-            sink(x)
-            sapply(c(y1, y2, y3), function(y) if (is.character(y)) 
-                cat(y))
-            sink()
-        }
-        
-        if (length(rmd)) {
-            sapply(rmd, sinkRmd, ...)
-            cat(".Rmd files created for each .R file.\n")
-        } else {
-            cat("No new .Rmd files created.\n")
-        }
+```r
+genRmd <- function(path, replace = FALSE, ...) {
+    stopifnot(is.character(path))
+    files <- list.files(path, pattern = ".R$", full = TRUE)
+    stopifnot(length(files) > 0)
+    rmd <- gsub(".R", ".Rmd", basename(files))
+    rmd <- file.path(dirname(path), "docs/Rmd", rmd)
+    if (!replace) 
+        rmd <- rmd[!sapply(rmd, file.exists)]
+    
+    sinkRmd <- function(x, ...) {
+        y1 <- list(...)$rmd.header
+        y2 <- list(...)$rmd.knitr.setup
+        y3 <- list(...)$rmd.template
+        if (is.null(y1)) 
+            y1 <- rmd.header
+        if (is.null(y2)) 
+            y2 <- rmd.knitr.setup
+        if (is.null(y3)) 
+            y3 <- rmd.template
+        sink(x)
+        sapply(c(y1, y2, y3), function(y) if (is.character(y)) 
+            cat(y))
+        sink()
     }
+    
+    if (length(rmd)) {
+        sapply(rmd, sinkRmd, ...)
+        cat(".Rmd files created for each .R file.\n")
+    } else {
+        cat("No new .Rmd files created.\n")
+    }
+}
+```
 
 #### chunkNames
+```chunkNames``` can be used in two ways.
+It can return a list with length equal to the number of ```.R``` files,
+where each list element is a vector of **R** code chunk names found in each **R** script.
 
-`chunkNames` can be used in two ways. It can return a list with length
-equal to the number of `.R` files, where each list element is a vector
-of **R** code chunk names found in each **R** script.
+Alternatively, with ```append.new=TRUE```, this list has each vector matched element-wise against chunk names found in existing ```.Rmd``` files.
+If no ```.Rmd``` files have yet been generated, the function will abort.
+Otherwise, for the ```.Rmd``` files which do exist (and this may correspond to a subset of the ```.R``` files),
+these ```.Rmd``` files are appended with a list of code chunk names found in the current corresponding ```.R``` files
+which have not yet been integrated into the current state of the ```.Rmd``` files.
+This fascilitates updating of ```.Rmd``` documentation when it falls behind scripts which have been updated.
 
-Alternatively, with `append.new=TRUE`, this list has each vector matched
-element-wise against chunk names found in existing `.Rmd` files. If no
-`.Rmd` files have yet been generated, the function will abort.
-Otherwise, for the `.Rmd` files which do exist (and this may correspond
-to a subset of the `.R` files), these `.Rmd` files are appended with a
-list of code chunk names found in the current corresponding `.R` files
-which have not yet been integrated into the current state of the `.Rmd`
-files. This fascilitates updating of `.Rmd` documentation when it falls
-behind scripts which have been updated.
 
-    chunkNames <- function(path, rChunkID = "# @knitr", rmdChunkID = "```{r", append.new = FALSE) {
-        files <- list.files(path, pattern = ".R$", full = TRUE)
-        stopifnot(length(files) > 0)
-        l1 <- lapply(files, readLines)
-        l1 <- rapply(l1, function(x) x[substr(x, 1, nchar(rChunkID)) == rChunkID], 
-            how = "replace")
-        l1 <- rapply(l1, function(x, p) gsub(paste0(p, " "), "", x), how = "replace", 
-            p = rChunkID)
-        if (!append.new) 
-            return(l1)
-        
-        appendRmd <- function(x, rmd.files, rChunks, rmdChunks, ID) {
-            r1 <- rmdChunks[[x]]
-            r2 <- rChunks[[x]]
-            r.new <- r2[!(r2 %in% r1)]
-            if (length(r.new)) {
-                r.new <- paste0(ID, " ", r.new, "}\n```\n", collapse = "")  # Hard coded brace and backticks
-                sink(rmd.files[x], append = TRUE)
-                cat("\nNEW_CODE_CHUNKS\n")
-                cat(r.new)
-                sink()
-                paste(basename(rmd.files[x]), "appended with new chunk names from .R file")
-            } else paste("No new chunk names appended to", basename(rmd.files[x]))
-        }
-        
-        rmd <- gsub(".R", ".Rmd", basename(files))
-        rmd <- file.path(dirname(path), "docs/Rmd", rmd)
-        rmd <- rmd[sapply(rmd, file.exists)]
-        stopifnot(length(rmd) > 0)  # Rmd files must exist
-        files.ind <- match(gsub(".Rmd", "", basename(rmd)), gsub(".R", "", basename(files)))  # Rmd exist for which R script
-        l2 <- lapply(rmd, readLines)
-        l2 <- rapply(l2, function(x) x[substr(x, 1, nchar(rmdChunkID)) == rmdChunkID], 
-            how = "replace")
-        l2 <- rapply(l2, function(x, p) gsub(paste0(p, " "), "", x), how = "replace", 
-            p = gsub("\\{", "\\\\{", rmdChunkID))
-        l2 <- rapply(l2, function(x) gsub("}", "", sapply(strsplit(x, ","), "[[", 
-            1)), how = "replace")
-        sapply(1:length(rmd), appendRmd, rmd.files = rmd, rChunks = l1[files.ind], 
-            rmdChunks = l2, ID = rmdChunkID)
+```r
+chunkNames <- function(path, rChunkID = "# @knitr", rmdChunkID = "```{r", append.new = FALSE) {
+    files <- list.files(path, pattern = ".R$", full = TRUE)
+    stopifnot(length(files) > 0)
+    l1 <- lapply(files, readLines)
+    l1 <- rapply(l1, function(x) x[substr(x, 1, nchar(rChunkID)) == rChunkID], 
+        how = "replace")
+    l1 <- rapply(l1, function(x, p) gsub(paste0(p, " "), "", x), how = "replace", 
+        p = rChunkID)
+    if (!append.new) 
+        return(l1)
+    
+    appendRmd <- function(x, rmd.files, rChunks, rmdChunks, ID) {
+        r1 <- rmdChunks[[x]]
+        r2 <- rChunks[[x]]
+        r.new <- r2[!(r2 %in% r1)]
+        if (length(r.new)) {
+            r.new <- paste0(ID, " ", r.new, "}\n```\n", collapse = "")  # Hard coded brace and backticks
+            sink(rmd.files[x], append = TRUE)
+            cat("\nNEW_CODE_CHUNKS\n")
+            cat(r.new)
+            sink()
+            paste(basename(rmd.files[x]), "appended with new chunk names from .R file")
+        } else paste("No new chunk names appended to", basename(rmd.files[x]))
     }
+    
+    rmd <- gsub(".R", ".Rmd", basename(files))
+    rmd <- file.path(dirname(path), "docs/Rmd", rmd)
+    rmd <- rmd[sapply(rmd, file.exists)]
+    stopifnot(length(rmd) > 0)  # Rmd files must exist
+    files.ind <- match(gsub(".Rmd", "", basename(rmd)), gsub(".R", "", basename(files)))  # Rmd exist for which R script
+    l2 <- lapply(rmd, readLines)
+    l2 <- rapply(l2, function(x) x[substr(x, 1, nchar(rmdChunkID)) == rmdChunkID], 
+        how = "replace")
+    l2 <- rapply(l2, function(x, p) gsub(paste0(p, " "), "", x), how = "replace", 
+        p = gsub("\\{", "\\\\{", rmdChunkID))
+    l2 <- rapply(l2, function(x) gsub("}", "", sapply(strsplit(x, ","), "[[", 
+        1)), how = "replace")
+    sapply(1:length(rmd), appendRmd, rmd.files = rmd, rChunks = l1[files.ind], 
+        rmdChunks = l2, ID = rmdChunkID)
+}
+```
 
-Regarding the creation and updating of `.Rmd` files, `projman` simply
-assumes that there will be one **R** Markdown file corresponding to one
-**R** script. This is not always the case for a given project, but
-again, the purpose is to generate basic templates. Unnecessary files can
-always be deleted later, or edits made such that one **R** Markdown file
-reads multiple **R** scripts, as is the case with the `.Rmd` file used
-to generate this document.
+Regarding the creation and updating of ```.Rmd``` files, `projman` simply assumes that there will be one **R** Markdown file corresponding to one **R** script.
+This is not always the case for a given project, but again, the purpose is to generate basic templates.
+Unnecessary files can always be deleted later, or edits made such that one **R** Markdown file reads multiple **R** scripts,
+as is the case with the ```.Rmd``` file used to generate this document.
