@@ -4,14 +4,9 @@ author: Matthew Leonawicz
 output:
   html_document:
     toc: true
-    theme: united
-    keep_md: true
-  ioslides_presentation:
-    widescreen: true
-    keep_md: true
-  pdf_document:
-    toc: true
+    theme: cosmo
     highlight: zenburn
+    keep_md: true
 ---
 
 ```{r knitr_setup, echo=FALSE}

@@ -1,18 +1,5 @@
----
-title: "Matt's Projects"
-author: Matthew Leonawicz
-output:
-  html_document:
-    toc: true
-    theme: united
-    keep_md: true
-  ioslides_presentation:
-    widescreen: true
-    keep_md: true
-  pdf_document:
-    toc: true
-    highlight: zenburn
----
+# Matt's Projects
+Matthew Leonawicz  
 
 
 
@@ -187,8 +174,8 @@ p$show("iframesrc", cdn=T)
   &lt;/head&gt;
   &lt;body &gt;
     
-    &lt;div id = &#039;chart11245fcc16f8&#039; class = &#039;rChart d3_sankey&#039;&gt;&lt;/div&gt;    
-    ﻿&lt;!--Attribution:
+    &lt;div id = &#039;chart1a3823c73435&#039; class = &#039;rChart d3_sankey&#039;&gt;&lt;/div&gt;    
+    ï»¿&lt;!--Attribution:
 Mike Bostock https://github.com/d3/d3-plugins/tree/master/sankey
 Mike Bostock http://bost.ocks.org/mike/sankey/
 --&gt;
@@ -196,7 +183,7 @@ Mike Bostock http://bost.ocks.org/mike/sankey/
 &lt;script&gt;
 (function(){
 var params = {
- &quot;dom&quot;: &quot;chart11245fcc16f8&quot;,
+ &quot;dom&quot;: &quot;chart1a3823c73435&quot;,
 &quot;width&quot;:    900,
 &quot;height&quot;:    600,
 &quot;data&quot;: {
@@ -214,7 +201,7 @@ var params = {
 &quot;top&quot;:     20 
 },
 &quot;title&quot;: &quot;Matt&#039;s Projects&quot;,
-&quot;id&quot;: &quot;chart11245fcc16f8&quot; 
+&quot;id&quot;: &quot;chart1a3823c73435&quot; 
 };
 
 params.units ? units = &quot; &quot; + params.units : units = &quot;&quot;;
@@ -286,7 +273,7 @@ var link = svg.append(&quot;g&quot;).selectAll(&quot;.link&quot;)
   .sort(function (a, b) { return b.dy - a.dy; });
 
 link.append(&quot;title&quot;)
-  .text(function (d) { return d.source.name + &quot; → &quot; + d.target.name + &quot;\n&quot; + format(d.value); });
+  .text(function (d) { return d.source.name + &quot; â†’ &quot; + d.target.name + &quot;\n&quot; + format(d.value); });
 
 var node = svg.append(&quot;g&quot;).selectAll(&quot;.node&quot;)
   .data(nodes)
@@ -336,7 +323,7 @@ node.append(&quot;text&quot;)
       var cscale = d3.scale.category20b();
     
       // to be specific in case you have more than one chart
-      d3.selectAll(&#039;#chart11245fcc16f8 svg path.link&#039;)
+      d3.selectAll(&#039;#chart1a3823c73435 svg path.link&#039;)
         .style(&#039;stroke&#039;, function(d){
           //here we will use the source color
           //if you want target then sub target for source
@@ -351,7 +338,7 @@ node.append(&quot;text&quot;)
        //so will need to define mouseover and mouseout
        //happy to show how to do this also
        // .style(&#039;stroke-opacity&#039;, .7)
-      d3.selectAll(&#039;#chart11245fcc16f8 svg .node rect&#039;)
+      d3.selectAll(&#039;#chart1a3823c73435 svg .node rect&#039;)
         .style(&#039;fill&#039;, function(d){
           return cscale(d.name)
         })
@@ -359,6 +346,6 @@ node.append(&quot;text&quot;)
     &lt;/script&gt;
         
   &lt;/body&gt;
-&lt;/html&gt; ' scrolling='no' frameBorder='0' seamless class='rChart  http://timelyportfolio.github.io/rCharts_d3_sankey/libraries/widgets/d3_sankey  ' id='iframe-chart11245fcc16f8'> </iframe>
+&lt;/html&gt; ' scrolling='no' frameBorder='0' seamless class='rChart  http://timelyportfolio.github.io/rCharts_d3_sankey/libraries/widgets/d3_sankey  ' id='iframe-chart1a3823c73435'> </iframe>
  <style>iframe.rChart{ width: 100%; height: 400px;}</style>
 <style>iframe.rChart{ width: 100%; height: 640px;}</style>
