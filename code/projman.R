@@ -4,7 +4,7 @@
 
 # data
 rmd.header <- 
-'---\ntitle: "INSERT_TITLE_HERE"\nauthor: Matthew Leonawicz\noutput:\n  html_document:\n    toc: true\n    theme: united\n    keep_md: true\n  ioslides_presentation:\n    widescreen: true\n    keep_md: true\n  pdf_document:\n    toc: true\n    highlight: zenburn\n---\n'
+'---\ntitle: INSERT_TITLE_HERE\nauthor: Matthew Leonawicz\noutput:\n  html_document:\n    toc: true\n    theme: united\n    keep_md: true\n  ioslides_presentation:\n    widescreen: true\n    keep_md: true\n  pdf_document:\n    toc: true\n    highlight: zenburn\n---\n'
 
 rmd.knitr.setup <-
 '\n```{r knitr_setup, echo=FALSE}
@@ -56,11 +56,12 @@ matt.proj.path <- "C:/github"
 # @knitr function1
 newProject <- function(name, path,
 	dirs=c("code", "data", "docs", "plots", "workspaces"),
-	docs.dirs=c("all", "diagrams", "ioslides", "md", "notebook", "pdf", "Rmd", "timeline", "tufte")){
+	docs.dirs=c("all", "diagrams", "ioslides", "md", "notebook", "pdf", "Rmd", "timeline", "tufte"),
+	overwrite=FALSE){
 	
 	stopifnot(is.character(name))
 	name <- file.path(path, name)
-	if(file.exists(name)) stop("This project already exists.")
+	if(file.exists(name) && !overwrite) stop("This project already exists.")
 	dir.create(name, recursive=TRUE, showWarnings=FALSE)
 	if(!file.exists(name)) stop("Directory appears invalid.")
 	
@@ -68,39 +69,64 @@ newProject <- function(name, path,
 	sapply(path.dirs, dir.create, showWarnings=FALSE)
 	path.docs <- file.path(name, "docs", docs.dirs)
 	if("docs" %in% dirs) sapply(path.docs, dir.create, showWarnings=FALSE)
-	cat("Project created.\n")
+	if(overwrite) cat("Project directories updated.\n") else cat("Project directories created.\n")
 }
 
 # @knitr function2
-genRmd <- function(path, replace=FALSE, ...){
+rmdHeader <- function(title="INSERT_TITLE_HERE", author="Matthew Leonawicz", theme="cosmo", highlight="zenburn", toc=TRUE, keep.md=TRUE, ioslides=FALSE, include.pdf=FALSE){
+	if(toc) toc <= "true" else toc <- "false"
+	if(keep.md) keep.md <= "true" else keep.md <- "false"
+	if(ioslides) hdoc <- "ioslides_presentation" else hdoc <- "html_document"
+	rmd.header <- paste0('---\ntitle: ', title, '\nauthor: ', author, '\noutput:\n  ', hdoc, ':\n    toc: ', toc, '\n    theme: ', theme, '\n    highlight: ', highlight, '\n    keep_md: ', keep.md, '\n')
+	if(ioslides) rmd.header <- paste0(rmd.header, '    widescreen: true\n')
+	if(include.pdf) rmd.header <- paste0(rmd.header, '  pdf_document:\n    toc: ', toc, '\n    highlight: ', highlight, '\n')
+	rmd.header <- paste0(rmd.header, '---\n')
+	rmd.header
+}
+
+# @knitr function3
+genRmd <- function(path, replace=FALSE, header=rmdHeader(), update.header=FALSE, ...){
 	stopifnot(is.character(path))
 	files <- list.files(path, pattern=".R$", full=TRUE)
 	stopifnot(length(files) > 0)
 	rmd <- gsub(".R", ".Rmd", basename(files))
 	rmd <- file.path(dirname(path), "docs/Rmd", rmd)
-	if(!replace) rmd <- rmd[!sapply(rmd, file.exists)]
+	if(!(replace | update.header)) rmd <- rmd[!sapply(rmd, file.exists)]
+	if(update.header) rmd <- rmd[sapply(rmd, file.exists)]
+	stopifnot(length(rmd) > 0)
 	
 	sinkRmd <- function(x, ...){
-		y1 <- list(...)$rmd.header
+		y1 <- header
 		y2 <- list(...)$rmd.knitr.setup
 		y3 <- list(...)$rmd.template
 		if(is.null(y1)) y1 <- rmd.header
 		if(is.null(y2)) y2 <- rmd.knitr.setup
 		if(is.null(y3)) y3 <- rmd.template
 		sink(x)
-		sapply(c(y1, y2, y3), function(y) if(is.character(y)) cat(y))
+		sapply(c(y1, y2, y3), cat)
 		sink()
 	}
 	
-	if(length(rmd)){
+	swapHeader <- function(x){
+		l <- readLines(x)
+		ind <- which(l=="---")
+		l <- l[(ind[2] + 1):length(l)]
+		l <- paste0(l, "\n")
+		sink(x)
+		sapply(c(header, l), cat)
+		sink()
+	}
+	
+	if(update.header){
+		sapply(rmd, swapHeader, ...)
+		cat("yaml header updated for each .Rmd file.\n")
+	} else {
 		sapply(rmd, sinkRmd, ...)
 		cat(".Rmd files created for each .R file.\n")
-	} else {
-		cat("No new .Rmd files created.\n")
 	}
 }
 
-# @knitr function3
+# @knitr function4
 chunkNames <- function(path, rChunkID="# @knitr", rmdChunkID="```{r", append.new=FALSE){
 	files <- list.files(path, pattern=".R$", full=TRUE)
 	stopifnot(length(files) > 0)
@@ -141,8 +167,8 @@ chunkNames <- function(path, rChunkID="# @knitr", rmdChunkID="```{r", append.new
 proj.name <- "TEST_PROJECT" #"ProjectManagement"
 proj.location <- matt.proj.path
 
-newProject(proj.name, proj.location)
+newProject(proj.name, proj.location, overwrite=T)
 
-genRmd(path=file.path(matt.proj.path, proj.name, "code"))
+genRmd(path=file.path(matt.proj.path, proj.name, "code"), header=rmdHeader(), update.header=T)
 
 chunkNames(path=file.path(matt.proj.path, proj.name, "code"), append.new=TRUE)

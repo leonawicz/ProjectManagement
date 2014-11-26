@@ -1,12 +1,12 @@
 ---
-title: "Matt's Projects"
+title: INSERT_TITLE_HERE
 author: Matthew Leonawicz
 output:
   html_document:
-    toc: true
+    toc: TRUE
     theme: cosmo
     highlight: zenburn
-    keep_md: true
+    keep_md: TRUE
 ---
 
 ```{r knitr_setup, echo=FALSE}
