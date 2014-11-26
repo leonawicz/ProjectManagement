@@ -1,5 +1,5 @@
 ---
-title: INSERT_TITLE_HERE
+title: Matt's Projects
 author: Matthew Leonawicz
 output:
   html_document:

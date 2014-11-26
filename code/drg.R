@@ -2,7 +2,7 @@
 library(rmarkdown)
 library(knitr)
 
-setwd("X:/Leonawicz/Projects/2014/ProjectManagement/docs/Rmd")
+setwd("C:/github/ProjectManagement/docs/Rmd")
 files.r <- list.files("../../code", pattern=".R$", full=T)
 files.r <- files.r[basename(files.r)!="drg.R"]
 files.Rmd <- list.files(full=T)
