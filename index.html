@@ -79,7 +79,7 @@ code > span.er { color: #c3bf9f; }
 <li><a href="#code-flow">Code flow</a></li>
 <li><a href="#current-projects">Current projects</a></li>
 </ul></li>
-<li><a href="#r-code">R code</a><ul>
+<li><a href="#r-code"><strong>R</strong> code</a><ul>
 <li><a href="#template-objects">Template objects</a></li>
 <li><a href="#package-functions">Package functions</a></li>
 </ul></li>
@@ -143,7 +143,7 @@ code > span.er { color: #c3bf9f; }
   &lt;/head&gt;
   &lt;body &gt;
     
-    &lt;div id = 'chart14f82197597' class = 'rChart d3_sankey'&gt;&lt;/div&gt;    
+    &lt;div id = 'chart14f85070567d' class = 'rChart d3_sankey'&gt;&lt;/div&gt;    
     ï»¿&lt;!--Attribution:
 Mike Bostock https://github.com/d3/d3-plugins/tree/master/sankey
 Mike Bostock http://bost.ocks.org/mike/sankey/
@@ -152,7 +152,7 @@ Mike Bostock http://bost.ocks.org/mike/sankey/
 &lt;script&gt;
 (function(){
 var params = {
- &quot;dom&quot;: &quot;chart14f82197597&quot;,
+ &quot;dom&quot;: &quot;chart14f85070567d&quot;,
 &quot;width&quot;:    900,
 &quot;height&quot;:    600,
 &quot;data&quot;: {
@@ -170,7 +170,7 @@ var params = {
 &quot;top&quot;:     20 
 },
 &quot;title&quot;: &quot;Matt's Projects&quot;,
-&quot;id&quot;: &quot;chart14f82197597&quot; 
+&quot;id&quot;: &quot;chart14f85070567d&quot; 
 };
 
 params.units ? units = &quot; &quot; + params.units : units = &quot;&quot;;
@@ -292,7 +292,7 @@ node.append(&quot;text&quot;)
       var cscale = d3.scale.category20b();
     
       // to be specific in case you have more than one chart
-      d3.selectAll('#chart14f82197597 svg path.link')
+      d3.selectAll('#chart14f85070567d svg path.link')
         .style('stroke', function(d){
           //here we will use the source color
           //if you want target then sub target for source
@@ -307,7 +307,7 @@ node.append(&quot;text&quot;)
        //so will need to define mouseover and mouseout
        //happy to show how to do this also
        // .style('stroke-opacity', .7)
-      d3.selectAll('#chart14f82197597 svg .node rect')
+      d3.selectAll('#chart14f85070567d svg .node rect')
         .style('fill', function(d){
           return cscale(d.name)
         })
@@ -315,14 +315,14 @@ node.append(&quot;text&quot;)
     &lt;/script&gt;
         
   &lt;/body&gt;
-&lt;/html&gt; " scrolling="no" frameBorder="0" seamless class="rChart  http://timelyportfolio.github.io/rCharts_d3_sankey/libraries/widgets/d3_sankey  " id="iframe-chart14f82197597">
+&lt;/html&gt; " scrolling="no" frameBorder="0" seamless class="rChart  http://timelyportfolio.github.io/rCharts_d3_sankey/libraries/widgets/d3_sankey  " id="iframe-chart14f85070567d">
 </iframe>
 <style>iframe.rChart{ width: 100%; height: 400px;}</style>
 <style>iframe.rChart{ width: 100%; height: 640px;}</style>
 </div>
 </div>
 <div id="r-code" class="section level2">
-<h2>R code</h2>
+<h2><strong>R</strong> code</h2>
 <div id="template-objects" class="section level3">
 <h3>Template objects</h3>
 <p>Character string objects are defined which are used to fill templates when generating new files for a project. A tentative default path is also included since this code relates to my own work.</p>
@@ -402,7 +402,7 @@ matt.proj.path &lt;-<span class="st"> &quot;C:/github&quot;</span></code></pre>
 </div>
 <div id="genrmd" class="section level4">
 <h4>genRmd</h4>
-<p><code>genRmd</code> works on existing projects. It checks for existing <strong>R</strong> scripts. If no R files exist in the project’s <code>code</code> directory, the function will abort. Otherwise it will generate Rmd template files for each of the <strong>R</strong> scripts it finds.</p>
+<p><code>genRmd</code> works on existing projects. It checks for existing <strong>R</strong> scripts. If no <strong>R</strong> files exist in the project’s <code>code</code> directory, the function will abort. Otherwise it will generate Rmd template files for each of the <strong>R</strong> scripts it finds.</p>
 <p>With <code>replace=TRUE</code> any existing Rmd files are regenerated with the provided template - be careful! With <code>replace=FALSE</code> (default) Rmd files are generated only for <strong>R</strong> scripts which do not yet have corresponding Rmd files. If <code>update.header=TRUE</code>, <code>replace</code> is ignored, and only existing Rmd files are regenerated, in this case strictly updating the yaml metadata header at the top of each Rmd file without altering any other Rmd content/documentation.</p>
 <p>The Rmd files are placed in the <code>/docs/Rmd</code> directory. This function assumes this project directory exists.</p>
 <pre class="sourceCode r"><code class="sourceCode r">chunkNames &lt;-<span class="st"> </span>function(path, <span class="dt">rChunkID =</span> <span class="st">&quot;# @knitr&quot;</span>, <span class="dt">rmdChunkID =</span> <span class="st">&quot;```{r&quot;</span>, <span class="dt">append.new =</span> <span class="ot">FALSE</span>) {
@@ -448,8 +448,8 @@ matt.proj.path &lt;-<span class="st"> &quot;C:/github&quot;</span></code></pre>
 </div>
 <div id="chunknames" class="section level4">
 <h4>chunkNames</h4>
-<p><code>chunkNames</code> can be used in two ways. It can return a list with length equal to the number of R files, where each list element is a vector of <strong>R</strong> code chunk names found in each <strong>R</strong> script.</p>
-<p>Alternatively, with <code>append.new=TRUE</code>, this list has each vector matched element-wise against chunk names found in existing Rmd files. If no Rmd files have yet been generated, the function will abort. Otherwise, for the Rmd files which do exist (and this may correspond to a subset of the R files), these Rmd files are appended with a list of code chunk names found in the current corresponding R files which have not yet been integrated into the current state of the Rmd files. This fascilitates updating of Rmd documentation when it falls behind scripts which have been updated.</p>
+<p><code>chunkNames</code> can be used in two ways. It can return a list with length equal to the number of <strong>R</strong> files, where each list element is a vector of <strong>R</strong> code chunk names found in each <strong>R</strong> script.</p>
+<p>Alternatively, with <code>append.new=TRUE</code>, this list has each vector matched element-wise against chunk names found in existing Rmd files. If no Rmd files have yet been generated, the function will abort. Otherwise, for the Rmd files which do exist (and this may correspond to a subset of the <strong>R</strong> files), these Rmd files are appended with a list of code chunk names found in the current corresponding <strong>R</strong> files which have not yet been integrated into the current state of the Rmd files. This fascilitates updating of Rmd documentation when it falls behind scripts which have been updated.</p>
 <p>Regarding the creation and updating of Rmd files, <code>projman</code> simply assumes that there will be one <strong>R</strong> Markdown file corresponding to one <strong>R</strong> script. This is not always the case for a given project, but again, the purpose is to generate basic templates. Unnecessary files can always be deleted later, or edits made such that one <strong>R</strong> Markdown file reads multiple <strong>R</strong> scripts, as is the case with the Rmd file used to generate this document.</p>
 </div>
 </div>
