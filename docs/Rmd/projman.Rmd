@@ -71,7 +71,7 @@ Here is a project hierarchy diagram showing the relationships among all my curre
 ```
 <style>iframe.rChart{ width: 100%; height: 640px;}</style>
 
-## R code
+## **R** code
 
 ### Template objects
 Character string objects are defined which are used to fill templates when generating new files for a project.
@@ -106,7 +106,7 @@ The output from this function is passed directly to `genRmd` below.
 
 #### genRmd
 `genRmd` works on existing projects. It checks for existing **R** scripts.
-If no R files exist in the project's `code` directory, the function will abort.
+If no **R** files exist in the project's `code` directory, the function will abort.
 Otherwise it will generate Rmd template files for each of the **R** scripts it finds.
 
 With `replace=TRUE` any existing Rmd files are regenerated with the provided template - be careful!
@@ -122,13 +122,13 @@ This function assumes this project directory exists.
 
 #### chunkNames
 `chunkNames` can be used in two ways.
-It can return a list with length equal to the number of R files,
+It can return a list with length equal to the number of **R** files,
 where each list element is a vector of **R** code chunk names found in each **R** script.
 
 Alternatively, with ```append.new=TRUE```, this list has each vector matched element-wise against chunk names found in existing Rmd files.
 If no Rmd files have yet been generated, the function will abort.
-Otherwise, for the Rmd files which do exist (and this may correspond to a subset of the R files),
-these Rmd files are appended with a list of code chunk names found in the current corresponding R files
+Otherwise, for the Rmd files which do exist (and this may correspond to a subset of the **R** files),
+these Rmd files are appended with a list of code chunk names found in the current corresponding **R** files
 which have not yet been integrated into the current state of the Rmd files.
 This fascilitates updating of Rmd documentation when it falls behind scripts which have been updated.
 
