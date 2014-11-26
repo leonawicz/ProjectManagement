@@ -76,7 +76,7 @@ Here is a project hierarchy diagram showing the relationships among all my curre
   &lt;/head&gt;
   &lt;body &gt;
     
-    &lt;div id = &#039;chart14f85070567d&#039; class = &#039;rChart d3_sankey&#039;&gt;&lt;/div&gt;    
+    &lt;div id = &#039;chart17085da044b8&#039; class = &#039;rChart d3_sankey&#039;&gt;&lt;/div&gt;    
     ï»¿&lt;!--Attribution:
 Mike Bostock https://github.com/d3/d3-plugins/tree/master/sankey
 Mike Bostock http://bost.ocks.org/mike/sankey/
@@ -85,7 +85,7 @@ Mike Bostock http://bost.ocks.org/mike/sankey/
 &lt;script&gt;
 (function(){
 var params = {
- &quot;dom&quot;: &quot;chart14f85070567d&quot;,
+ &quot;dom&quot;: &quot;chart17085da044b8&quot;,
 &quot;width&quot;:    900,
 &quot;height&quot;:    600,
 &quot;data&quot;: {
@@ -103,7 +103,7 @@ var params = {
 &quot;top&quot;:     20 
 },
 &quot;title&quot;: &quot;Matt&#039;s Projects&quot;,
-&quot;id&quot;: &quot;chart14f85070567d&quot; 
+&quot;id&quot;: &quot;chart17085da044b8&quot; 
 };
 
 params.units ? units = &quot; &quot; + params.units : units = &quot;&quot;;
@@ -225,7 +225,7 @@ node.append(&quot;text&quot;)
       var cscale = d3.scale.category20b();
     
       // to be specific in case you have more than one chart
-      d3.selectAll(&#039;#chart14f85070567d svg path.link&#039;)
+      d3.selectAll(&#039;#chart17085da044b8 svg path.link&#039;)
         .style(&#039;stroke&#039;, function(d){
           //here we will use the source color
           //if you want target then sub target for source
@@ -240,7 +240,7 @@ node.append(&quot;text&quot;)
        //so will need to define mouseover and mouseout
        //happy to show how to do this also
        // .style(&#039;stroke-opacity&#039;, .7)
-      d3.selectAll(&#039;#chart14f85070567d svg .node rect&#039;)
+      d3.selectAll(&#039;#chart17085da044b8 svg .node rect&#039;)
         .style(&#039;fill&#039;, function(d){
           return cscale(d.name)
         })
@@ -248,7 +248,7 @@ node.append(&quot;text&quot;)
     &lt;/script&gt;
         
   &lt;/body&gt;
-&lt;/html&gt; ' scrolling='no' frameBorder='0' seamless class='rChart  http://timelyportfolio.github.io/rCharts_d3_sankey/libraries/widgets/d3_sankey  ' id='iframe-chart14f85070567d'> </iframe>
+&lt;/html&gt; ' scrolling='no' frameBorder='0' seamless class='rChart  http://timelyportfolio.github.io/rCharts_d3_sankey/libraries/widgets/d3_sankey  ' id='iframe-chart17085da044b8'> </iframe>
  <style>iframe.rChart{ width: 100%; height: 400px;}</style>
 <style>iframe.rChart{ width: 100%; height: 640px;}</style>
 
@@ -263,7 +263,7 @@ A tentative default path is also included since this code relates to my own work
 # For package 'projman'
 
 # data
-rmd.header <- "---\ntitle: \"INSERT_TITLE_HERE\"\nauthor: Matthew Leonawicz\noutput:\n  html_document:\n    toc: true\n    theme: united\n    keep_md: true\n  ioslides_presentation:\n    widescreen: true\n    keep_md: true\n  pdf_document:\n    toc: true\n    highlight: zenburn\n---\n"
+rmd.header <- "---\ntitle: INSERT_TITLE_HERE\nauthor: Matthew Leonawicz\noutput:\n  html_document:\n    toc: true\n    theme: united\n    keep_md: true\n  ioslides_presentation:\n    widescreen: true\n    keep_md: true\n  pdf_document:\n    toc: true\n    highlight: zenburn\n---\n"
 
 rmd.knitr.setup <- "\n```{r knitr_setup, echo=FALSE}\nopts_chunk$set(cache=FALSE, eval=FALSE, tidy=TRUE, messages=FALSE, warnings=FALSE)\nread_chunk(\"\")\n```\n"
 
@@ -290,11 +290,11 @@ The current function only creates directories, not files, so `overwrite=TRUE` is
 ```r
 newProject <- function(name, path, dirs = c("code", "data", "docs", "plots", 
     "workspaces"), docs.dirs = c("all", "diagrams", "ioslides", "md", "notebook", 
-    "pdf", "Rmd", "timeline", "tufte")) {
+    "pdf", "Rmd", "timeline", "tufte"), overwrite = FALSE) {
     
     stopifnot(is.character(name))
     name <- file.path(path, name)
-    if (file.exists(name)) 
+    if (file.exists(name) && !overwrite) 
         stop("This project already exists.")
     dir.create(name, recursive = TRUE, showWarnings = FALSE)
     if (!file.exists(name)) 
@@ -305,7 +305,8 @@ newProject <- function(name, path, dirs = c("code", "data", "docs", "plots",
     path.docs <- file.path(name, "docs", docs.dirs)
     if ("docs" %in% dirs) 
         sapply(path.docs, dir.create, showWarnings = FALSE)
-    cat("Project created.\n")
+    if (overwrite) 
+        cat("Project directories updated.\n") else cat("Project directories created.\n")
 }
 ```
 
@@ -316,37 +317,25 @@ The output from this function is passed directly to `genRmd` below.
 
 
 ```r
-genRmd <- function(path, replace = FALSE, ...) {
-    stopifnot(is.character(path))
-    files <- list.files(path, pattern = ".R$", full = TRUE)
-    stopifnot(length(files) > 0)
-    rmd <- gsub(".R", ".Rmd", basename(files))
-    rmd <- file.path(dirname(path), "docs/Rmd", rmd)
-    if (!replace) 
-        rmd <- rmd[!sapply(rmd, file.exists)]
-    
-    sinkRmd <- function(x, ...) {
-        y1 <- list(...)$rmd.header
-        y2 <- list(...)$rmd.knitr.setup
-        y3 <- list(...)$rmd.template
-        if (is.null(y1)) 
-            y1 <- rmd.header
-        if (is.null(y2)) 
-            y2 <- rmd.knitr.setup
-        if (is.null(y3)) 
-            y3 <- rmd.template
-        sink(x)
-        sapply(c(y1, y2, y3), function(y) if (is.character(y)) 
-            cat(y))
-        sink()
-    }
-    
-    if (length(rmd)) {
-        sapply(rmd, sinkRmd, ...)
-        cat(".Rmd files created for each .R file.\n")
-    } else {
-        cat("No new .Rmd files created.\n")
-    }
+rmdHeader <- function(title = "INSERT_TITLE_HERE", author = "Matthew Leonawicz", 
+    theme = "cosmo", highlight = "zenburn", toc = TRUE, keep.md = TRUE, ioslides = FALSE, 
+    include.pdf = FALSE) {
+    if (toc) 
+        toc <= "true" else toc <- "false"
+    if (keep.md) 
+        keep.md <= "true" else keep.md <- "false"
+    if (ioslides) 
+        hdoc <- "ioslides_presentation" else hdoc <- "html_document"
+    rmd.header <- paste0("---\ntitle: ", title, "\nauthor: ", author, "\noutput:\n  ", 
+        hdoc, ":\n    toc: ", toc, "\n    theme: ", theme, "\n    highlight: ", 
+        highlight, "\n    keep_md: ", keep.md, "\n")
+    if (ioslides) 
+        rmd.header <- paste0(rmd.header, "    widescreen: true\n")
+    if (include.pdf) 
+        rmd.header <- paste0(rmd.header, "  pdf_document:\n    toc: ", toc, 
+            "\n    highlight: ", highlight, "\n")
+    rmd.header <- paste0(rmd.header, "---\n")
+    rmd.header
 }
 ```
 
@@ -362,6 +351,68 @@ in this case strictly updating the yaml metadata header at the top of each Rmd f
 
 The Rmd files are placed in the `/docs/Rmd` directory.
 This function assumes this project directory exists.
+
+
+```r
+genRmd <- function(path, replace = FALSE, header = rmdHeader(), update.header = FALSE, 
+    ...) {
+    stopifnot(is.character(path))
+    files <- list.files(path, pattern = ".R$", full = TRUE)
+    stopifnot(length(files) > 0)
+    rmd <- gsub(".R", ".Rmd", basename(files))
+    rmd <- file.path(dirname(path), "docs/Rmd", rmd)
+    if (!(replace | update.header)) 
+        rmd <- rmd[!sapply(rmd, file.exists)]
+    if (update.header) 
+        rmd <- rmd[sapply(rmd, file.exists)]
+    stopifnot(length(rmd) > 0)
+    
+    sinkRmd <- function(x, ...) {
+        y1 <- header
+        y2 <- list(...)$rmd.knitr.setup
+        y3 <- list(...)$rmd.template
+        if (is.null(y1)) 
+            y1 <- rmd.header
+        if (is.null(y2)) 
+            y2 <- rmd.knitr.setup
+        if (is.null(y3)) 
+            y3 <- rmd.template
+        sink(x)
+        sapply(c(y1, y2, y3), cat)
+        sink()
+    }
+    
+    swapHeader <- function(x) {
+        l <- readLines(x)
+        ind <- which(l == "---")
+        l <- l[(ind[2] + 1):length(l)]
+        l <- paste0(l, "\n")
+        sink(x)
+        sapply(c(header, l), cat)
+        sink()
+    }
+    
+    if (update.header) {
+        sapply(rmd, swapHeader, ...)
+        cat("yaml header updated for each .Rmd file.\n")
+    } else {
+        sapply(rmd, sinkRmd, ...)
+        cat(".Rmd files created for each .R file.\n")
+    }
+}
+```
+
+#### chunkNames
+`chunkNames` can be used in two ways.
+It can return a list with length equal to the number of **R** files,
+where each list element is a vector of **R** code chunk names found in each **R** script.
+
+Alternatively, with ```append.new=TRUE```, this list has each vector matched element-wise against chunk names found in existing Rmd files.
+If no Rmd files have yet been generated, the function will abort.
+Otherwise, for the Rmd files which do exist (and this may correspond to a subset of the **R** files),
+these Rmd files are appended with a list of code chunk names found in the current corresponding **R** files
+which have not yet been integrated into the current state of the Rmd files.
+This fascilitates updating of Rmd documentation when it falls behind scripts which have been updated.
 
 
 ```r
@@ -406,20 +457,6 @@ chunkNames <- function(path, rChunkID = "# @knitr", rmdChunkID = "```{r", append
         rmdChunks = l2, ID = rmdChunkID)
 }
 ```
-
-#### chunkNames
-`chunkNames` can be used in two ways.
-It can return a list with length equal to the number of **R** files,
-where each list element is a vector of **R** code chunk names found in each **R** script.
-
-Alternatively, with ```append.new=TRUE```, this list has each vector matched element-wise against chunk names found in existing Rmd files.
-If no Rmd files have yet been generated, the function will abort.
-Otherwise, for the Rmd files which do exist (and this may correspond to a subset of the **R** files),
-these Rmd files are appended with a list of code chunk names found in the current corresponding **R** files
-which have not yet been integrated into the current state of the Rmd files.
-This fascilitates updating of Rmd documentation when it falls behind scripts which have been updated.
-
-
 
 Regarding the creation and updating of Rmd files, `projman` simply assumes that there will be one **R** Markdown file corresponding to one **R** script.
 This is not always the case for a given project, but again, the purpose is to generate basic templates.

@@ -11,8 +11,8 @@ output:
 
 ```{r knitr_setup, echo=FALSE}
 opts_chunk$set(cache=FALSE, eval=FALSE, tidy=TRUE, messages=FALSE, warnings=FALSE)
-read_chunk("X:/Leonawicz/Projects/2014/ProjectManagement/code/proj_sankey.R")
-read_chunk("X:/Leonawicz/Projects/2014/ProjectManagement/code/projman.R")
+read_chunk("../../code/proj_sankey.R")
+read_chunk("../../code/projman.R")
 ```
 
 

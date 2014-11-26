@@ -101,10 +101,11 @@ code > span.er { color: #c3bf9f; }
 <div id="project-hierarchy-r-code" class="section level2">
 <h2>Project hierarchy R code</h2>
 <p>Here is the code used to generate the current project hierarchy Sankey diagram. Current projects are hardcoded and are updated by hand when my work changes.</p>
-<pre class="sourceCode r"><code class="sourceCode r"><span class="kw">require</span>(igraph)
-<span class="kw">require</span>(rCharts)
-
-proj.mp &lt;-<span class="st"> </span><span class="kw">c</span>(<span class="st">&quot;Alfresco Noatak&quot;</span>, <span class="st">&quot;Alfresco Statewide&quot;</span>, <span class="st">&quot;Spatial Lightning Analysis&quot;</span>, <span class="st">&quot;Data Extraction and Uncertainty Analysis&quot;</span>, <span class="st">&quot;Growing Season&quot;</span>, <span class="st">&quot;Mussel Project&quot;</span>, <span class="st">&quot;Land Carbon&quot;</span>)
+<pre class="sourceCode r"><code class="sourceCode r"><span class="kw">require</span>(igraph)</code></pre>
+<pre><code>## Loading required package: igraph</code></pre>
+<pre class="sourceCode r"><code class="sourceCode r"><span class="kw">require</span>(rCharts)</code></pre>
+<pre><code>## Loading required package: rCharts</code></pre>
+<pre class="sourceCode r"><code class="sourceCode r">proj.mp &lt;-<span class="st"> </span><span class="kw">c</span>(<span class="st">&quot;Alfresco Noatak&quot;</span>, <span class="st">&quot;Alfresco Statewide&quot;</span>, <span class="st">&quot;Spatial Lightning Analysis&quot;</span>, <span class="st">&quot;Data Extraction and Uncertainty Analysis&quot;</span>, <span class="st">&quot;Growing Season&quot;</span>, <span class="st">&quot;Mussel Project&quot;</span>, <span class="st">&quot;Land Carbon&quot;</span>)
 proj.etal &lt;-<span class="st"> </span><span class="kw">c</span>(<span class="st">&quot;Alfresco CRU/GCM Experimental Design&quot;</span>, <span class="st">&quot;Bird Project&quot;</span>, <span class="st">&quot;NWT/Comm. Charts DS&quot;</span>, <span class="st">&quot;Sea Ice Edge Maps and Spinoff Projects&quot;</span>, <span class="st">&quot;Shiny App Server Migration&quot;</span>)
 proj.m &lt;-<span class="st"> </span><span class="kw">c</span>(<span class="st">&quot;CMIP3/CMIP5 GCM Comparisons&quot;</span>, <span class="st">&quot;Effective Spatial Scale Analysis&quot;</span>, <span class="st">&quot;Randscape Development&quot;</span>, <span class="st">&quot;Alfresco Outputs&quot;</span>)
 proj.ongoing &lt;-<span class="st"> </span><span class="kw">c</span>(<span class="st">&quot;SNAP Data QA/QC&quot;</span>, <span class="st">&quot;Training/Supervision&quot;</span>, <span class="st">&quot;R Shiny Apps General Maintenance&quot;</span>, <span class="st">&quot;New App Development&quot;</span>, <span class="st">&quot;SNAP Tech Blog&quot;</span>, <span class="st">&quot;Continuing Education&quot;</span>)
@@ -244,7 +245,7 @@ p$<span class="kw">setTemplate</span>(
   &lt;/head&gt;
   &lt;body &gt;
     
-    &lt;div id = 'chart14f851ec6c0e' class = 'rChart d3_sankey'&gt;&lt;/div&gt;    
+    &lt;div id = 'chart170834f57307' class = 'rChart d3_sankey'&gt;&lt;/div&gt;    
     ï»¿&lt;!--Attribution:
 Mike Bostock https://github.com/d3/d3-plugins/tree/master/sankey
 Mike Bostock http://bost.ocks.org/mike/sankey/
@@ -253,7 +254,7 @@ Mike Bostock http://bost.ocks.org/mike/sankey/
 &lt;script&gt;
 (function(){
 var params = {
- &quot;dom&quot;: &quot;chart14f851ec6c0e&quot;,
+ &quot;dom&quot;: &quot;chart170834f57307&quot;,
 &quot;width&quot;:    900,
 &quot;height&quot;:    600,
 &quot;data&quot;: {
@@ -271,7 +272,7 @@ var params = {
 &quot;top&quot;:     20 
 },
 &quot;title&quot;: &quot;Matt's Projects&quot;,
-&quot;id&quot;: &quot;chart14f851ec6c0e&quot; 
+&quot;id&quot;: &quot;chart170834f57307&quot; 
 };
 
 params.units ? units = &quot; &quot; + params.units : units = &quot;&quot;;
@@ -393,7 +394,7 @@ node.append(&quot;text&quot;)
       var cscale = d3.scale.category20b();
     
       // to be specific in case you have more than one chart
-      d3.selectAll('#chart14f851ec6c0e svg path.link')
+      d3.selectAll('#chart170834f57307 svg path.link')
         .style('stroke', function(d){
           //here we will use the source color
           //if you want target then sub target for source
@@ -408,7 +409,7 @@ node.append(&quot;text&quot;)
        //so will need to define mouseover and mouseout
        //happy to show how to do this also
        // .style('stroke-opacity', .7)
-      d3.selectAll('#chart14f851ec6c0e svg .node rect')
+      d3.selectAll('#chart170834f57307 svg .node rect')
         .style('fill', function(d){
           return cscale(d.name)
         })
@@ -416,7 +417,7 @@ node.append(&quot;text&quot;)
     &lt;/script&gt;
         
   &lt;/body&gt;
-&lt;/html&gt; " scrolling="no" frameBorder="0" seamless class="rChart  http://timelyportfolio.github.io/rCharts_d3_sankey/libraries/widgets/d3_sankey  " id="iframe-chart14f851ec6c0e">
+&lt;/html&gt; " scrolling="no" frameBorder="0" seamless class="rChart  http://timelyportfolio.github.io/rCharts_d3_sankey/libraries/widgets/d3_sankey  " id="iframe-chart170834f57307">
 </iframe>
 <style>iframe.rChart{ width: 100%; height: 400px;}</style>
 <style>iframe.rChart{ width: 100%; height: 640px;}</style>
