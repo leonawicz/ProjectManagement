@@ -1,4 +1,4 @@
-# Project Management
+# INSERT_TITLE_HERE
 Matthew Leonawicz  
 
 
@@ -20,20 +20,20 @@ but if you do, or just want some ideas, feel free to explore.
 
 #### Capabilities
 `projman` can create a new project. This essentially generates a specific directory structure which I use often to manage project files.
-For an existing project, once **R** scripts have been created, `projman` can generate template ```.Rmd``` files for each.
-For existing ```.Rmd``` files, `projman` can conveniently append these **R** Markdown files with a list of any new `knitr` code chunk names
-in project **R** scripts being developed which have not yet been included in the respective ```.Rmd``` files.
+For an existing project, once **R** scripts have been created, `projman` can generate template Rmd files for each.
+For existing Rmd files, `projman` can conveniently append these **R** Markdown files with a list of any new `knitr` code chunk names
+in project **R** scripts being developed which have not yet been included in the respective Rmd files.
 
 #### Limitations
 While `projman` assists with project documentation, this mainly takes the form of file generation and appending.
 Documentation is unique to every project of course. Every script is different.
 The most that is possible is to auto-fill commonly used code chunk names and metadata.
 Each document must be written individually by the author, but when a project has many **R** scripts requiring documentation,
-it is nice to not have to create all the corresponding ```.Rmd``` files by hand and copy and paste generic contents.
+it is nice to not have to create all the corresponding Rmd files by hand and copy and paste generic contents.
 
 The project management code is not yet in package form.
 Many additional features are yet to be incorporated.
-Generic code relating to the further processing of ```.Rmd``` files into various other output files via `rmarkdown` and `knitr` will fold into this project,
+Generic code relating to the further processing of Rmd files into various other output files via `rmarkdown` and `knitr` will fold into this project,
 but this has not been done yet.
 
 ## Related items
@@ -76,7 +76,7 @@ Here is a project hierarchy diagram showing the relationships among all my curre
   &lt;/head&gt;
   &lt;body &gt;
     
-    &lt;div id = &#039;chart1a38c0b4b44&#039; class = &#039;rChart d3_sankey&#039;&gt;&lt;/div&gt;    
+    &lt;div id = &#039;chart14f88ce5f8&#039; class = &#039;rChart d3_sankey&#039;&gt;&lt;/div&gt;    
     ï»¿&lt;!--Attribution:
 Mike Bostock https://github.com/d3/d3-plugins/tree/master/sankey
 Mike Bostock http://bost.ocks.org/mike/sankey/
@@ -85,7 +85,7 @@ Mike Bostock http://bost.ocks.org/mike/sankey/
 &lt;script&gt;
 (function(){
 var params = {
- &quot;dom&quot;: &quot;chart1a38c0b4b44&quot;,
+ &quot;dom&quot;: &quot;chart14f88ce5f8&quot;,
 &quot;width&quot;:    900,
 &quot;height&quot;:    600,
 &quot;data&quot;: {
@@ -103,7 +103,7 @@ var params = {
 &quot;top&quot;:     20 
 },
 &quot;title&quot;: &quot;Matt&#039;s Projects&quot;,
-&quot;id&quot;: &quot;chart1a38c0b4b44&quot; 
+&quot;id&quot;: &quot;chart14f88ce5f8&quot; 
 };
 
 params.units ? units = &quot; &quot; + params.units : units = &quot;&quot;;
@@ -225,7 +225,7 @@ node.append(&quot;text&quot;)
       var cscale = d3.scale.category20b();
     
       // to be specific in case you have more than one chart
-      d3.selectAll(&#039;#chart1a38c0b4b44 svg path.link&#039;)
+      d3.selectAll(&#039;#chart14f88ce5f8 svg path.link&#039;)
         .style(&#039;stroke&#039;, function(d){
           //here we will use the source color
           //if you want target then sub target for source
@@ -240,7 +240,7 @@ node.append(&quot;text&quot;)
        //so will need to define mouseover and mouseout
        //happy to show how to do this also
        // .style(&#039;stroke-opacity&#039;, .7)
-      d3.selectAll(&#039;#chart1a38c0b4b44 svg .node rect&#039;)
+      d3.selectAll(&#039;#chart14f88ce5f8 svg .node rect&#039;)
         .style(&#039;fill&#039;, function(d){
           return cscale(d.name)
         })
@@ -248,7 +248,7 @@ node.append(&quot;text&quot;)
     &lt;/script&gt;
         
   &lt;/body&gt;
-&lt;/html&gt; ' scrolling='no' frameBorder='0' seamless class='rChart  http://timelyportfolio.github.io/rCharts_d3_sankey/libraries/widgets/d3_sankey  ' id='iframe-chart1a38c0b4b44'> </iframe>
+&lt;/html&gt; ' scrolling='no' frameBorder='0' seamless class='rChart  http://timelyportfolio.github.io/rCharts_d3_sankey/libraries/widgets/d3_sankey  ' id='iframe-chart14f88ce5f8'> </iframe>
  <style>iframe.rChart{ width: 100%; height: 400px;}</style>
 <style>iframe.rChart{ width: 100%; height: 640px;}</style>
 
@@ -274,16 +274,17 @@ matt.proj.path <- "C:/github"
 ```
 
 ### Package functions
-Functions are defined for creating new projects, generating ```.Rmd``` files for project **R** scripts,
+Functions are defined for creating new projects, generating Rmd files for project **R** scripts,
 and appending these **R** Markdown files with updated information from the corresponding **R** scripts as their development continues.
 Additional functions will be incorporated later.
 
 #### newProject
-```newProject``` creates a new named project directory structure at the specified file path.
-If a directory with this project name already exists in this location on the file system, the function will abort.
+`newProject` creates a new named project directory structure at the specified file path.
+If a directory with this project name already exists in this location on the file system and `overwrite=FALSE`, the function will abort.
 Default project subdirectories are created unless a different vector of folder names is explicitly passed to ```newProject```.
 If one of the subdirectories is `docs` then the default vector of subdirectories under `docs` is also created.
 This argument can also be set explicitly.
+The current function only creates directories, not files, so `overwrite=TRUE` is safe to use on any existing project.
 
 
 ```r
@@ -308,12 +309,10 @@ newProject <- function(name, path, dirs = c("code", "data", "docs", "plots",
 }
 ```
 
-#### genRmd
-```genRmd``` works on existing projects. It checks for existing **R** scripts.
-If not ```.R``` files exist in the project's `code` directory, the function will abort.
-Otherwise it will generate ```.Rmd``` template files for each of the **R** scripts it finds.
-The ```.Rmd``` files are placed in the `/docs/Rmd` directory.
-This function assumes this project directory exists.
+#### rmdHeader
+`rmdHeader` generates the yaml metadata header for Rmd files as a character string to be inserted at the top of a file.
+It has default arguments specific to my own projects but can be changed.
+The output from this function is passed directly to `genRmd` below.
 
 
 ```r
@@ -351,17 +350,18 @@ genRmd <- function(path, replace = FALSE, ...) {
 }
 ```
 
-#### chunkNames
-```chunkNames``` can be used in two ways.
-It can return a list with length equal to the number of ```.R``` files,
-where each list element is a vector of **R** code chunk names found in each **R** script.
+#### genRmd
+`genRmd` works on existing projects. It checks for existing **R** scripts.
+If no R files exist in the project's `code` directory, the function will abort.
+Otherwise it will generate Rmd template files for each of the **R** scripts it finds.
 
-Alternatively, with ```append.new=TRUE```, this list has each vector matched element-wise against chunk names found in existing ```.Rmd``` files.
-If no ```.Rmd``` files have yet been generated, the function will abort.
-Otherwise, for the ```.Rmd``` files which do exist (and this may correspond to a subset of the ```.R``` files),
-these ```.Rmd``` files are appended with a list of code chunk names found in the current corresponding ```.R``` files
-which have not yet been integrated into the current state of the ```.Rmd``` files.
-This fascilitates updating of ```.Rmd``` documentation when it falls behind scripts which have been updated.
+With `replace=TRUE` any existing Rmd files are regenerated with the provided template - be careful!
+With `replace=FALSE` (default) Rmd files are generated only for **R** scripts which do not yet have corresponding Rmd files.
+If `update.header=TRUE`, `replace` is ignored, and only existing Rmd files are regenerated,
+in this case strictly updating the yaml metadata header at the top of each Rmd file without altering any other Rmd content/documentation. 
+
+The Rmd files are placed in the `/docs/Rmd` directory.
+This function assumes this project directory exists.
 
 
 ```r
@@ -407,7 +407,21 @@ chunkNames <- function(path, rChunkID = "# @knitr", rmdChunkID = "```{r", append
 }
 ```
 
-Regarding the creation and updating of ```.Rmd``` files, `projman` simply assumes that there will be one **R** Markdown file corresponding to one **R** script.
+#### chunkNames
+`chunkNames` can be used in two ways.
+It can return a list with length equal to the number of R files,
+where each list element is a vector of **R** code chunk names found in each **R** script.
+
+Alternatively, with ```append.new=TRUE```, this list has each vector matched element-wise against chunk names found in existing Rmd files.
+If no Rmd files have yet been generated, the function will abort.
+Otherwise, for the Rmd files which do exist (and this may correspond to a subset of the R files),
+these Rmd files are appended with a list of code chunk names found in the current corresponding R files
+which have not yet been integrated into the current state of the Rmd files.
+This fascilitates updating of Rmd documentation when it falls behind scripts which have been updated.
+
+
+
+Regarding the creation and updating of Rmd files, `projman` simply assumes that there will be one **R** Markdown file corresponding to one **R** script.
 This is not always the case for a given project, but again, the purpose is to generate basic templates.
 Unnecessary files can always be deleted later, or edits made such that one **R** Markdown file reads multiple **R** scripts,
-as is the case with the ```.Rmd``` file used to generate this document.
+as is the case with the Rmd file used to generate this document.
