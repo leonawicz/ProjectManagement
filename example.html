@@ -161,7 +161,7 @@ code > span.er { color: #c3bf9f; }
 
 <div id="example-usage" class="section level2">
 <h2>Example usage</h2>
-<p>This is how <code>projman</code> functions can be used to create and manipulate a project, using the <code>projman</code> project itself as an example. The code below is not intended to be run directly, but servers as a guide.</p>
+<p>This is how <code>projman</code> functions can be used to create and manipulate a project, using the <code>projman</code> project itself as an example. The code below is not intended to be run directly, but serves as a guide.</p>
 </div>
 <div id="r-code" class="section level2">
 <h2>R code</h2>
@@ -194,6 +194,31 @@ rfile.path &lt;-<span class="st"> </span><span class="kw">file.path</span>(matt.
 <div id="prepare-a-project-website" class="section level3">
 <h3>Prepare a project website</h3>
 <p>With some additional project-specific setup, files can be generated which will assist in creating a project website. See <a href="func_website.html" title="website-related functions">website-related functions</a>.</p>
+<pre class="sourceCode r"><code class="sourceCode r"><span class="co"># Setup for generating a project website</span>
+proj.title &lt;-<span class="st"> &quot;Project Management&quot;</span>
+proj.menu &lt;-<span class="st"> </span><span class="kw">c</span>(<span class="st">&quot;projman&quot;</span>, <span class="st">&quot;R Code&quot;</span>, <span class="st">&quot;All Projects&quot;</span>)
+
+proj.submenu &lt;-<span class="st"> </span><span class="kw">list</span>(<span class="kw">c</span>(<span class="st">&quot;About projman&quot;</span>, <span class="st">&quot;Introduction&quot;</span>, <span class="st">&quot;Related items&quot;</span>, <span class="st">&quot;Example usage&quot;</span>), 
+    <span class="kw">c</span>(<span class="st">&quot;Default objects&quot;</span>, <span class="st">&quot;divider&quot;</span>, <span class="st">&quot;Functions&quot;</span>, <span class="st">&quot;Start a new project&quot;</span>, <span class="st">&quot;Working with Rmd files&quot;</span>, 
+        <span class="st">&quot;Make a project website&quot;</span>), <span class="kw">c</span>(<span class="st">&quot;Projects diagram&quot;</span>, <span class="st">&quot;divider&quot;</span>, <span class="st">&quot;About&quot;</span>, 
+        <span class="st">&quot;Other&quot;</span>))
+
+proj.files &lt;-<span class="st"> </span><span class="kw">list</span>(<span class="kw">c</span>(<span class="st">&quot;header&quot;</span>, <span class="st">&quot;proj_intro.html&quot;</span>, <span class="st">&quot;proj_sankey.html&quot;</span>, <span class="st">&quot;example.html&quot;</span>), 
+    <span class="kw">c</span>(<span class="st">&quot;objects.html&quot;</span>, <span class="st">&quot;divider&quot;</span>, <span class="st">&quot;header&quot;</span>, <span class="st">&quot;func_new.html&quot;</span>, <span class="st">&quot;func_rmd.html&quot;</span>, 
+        <span class="st">&quot;func_website.html&quot;</span>), <span class="kw">c</span>(<span class="st">&quot;proj_sankey.html&quot;</span>, <span class="st">&quot;divider&quot;</span>, <span class="st">&quot;index.html&quot;</span>, 
+        <span class="st">&quot;index.html&quot;</span>))
+
+proj.github &lt;-<span class="st"> &quot;https://github.com/leonawicz/ProjectManagement&quot;</span>
+
+<span class="co"># generate navigation bar html file common to all pages</span>
+<span class="kw">genNavbar</span>(<span class="dt">htmlfile =</span> <span class="kw">file.path</span>(proj.location, proj.name, <span class="st">&quot;docs/Rmd/include/navbar.html&quot;</span>), 
+    <span class="dt">title =</span> proj.title, <span class="dt">menu =</span> proj.menu, <span class="dt">submenus =</span> proj.submenu, <span class="dt">files =</span> proj.files, 
+    <span class="dt">site.link =</span> proj.github)
+
+<span class="co"># generate _output.yaml file Note that external libraries are expected,</span>
+<span class="co"># stored in the &#39;libs&#39; directory below</span>
+<span class="kw">genOutyaml</span>(<span class="dt">file =</span> <span class="kw">file.path</span>(proj.location, proj.name, <span class="st">&quot;docs/Rmd/_output.yaml&quot;</span>), 
+    <span class="dt">lib =</span> <span class="st">&quot;libs&quot;</span>, <span class="dt">header =</span> <span class="st">&quot;in_header.html&quot;</span>, <span class="dt">before_body =</span> <span class="st">&quot;navbar.html&quot;</span>)</code></pre>
 </div>
 </div>
 
