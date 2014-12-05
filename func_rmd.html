@@ -14,7 +14,7 @@
 
 <script src="libs/jquery-1.11.0/jquery.min.js"></script>
 <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-<link href="libs/bootstrap-2.3.2/css/cosmo.min.css" rel="stylesheet" />
+<link href="libs/bootstrap-2.3.2/css/united.min.css" rel="stylesheet" />
 <link href="libs/bootstrap-2.3.2/css/bootstrap-responsive.min.css" rel="stylesheet" />
 <script src="libs/bootstrap-2.3.2/js/bootstrap.min.js"></script>
 <style type="text/css">
@@ -108,10 +108,19 @@ code > span.er { color: #c3bf9f; }
         <span class="icon-bar"></span>
         <span class="icon-bar"></span>
       </button>
-      <a class="brand" href="/">projman</a>
+      <a class="brand" href="/">Project Management</a>
       <div class="nav-collapse collapse">
         <ul class="nav">
           <li><a href="/">Home</a></li>
+          <li class="dropdown">
+            <a href="projman" class="dropdown-toggle" data-toggle="dropdown">projman <b class="caret"></b></a>
+            <ul class="dropdown-menu">
+              <li class="nav-header">About projman</li>
+              <li><a href="proj_intro.html">Introduction</a></li>
+              <li><a href="proj_sankey.html">Related items</a></li>
+              <li><a href="example.html">Example usage</a></li>
+            </ul>
+
           <li class="dropdown">
             <a href="r-code" class="dropdown-toggle" data-toggle="dropdown">R Code <b class="caret"></b></a>
             <ul class="dropdown-menu">
@@ -124,12 +133,6 @@ code > span.er { color: #c3bf9f; }
             </ul>
 
           <li class="dropdown">
-            <a href="this-project" class="dropdown-toggle" data-toggle="dropdown">This Project <b class="caret"></b></a>
-            <ul class="dropdown-menu">
-              <li><a href="proj_sankey.html">Sankey diagram</a></li>
-            </ul>
-
-          <li class="dropdown">
             <a href="all-projects" class="dropdown-toggle" data-toggle="dropdown">All Projects <b class="caret"></b></a>
             <ul class="dropdown-menu">
               <li><a href="proj_sankey.html">Projects diagram</a></li>
@@ -139,9 +142,9 @@ code > span.er { color: #c3bf9f; }
             </ul>
         </ul>
         <ul class="nav pull-right">
-          <a class="btn btn-primary" href="">
+          <a class="btn btn-primary" href="https://github.com/leonawicz/ProjectManagement">
             <i class="fa fa-github fa-lg"></i>
-            Website
+            Github
           </a>
         </ul>
       </div><!--/.nav-collapse -->
@@ -155,12 +158,12 @@ code > span.er { color: #c3bf9f; }
 <h4>rmdHeader</h4>
 <p><code>rmdHeader</code> generates the yaml metadata header for Rmd files as a character string to be inserted at the top of a file. It has default arguments specific to my own projects but can be changed. The output from this function is passed directly to <code>genRmd</code> below.</p>
 <pre class="sourceCode r"><code class="sourceCode r">rmdHeader &lt;-<span class="st"> </span>function(<span class="dt">title =</span> <span class="st">&quot;INSERT_TITLE_HERE&quot;</span>, <span class="dt">author =</span> <span class="st">&quot;Matthew Leonawicz&quot;</span>, 
-    <span class="dt">theme =</span> <span class="st">&quot;cosmo&quot;</span>, <span class="dt">highlight =</span> <span class="st">&quot;zenburn&quot;</span>, <span class="dt">toc =</span> <span class="ot">TRUE</span>, <span class="dt">keep.md =</span> <span class="ot">TRUE</span>, <span class="dt">ioslides =</span> <span class="ot">FALSE</span>, 
+    <span class="dt">theme =</span> <span class="st">&quot;united&quot;</span>, <span class="dt">highlight =</span> <span class="st">&quot;zenburn&quot;</span>, <span class="dt">toc =</span> <span class="ot">TRUE</span>, <span class="dt">keep.md =</span> <span class="ot">TRUE</span>, <span class="dt">ioslides =</span> <span class="ot">FALSE</span>, 
     <span class="dt">include.pdf =</span> <span class="ot">FALSE</span>) {
     if (toc) 
-        toc &lt;=<span class="st"> &quot;true&quot;</span> else toc &lt;-<span class="st"> &quot;false&quot;</span>
+        toc &lt;-<span class="st"> &quot;true&quot;</span> else toc &lt;-<span class="st"> &quot;false&quot;</span>
     if (keep.md) 
-        keep.md &lt;=<span class="st"> &quot;true&quot;</span> else keep.md &lt;-<span class="st"> &quot;false&quot;</span>
+        keep.md &lt;-<span class="st"> &quot;true&quot;</span> else keep.md &lt;-<span class="st"> &quot;false&quot;</span>
     if (ioslides) 
         hdoc &lt;-<span class="st"> &quot;ioslides_presentation&quot;</span> else hdoc &lt;-<span class="st"> &quot;html_document&quot;</span>
     rmd.header &lt;-<span class="st"> </span><span class="kw">paste0</span>(<span class="st">&quot;---</span><span class="ch">\n</span><span class="st">title: &quot;</span>, title, <span class="st">&quot;</span><span class="ch">\n</span><span class="st">author: &quot;</span>, author, <span class="st">&quot;</span><span class="ch">\n</span><span class="st">output:</span><span class="ch">\n</span><span class="st">  &quot;</span>, 

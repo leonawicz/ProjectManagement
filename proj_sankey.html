@@ -15,7 +15,7 @@
 
 <script src="libs/jquery-1.11.0/jquery.min.js"></script>
 <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-<link href="libs/bootstrap-2.3.2/css/cosmo.min.css" rel="stylesheet" />
+<link href="libs/bootstrap-2.3.2/css/united.min.css" rel="stylesheet" />
 <link href="libs/bootstrap-2.3.2/css/bootstrap-responsive.min.css" rel="stylesheet" />
 <script src="libs/bootstrap-2.3.2/js/bootstrap.min.js"></script>
 <style type="text/css">
@@ -109,10 +109,19 @@ code > span.er { color: #c3bf9f; }
         <span class="icon-bar"></span>
         <span class="icon-bar"></span>
       </button>
-      <a class="brand" href="/">projman</a>
+      <a class="brand" href="/">Project Management</a>
       <div class="nav-collapse collapse">
         <ul class="nav">
           <li><a href="/">Home</a></li>
+          <li class="dropdown">
+            <a href="projman" class="dropdown-toggle" data-toggle="dropdown">projman <b class="caret"></b></a>
+            <ul class="dropdown-menu">
+              <li class="nav-header">About projman</li>
+              <li><a href="proj_intro.html">Introduction</a></li>
+              <li><a href="proj_sankey.html">Related items</a></li>
+              <li><a href="example.html">Example usage</a></li>
+            </ul>
+
           <li class="dropdown">
             <a href="r-code" class="dropdown-toggle" data-toggle="dropdown">R Code <b class="caret"></b></a>
             <ul class="dropdown-menu">
@@ -125,12 +134,6 @@ code > span.er { color: #c3bf9f; }
             </ul>
 
           <li class="dropdown">
-            <a href="this-project" class="dropdown-toggle" data-toggle="dropdown">This Project <b class="caret"></b></a>
-            <ul class="dropdown-menu">
-              <li><a href="proj_sankey.html">Sankey diagram</a></li>
-            </ul>
-
-          <li class="dropdown">
             <a href="all-projects" class="dropdown-toggle" data-toggle="dropdown">All Projects <b class="caret"></b></a>
             <ul class="dropdown-menu">
               <li><a href="proj_sankey.html">Projects diagram</a></li>
@@ -140,9 +143,9 @@ code > span.er { color: #c3bf9f; }
             </ul>
         </ul>
         <ul class="nav pull-right">
-          <a class="btn btn-primary" href="">
+          <a class="btn btn-primary" href="https://github.com/leonawicz/ProjectManagement">
             <i class="fa fa-github fa-lg"></i>
-            Website
+            Github
           </a>
         </ul>
       </div><!--/.nav-collapse -->
@@ -155,56 +158,40 @@ code > span.er { color: #c3bf9f; }
 <h4 class="author"><em>Matthew Leonawicz</em></h4>
 </div>
 
-<div id="TOC">
-<ul>
-<li><a href="#introduction">Introduction</a></li>
-<li><a href="#project-hierarchy-r-code">Project hierarchy R code</a></li>
-</ul>
-</div>
 
 <div id="introduction" class="section level2">
 <h2>Introduction</h2>
-<p>ADD_TEXT_HERE</p>
+<p>I have begun using a Sankey diagram to illustrate various types of connections among my projects. Here the purpose is to show the code used to create the project hierarchy graph shows elsewhere (and below).</p>
 <div id="motivation" class="section level3">
 <h3>Motivation</h3>
-<p>ADD_TEXT_HERE</p>
-</div>
-<div id="details" class="section level3">
-<h3>Details</h3>
-<p>ADD_TEXT_HERE</p>
-<div id="capabilities" class="section level4">
-<h4>Capabilities</h4>
-<p>ADD_TEXT_HERE</p>
-</div>
-<div id="limitations" class="section level4">
-<h4>Limitations</h4>
-<p>ADD_TEXT_HERE</p>
-</div>
+<p>I have created this diagram showing project and collaborator relationships that occur in my current work as part of this <code>projman</code> Project Management Project. However, this is a special case shown here. In general, the reason for folding this type of graph into all of my individual projects as part of project management is to show code and data relationships that exist for a specific project. For example, <code>projman</code> has its own code flow diagram as do my other projects. But here the focus is on the particular project hierarchy diagram that is part of this project.</p>
 </div>
 </div>
 <div id="project-hierarchy-r-code" class="section level2">
-<h2>Project hierarchy R code</h2>
-<p>Here is the code used to generate the current project hierarchy Sankey diagram. Current projects are hardcoded and are updated by hand when my work changes.</p>
+<h2>Project hierarchy <strong>R</strong> code</h2>
+<p>Here is the code used to generate the current project hierarchy diagram. Two packages are required.</p>
 <pre class="sourceCode r"><code class="sourceCode r"><span class="kw">require</span>(igraph)
-<span class="kw">require</span>(rCharts)
-
-proj.mp &lt;-<span class="st"> </span><span class="kw">c</span>(<span class="st">&quot;Alfresco Noatak&quot;</span>, <span class="st">&quot;Alfresco Statewide&quot;</span>, <span class="st">&quot;Spatial Lightning Analysis&quot;</span>, <span class="st">&quot;Data Extraction and Uncertainty Analysis&quot;</span>, <span class="st">&quot;Growing Season&quot;</span>, <span class="st">&quot;Mussel Project&quot;</span>, <span class="st">&quot;Land Carbon&quot;</span>)
-proj.etal &lt;-<span class="st"> </span><span class="kw">c</span>(<span class="st">&quot;Alfresco CRU/GCM Experimental Design&quot;</span>, <span class="st">&quot;Bird Project&quot;</span>, <span class="st">&quot;NWT/Comm. Charts DS&quot;</span>, <span class="st">&quot;Sea Ice Edge Maps and Spinoff Projects&quot;</span>, <span class="st">&quot;Shiny App Server Migration&quot;</span>)
-proj.m &lt;-<span class="st"> </span><span class="kw">c</span>(<span class="st">&quot;CMIP3/CMIP5 GCM Comparisons&quot;</span>, <span class="st">&quot;Effective Spatial Scale Analysis&quot;</span>, <span class="st">&quot;Randscape Development&quot;</span>, <span class="st">&quot;Alfresco Outputs&quot;</span>, <span class="st">&quot;Projman&quot;</span>)
-proj.ongoing &lt;-<span class="st"> </span><span class="kw">c</span>(<span class="st">&quot;SNAP Data QA/QC&quot;</span>, <span class="st">&quot;Training/Supervision&quot;</span>, <span class="st">&quot;R Shiny Apps General Maintenance&quot;</span>, <span class="st">&quot;New App Development&quot;</span>, <span class="st">&quot;SNAP Tech Blog&quot;</span>, <span class="st">&quot;Continuing Education&quot;</span>)
+<span class="kw">require</span>(rCharts)</code></pre>
+<p>Current projects are hardcoded and are updated by hand when my work changes. A necessary evil. This is essentially the data, consisting of both projects and collaborators.</p>
+<pre class="sourceCode r"><code class="sourceCode r">proj.mp &lt;-<span class="st"> </span><span class="kw">c</span>(<span class="st">&quot;Alfresco Noatak&quot;</span>, <span class="st">&quot;Alfresco Statewide&quot;</span>, <span class="st">&quot;Spatial Lightning Analysis&quot;</span>, 
+    <span class="st">&quot;Data Extraction and Uncertainty Analysis&quot;</span>, <span class="st">&quot;Growing Season&quot;</span>, <span class="st">&quot;Mussel Project&quot;</span>, 
+    <span class="st">&quot;Land Carbon&quot;</span>)
+proj.etal &lt;-<span class="st"> </span><span class="kw">c</span>(<span class="st">&quot;Alfresco CRU/GCM Experimental Design&quot;</span>, <span class="st">&quot;Bird Project&quot;</span>, <span class="st">&quot;NWT/Comm. Charts DS&quot;</span>, 
+    <span class="st">&quot;Sea Ice Edge Maps and Spinoff Projects&quot;</span>, <span class="st">&quot;Shiny App Server Migration&quot;</span>)
+proj.m &lt;-<span class="st"> </span><span class="kw">c</span>(<span class="st">&quot;CMIP3/CMIP5 GCM Comparisons&quot;</span>, <span class="st">&quot;Effective Spatial Scale Analysis&quot;</span>, 
+    <span class="st">&quot;Randscape Development&quot;</span>, <span class="st">&quot;Alfresco Outputs&quot;</span>, <span class="st">&quot;Projman&quot;</span>)
+proj.ongoing &lt;-<span class="st"> </span><span class="kw">c</span>(<span class="st">&quot;SNAP Data QA/QC&quot;</span>, <span class="st">&quot;Training/Supervision&quot;</span>, <span class="st">&quot;R Shiny Apps General Maintenance&quot;</span>, 
+    <span class="st">&quot;New App Development&quot;</span>, <span class="st">&quot;SNAP Tech Blog&quot;</span>, <span class="st">&quot;Continuing Education&quot;</span>)
 proj.halted &lt;-<span class="st"> </span><span class="kw">c</span>(<span class="st">&quot;FRP/FRI Scale-Conditional Alfresco Maps&quot;</span>, <span class="st">&quot;Moose Project&quot;</span>)
-projects.list &lt;-<span class="kw">list</span>(proj.mp, proj.etal, proj.m, proj.ongoing, proj.halted)
-
-actors.etal &lt;-<span class="st"> </span><span class="kw">list</span>(<span class="kw">c</span>(<span class="st">&quot;Paul&quot;</span>, <span class="st">&quot;Alec&quot;</span>), <span class="st">&quot;Angie&quot;</span>, <span class="kw">c</span>(<span class="st">&quot;Angie&quot;</span>, <span class="st">&quot;Bob&quot;</span>), <span class="st">&quot;Angie&quot;</span>, <span class="st">&quot;Bob&quot;</span>)
-actors.all &lt;-<span class="st"> </span><span class="kw">unique</span>(<span class="kw">c</span>(<span class="st">&quot;Matt&quot;</span>, <span class="st">&quot;Paul&quot;</span>, <span class="kw">unlist</span>(actors.etal)))
-status.colors &lt;-<span class="st"> </span><span class="kw">rep</span>(<span class="kw">c</span>(<span class="st">&quot;green&quot;</span>, <span class="st">&quot;blue&quot;</span>, <span class="st">&quot;orange&quot;</span>, <span class="st">&quot;purple&quot;</span>, <span class="st">&quot;red&quot;</span>), <span class="dt">times=</span><span class="kw">sapply</span>(projects.list, length))
-status.colors &lt;-<span class="st"> </span><span class="kw">rep</span>(<span class="kw">c</span>(<span class="st">&quot;green&quot;</span>, <span class="st">&quot;blue&quot;</span>, <span class="st">&quot;orange&quot;</span>, <span class="st">&quot;purple&quot;</span>, <span class="st">&quot;red&quot;</span>), <span class="dt">times=</span><span class="kw">sapply</span>(projects.list, length))
-
-from &lt;-<span class="st"> </span><span class="kw">c</span>(
+projects.list &lt;-<span class="st"> </span><span class="kw">list</span>(proj.mp, proj.etal, proj.m, proj.ongoing, proj.halted)</code></pre>
+<pre class="sourceCode r"><code class="sourceCode r">actors.etal &lt;-<span class="st"> </span><span class="kw">list</span>(<span class="kw">c</span>(<span class="st">&quot;Paul&quot;</span>, <span class="st">&quot;Alec&quot;</span>), <span class="st">&quot;Angie&quot;</span>, <span class="kw">c</span>(<span class="st">&quot;Angie&quot;</span>, <span class="st">&quot;Bob&quot;</span>), <span class="st">&quot;Angie&quot;</span>, 
+    <span class="st">&quot;Bob&quot;</span>)
+actors.all &lt;-<span class="st"> </span><span class="kw">unique</span>(<span class="kw">c</span>(<span class="st">&quot;Matt&quot;</span>, <span class="st">&quot;Paul&quot;</span>, <span class="kw">unlist</span>(actors.etal)))</code></pre>
+<p>Directional connections must be made among project and among people and projects. The connections are expressed by element-wise comparison of the equal-length <code>to</code> and <code>from</code> vectors.</p>
+<pre class="sourceCode r"><code class="sourceCode r">from &lt;-<span class="st"> </span><span class="kw">c</span>(
     <span class="co"># LHS</span>
     <span class="kw">rep</span>(<span class="st">&quot;Collaborators&quot;</span>, <span class="kw">length</span>(actors.all[actors.all!=<span class="st">&quot;Matt&quot;</span>])),
     <span class="kw">rep</span>(<span class="st">&quot;Matt&quot;</span>, <span class="kw">length</span>(<span class="kw">c</span>(proj.m, proj.ongoing, proj.halted))),
-    <span class="co"># Middle</span>
     <span class="kw">rep</span>(<span class="kw">c</span>(<span class="st">&quot;Matt&quot;</span>, <span class="st">&quot;Paul&quot;</span>), <span class="kw">length</span>(proj.mp)),
     <span class="kw">rep</span>(<span class="st">&quot;Matt&quot;</span>, <span class="kw">length</span>(proj.etal)),
     <span class="kw">unlist</span>(actors.etal),
@@ -221,13 +208,12 @@ from &lt;-<span class="st"> </span><span class="kw">c</span>(
     <span class="kw">rep</span>(<span class="st">&quot;Data Extraction and Uncertainty Analysis&quot;</span>, <span class="dv">4</span>)
     
 )
+
 to &lt;-<span class="st"> </span><span class="kw">c</span>(
-    <span class="co"># Middle</span>
     actors.all[actors.all!=<span class="st">&quot;Matt&quot;</span>],
     proj.m,
     proj.ongoing,
     proj.halted,
-    <span class="co"># RHS</span>
     <span class="kw">rep</span>(proj.mp, <span class="dv">2</span>),
     proj.etal,
     <span class="kw">rep</span>(proj.etal, <span class="dt">times=</span><span class="kw">sapply</span>(actors.etal, length)),
@@ -242,69 +228,26 @@ to &lt;-<span class="st"> </span><span class="kw">c</span>(
     <span class="kw">c</span>(<span class="st">&quot;CMIP3/CMIP5 GCM Comparisons&quot;</span>), <span class="co">#from &quot;NWT/Comm. Charts DS&quot;</span>
     <span class="kw">rep</span>(<span class="st">&quot;FRP/FRI Scale-Conditional Alfresco Maps&quot;</span>, <span class="dv">2</span>), <span class="co"># from &quot;Alfresco Noatak&quot;, &quot;Alfresco Statewide&quot;</span>
     <span class="kw">c</span>(<span class="st">&quot;CMIP3/CMIP5 GCM Comparisons&quot;</span>, <span class="st">&quot;Effective Spatial Scale Analysis&quot;</span>, <span class="st">&quot;Randscape Development&quot;</span>, <span class="st">&quot;Alfresco Outputs&quot;</span>) <span class="co"># from &quot;Data Extraction and Uncertainty Analysis&quot;</span>
-)
-relations &lt;-<span class="st"> </span><span class="kw">data.frame</span>(<span class="dt">from=</span>from, <span class="dt">to=</span>to)
-g &lt;-<span class="st"> </span><span class="kw">graph.data.frame</span>(relations, <span class="dt">directed=</span>T, <span class="dt">vertices=</span><span class="kw">data.frame</span>(<span class="kw">c</span>(<span class="st">&quot;Collaborators&quot;</span>, actors.all, <span class="kw">unlist</span>(projects.list))))
+)</code></pre>
+<p>The vectors are combined in a data frame and the <code>igraph</code> package is used to grow the tree diagram.</p>
+<pre class="sourceCode r"><code class="sourceCode r">relations &lt;-<span class="st"> </span><span class="kw">data.frame</span>(<span class="dt">from =</span> from, <span class="dt">to =</span> to)
+g &lt;-<span class="st"> </span><span class="kw">graph.data.frame</span>(relations, <span class="dt">directed =</span> T, <span class="dt">vertices =</span> <span class="kw">data.frame</span>(<span class="kw">c</span>(<span class="st">&quot;Collaborators&quot;</span>, 
+    actors.all, <span class="kw">unlist</span>(projects.list))))
 
-<span class="co">#V(g)$weight = 0</span>
-<span class="co">#V(g)[degree(g,mode=&quot;out&quot;)==0]$weight &lt;- runif(n=length(V(g)[degree(g,mode=&quot;out&quot;)==0]),min=0,max=100)</span>
-<span class="co">#E(g)[to(V(g)$weight&gt;0)]$weight &lt;- V(g)[V(g)$weight&gt;0]$weight</span>
-<span class="co">#while(max(is.na(E(g)$weight))) {</span>
-<span class="co">#   df &lt;- get.data.frame(g)</span>
-<span class="co">#   for (i in 1:nrow(df)) {</span>
-<span class="co">#       x = df[i,]</span>
-<span class="co">#       if(max(df$from==x$to)) {</span>
-<span class="co">#           E(g)[from(x$from) &amp; to(x$to)]$weight = sum(E(g)[from(x$to)]$weight)</span>
-<span class="co">#       }</span>
-<span class="co">#   }</span>
-<span class="co">#}</span>
 gw &lt;-<span class="st"> </span><span class="kw">get.data.frame</span>(g)
 gw$value &lt;-<span class="st"> </span><span class="dv">1</span>
-<span class="kw">colnames</span>(gw) &lt;-<span class="st"> </span><span class="kw">c</span>(<span class="st">&quot;source&quot;</span>,<span class="st">&quot;target&quot;</span>,<span class="st">&quot;value&quot;</span>)
+<span class="kw">colnames</span>(gw) &lt;-<span class="st"> </span><span class="kw">c</span>(<span class="st">&quot;source&quot;</span>, <span class="st">&quot;target&quot;</span>, <span class="st">&quot;value&quot;</span>)
 gw$source &lt;-<span class="st"> </span><span class="kw">as.character</span>(gw$source)
-gw$target &lt;-<span class="st"> </span><span class="kw">as.character</span>(gw$target)
-p &lt;-<span class="st"> </span>rCharts$<span class="kw">new</span>()
-p$<span class="kw">setLib</span>(<span class="st">&#39;http://timelyportfolio.github.io/rCharts_d3_sankey/libraries/widgets/d3_sankey&#39;</span>)
+gw$target &lt;-<span class="st"> </span><span class="kw">as.character</span>(gw$target)</code></pre>
+<p>The <code>rchats</code> package has functionality for turning this into an interactive D3 visualization, which is nice, particularly the mouseover interactivity, since there can be so much visual overlap among projects. Additional javascript can be included to alter the colors. My strengths are in <strong>R</strong> so I borrowed this code snippet from online, but if you have skills with javascript and D3 you could probably do better with color control and opacity I imagine.</p>
+<pre class="sourceCode r"><code class="sourceCode r">p &lt;-<span class="st"> </span>rCharts$<span class="kw">new</span>()
+p$<span class="kw">setLib</span>(<span class="st">&quot;http://timelyportfolio.github.io/rCharts_d3_sankey/libraries/widgets/d3_sankey&quot;</span>)
 p$<span class="kw">setTemplate</span>(<span class="dt">script =</span> <span class="st">&quot;http://timelyportfolio.github.io/rCharts_d3_sankey/libraries/widgets/d3_sankey/layouts/chart.html&quot;</span>)
-p$<span class="kw">set</span>(
-<span class="dt">data =</span> gw,
-<span class="dt">nodeWidth =</span> <span class="dv">15</span>,
-<span class="dt">nodePadding =</span> <span class="dv">10</span>,
-<span class="dt">layout =</span> <span class="dv">32</span>,
-<span class="dt">width =</span> <span class="dv">900</span>,
-<span class="dt">height =</span> <span class="dv">800</span>,
-<span class="dt">margin =</span> <span class="kw">list</span>(<span class="dt">right =</span> <span class="dv">20</span>, <span class="dt">left =</span> <span class="dv">20</span>, <span class="dt">bottom =</span> <span class="dv">20</span>, <span class="dt">top =</span> <span class="dv">20</span>),
-<span class="dt">title =</span> <span class="st">&quot;Matt&#39;s Projects&quot;</span>
-)
+p$<span class="kw">set</span>(<span class="dt">data =</span> gw, <span class="dt">nodeWidth =</span> <span class="dv">15</span>, <span class="dt">nodePadding =</span> <span class="dv">10</span>, <span class="dt">layout =</span> <span class="dv">32</span>, <span class="dt">width =</span> <span class="dv">900</span>, 
+    <span class="dt">height =</span> <span class="dv">800</span>, <span class="dt">margin =</span> <span class="kw">list</span>(<span class="dt">right =</span> <span class="dv">20</span>, <span class="dt">left =</span> <span class="dv">20</span>, <span class="dt">bottom =</span> <span class="dv">20</span>, <span class="dt">top =</span> <span class="dv">20</span>), 
+    <span class="dt">title =</span> <span class="st">&quot;Matt&#39;s Projects&quot;</span>)
 
-p$<span class="kw">setTemplate</span>(
-  <span class="dt">afterScript =</span> <span class="st">&quot;</span>
-<span class="st">&lt;script&gt;</span>
-<span class="st">  var cscale = d3.scale.category20b();</span>
-
-<span class="st">  // to be specific in case you have more than one chart</span>
-<span class="st">  d3.selectAll(&#39;#{{ chartId }} svg path.link&#39;)</span>
-<span class="st">    .style(&#39;stroke&#39;, function(d){</span>
-<span class="st">      //here we will use the source color</span>
-<span class="st">      //if you want target then sub target for source</span>
-<span class="st">      //or if you want something other than gray</span>
-<span class="st">      //supply a constant</span>
-<span class="st">      //or use a categorical scale or gradient</span>
-<span class="st">      //return d.source.color;</span>
-<span class="st">      return cscale(d.source.name);</span>
-<span class="st">    })</span>
-<span class="st">   //note no changes were made to opacity</span>
-<span class="st">   //to do uncomment below but will affect mouseover</span>
-<span class="st">   //so will need to define mouseover and mouseout</span>
-<span class="st">   //happy to show how to do this also</span>
-<span class="st">   // .style(&#39;stroke-opacity&#39;, .7)</span>
-<span class="st">  d3.selectAll(&#39;#{{ chartId }} svg .node rect&#39;)</span>
-<span class="st">    .style(&#39;fill&#39;, function(d){</span>
-<span class="st">      return cscale(d.name)</span>
-<span class="st">    })</span>
-<span class="st">    .style(&#39;stroke&#39;, &#39;none&#39;)</span>
-<span class="st">&lt;/script&gt;</span>
-<span class="st">&quot;</span>)</code></pre>
+p$<span class="kw">setTemplate</span>(<span class="dt">afterScript =</span> <span class="st">&quot;</span><span class="ch">\n</span><span class="st">&lt;script&gt;</span><span class="ch">\n</span><span class="st">  var cscale = d3.scale.category20b();</span><span class="ch">\n</span><span class="st">  d3.selectAll(&#39;#{{ chartId }} svg path.link&#39;)</span><span class="ch">\n</span><span class="st">    .style(&#39;stroke&#39;, function(d){</span><span class="ch">\n</span><span class="st">      return cscale(d.source.name);</span><span class="ch">\n</span><span class="st">    })</span><span class="ch">\n</span><span class="st">  d3.selectAll(&#39;#{{ chartId }} svg .node rect&#39;)</span><span class="ch">\n</span><span class="st">    .style(&#39;fill&#39;, function(d){</span><span class="ch">\n</span><span class="st">      return cscale(d.name)</span><span class="ch">\n</span><span class="st">    })</span><span class="ch">\n</span><span class="st">    .style(&#39;stroke&#39;, &#39;none&#39;)</span><span class="ch">\n</span><span class="st">&lt;/script&gt;</span><span class="ch">\n</span><span class="st">&quot;</span>)</code></pre>
 <pre class="sourceCode r"><code class="sourceCode r">p$<span class="kw">show</span>(<span class="st">&quot;iframesrc&quot;</span>, <span class="dt">cdn=</span>T)</code></pre>
 <iframe srcdoc=" &lt;!doctype HTML&gt;
 &lt;meta charset = 'utf-8'&gt;
@@ -328,7 +271,7 @@ p$<span class="kw">setTemplate</span>(
   &lt;/head&gt;
   &lt;body &gt;
     
-    &lt;div id = 'chart16cb6d31d3' class = 'rChart d3_sankey'&gt;&lt;/div&gt;    
+    &lt;div id = 'chart11d04ca5b9b' class = 'rChart d3_sankey'&gt;&lt;/div&gt;    
     ï»¿&lt;!--Attribution:
 Mike Bostock https://github.com/d3/d3-plugins/tree/master/sankey
 Mike Bostock http://bost.ocks.org/mike/sankey/
@@ -337,7 +280,7 @@ Mike Bostock http://bost.ocks.org/mike/sankey/
 &lt;script&gt;
 (function(){
 var params = {
- &quot;dom&quot;: &quot;chart16cb6d31d3&quot;,
+ &quot;dom&quot;: &quot;chart11d04ca5b9b&quot;,
 &quot;width&quot;:    900,
 &quot;height&quot;:    800,
 &quot;data&quot;: {
@@ -355,7 +298,7 @@ var params = {
 &quot;top&quot;:     20 
 },
 &quot;title&quot;: &quot;Matt's Projects&quot;,
-&quot;id&quot;: &quot;chart16cb6d31d3&quot; 
+&quot;id&quot;: &quot;chart11d04ca5b9b&quot; 
 };
 
 params.units ? units = &quot; &quot; + params.units : units = &quot;&quot;;
@@ -475,24 +418,11 @@ node.append(&quot;text&quot;)
     
     &lt;script&gt;
       var cscale = d3.scale.category20b();
-    
-      // to be specific in case you have more than one chart
-      d3.selectAll('#chart16cb6d31d3 svg path.link')
+      d3.selectAll('#chart11d04ca5b9b svg path.link')
         .style('stroke', function(d){
-          //here we will use the source color
-          //if you want target then sub target for source
-          //or if you want something other than gray
-          //supply a constant
-          //or use a categorical scale or gradient
-          //return d.source.color;
           return cscale(d.source.name);
         })
-       //note no changes were made to opacity
-       //to do uncomment below but will affect mouseover
-       //so will need to define mouseover and mouseout
-       //happy to show how to do this also
-       // .style('stroke-opacity', .7)
-      d3.selectAll('#chart16cb6d31d3 svg .node rect')
+      d3.selectAll('#chart11d04ca5b9b svg .node rect')
         .style('fill', function(d){
           return cscale(d.name)
         })
@@ -500,7 +430,7 @@ node.append(&quot;text&quot;)
     &lt;/script&gt;
         
   &lt;/body&gt;
-&lt;/html&gt; " scrolling="no" frameBorder="0" seamless class="rChart  http://timelyportfolio.github.io/rCharts_d3_sankey/libraries/widgets/d3_sankey  " id="iframe-chart16cb6d31d3">
+&lt;/html&gt; " scrolling="no" frameBorder="0" seamless class="rChart  http://timelyportfolio.github.io/rCharts_d3_sankey/libraries/widgets/d3_sankey  " id="iframe-chart11d04ca5b9b">
 </iframe>
 <style>iframe.rChart{ width: 100%; height: 400px;}</style>
 <style>iframe.rChart{ width: 100%; height: 840px;}</style>

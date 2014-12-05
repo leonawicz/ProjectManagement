@@ -15,7 +15,7 @@
 
 <script src="libs/jquery-1.11.0/jquery.min.js"></script>
 <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-<link href="libs/bootstrap-2.3.2/css/cosmo.min.css" rel="stylesheet" />
+<link href="libs/bootstrap-2.3.2/css/united.min.css" rel="stylesheet" />
 <link href="libs/bootstrap-2.3.2/css/bootstrap-responsive.min.css" rel="stylesheet" />
 <script src="libs/bootstrap-2.3.2/js/bootstrap.min.js"></script>
 <style type="text/css">
@@ -109,10 +109,19 @@ code > span.er { color: #c3bf9f; }
         <span class="icon-bar"></span>
         <span class="icon-bar"></span>
       </button>
-      <a class="brand" href="/">projman</a>
+      <a class="brand" href="/">Project Management</a>
       <div class="nav-collapse collapse">
         <ul class="nav">
           <li><a href="/">Home</a></li>
+          <li class="dropdown">
+            <a href="projman" class="dropdown-toggle" data-toggle="dropdown">projman <b class="caret"></b></a>
+            <ul class="dropdown-menu">
+              <li class="nav-header">About projman</li>
+              <li><a href="proj_intro.html">Introduction</a></li>
+              <li><a href="proj_sankey.html">Related items</a></li>
+              <li><a href="example.html">Example usage</a></li>
+            </ul>
+
           <li class="dropdown">
             <a href="r-code" class="dropdown-toggle" data-toggle="dropdown">R Code <b class="caret"></b></a>
             <ul class="dropdown-menu">
@@ -125,12 +134,6 @@ code > span.er { color: #c3bf9f; }
             </ul>
 
           <li class="dropdown">
-            <a href="this-project" class="dropdown-toggle" data-toggle="dropdown">This Project <b class="caret"></b></a>
-            <ul class="dropdown-menu">
-              <li><a href="proj_sankey.html">Sankey diagram</a></li>
-            </ul>
-
-          <li class="dropdown">
             <a href="all-projects" class="dropdown-toggle" data-toggle="dropdown">All Projects <b class="caret"></b></a>
             <ul class="dropdown-menu">
               <li><a href="proj_sankey.html">Projects diagram</a></li>
@@ -140,9 +143,9 @@ code > span.er { color: #c3bf9f; }
             </ul>
         </ul>
         <ul class="nav pull-right">
-          <a class="btn btn-primary" href="">
+          <a class="btn btn-primary" href="https://github.com/leonawicz/ProjectManagement">
             <i class="fa fa-github fa-lg"></i>
-            Website
+            Github
           </a>
         </ul>
       </div><!--/.nav-collapse -->
@@ -155,13 +158,6 @@ code > span.er { color: #c3bf9f; }
 <h4 class="author"><em>Matthew Leonawicz</em></h4>
 </div>
 
-<div id="TOC">
-<ul>
-<li><a href="#introduction">Introduction</a></li>
-<li><a href="#related-items">Related items</a></li>
-<li><a href="#r-code"><strong>R</strong> code</a></li>
-</ul>
-</div>
 
 <div id="introduction" class="section level2">
 <h2>Introduction</h2>
@@ -220,7 +216,7 @@ code > span.er { color: #c3bf9f; }
   &lt;/head&gt;
   &lt;body &gt;
     
-    &lt;div id = 'chart16c2650191a' class = 'rChart d3_sankey'&gt;&lt;/div&gt;    
+    &lt;div id = 'chart11d04ca5b9b' class = 'rChart d3_sankey'&gt;&lt;/div&gt;    
     ï»¿&lt;!--Attribution:
 Mike Bostock https://github.com/d3/d3-plugins/tree/master/sankey
 Mike Bostock http://bost.ocks.org/mike/sankey/
@@ -229,7 +225,7 @@ Mike Bostock http://bost.ocks.org/mike/sankey/
 &lt;script&gt;
 (function(){
 var params = {
- &quot;dom&quot;: &quot;chart16c2650191a&quot;,
+ &quot;dom&quot;: &quot;chart11d04ca5b9b&quot;,
 &quot;width&quot;:    900,
 &quot;height&quot;:    800,
 &quot;data&quot;: {
@@ -247,7 +243,7 @@ var params = {
 &quot;top&quot;:     20 
 },
 &quot;title&quot;: &quot;Matt's Projects&quot;,
-&quot;id&quot;: &quot;chart16c2650191a&quot; 
+&quot;id&quot;: &quot;chart11d04ca5b9b&quot; 
 };
 
 params.units ? units = &quot; &quot; + params.units : units = &quot;&quot;;
@@ -367,24 +363,11 @@ node.append(&quot;text&quot;)
     
     &lt;script&gt;
       var cscale = d3.scale.category20b();
-    
-      // to be specific in case you have more than one chart
-      d3.selectAll('#chart16c2650191a svg path.link')
+      d3.selectAll('#chart11d04ca5b9b svg path.link')
         .style('stroke', function(d){
-          //here we will use the source color
-          //if you want target then sub target for source
-          //or if you want something other than gray
-          //supply a constant
-          //or use a categorical scale or gradient
-          //return d.source.color;
           return cscale(d.source.name);
         })
-       //note no changes were made to opacity
-       //to do uncomment below but will affect mouseover
-       //so will need to define mouseover and mouseout
-       //happy to show how to do this also
-       // .style('stroke-opacity', .7)
-      d3.selectAll('#chart16c2650191a svg .node rect')
+      d3.selectAll('#chart11d04ca5b9b svg .node rect')
         .style('fill', function(d){
           return cscale(d.name)
         })
@@ -392,7 +375,7 @@ node.append(&quot;text&quot;)
     &lt;/script&gt;
         
   &lt;/body&gt;
-&lt;/html&gt; " scrolling="no" frameBorder="0" seamless class="rChart  http://timelyportfolio.github.io/rCharts_d3_sankey/libraries/widgets/d3_sankey  " id="iframe-chart16c2650191a">
+&lt;/html&gt; " scrolling="no" frameBorder="0" seamless class="rChart  http://timelyportfolio.github.io/rCharts_d3_sankey/libraries/widgets/d3_sankey  " id="iframe-chart11d04ca5b9b">
 </iframe>
 <style>iframe.rChart{ width: 100%; height: 400px;}</style>
 <style>iframe.rChart{ width: 100%; height: 840px;}</style>
@@ -444,12 +427,12 @@ matt.proj.path &lt;-<span class="st"> &quot;C:/github&quot;</span></code></pre>
 <h4>rmdHeader</h4>
 <p><code>rmdHeader</code> generates the yaml metadata header for Rmd files as a character string to be inserted at the top of a file. It has default arguments specific to my own projects but can be changed. The output from this function is passed directly to <code>genRmd</code> below.</p>
 <pre class="sourceCode r"><code class="sourceCode r">rmdHeader &lt;-<span class="st"> </span>function(<span class="dt">title =</span> <span class="st">&quot;INSERT_TITLE_HERE&quot;</span>, <span class="dt">author =</span> <span class="st">&quot;Matthew Leonawicz&quot;</span>, 
-    <span class="dt">theme =</span> <span class="st">&quot;cosmo&quot;</span>, <span class="dt">highlight =</span> <span class="st">&quot;zenburn&quot;</span>, <span class="dt">toc =</span> <span class="ot">TRUE</span>, <span class="dt">keep.md =</span> <span class="ot">TRUE</span>, <span class="dt">ioslides =</span> <span class="ot">FALSE</span>, 
+    <span class="dt">theme =</span> <span class="st">&quot;united&quot;</span>, <span class="dt">highlight =</span> <span class="st">&quot;zenburn&quot;</span>, <span class="dt">toc =</span> <span class="ot">TRUE</span>, <span class="dt">keep.md =</span> <span class="ot">TRUE</span>, <span class="dt">ioslides =</span> <span class="ot">FALSE</span>, 
     <span class="dt">include.pdf =</span> <span class="ot">FALSE</span>) {
     if (toc) 
-        toc &lt;=<span class="st"> &quot;true&quot;</span> else toc &lt;-<span class="st"> &quot;false&quot;</span>
+        toc &lt;-<span class="st"> &quot;true&quot;</span> else toc &lt;-<span class="st"> &quot;false&quot;</span>
     if (keep.md) 
-        keep.md &lt;=<span class="st"> &quot;true&quot;</span> else keep.md &lt;-<span class="st"> &quot;false&quot;</span>
+        keep.md &lt;-<span class="st"> &quot;true&quot;</span> else keep.md &lt;-<span class="st"> &quot;false&quot;</span>
     if (ioslides) 
         hdoc &lt;-<span class="st"> &quot;ioslides_presentation&quot;</span> else hdoc &lt;-<span class="st"> &quot;html_document&quot;</span>
     rmd.header &lt;-<span class="st"> </span><span class="kw">paste0</span>(<span class="st">&quot;---</span><span class="ch">\n</span><span class="st">title: &quot;</span>, title, <span class="st">&quot;</span><span class="ch">\n</span><span class="st">author: &quot;</span>, author, <span class="st">&quot;</span><span class="ch">\n</span><span class="st">output:</span><span class="ch">\n</span><span class="st">  &quot;</span>, 
@@ -566,7 +549,7 @@ matt.proj.path &lt;-<span class="st"> &quot;C:/github&quot;</span></code></pre>
 <h4>genNavbar</h4>
 <p><code>genNavbar</code> generates a navigation bar for a web page. The html file created should be written to the project’s <code>docs/Rmd/include</code> directory. The common navigation bar html is included prior to the body of the html for each web page in the project’s website. <code>menu</code> is a vector of names for each dropdown menu. <code>submenus</code> is a list of vectors of menu options corresponding to each menu. <code>files</code> is a similar list of vectors. Each element is either an html file for a web page to be associated with the submenu link, “header” to indicate the corresponding name in <code>submenus</code> is only a group label and not a link to a web page, or “divider” to indicate placement of a bar for separating groups in a dropdown menu.</p>
 <pre class="sourceCode r"><code class="sourceCode r">genNavbar &lt;-<span class="st"> </span>function(<span class="dt">htmlfile =</span> <span class="st">&quot;navbar.html&quot;</span>, title, menu, submenus, files, 
-    <span class="dt">site.link =</span> <span class="st">&quot;&quot;</span>, <span class="dt">site.name =</span> <span class="st">&quot;Website&quot;</span>) {
+    <span class="dt">site.link =</span> <span class="st">&quot;&quot;</span>, <span class="dt">site.name =</span> <span class="st">&quot;Github&quot;</span>) {
     
     fillSubmenu &lt;-<span class="st"> </span>function(x, name, file) {
         if (file[x] ==<span class="st"> &quot;divider&quot;</span>) 
