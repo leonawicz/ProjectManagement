@@ -175,7 +175,7 @@ genNavbar <- function(htmlfile="navbar.html", title, menu, submenus, files, site
 			'" class="dropdown-toggle" data-toggle="dropdown">', menu[x], 
 			' <b class="caret"></b></a>\n            <ul class="dropdown-menu">\n',
 			paste(sapply(1:length(submenus[[x]]), fillSubmenu, name=submenus[[x]], file=files[[x]]), sep="", collapse=""),
-			'            </ul>\n          </ul>\n', collapse="")
+			'            </ul>\n', collapse="")
 	}
 	
 	x <- paste0(
@@ -227,5 +227,5 @@ proj.files <- list(
 	c("project_hierarchy.html", "divider", "index.html", "index.html")
 )
 
-genNavbar(htmlfile=file.path(proj.location, proj.name, "docs/html/include/navbar.html"), title=proj.title, menu=proj.menu, submenus=proj.submenu, files=proj.files)
-genOutyaml(file=file.path(proj.location, proj.name, "docs/html/_output.yaml"), lib="libs", before_body="navbar.html")
+genNavbar(htmlfile=file.path(proj.location, proj.name, "docs/Rmd/include/navbar.html"), title=proj.title, menu=proj.menu, submenus=proj.submenu, files=proj.files)
+genOutyaml(file=file.path(proj.location, proj.name, "docs/Rmd/_output.yaml"), lib="libs", header="in_header.html", before_body="navbar.html")
