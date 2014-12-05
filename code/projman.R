@@ -53,7 +53,7 @@ matt.proj.path <- "C:/github"
 # @knitr function1
 newProject <- function(name, path,
 	dirs=c("code", "data", "docs", "plots", "workspaces"),
-	docs.dirs=c("all", "diagrams", "ioslides", "md", "notebook", "pdf", "Rmd", "timeline", "tufte"),
+	docs.dirs=c("diagrams", "ioslides", "notebook", "pdf", "Rmd/include", "timeline", "tufte"),
 	overwrite=FALSE){
 	
 	stopifnot(is.character(name))
@@ -65,7 +65,7 @@ newProject <- function(name, path,
 	path.dirs <- file.path(name, dirs)
 	sapply(path.dirs, dir.create, showWarnings=FALSE)
 	path.docs <- file.path(name, "docs", docs.dirs)
-	if("docs" %in% dirs) sapply(path.docs, dir.create, showWarnings=FALSE)
+	if("docs" %in% dirs) sapply(path.docs, dir.create, recursive=TRUE, showWarnings=FALSE)
 	if(overwrite) cat("Project directories updated.\n") else cat("Project directories created.\n")
 }
 
