@@ -1,0 +1,56 @@
+---
+output:
+  html_document:
+    theme: cosmo
+    highlight: zenburn
+    keep_md: TRUE
+---
+
+```{r knitr_setup, echo=FALSE}
+opts_chunk$set(cache=FALSE, eval=FALSE, tidy=TRUE, messages=FALSE, warnings=FALSE)
+read_chunk("../../code/projman.R")
+```
+
+#### rmdHeader
+`rmdHeader` generates the yaml metadata header for Rmd files as a character string to be inserted at the top of a file.
+It has default arguments specific to my own projects but can be changed.
+The output from this function is passed directly to `genRmd` below.
+
+```{r function2}
+```
+
+#### genRmd
+`genRmd` works on existing projects. It checks for existing **R** scripts.
+If no **R** files exist in the project's `code` directory, the function will abort.
+Otherwise it will generate Rmd template files for each of the **R** scripts it finds.
+
+With `replace=TRUE` any existing Rmd files are regenerated with the provided template - be careful!
+With `replace=FALSE` (default) Rmd files are generated only for **R** scripts which do not yet have corresponding Rmd files.
+If `update.header=TRUE`, `replace` is ignored, and only existing Rmd files are regenerated,
+in this case strictly updating the yaml metadata header at the top of each Rmd file without altering any other Rmd content/documentation. 
+
+The Rmd files are placed in the `/docs/Rmd` directory.
+This function assumes this project directory exists.
+
+```{r function3}
+```
+
+#### chunkNames
+`chunkNames` can be used in two ways.
+It can return a list with length equal to the number of **R** files,
+where each list element is a vector of **R** code chunk names found in each **R** script.
+
+Alternatively, with `append.new=TRUE`, this list has each vector matched element-wise against chunk names found in existing Rmd files.
+If no Rmd files have yet been generated, the function will abort.
+Otherwise, for the Rmd files which do exist (and this may correspond to a subset of the **R** files),
+these Rmd files are appended with a list of code chunk names found in the current corresponding **R** files
+which have not yet been integrated into the current state of the Rmd files.
+This fascilitates updating of Rmd documentation when it falls behind scripts which have been updated.
+
+```{r function4}
+```
+
+Regarding the creation and updating of Rmd files, `projman` simply assumes that there will be one **R** Markdown file corresponding to one **R** script.
+This is not always the case for a given project, but again, the purpose is to generate basic templates.
+Unnecessary files can always be deleted later, or edits made such that one **R** Markdown file reads multiple **R** scripts,
+as is the case with the Rmd file used to generate this document.

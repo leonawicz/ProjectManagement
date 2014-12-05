@@ -53,7 +53,7 @@ Currently there is only this unpackaged **R** script and accompanying code for a
 No additional related items are available at this time, but those referenced above will eventually be included.
 
 ### Files and Data
-This project does not use any data. ```sankey.R``` is used to produce of project hierarchy diagram of my current projects.
+This project does not use any data. `sankey.R` is used to produce of project hierarchy diagram of my current projects.
 
 ### Code flow
 The Sankey diagram has become part of project management.
@@ -69,7 +69,7 @@ Here is a project hierarchy diagram showing the relationships among all my curre
 
 ```{r sankey_embed, echo=F, eval=T, comment=NA, results="asis", tidy=F}
 ```
-<style>iframe.rChart{ width: 100%; height: 640px;}</style>
+<style>iframe.rChart{ width: 100%; height: 840px;}</style>
 
 ## **R** code
 
@@ -125,7 +125,7 @@ This function assumes this project directory exists.
 It can return a list with length equal to the number of **R** files,
 where each list element is a vector of **R** code chunk names found in each **R** script.
 
-Alternatively, with ```append.new=TRUE```, this list has each vector matched element-wise against chunk names found in existing Rmd files.
+Alternatively, with `append.new=TRUE`, this list has each vector matched element-wise against chunk names found in existing Rmd files.
 If no Rmd files have yet been generated, the function will abort.
 Otherwise, for the Rmd files which do exist (and this may correspond to a subset of the **R** files),
 these Rmd files are appended with a list of code chunk names found in the current corresponding **R** files

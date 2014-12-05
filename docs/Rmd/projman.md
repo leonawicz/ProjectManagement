@@ -41,7 +41,7 @@ Currently there is only this unpackaged **R** script and accompanying code for a
 No additional related items are available at this time, but those referenced above will eventually be included.
 
 ### Files and Data
-This project does not use any data. ```sankey.R``` is used to produce of project hierarchy diagram of my current projects.
+This project does not use any data. `sankey.R` is used to produce of project hierarchy diagram of my current projects.
 
 ### Code flow
 The Sankey diagram has become part of project management.
@@ -69,14 +69,14 @@ Here is a project hierarchy diagram showing the relationships among all my curre
       margin-left: auto; 
       margin-right: auto;
       width: 900px;
-      height: 600px;
+      height: 800px;
     }  
     &lt;/style&gt;
     
   &lt;/head&gt;
   &lt;body &gt;
     
-    &lt;div id = &#039;chart16c73d24ffe&#039; class = &#039;rChart d3_sankey&#039;&gt;&lt;/div&gt;    
+    &lt;div id = &#039;chart16c2650191a&#039; class = &#039;rChart d3_sankey&#039;&gt;&lt;/div&gt;    
     ï»¿&lt;!--Attribution:
 Mike Bostock https://github.com/d3/d3-plugins/tree/master/sankey
 Mike Bostock http://bost.ocks.org/mike/sankey/
@@ -85,13 +85,13 @@ Mike Bostock http://bost.ocks.org/mike/sankey/
 &lt;script&gt;
 (function(){
 var params = {
- &quot;dom&quot;: &quot;chart16c73d24ffe&quot;,
+ &quot;dom&quot;: &quot;chart16c2650191a&quot;,
 &quot;width&quot;:    900,
-&quot;height&quot;:    600,
+&quot;height&quot;:    800,
 &quot;data&quot;: {
- &quot;source&quot;: [ &quot;Collaborators&quot;, &quot;Collaborators&quot;, &quot;Collaborators&quot;, &quot;Collaborators&quot;, &quot;Matt&quot;, &quot;Matt&quot;, &quot;Matt&quot;, &quot;Matt&quot;, &quot;Matt&quot;, &quot;Matt&quot;, &quot;Matt&quot;, &quot;Matt&quot;, &quot;Matt&quot;, &quot;Matt&quot;, &quot;Matt&quot;, &quot;Matt&quot;, &quot;Matt&quot;, &quot;Paul&quot;, &quot;Matt&quot;, &quot;Paul&quot;, &quot;Matt&quot;, &quot;Paul&quot;, &quot;Matt&quot;, &quot;Paul&quot;, &quot;Matt&quot;, &quot;Paul&quot;, &quot;Matt&quot;, &quot;Paul&quot;, &quot;Matt&quot;, &quot;Paul&quot;, &quot;Matt&quot;, &quot;Matt&quot;, &quot;Matt&quot;, &quot;Matt&quot;, &quot;Matt&quot;, &quot;Paul&quot;, &quot;Alec&quot;, &quot;Angie&quot;, &quot;Angie&quot;, &quot;Bob&quot;, &quot;Angie&quot;, &quot;Bob&quot;, &quot;Alfresco Outputs&quot;, &quot;Alfresco Outputs&quot;, &quot;Alfresco Outputs&quot;, &quot;SNAP Data QA/QC&quot;, &quot;SNAP Data QA/QC&quot;, &quot;SNAP Data QA/QC&quot;, &quot;SNAP Data QA/QC&quot;, &quot;Spatial Lightning Analysis&quot;, &quot;Spatial Lightning Analysis&quot;, &quot;Spatial Lightning Analysis&quot;, &quot;Sea Ice Edge Maps and Spinoff Projects&quot;, &quot;Sea Ice Edge Maps and Spinoff Projects&quot;, &quot;Training/Supervision&quot;, &quot;Training/Supervision&quot;, &quot;Randscape Development&quot;, &quot;Randscape Development&quot;, &quot;Effective Spatial Scale Analysis&quot;, &quot;Effective Spatial Scale Analysis&quot;, &quot;NWT/Comm. Charts DS&quot;, &quot;Alfresco Noatak&quot;, &quot;Alfresco Statewide&quot;, &quot;Data Extraction and Uncertainty Analysis&quot;, &quot;Data Extraction and Uncertainty Analysis&quot;, &quot;Data Extraction and Uncertainty Analysis&quot;, &quot;Data Extraction and Uncertainty Analysis&quot; ],
-&quot;target&quot;: [ &quot;Paul&quot;, &quot;Alec&quot;, &quot;Angie&quot;, &quot;Bob&quot;, &quot;CMIP3/CMIP5 GCM Comparisons&quot;, &quot;Effective Spatial Scale Analysis&quot;, &quot;Randscape Development&quot;, &quot;Alfresco Outputs&quot;, &quot;SNAP Data QA/QC&quot;, &quot;Training/Supervision&quot;, &quot;R Shiny Apps General Maintenance&quot;, &quot;New App Development&quot;, &quot;SNAP Tech Blog&quot;, &quot;Continuing Education&quot;, &quot;FRP/FRI Scale-Conditional Alfresco Maps&quot;, &quot;Moose Project&quot;, &quot;Alfresco Noatak&quot;, &quot;Alfresco Statewide&quot;, &quot;Spatial Lightning Analysis&quot;, &quot;Data Extraction and Uncertainty Analysis&quot;, &quot;Growing Season&quot;, &quot;Mussel Project&quot;, &quot;Land Carbon&quot;, &quot;Alfresco Noatak&quot;, &quot;Alfresco Statewide&quot;, &quot;Spatial Lightning Analysis&quot;, &quot;Data Extraction and Uncertainty Analysis&quot;, &quot;Growing Season&quot;, &quot;Mussel Project&quot;, &quot;Land Carbon&quot;, &quot;Alfresco CRU/GCM Experimental Design&quot;, &quot;Bird Project&quot;, &quot;NWT/Comm. Charts DS&quot;, &quot;Sea Ice Edge Maps and Spinoff Projects&quot;, &quot;Shiny App Server Migration&quot;, &quot;Alfresco CRU/GCM Experimental Design&quot;, &quot;Alfresco CRU/GCM Experimental Design&quot;, &quot;Bird Project&quot;, &quot;NWT/Comm. Charts DS&quot;, &quot;NWT/Comm. Charts DS&quot;, &quot;Sea Ice Edge Maps and Spinoff Projects&quot;, &quot;Shiny App Server Migration&quot;, &quot;CMIP3/CMIP5 GCM Comparisons&quot;, &quot;Land Carbon&quot;, &quot;Bird Project&quot;, &quot;Alfresco Outputs&quot;, &quot;CMIP3/CMIP5 GCM Comparisons&quot;, &quot;Alfresco CRU/GCM Experimental Design&quot;, &quot;NWT/Comm. Charts DS&quot;, &quot;Alfresco Noatak&quot;, &quot;Alfresco Statewide&quot;, &quot;Randscape Development&quot;, &quot;Randscape Development&quot;, &quot;Alfresco Outputs&quot;, &quot;Bird Project&quot;, &quot;NWT/Comm. Charts DS&quot;, &quot;Alfresco Outputs&quot;, &quot;Effective Spatial Scale Analysis&quot;, &quot;Alfresco Outputs&quot;, &quot;FRP/FRI Scale-Conditional Alfresco Maps&quot;, &quot;CMIP3/CMIP5 GCM Comparisons&quot;, &quot;FRP/FRI Scale-Conditional Alfresco Maps&quot;, &quot;FRP/FRI Scale-Conditional Alfresco Maps&quot;, &quot;CMIP3/CMIP5 GCM Comparisons&quot;, &quot;Effective Spatial Scale Analysis&quot;, &quot;Randscape Development&quot;, &quot;Alfresco Outputs&quot; ],
-&quot;value&quot;: [      1,      1,      1,      1,      1,      1,      1,      1,      1,      1,      1,      1,      1,      1,      1,      1,      1,      1,      1,      1,      1,      1,      1,      1,      1,      1,      1,      1,      1,      1,      1,      1,      1,      1,      1,      1,      1,      1,      1,      1,      1,      1,      1,      1,      1,      1,      1,      1,      1,      1,      1,      1,      1,      1,      1,      1,      1,      1,      1,      1,      1,      1,      1,      1,      1,      1,      1 ] 
+ &quot;source&quot;: [ &quot;Collaborators&quot;, &quot;Collaborators&quot;, &quot;Collaborators&quot;, &quot;Collaborators&quot;, &quot;Matt&quot;, &quot;Matt&quot;, &quot;Matt&quot;, &quot;Matt&quot;, &quot;Matt&quot;, &quot;Matt&quot;, &quot;Matt&quot;, &quot;Matt&quot;, &quot;Matt&quot;, &quot;Matt&quot;, &quot;Matt&quot;, &quot;Matt&quot;, &quot;Matt&quot;, &quot;Matt&quot;, &quot;Paul&quot;, &quot;Matt&quot;, &quot;Paul&quot;, &quot;Matt&quot;, &quot;Paul&quot;, &quot;Matt&quot;, &quot;Paul&quot;, &quot;Matt&quot;, &quot;Paul&quot;, &quot;Matt&quot;, &quot;Paul&quot;, &quot;Matt&quot;, &quot;Paul&quot;, &quot;Matt&quot;, &quot;Matt&quot;, &quot;Matt&quot;, &quot;Matt&quot;, &quot;Matt&quot;, &quot;Paul&quot;, &quot;Alec&quot;, &quot;Angie&quot;, &quot;Angie&quot;, &quot;Bob&quot;, &quot;Angie&quot;, &quot;Bob&quot;, &quot;Alfresco Outputs&quot;, &quot;Alfresco Outputs&quot;, &quot;Alfresco Outputs&quot;, &quot;SNAP Data QA/QC&quot;, &quot;SNAP Data QA/QC&quot;, &quot;SNAP Data QA/QC&quot;, &quot;SNAP Data QA/QC&quot;, &quot;Spatial Lightning Analysis&quot;, &quot;Spatial Lightning Analysis&quot;, &quot;Spatial Lightning Analysis&quot;, &quot;Sea Ice Edge Maps and Spinoff Projects&quot;, &quot;Sea Ice Edge Maps and Spinoff Projects&quot;, &quot;Training/Supervision&quot;, &quot;Training/Supervision&quot;, &quot;Randscape Development&quot;, &quot;Randscape Development&quot;, &quot;Effective Spatial Scale Analysis&quot;, &quot;Effective Spatial Scale Analysis&quot;, &quot;NWT/Comm. Charts DS&quot;, &quot;Alfresco Noatak&quot;, &quot;Alfresco Statewide&quot;, &quot;Data Extraction and Uncertainty Analysis&quot;, &quot;Data Extraction and Uncertainty Analysis&quot;, &quot;Data Extraction and Uncertainty Analysis&quot;, &quot;Data Extraction and Uncertainty Analysis&quot; ],
+&quot;target&quot;: [ &quot;Paul&quot;, &quot;Alec&quot;, &quot;Angie&quot;, &quot;Bob&quot;, &quot;CMIP3/CMIP5 GCM Comparisons&quot;, &quot;Effective Spatial Scale Analysis&quot;, &quot;Randscape Development&quot;, &quot;Alfresco Outputs&quot;, &quot;Projman&quot;, &quot;SNAP Data QA/QC&quot;, &quot;Training/Supervision&quot;, &quot;R Shiny Apps General Maintenance&quot;, &quot;New App Development&quot;, &quot;SNAP Tech Blog&quot;, &quot;Continuing Education&quot;, &quot;FRP/FRI Scale-Conditional Alfresco Maps&quot;, &quot;Moose Project&quot;, &quot;Alfresco Noatak&quot;, &quot;Alfresco Statewide&quot;, &quot;Spatial Lightning Analysis&quot;, &quot;Data Extraction and Uncertainty Analysis&quot;, &quot;Growing Season&quot;, &quot;Mussel Project&quot;, &quot;Land Carbon&quot;, &quot;Alfresco Noatak&quot;, &quot;Alfresco Statewide&quot;, &quot;Spatial Lightning Analysis&quot;, &quot;Data Extraction and Uncertainty Analysis&quot;, &quot;Growing Season&quot;, &quot;Mussel Project&quot;, &quot;Land Carbon&quot;, &quot;Alfresco CRU/GCM Experimental Design&quot;, &quot;Bird Project&quot;, &quot;NWT/Comm. Charts DS&quot;, &quot;Sea Ice Edge Maps and Spinoff Projects&quot;, &quot;Shiny App Server Migration&quot;, &quot;Alfresco CRU/GCM Experimental Design&quot;, &quot;Alfresco CRU/GCM Experimental Design&quot;, &quot;Bird Project&quot;, &quot;NWT/Comm. Charts DS&quot;, &quot;NWT/Comm. Charts DS&quot;, &quot;Sea Ice Edge Maps and Spinoff Projects&quot;, &quot;Shiny App Server Migration&quot;, &quot;CMIP3/CMIP5 GCM Comparisons&quot;, &quot;Land Carbon&quot;, &quot;Bird Project&quot;, &quot;Alfresco Outputs&quot;, &quot;CMIP3/CMIP5 GCM Comparisons&quot;, &quot;Alfresco CRU/GCM Experimental Design&quot;, &quot;NWT/Comm. Charts DS&quot;, &quot;Alfresco Noatak&quot;, &quot;Alfresco Statewide&quot;, &quot;Randscape Development&quot;, &quot;Randscape Development&quot;, &quot;Alfresco Outputs&quot;, &quot;Bird Project&quot;, &quot;NWT/Comm. Charts DS&quot;, &quot;Alfresco Outputs&quot;, &quot;Effective Spatial Scale Analysis&quot;, &quot;Alfresco Outputs&quot;, &quot;FRP/FRI Scale-Conditional Alfresco Maps&quot;, &quot;CMIP3/CMIP5 GCM Comparisons&quot;, &quot;FRP/FRI Scale-Conditional Alfresco Maps&quot;, &quot;FRP/FRI Scale-Conditional Alfresco Maps&quot;, &quot;CMIP3/CMIP5 GCM Comparisons&quot;, &quot;Effective Spatial Scale Analysis&quot;, &quot;Randscape Development&quot;, &quot;Alfresco Outputs&quot; ],
+&quot;value&quot;: [      1,      1,      1,      1,      1,      1,      1,      1,      1,      1,      1,      1,      1,      1,      1,      1,      1,      1,      1,      1,      1,      1,      1,      1,      1,      1,      1,      1,      1,      1,      1,      1,      1,      1,      1,      1,      1,      1,      1,      1,      1,      1,      1,      1,      1,      1,      1,      1,      1,      1,      1,      1,      1,      1,      1,      1,      1,      1,      1,      1,      1,      1,      1,      1,      1,      1,      1,      1 ] 
 },
 &quot;nodeWidth&quot;:     15,
 &quot;nodePadding&quot;:     10,
@@ -103,7 +103,7 @@ var params = {
 &quot;top&quot;:     20 
 },
 &quot;title&quot;: &quot;Matt&#039;s Projects&quot;,
-&quot;id&quot;: &quot;chart16c73d24ffe&quot; 
+&quot;id&quot;: &quot;chart16c2650191a&quot; 
 };
 
 params.units ? units = &quot; &quot; + params.units : units = &quot;&quot;;
@@ -225,7 +225,7 @@ node.append(&quot;text&quot;)
       var cscale = d3.scale.category20b();
     
       // to be specific in case you have more than one chart
-      d3.selectAll(&#039;#chart16c73d24ffe svg path.link&#039;)
+      d3.selectAll(&#039;#chart16c2650191a svg path.link&#039;)
         .style(&#039;stroke&#039;, function(d){
           //here we will use the source color
           //if you want target then sub target for source
@@ -240,7 +240,7 @@ node.append(&quot;text&quot;)
        //so will need to define mouseover and mouseout
        //happy to show how to do this also
        // .style(&#039;stroke-opacity&#039;, .7)
-      d3.selectAll(&#039;#chart16c73d24ffe svg .node rect&#039;)
+      d3.selectAll(&#039;#chart16c2650191a svg .node rect&#039;)
         .style(&#039;fill&#039;, function(d){
           return cscale(d.name)
         })
@@ -248,9 +248,9 @@ node.append(&quot;text&quot;)
     &lt;/script&gt;
         
   &lt;/body&gt;
-&lt;/html&gt; ' scrolling='no' frameBorder='0' seamless class='rChart  http://timelyportfolio.github.io/rCharts_d3_sankey/libraries/widgets/d3_sankey  ' id='iframe-chart16c73d24ffe'> </iframe>
+&lt;/html&gt; ' scrolling='no' frameBorder='0' seamless class='rChart  http://timelyportfolio.github.io/rCharts_d3_sankey/libraries/widgets/d3_sankey  ' id='iframe-chart16c2650191a'> </iframe>
  <style>iframe.rChart{ width: 100%; height: 400px;}</style>
-<style>iframe.rChart{ width: 100%; height: 640px;}</style>
+<style>iframe.rChart{ width: 100%; height: 840px;}</style>
 
 ## **R** code
 
@@ -287,8 +287,8 @@ The current function only creates directories, not files, so `overwrite=TRUE` is
 
 ```r
 newProject <- function(name, path, dirs = c("code", "data", "docs", "plots", 
-    "workspaces"), docs.dirs = c("all", "diagrams", "ioslides", "md", "notebook", 
-    "pdf", "Rmd", "timeline", "tufte"), overwrite = FALSE) {
+    "workspaces"), docs.dirs = c("diagrams", "ioslides", "notebook", "pdf", 
+    "Rmd/include", "timeline", "tufte"), overwrite = FALSE) {
     
     stopifnot(is.character(name))
     name <- file.path(path, name)
@@ -302,7 +302,7 @@ newProject <- function(name, path, dirs = c("code", "data", "docs", "plots",
     sapply(path.dirs, dir.create, showWarnings = FALSE)
     path.docs <- file.path(name, "docs", docs.dirs)
     if ("docs" %in% dirs) 
-        sapply(path.docs, dir.create, showWarnings = FALSE)
+        sapply(path.docs, dir.create, recursive = TRUE, showWarnings = FALSE)
     if (overwrite) 
         cat("Project directories updated.\n") else cat("Project directories created.\n")
 }
@@ -405,7 +405,7 @@ genRmd <- function(path, replace = FALSE, header = rmdHeader(), update.header = 
 It can return a list with length equal to the number of **R** files,
 where each list element is a vector of **R** code chunk names found in each **R** script.
 
-Alternatively, with ```append.new=TRUE```, this list has each vector matched element-wise against chunk names found in existing Rmd files.
+Alternatively, with `append.new=TRUE`, this list has each vector matched element-wise against chunk names found in existing Rmd files.
 If no Rmd files have yet been generated, the function will abort.
 Otherwise, for the Rmd files which do exist (and this may correspond to a subset of the **R** files),
 these Rmd files are appended with a list of code chunk names found in the current corresponding **R** files
@@ -460,3 +460,88 @@ Regarding the creation and updating of Rmd files, `projman` simply assumes that 
 This is not always the case for a given project, but again, the purpose is to generate basic templates.
 Unnecessary files can always be deleted later, or edits made such that one **R** Markdown file reads multiple **R** scripts,
 as is the case with the Rmd file used to generate this document.
+
+#### genNavbar
+
+`genNavbar` generates a navigation bar for a web page.
+The html file created should be written to the project's `docs/Rmd/include` directory.
+The common navigation bar html is included prior to the body of the html for each web page in the project's website.
+`menu` is a vector of names for each dropdown menu.
+`submenus` is a list of vectors of menu options corresponding to each menu.
+`files` is a similar list of vectors.
+Each element is either an html file for a web page to be associated with the submenu link,
+"header" to indicate the corresponding name in `submenus` is only a group label and not a link to a web page,
+or "divider" to indicate placement of a bar for separating groups in a dropdown menu.
+
+
+```r
+genNavbar <- function(htmlfile = "navbar.html", title, menu, submenus, files, 
+    site.link = "", site.name = "Website") {
+    
+    fillSubmenu <- function(x, name, file) {
+        if (file[x] == "divider") 
+            return("              <li class=\"divider\"></li>\n")
+        if (file[x] == "header") 
+            return(paste0("              <li class=\"nav-header\">", name[x], 
+                "</li>\n"))
+        paste0("              <li><a href=\"", file[x], "\">", name[x], "</a></li>\n")
+    }
+    
+    fillMenu <- function(x, menu, submenus, files) {
+        paste0("<li class=\"dropdown\">\n            <a href=\"", gsub(" ", 
+            "-", tolower(menu[x])), "\" class=\"dropdown-toggle\" data-toggle=\"dropdown\">", 
+            menu[x], " <b class=\"caret\"></b></a>\n            <ul class=\"dropdown-menu\">\n", 
+            paste(sapply(1:length(submenus[[x]]), fillSubmenu, name = submenus[[x]], 
+                file = files[[x]]), sep = "", collapse = ""), "            </ul>\n", 
+            collapse = "")
+    }
+    
+    x <- paste0("<div class=\"navbar navbar-default navbar-fixed-top\">\n  <div class=\"navbar-inner\">\n    <div class=\"container\">\n      <button type=\"button\" class=\"btn btn-navbar\" data-toggle=\"collapse\" data-target=\".nav-collapse\">\n        <span class=\"icon-bar\"></span>\n        <span class=\"icon-bar\"></span>\n        <span class=\"icon-bar\"></span>\n      </button>\n      <a class=\"brand\" href=\"/\">", 
+        title, "</a>\n      <div class=\"nav-collapse collapse\">\n        <ul class=\"nav\">\n          <li><a href=\"/\">Home</a></li>\n          ", 
+        paste(sapply(1:length(menu), fillMenu, menu = menu, submenus = submenus, 
+            files = files), sep = "", collapse = "\n          "), "        </ul>\n        <ul class=\"nav pull-right\">\n          <a class=\"btn btn-primary\" href=\"", 
+        site.link, "\">\n            <i class=\"fa fa-github fa-lg\"></i>\n            ", 
+        site.name, "\n          </a>\n        </ul>\n      </div><!--/.nav-collapse -->\n    </div>\n  </div>\n</div>\n", 
+        collpase = "")
+    sink(htmlfile)
+    cat(x)
+    sink()
+    x
+}
+```
+
+#### genOutyaml
+
+`genOutyaml` generates the `_out.yaml` file for yaml front-matter common to all html files in the project website.
+The file should be written to the project's `docs/Rmd` directory.
+`lib` specifies the library directory for any associated files.
+yaml `includes` for external html common to all project web pages in the site can also be specified with `header`, `before_body`, and `after_body`.
+These can be specified by file basename only (no path) and the function assumes these files are in the `docs/Rmd/include` directory.
+At this time all external libraries must be provided by the user, for example in `docs/Rmd/libs`.
+It is recommended. See the project repo [gh-pages](https://github.com/leonawicz/ProjectManagement/tree/gh-pages "gh-pages") branch for an example.
+
+
+```r
+genOutyaml <- function(file, theme = "cosmo", highlight = "zenburn", lib = NULL, 
+    header = NULL, before_body = NULL, after_body = NULL) {
+    output.yaml <- paste0("html_document:\n  self_contained: false\n  theme: ", 
+        theme, "\n  highlight: ", highlight, "\n  mathjax: null\n  toc_depth: 2\n")
+    if (!is.null(lib)) 
+        output.yaml <- paste0(output.yaml, "  lib_dir: ", lib, "\n")
+    output.yaml <- paste0(output.yaml, "  includes:\n")
+    if (!is.null(header)) 
+        output.yaml <- paste0(output.yaml, "    in_header: include/", header, 
+            "\n")
+    if (!is.null(before_body)) 
+        output.yaml <- paste0(output.yaml, "    before_body: include/", before_body, 
+            "\n")
+    if (!is.null(after_body)) 
+        output.yaml <- paste0(output.yaml, "    after_body: include/", after_body, 
+            "\n")
+    sink(file)
+    cat(output.yaml)
+    sink()
+    output.yaml
+}
+```
+

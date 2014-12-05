@@ -1,0 +1,19 @@
+---
+output:
+  html_document:
+    theme: cosmo
+    highlight: zenburn
+    keep_md: TRUE
+---
+
+```{r knitr_setup, echo=FALSE}
+opts_chunk$set(cache=FALSE, eval=FALSE, tidy=TRUE, messages=FALSE, warnings=FALSE)
+read_chunk("../../code/projman.R")
+```
+
+### Template objects
+Character string objects are defined which are used to fill templates when generating new files for a project.
+A tentative default path is also included since this code relates to my own work.
+
+```{r template_objects}
+```

@@ -1,0 +1,40 @@
+---
+output:
+  html_document:
+    theme: cosmo
+    highlight: zenburn
+    keep_md: TRUE
+---
+
+```{r knitr_setup, echo=FALSE}
+opts_chunk$set(cache=FALSE, eval=FALSE, tidy=TRUE, messages=FALSE, warnings=FALSE)
+read_chunk("../../code/projman.R")
+```
+
+#### genNavbar
+
+`genNavbar` generates a navigation bar for a web page.
+The html file created should be written to the project's `docs/Rmd/include` directory.
+The common navigation bar html is included prior to the body of the html for each web page in the project's website.
+`menu` is a vector of names for each dropdown menu.
+`submenus` is a list of vectors of menu options corresponding to each menu.
+`files` is a similar list of vectors.
+Each element is either an html file for a web page to be associated with the submenu link,
+"header" to indicate the corresponding name in `submenus` is only a group label and not a link to a web page,
+or "divider" to indicate placement of a bar for separating groups in a dropdown menu.
+
+```{r function5}
+```
+
+#### genOutyaml
+
+`genOutyaml` generates the `_out.yaml` file for yaml front-matter common to all html files in the project website.
+The file should be written to the project's `docs/Rmd` directory.
+`lib` specifies the library directory for any associated files.
+yaml `includes` for external html common to all project web pages in the site can also be specified with `header`, `before_body`, and `after_body`.
+These can be specified by file basename only (no path) and the function assumes these files are in the `docs/Rmd/include` directory.
+At this time all external libraries must be provided by the user, for example in `docs/Rmd/libs`.
+It is recommended. See the project repo [gh-pages](https://github.com/leonawicz/ProjectManagement/tree/gh-pages "gh-pages") branch for an example.
+
+```{r function6}
+```

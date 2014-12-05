@@ -39,4 +39,4 @@ Current projects are hardcoded and are updated by hand when my work changes.
 
 ```{r sankey_embed, eval=T, comment=NA, results="asis", tidy=F}
 ```
-<style>iframe.rChart{ width: 100%; height: 640px;}</style>
+<style>iframe.rChart{ width: 100%; height: 840px;}</style>

@@ -4,7 +4,7 @@ require(rCharts)
 
 proj.mp <- c("Alfresco Noatak", "Alfresco Statewide", "Spatial Lightning Analysis", "Data Extraction and Uncertainty Analysis", "Growing Season", "Mussel Project", "Land Carbon")
 proj.etal <- c("Alfresco CRU/GCM Experimental Design", "Bird Project", "NWT/Comm. Charts DS", "Sea Ice Edge Maps and Spinoff Projects", "Shiny App Server Migration")
-proj.m <- c("CMIP3/CMIP5 GCM Comparisons", "Effective Spatial Scale Analysis", "Randscape Development", "Alfresco Outputs")
+proj.m <- c("CMIP3/CMIP5 GCM Comparisons", "Effective Spatial Scale Analysis", "Randscape Development", "Alfresco Outputs", "Projman")
 proj.ongoing <- c("SNAP Data QA/QC", "Training/Supervision", "R Shiny Apps General Maintenance", "New App Development", "SNAP Tech Blog", "Continuing Education")
 proj.halted <- c("FRP/FRI Scale-Conditional Alfresco Maps", "Moose Project")
 projects.list <-list(proj.mp, proj.etal, proj.m, proj.ongoing, proj.halted)
@@ -86,7 +86,7 @@ nodeWidth = 15,
 nodePadding = 10,
 layout = 32,
 width = 900,
-height = 600,
+height = 800,
 margin = list(right = 20, left = 20, bottom = 20, top = 20),
 title = "Matt's Projects"
 )

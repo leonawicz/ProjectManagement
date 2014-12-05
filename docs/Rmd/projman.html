@@ -116,12 +116,12 @@ code > span.er { color: #c3bf9f; }
           <li class="dropdown">
             <a href="r-code" class="dropdown-toggle" data-toggle="dropdown">R Code <b class="caret"></b></a>
             <ul class="dropdown-menu">
-              <li><a href="index.html">Default objects</a></li>
+              <li><a href="objects.html">Default objects</a></li>
               <li class="divider"></li>
               <li class="nav-header">Functions</li>
-              <li><a href="index.html">Start a new project</a></li>
-              <li><a href="index.html">Working with Rmd files</a></li>
-              <li><a href="index.html">Make a project website</a></li>
+              <li><a href="func_new.html">Start a new project</a></li>
+              <li><a href="func_rmd.html">Working with Rmd files</a></li>
+              <li><a href="func_website.html">Make a project website</a></li>
             </ul>
 
           <li class="dropdown">
@@ -133,7 +133,7 @@ code > span.er { color: #c3bf9f; }
           <li class="dropdown">
             <a href="all-projects" class="dropdown-toggle" data-toggle="dropdown">All Projects <b class="caret"></b></a>
             <ul class="dropdown-menu">
-              <li><a href="project_hierarchy">Projects diagram</a></li>
+              <li><a href="proj_sankey.html">Projects diagram</a></li>
               <li class="divider"></li>
               <li><a href="index.html">About</a></li>
               <li><a href="index.html">Other</a></li>
@@ -213,14 +213,14 @@ code > span.er { color: #c3bf9f; }
       margin-left: auto; 
       margin-right: auto;
       width: 900px;
-      height: 600px;
+      height: 800px;
     }  
     &lt;/style&gt;
     
   &lt;/head&gt;
   &lt;body &gt;
     
-    &lt;div id = 'chart16c73d24ffe' class = 'rChart d3_sankey'&gt;&lt;/div&gt;    
+    &lt;div id = 'chart16c2650191a' class = 'rChart d3_sankey'&gt;&lt;/div&gt;    
     ï»¿&lt;!--Attribution:
 Mike Bostock https://github.com/d3/d3-plugins/tree/master/sankey
 Mike Bostock http://bost.ocks.org/mike/sankey/
@@ -229,13 +229,13 @@ Mike Bostock http://bost.ocks.org/mike/sankey/
 &lt;script&gt;
 (function(){
 var params = {
- &quot;dom&quot;: &quot;chart16c73d24ffe&quot;,
+ &quot;dom&quot;: &quot;chart16c2650191a&quot;,
 &quot;width&quot;:    900,
-&quot;height&quot;:    600,
+&quot;height&quot;:    800,
 &quot;data&quot;: {
- &quot;source&quot;: [ &quot;Collaborators&quot;, &quot;Collaborators&quot;, &quot;Collaborators&quot;, &quot;Collaborators&quot;, &quot;Matt&quot;, &quot;Matt&quot;, &quot;Matt&quot;, &quot;Matt&quot;, &quot;Matt&quot;, &quot;Matt&quot;, &quot;Matt&quot;, &quot;Matt&quot;, &quot;Matt&quot;, &quot;Matt&quot;, &quot;Matt&quot;, &quot;Matt&quot;, &quot;Matt&quot;, &quot;Paul&quot;, &quot;Matt&quot;, &quot;Paul&quot;, &quot;Matt&quot;, &quot;Paul&quot;, &quot;Matt&quot;, &quot;Paul&quot;, &quot;Matt&quot;, &quot;Paul&quot;, &quot;Matt&quot;, &quot;Paul&quot;, &quot;Matt&quot;, &quot;Paul&quot;, &quot;Matt&quot;, &quot;Matt&quot;, &quot;Matt&quot;, &quot;Matt&quot;, &quot;Matt&quot;, &quot;Paul&quot;, &quot;Alec&quot;, &quot;Angie&quot;, &quot;Angie&quot;, &quot;Bob&quot;, &quot;Angie&quot;, &quot;Bob&quot;, &quot;Alfresco Outputs&quot;, &quot;Alfresco Outputs&quot;, &quot;Alfresco Outputs&quot;, &quot;SNAP Data QA/QC&quot;, &quot;SNAP Data QA/QC&quot;, &quot;SNAP Data QA/QC&quot;, &quot;SNAP Data QA/QC&quot;, &quot;Spatial Lightning Analysis&quot;, &quot;Spatial Lightning Analysis&quot;, &quot;Spatial Lightning Analysis&quot;, &quot;Sea Ice Edge Maps and Spinoff Projects&quot;, &quot;Sea Ice Edge Maps and Spinoff Projects&quot;, &quot;Training/Supervision&quot;, &quot;Training/Supervision&quot;, &quot;Randscape Development&quot;, &quot;Randscape Development&quot;, &quot;Effective Spatial Scale Analysis&quot;, &quot;Effective Spatial Scale Analysis&quot;, &quot;NWT/Comm. Charts DS&quot;, &quot;Alfresco Noatak&quot;, &quot;Alfresco Statewide&quot;, &quot;Data Extraction and Uncertainty Analysis&quot;, &quot;Data Extraction and Uncertainty Analysis&quot;, &quot;Data Extraction and Uncertainty Analysis&quot;, &quot;Data Extraction and Uncertainty Analysis&quot; ],
-&quot;target&quot;: [ &quot;Paul&quot;, &quot;Alec&quot;, &quot;Angie&quot;, &quot;Bob&quot;, &quot;CMIP3/CMIP5 GCM Comparisons&quot;, &quot;Effective Spatial Scale Analysis&quot;, &quot;Randscape Development&quot;, &quot;Alfresco Outputs&quot;, &quot;SNAP Data QA/QC&quot;, &quot;Training/Supervision&quot;, &quot;R Shiny Apps General Maintenance&quot;, &quot;New App Development&quot;, &quot;SNAP Tech Blog&quot;, &quot;Continuing Education&quot;, &quot;FRP/FRI Scale-Conditional Alfresco Maps&quot;, &quot;Moose Project&quot;, &quot;Alfresco Noatak&quot;, &quot;Alfresco Statewide&quot;, &quot;Spatial Lightning Analysis&quot;, &quot;Data Extraction and Uncertainty Analysis&quot;, &quot;Growing Season&quot;, &quot;Mussel Project&quot;, &quot;Land Carbon&quot;, &quot;Alfresco Noatak&quot;, &quot;Alfresco Statewide&quot;, &quot;Spatial Lightning Analysis&quot;, &quot;Data Extraction and Uncertainty Analysis&quot;, &quot;Growing Season&quot;, &quot;Mussel Project&quot;, &quot;Land Carbon&quot;, &quot;Alfresco CRU/GCM Experimental Design&quot;, &quot;Bird Project&quot;, &quot;NWT/Comm. Charts DS&quot;, &quot;Sea Ice Edge Maps and Spinoff Projects&quot;, &quot;Shiny App Server Migration&quot;, &quot;Alfresco CRU/GCM Experimental Design&quot;, &quot;Alfresco CRU/GCM Experimental Design&quot;, &quot;Bird Project&quot;, &quot;NWT/Comm. Charts DS&quot;, &quot;NWT/Comm. Charts DS&quot;, &quot;Sea Ice Edge Maps and Spinoff Projects&quot;, &quot;Shiny App Server Migration&quot;, &quot;CMIP3/CMIP5 GCM Comparisons&quot;, &quot;Land Carbon&quot;, &quot;Bird Project&quot;, &quot;Alfresco Outputs&quot;, &quot;CMIP3/CMIP5 GCM Comparisons&quot;, &quot;Alfresco CRU/GCM Experimental Design&quot;, &quot;NWT/Comm. Charts DS&quot;, &quot;Alfresco Noatak&quot;, &quot;Alfresco Statewide&quot;, &quot;Randscape Development&quot;, &quot;Randscape Development&quot;, &quot;Alfresco Outputs&quot;, &quot;Bird Project&quot;, &quot;NWT/Comm. Charts DS&quot;, &quot;Alfresco Outputs&quot;, &quot;Effective Spatial Scale Analysis&quot;, &quot;Alfresco Outputs&quot;, &quot;FRP/FRI Scale-Conditional Alfresco Maps&quot;, &quot;CMIP3/CMIP5 GCM Comparisons&quot;, &quot;FRP/FRI Scale-Conditional Alfresco Maps&quot;, &quot;FRP/FRI Scale-Conditional Alfresco Maps&quot;, &quot;CMIP3/CMIP5 GCM Comparisons&quot;, &quot;Effective Spatial Scale Analysis&quot;, &quot;Randscape Development&quot;, &quot;Alfresco Outputs&quot; ],
-&quot;value&quot;: [      1,      1,      1,      1,      1,      1,      1,      1,      1,      1,      1,      1,      1,      1,      1,      1,      1,      1,      1,      1,      1,      1,      1,      1,      1,      1,      1,      1,      1,      1,      1,      1,      1,      1,      1,      1,      1,      1,      1,      1,      1,      1,      1,      1,      1,      1,      1,      1,      1,      1,      1,      1,      1,      1,      1,      1,      1,      1,      1,      1,      1,      1,      1,      1,      1,      1,      1 ] 
+ &quot;source&quot;: [ &quot;Collaborators&quot;, &quot;Collaborators&quot;, &quot;Collaborators&quot;, &quot;Collaborators&quot;, &quot;Matt&quot;, &quot;Matt&quot;, &quot;Matt&quot;, &quot;Matt&quot;, &quot;Matt&quot;, &quot;Matt&quot;, &quot;Matt&quot;, &quot;Matt&quot;, &quot;Matt&quot;, &quot;Matt&quot;, &quot;Matt&quot;, &quot;Matt&quot;, &quot;Matt&quot;, &quot;Matt&quot;, &quot;Paul&quot;, &quot;Matt&quot;, &quot;Paul&quot;, &quot;Matt&quot;, &quot;Paul&quot;, &quot;Matt&quot;, &quot;Paul&quot;, &quot;Matt&quot;, &quot;Paul&quot;, &quot;Matt&quot;, &quot;Paul&quot;, &quot;Matt&quot;, &quot;Paul&quot;, &quot;Matt&quot;, &quot;Matt&quot;, &quot;Matt&quot;, &quot;Matt&quot;, &quot;Matt&quot;, &quot;Paul&quot;, &quot;Alec&quot;, &quot;Angie&quot;, &quot;Angie&quot;, &quot;Bob&quot;, &quot;Angie&quot;, &quot;Bob&quot;, &quot;Alfresco Outputs&quot;, &quot;Alfresco Outputs&quot;, &quot;Alfresco Outputs&quot;, &quot;SNAP Data QA/QC&quot;, &quot;SNAP Data QA/QC&quot;, &quot;SNAP Data QA/QC&quot;, &quot;SNAP Data QA/QC&quot;, &quot;Spatial Lightning Analysis&quot;, &quot;Spatial Lightning Analysis&quot;, &quot;Spatial Lightning Analysis&quot;, &quot;Sea Ice Edge Maps and Spinoff Projects&quot;, &quot;Sea Ice Edge Maps and Spinoff Projects&quot;, &quot;Training/Supervision&quot;, &quot;Training/Supervision&quot;, &quot;Randscape Development&quot;, &quot;Randscape Development&quot;, &quot;Effective Spatial Scale Analysis&quot;, &quot;Effective Spatial Scale Analysis&quot;, &quot;NWT/Comm. Charts DS&quot;, &quot;Alfresco Noatak&quot;, &quot;Alfresco Statewide&quot;, &quot;Data Extraction and Uncertainty Analysis&quot;, &quot;Data Extraction and Uncertainty Analysis&quot;, &quot;Data Extraction and Uncertainty Analysis&quot;, &quot;Data Extraction and Uncertainty Analysis&quot; ],
+&quot;target&quot;: [ &quot;Paul&quot;, &quot;Alec&quot;, &quot;Angie&quot;, &quot;Bob&quot;, &quot;CMIP3/CMIP5 GCM Comparisons&quot;, &quot;Effective Spatial Scale Analysis&quot;, &quot;Randscape Development&quot;, &quot;Alfresco Outputs&quot;, &quot;Projman&quot;, &quot;SNAP Data QA/QC&quot;, &quot;Training/Supervision&quot;, &quot;R Shiny Apps General Maintenance&quot;, &quot;New App Development&quot;, &quot;SNAP Tech Blog&quot;, &quot;Continuing Education&quot;, &quot;FRP/FRI Scale-Conditional Alfresco Maps&quot;, &quot;Moose Project&quot;, &quot;Alfresco Noatak&quot;, &quot;Alfresco Statewide&quot;, &quot;Spatial Lightning Analysis&quot;, &quot;Data Extraction and Uncertainty Analysis&quot;, &quot;Growing Season&quot;, &quot;Mussel Project&quot;, &quot;Land Carbon&quot;, &quot;Alfresco Noatak&quot;, &quot;Alfresco Statewide&quot;, &quot;Spatial Lightning Analysis&quot;, &quot;Data Extraction and Uncertainty Analysis&quot;, &quot;Growing Season&quot;, &quot;Mussel Project&quot;, &quot;Land Carbon&quot;, &quot;Alfresco CRU/GCM Experimental Design&quot;, &quot;Bird Project&quot;, &quot;NWT/Comm. Charts DS&quot;, &quot;Sea Ice Edge Maps and Spinoff Projects&quot;, &quot;Shiny App Server Migration&quot;, &quot;Alfresco CRU/GCM Experimental Design&quot;, &quot;Alfresco CRU/GCM Experimental Design&quot;, &quot;Bird Project&quot;, &quot;NWT/Comm. Charts DS&quot;, &quot;NWT/Comm. Charts DS&quot;, &quot;Sea Ice Edge Maps and Spinoff Projects&quot;, &quot;Shiny App Server Migration&quot;, &quot;CMIP3/CMIP5 GCM Comparisons&quot;, &quot;Land Carbon&quot;, &quot;Bird Project&quot;, &quot;Alfresco Outputs&quot;, &quot;CMIP3/CMIP5 GCM Comparisons&quot;, &quot;Alfresco CRU/GCM Experimental Design&quot;, &quot;NWT/Comm. Charts DS&quot;, &quot;Alfresco Noatak&quot;, &quot;Alfresco Statewide&quot;, &quot;Randscape Development&quot;, &quot;Randscape Development&quot;, &quot;Alfresco Outputs&quot;, &quot;Bird Project&quot;, &quot;NWT/Comm. Charts DS&quot;, &quot;Alfresco Outputs&quot;, &quot;Effective Spatial Scale Analysis&quot;, &quot;Alfresco Outputs&quot;, &quot;FRP/FRI Scale-Conditional Alfresco Maps&quot;, &quot;CMIP3/CMIP5 GCM Comparisons&quot;, &quot;FRP/FRI Scale-Conditional Alfresco Maps&quot;, &quot;FRP/FRI Scale-Conditional Alfresco Maps&quot;, &quot;CMIP3/CMIP5 GCM Comparisons&quot;, &quot;Effective Spatial Scale Analysis&quot;, &quot;Randscape Development&quot;, &quot;Alfresco Outputs&quot; ],
+&quot;value&quot;: [      1,      1,      1,      1,      1,      1,      1,      1,      1,      1,      1,      1,      1,      1,      1,      1,      1,      1,      1,      1,      1,      1,      1,      1,      1,      1,      1,      1,      1,      1,      1,      1,      1,      1,      1,      1,      1,      1,      1,      1,      1,      1,      1,      1,      1,      1,      1,      1,      1,      1,      1,      1,      1,      1,      1,      1,      1,      1,      1,      1,      1,      1,      1,      1,      1,      1,      1,      1 ] 
 },
 &quot;nodeWidth&quot;:     15,
 &quot;nodePadding&quot;:     10,
@@ -247,7 +247,7 @@ var params = {
 &quot;top&quot;:     20 
 },
 &quot;title&quot;: &quot;Matt's Projects&quot;,
-&quot;id&quot;: &quot;chart16c73d24ffe&quot; 
+&quot;id&quot;: &quot;chart16c2650191a&quot; 
 };
 
 params.units ? units = &quot; &quot; + params.units : units = &quot;&quot;;
@@ -369,7 +369,7 @@ node.append(&quot;text&quot;)
       var cscale = d3.scale.category20b();
     
       // to be specific in case you have more than one chart
-      d3.selectAll('#chart16c73d24ffe svg path.link')
+      d3.selectAll('#chart16c2650191a svg path.link')
         .style('stroke', function(d){
           //here we will use the source color
           //if you want target then sub target for source
@@ -384,7 +384,7 @@ node.append(&quot;text&quot;)
        //so will need to define mouseover and mouseout
        //happy to show how to do this also
        // .style('stroke-opacity', .7)
-      d3.selectAll('#chart16c73d24ffe svg .node rect')
+      d3.selectAll('#chart16c2650191a svg .node rect')
         .style('fill', function(d){
           return cscale(d.name)
         })
@@ -392,10 +392,10 @@ node.append(&quot;text&quot;)
     &lt;/script&gt;
         
   &lt;/body&gt;
-&lt;/html&gt; " scrolling="no" frameBorder="0" seamless class="rChart  http://timelyportfolio.github.io/rCharts_d3_sankey/libraries/widgets/d3_sankey  " id="iframe-chart16c73d24ffe">
+&lt;/html&gt; " scrolling="no" frameBorder="0" seamless class="rChart  http://timelyportfolio.github.io/rCharts_d3_sankey/libraries/widgets/d3_sankey  " id="iframe-chart16c2650191a">
 </iframe>
 <style>iframe.rChart{ width: 100%; height: 400px;}</style>
-<style>iframe.rChart{ width: 100%; height: 640px;}</style>
+<style>iframe.rChart{ width: 100%; height: 840px;}</style>
 </div>
 </div>
 <div id="r-code" class="section level2">
@@ -420,8 +420,8 @@ matt.proj.path &lt;-<span class="st"> &quot;C:/github&quot;</span></code></pre>
 <h4>newProject</h4>
 <p><code>newProject</code> creates a new named project directory structure at the specified file path. If a directory with this project name already exists in this location on the file system and <code>overwrite=FALSE</code>, the function will abort. Default project subdirectories are created unless a different vector of folder names is explicitly passed to <code>newProject</code>. If one of the subdirectories is <code>docs</code> then the default vector of subdirectories under <code>docs</code> is also created. This argument can also be set explicitly. The current function only creates directories, not files, so <code>overwrite=TRUE</code> is safe to use on any existing project.</p>
 <pre class="sourceCode r"><code class="sourceCode r">newProject &lt;-<span class="st"> </span>function(name, path, <span class="dt">dirs =</span> <span class="kw">c</span>(<span class="st">&quot;code&quot;</span>, <span class="st">&quot;data&quot;</span>, <span class="st">&quot;docs&quot;</span>, <span class="st">&quot;plots&quot;</span>, 
-    <span class="st">&quot;workspaces&quot;</span>), <span class="dt">docs.dirs =</span> <span class="kw">c</span>(<span class="st">&quot;all&quot;</span>, <span class="st">&quot;diagrams&quot;</span>, <span class="st">&quot;ioslides&quot;</span>, <span class="st">&quot;md&quot;</span>, <span class="st">&quot;notebook&quot;</span>, 
-    <span class="st">&quot;pdf&quot;</span>, <span class="st">&quot;Rmd&quot;</span>, <span class="st">&quot;timeline&quot;</span>, <span class="st">&quot;tufte&quot;</span>), <span class="dt">overwrite =</span> <span class="ot">FALSE</span>) {
+    <span class="st">&quot;workspaces&quot;</span>), <span class="dt">docs.dirs =</span> <span class="kw">c</span>(<span class="st">&quot;diagrams&quot;</span>, <span class="st">&quot;ioslides&quot;</span>, <span class="st">&quot;notebook&quot;</span>, <span class="st">&quot;pdf&quot;</span>, 
+    <span class="st">&quot;Rmd/include&quot;</span>, <span class="st">&quot;timeline&quot;</span>, <span class="st">&quot;tufte&quot;</span>), <span class="dt">overwrite =</span> <span class="ot">FALSE</span>) {
     
     <span class="kw">stopifnot</span>(<span class="kw">is.character</span>(name))
     name &lt;-<span class="st"> </span><span class="kw">file.path</span>(path, name)
@@ -435,7 +435,7 @@ matt.proj.path &lt;-<span class="st"> &quot;C:/github&quot;</span></code></pre>
     <span class="kw">sapply</span>(path.dirs, dir.create, <span class="dt">showWarnings =</span> <span class="ot">FALSE</span>)
     path.docs &lt;-<span class="st"> </span><span class="kw">file.path</span>(name, <span class="st">&quot;docs&quot;</span>, docs.dirs)
     if (<span class="st">&quot;docs&quot;</span> %in%<span class="st"> </span>dirs) 
-        <span class="kw">sapply</span>(path.docs, dir.create, <span class="dt">showWarnings =</span> <span class="ot">FALSE</span>)
+        <span class="kw">sapply</span>(path.docs, dir.create, <span class="dt">recursive =</span> <span class="ot">TRUE</span>, <span class="dt">showWarnings =</span> <span class="ot">FALSE</span>)
     if (overwrite) 
         <span class="kw">cat</span>(<span class="st">&quot;Project directories updated.</span><span class="ch">\n</span><span class="st">&quot;</span>) else <span class="kw">cat</span>(<span class="st">&quot;Project directories created.</span><span class="ch">\n</span><span class="st">&quot;</span>)
 }</code></pre>
@@ -561,6 +561,68 @@ matt.proj.path &lt;-<span class="st"> &quot;C:/github&quot;</span></code></pre>
         <span class="dt">rmdChunks =</span> l2, <span class="dt">ID =</span> rmdChunkID)
 }</code></pre>
 <p>Regarding the creation and updating of Rmd files, <code>projman</code> simply assumes that there will be one <strong>R</strong> Markdown file corresponding to one <strong>R</strong> script. This is not always the case for a given project, but again, the purpose is to generate basic templates. Unnecessary files can always be deleted later, or edits made such that one <strong>R</strong> Markdown file reads multiple <strong>R</strong> scripts, as is the case with the Rmd file used to generate this document.</p>
+</div>
+<div id="gennavbar" class="section level4">
+<h4>genNavbar</h4>
+<p><code>genNavbar</code> generates a navigation bar for a web page. The html file created should be written to the project’s <code>docs/Rmd/include</code> directory. The common navigation bar html is included prior to the body of the html for each web page in the project’s website. <code>menu</code> is a vector of names for each dropdown menu. <code>submenus</code> is a list of vectors of menu options corresponding to each menu. <code>files</code> is a similar list of vectors. Each element is either an html file for a web page to be associated with the submenu link, “header” to indicate the corresponding name in <code>submenus</code> is only a group label and not a link to a web page, or “divider” to indicate placement of a bar for separating groups in a dropdown menu.</p>
+<pre class="sourceCode r"><code class="sourceCode r">genNavbar &lt;-<span class="st"> </span>function(<span class="dt">htmlfile =</span> <span class="st">&quot;navbar.html&quot;</span>, title, menu, submenus, files, 
+    <span class="dt">site.link =</span> <span class="st">&quot;&quot;</span>, <span class="dt">site.name =</span> <span class="st">&quot;Website&quot;</span>) {
+    
+    fillSubmenu &lt;-<span class="st"> </span>function(x, name, file) {
+        if (file[x] ==<span class="st"> &quot;divider&quot;</span>) 
+            <span class="kw">return</span>(<span class="st">&quot;              &lt;li class=</span><span class="ch">\&quot;</span><span class="st">divider</span><span class="ch">\&quot;</span><span class="st">&gt;&lt;/li&gt;</span><span class="ch">\n</span><span class="st">&quot;</span>)
+        if (file[x] ==<span class="st"> &quot;header&quot;</span>) 
+            <span class="kw">return</span>(<span class="kw">paste0</span>(<span class="st">&quot;              &lt;li class=</span><span class="ch">\&quot;</span><span class="st">nav-header</span><span class="ch">\&quot;</span><span class="st">&gt;&quot;</span>, name[x], 
+                <span class="st">&quot;&lt;/li&gt;</span><span class="ch">\n</span><span class="st">&quot;</span>))
+        <span class="kw">paste0</span>(<span class="st">&quot;              &lt;li&gt;&lt;a href=</span><span class="ch">\&quot;</span><span class="st">&quot;</span>, file[x], <span class="st">&quot;</span><span class="ch">\&quot;</span><span class="st">&gt;&quot;</span>, name[x], <span class="st">&quot;&lt;/a&gt;&lt;/li&gt;</span><span class="ch">\n</span><span class="st">&quot;</span>)
+    }
+    
+    fillMenu &lt;-<span class="st"> </span>function(x, menu, submenus, files) {
+        <span class="kw">paste0</span>(<span class="st">&quot;&lt;li class=</span><span class="ch">\&quot;</span><span class="st">dropdown</span><span class="ch">\&quot;</span><span class="st">&gt;</span><span class="ch">\n</span><span class="st">            &lt;a href=</span><span class="ch">\&quot;</span><span class="st">&quot;</span>, <span class="kw">gsub</span>(<span class="st">&quot; &quot;</span>, 
+            <span class="st">&quot;-&quot;</span>, <span class="kw">tolower</span>(menu[x])), <span class="st">&quot;</span><span class="ch">\&quot;</span><span class="st"> class=</span><span class="ch">\&quot;</span><span class="st">dropdown-toggle</span><span class="ch">\&quot;</span><span class="st"> data-toggle=</span><span class="ch">\&quot;</span><span class="st">dropdown</span><span class="ch">\&quot;</span><span class="st">&gt;&quot;</span>, 
+            menu[x], <span class="st">&quot; &lt;b class=</span><span class="ch">\&quot;</span><span class="st">caret</span><span class="ch">\&quot;</span><span class="st">&gt;&lt;/b&gt;&lt;/a&gt;</span><span class="ch">\n</span><span class="st">            &lt;ul class=</span><span class="ch">\&quot;</span><span class="st">dropdown-menu</span><span class="ch">\&quot;</span><span class="st">&gt;</span><span class="ch">\n</span><span class="st">&quot;</span>, 
+            <span class="kw">paste</span>(<span class="kw">sapply</span>(<span class="dv">1</span>:<span class="kw">length</span>(submenus[[x]]), fillSubmenu, <span class="dt">name =</span> submenus[[x]], 
+                <span class="dt">file =</span> files[[x]]), <span class="dt">sep =</span> <span class="st">&quot;&quot;</span>, <span class="dt">collapse =</span> <span class="st">&quot;&quot;</span>), <span class="st">&quot;            &lt;/ul&gt;</span><span class="ch">\n</span><span class="st">&quot;</span>, 
+            <span class="dt">collapse =</span> <span class="st">&quot;&quot;</span>)
+    }
+    
+    x &lt;-<span class="st"> </span><span class="kw">paste0</span>(<span class="st">&quot;&lt;div class=</span><span class="ch">\&quot;</span><span class="st">navbar navbar-default navbar-fixed-top</span><span class="ch">\&quot;</span><span class="st">&gt;</span><span class="ch">\n</span><span class="st">  &lt;div class=</span><span class="ch">\&quot;</span><span class="st">navbar-inner</span><span class="ch">\&quot;</span><span class="st">&gt;</span><span class="ch">\n</span><span class="st">    &lt;div class=</span><span class="ch">\&quot;</span><span class="st">container</span><span class="ch">\&quot;</span><span class="st">&gt;</span><span class="ch">\n</span><span class="st">      &lt;button type=</span><span class="ch">\&quot;</span><span class="st">button</span><span class="ch">\&quot;</span><span class="st"> class=</span><span class="ch">\&quot;</span><span class="st">btn btn-navbar</span><span class="ch">\&quot;</span><span class="st"> data-toggle=</span><span class="ch">\&quot;</span><span class="st">collapse</span><span class="ch">\&quot;</span><span class="st"> data-target=</span><span class="ch">\&quot;</span><span class="st">.nav-collapse</span><span class="ch">\&quot;</span><span class="st">&gt;</span><span class="ch">\n</span><span class="st">        &lt;span class=</span><span class="ch">\&quot;</span><span class="st">icon-bar</span><span class="ch">\&quot;</span><span class="st">&gt;&lt;/span&gt;</span><span class="ch">\n</span><span class="st">        &lt;span class=</span><span class="ch">\&quot;</span><span class="st">icon-bar</span><span class="ch">\&quot;</span><span class="st">&gt;&lt;/span&gt;</span><span class="ch">\n</span><span class="st">        &lt;span class=</span><span class="ch">\&quot;</span><span class="st">icon-bar</span><span class="ch">\&quot;</span><span class="st">&gt;&lt;/span&gt;</span><span class="ch">\n</span><span class="st">      &lt;/button&gt;</span><span class="ch">\n</span><span class="st">      &lt;a class=</span><span class="ch">\&quot;</span><span class="st">brand</span><span class="ch">\&quot;</span><span class="st"> href=</span><span class="ch">\&quot;</span><span class="st">/</span><span class="ch">\&quot;</span><span class="st">&gt;&quot;</span>, 
+        title, <span class="st">&quot;&lt;/a&gt;</span><span class="ch">\n</span><span class="st">      &lt;div class=</span><span class="ch">\&quot;</span><span class="st">nav-collapse collapse</span><span class="ch">\&quot;</span><span class="st">&gt;</span><span class="ch">\n</span><span class="st">        &lt;ul class=</span><span class="ch">\&quot;</span><span class="st">nav</span><span class="ch">\&quot;</span><span class="st">&gt;</span><span class="ch">\n</span><span class="st">          &lt;li&gt;&lt;a href=</span><span class="ch">\&quot;</span><span class="st">/</span><span class="ch">\&quot;</span><span class="st">&gt;Home&lt;/a&gt;&lt;/li&gt;</span><span class="ch">\n</span><span class="st">          &quot;</span>, 
+        <span class="kw">paste</span>(<span class="kw">sapply</span>(<span class="dv">1</span>:<span class="kw">length</span>(menu), fillMenu, <span class="dt">menu =</span> menu, <span class="dt">submenus =</span> submenus, 
+            <span class="dt">files =</span> files), <span class="dt">sep =</span> <span class="st">&quot;&quot;</span>, <span class="dt">collapse =</span> <span class="st">&quot;</span><span class="ch">\n</span><span class="st">          &quot;</span>), <span class="st">&quot;        &lt;/ul&gt;</span><span class="ch">\n</span><span class="st">        &lt;ul class=</span><span class="ch">\&quot;</span><span class="st">nav pull-right</span><span class="ch">\&quot;</span><span class="st">&gt;</span><span class="ch">\n</span><span class="st">          &lt;a class=</span><span class="ch">\&quot;</span><span class="st">btn btn-primary</span><span class="ch">\&quot;</span><span class="st"> href=</span><span class="ch">\&quot;</span><span class="st">&quot;</span>, 
+        site.link, <span class="st">&quot;</span><span class="ch">\&quot;</span><span class="st">&gt;</span><span class="ch">\n</span><span class="st">            &lt;i class=</span><span class="ch">\&quot;</span><span class="st">fa fa-github fa-lg</span><span class="ch">\&quot;</span><span class="st">&gt;&lt;/i&gt;</span><span class="ch">\n</span><span class="st">            &quot;</span>, 
+        site.name, <span class="st">&quot;</span><span class="ch">\n</span><span class="st">          &lt;/a&gt;</span><span class="ch">\n</span><span class="st">        &lt;/ul&gt;</span><span class="ch">\n</span><span class="st">      &lt;/div&gt;&lt;!--/.nav-collapse --&gt;</span><span class="ch">\n</span><span class="st">    &lt;/div&gt;</span><span class="ch">\n</span><span class="st">  &lt;/div&gt;</span><span class="ch">\n</span><span class="st">&lt;/div&gt;</span><span class="ch">\n</span><span class="st">&quot;</span>, 
+        <span class="dt">collpase =</span> <span class="st">&quot;&quot;</span>)
+    <span class="kw">sink</span>(htmlfile)
+    <span class="kw">cat</span>(x)
+    <span class="kw">sink</span>()
+    x
+}</code></pre>
+</div>
+<div id="genoutyaml" class="section level4">
+<h4>genOutyaml</h4>
+<p><code>genOutyaml</code> generates the <code>_out.yaml</code> file for yaml front-matter common to all html files in the project website. The file should be written to the project’s <code>docs/Rmd</code> directory. <code>lib</code> specifies the library directory for any associated files. yaml <code>includes</code> for external html common to all project web pages in the site can also be specified with <code>header</code>, <code>before_body</code>, and <code>after_body</code>. These can be specified by file basename only (no path) and the function assumes these files are in the <code>docs/Rmd/include</code> directory. At this time all external libraries must be provided by the user, for example in <code>docs/Rmd/libs</code>. It is recommended. See the project repo <a href="https://github.com/leonawicz/ProjectManagement/tree/gh-pages" title="gh-pages">gh-pages</a> branch for an example.</p>
+<pre class="sourceCode r"><code class="sourceCode r">genOutyaml &lt;-<span class="st"> </span>function(file, <span class="dt">theme =</span> <span class="st">&quot;cosmo&quot;</span>, <span class="dt">highlight =</span> <span class="st">&quot;zenburn&quot;</span>, <span class="dt">lib =</span> <span class="ot">NULL</span>, 
+    <span class="dt">header =</span> <span class="ot">NULL</span>, <span class="dt">before_body =</span> <span class="ot">NULL</span>, <span class="dt">after_body =</span> <span class="ot">NULL</span>) {
+    output.yaml &lt;-<span class="st"> </span><span class="kw">paste0</span>(<span class="st">&quot;html_document:</span><span class="ch">\n</span><span class="st">  self_contained: false</span><span class="ch">\n</span><span class="st">  theme: &quot;</span>, 
+        theme, <span class="st">&quot;</span><span class="ch">\n</span><span class="st">  highlight: &quot;</span>, highlight, <span class="st">&quot;</span><span class="ch">\n</span><span class="st">  mathjax: null</span><span class="ch">\n</span><span class="st">  toc_depth: 2</span><span class="ch">\n</span><span class="st">&quot;</span>)
+    if (!<span class="kw">is.null</span>(lib)) 
+        output.yaml &lt;-<span class="st"> </span><span class="kw">paste0</span>(output.yaml, <span class="st">&quot;  lib_dir: &quot;</span>, lib, <span class="st">&quot;</span><span class="ch">\n</span><span class="st">&quot;</span>)
+    output.yaml &lt;-<span class="st"> </span><span class="kw">paste0</span>(output.yaml, <span class="st">&quot;  includes:</span><span class="ch">\n</span><span class="st">&quot;</span>)
+    if (!<span class="kw">is.null</span>(header)) 
+        output.yaml &lt;-<span class="st"> </span><span class="kw">paste0</span>(output.yaml, <span class="st">&quot;    in_header: include/&quot;</span>, header, 
+            <span class="st">&quot;</span><span class="ch">\n</span><span class="st">&quot;</span>)
+    if (!<span class="kw">is.null</span>(before_body)) 
+        output.yaml &lt;-<span class="st"> </span><span class="kw">paste0</span>(output.yaml, <span class="st">&quot;    before_body: include/&quot;</span>, before_body, 
+            <span class="st">&quot;</span><span class="ch">\n</span><span class="st">&quot;</span>)
+    if (!<span class="kw">is.null</span>(after_body)) 
+        output.yaml &lt;-<span class="st"> </span><span class="kw">paste0</span>(output.yaml, <span class="st">&quot;    after_body: include/&quot;</span>, after_body, 
+            <span class="st">&quot;</span><span class="ch">\n</span><span class="st">&quot;</span>)
+    <span class="kw">sink</span>(file)
+    <span class="kw">cat</span>(output.yaml)
+    <span class="kw">sink</span>()
+    output.yaml
+}</code></pre>
 </div>
 </div>
 </div>

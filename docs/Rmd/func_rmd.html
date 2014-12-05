@@ -1,0 +1,291 @@
+<!DOCTYPE html>
+
+<html xmlns="http://www.w3.org/1999/xhtml">
+
+<head>
+
+<meta charset="utf-8">
+<meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+<meta name="generator" content="pandoc" />
+
+
+
+<title></title>
+
+<script src="libs/jquery-1.11.0/jquery.min.js"></script>
+<meta name="viewport" content="width=device-width, initial-scale=1.0" />
+<link href="libs/bootstrap-2.3.2/css/cosmo.min.css" rel="stylesheet" />
+<link href="libs/bootstrap-2.3.2/css/bootstrap-responsive.min.css" rel="stylesheet" />
+<script src="libs/bootstrap-2.3.2/js/bootstrap.min.js"></script>
+<style type="text/css">
+
+/* padding for bootstrap navbar */
+body {
+  padding-top: 50px;
+  padding-bottom: 40px;
+}
+@media (max-width: 979px) {
+  body {
+    padding-top: 0;
+  }
+}
+
+/* offset scroll position for anchor links (for fixed navbar)  */
+@media (min-width: 980px) {
+  .section h2 {
+    padding-top: 52px;
+    margin-top: -52px;
+  }
+  .section h3 {
+    padding-top: 52px;
+    margin-top: -52px;
+  }
+}
+
+
+/* don't use link color in navbar */
+.dropdown-menu>li>a {
+  color: black;
+}
+
+/* some padding for disqus */
+#disqus_thread {
+  margin-top: 45px;
+}
+
+</style>
+
+<link rel="stylesheet" href="libs/font-awesome-4.1.0/css/font-awesome.min.css"/>
+
+
+<style type="text/css">code{white-space: pre;}</style>
+<style type="text/css">
+table.sourceCode, tr.sourceCode, td.lineNumbers, td.sourceCode {
+  margin: 0; padding: 0; vertical-align: baseline; border: none; }
+table.sourceCode { width: 100%; line-height: 100%; background-color: #303030; color: #cccccc; }
+td.lineNumbers { text-align: right; padding-right: 4px; padding-left: 4px; }
+td.sourceCode { padding-left: 5px; }
+pre, code { color: #cccccc; background-color: #303030; }
+code > span.kw { color: #f0dfaf; }
+code > span.dt { color: #dfdfbf; }
+code > span.dv { color: #dcdccc; }
+code > span.bn { color: #dca3a3; }
+code > span.fl { color: #c0bed1; }
+code > span.ch { color: #dca3a3; }
+code > span.st { color: #cc9393; }
+code > span.co { color: #7f9f7f; }
+code > span.ot { color: #efef8f; }
+code > span.al { color: #ffcfaf; }
+code > span.fu { color: #efef8f; }
+code > span.er { color: #c3bf9f; }
+</style>
+<style type="text/css">
+  pre:not([class]) {
+    background-color: white;
+  }
+</style>
+
+
+
+</head>
+
+<body>
+
+<style type = "text/css">
+.main-container {
+  max-width: 940px;
+  margin-left: auto;
+  margin-right: auto;
+}
+</style>
+<div class="container-fluid main-container">
+
+<div class="navbar navbar-default navbar-fixed-top">
+  <div class="navbar-inner">
+    <div class="container">
+      <button type="button" class="btn btn-navbar" data-toggle="collapse" data-target=".nav-collapse">
+        <span class="icon-bar"></span>
+        <span class="icon-bar"></span>
+        <span class="icon-bar"></span>
+      </button>
+      <a class="brand" href="/">projman</a>
+      <div class="nav-collapse collapse">
+        <ul class="nav">
+          <li><a href="/">Home</a></li>
+          <li class="dropdown">
+            <a href="r-code" class="dropdown-toggle" data-toggle="dropdown">R Code <b class="caret"></b></a>
+            <ul class="dropdown-menu">
+              <li><a href="objects.html">Default objects</a></li>
+              <li class="divider"></li>
+              <li class="nav-header">Functions</li>
+              <li><a href="func_new.html">Start a new project</a></li>
+              <li><a href="func_rmd.html">Working with Rmd files</a></li>
+              <li><a href="func_website.html">Make a project website</a></li>
+            </ul>
+
+          <li class="dropdown">
+            <a href="this-project" class="dropdown-toggle" data-toggle="dropdown">This Project <b class="caret"></b></a>
+            <ul class="dropdown-menu">
+              <li><a href="proj_sankey.html">Sankey diagram</a></li>
+            </ul>
+
+          <li class="dropdown">
+            <a href="all-projects" class="dropdown-toggle" data-toggle="dropdown">All Projects <b class="caret"></b></a>
+            <ul class="dropdown-menu">
+              <li><a href="proj_sankey.html">Projects diagram</a></li>
+              <li class="divider"></li>
+              <li><a href="index.html">About</a></li>
+              <li><a href="index.html">Other</a></li>
+            </ul>
+        </ul>
+        <ul class="nav pull-right">
+          <a class="btn btn-primary" href="">
+            <i class="fa fa-github fa-lg"></i>
+            Website
+          </a>
+        </ul>
+      </div><!--/.nav-collapse -->
+    </div>
+  </div>
+</div>
+
+
+
+<div id="rmdheader" class="section level4">
+<h4>rmdHeader</h4>
+<p><code>rmdHeader</code> generates the yaml metadata header for Rmd files as a character string to be inserted at the top of a file. It has default arguments specific to my own projects but can be changed. The output from this function is passed directly to <code>genRmd</code> below.</p>
+<pre class="sourceCode r"><code class="sourceCode r">rmdHeader &lt;-<span class="st"> </span>function(<span class="dt">title =</span> <span class="st">&quot;INSERT_TITLE_HERE&quot;</span>, <span class="dt">author =</span> <span class="st">&quot;Matthew Leonawicz&quot;</span>, 
+    <span class="dt">theme =</span> <span class="st">&quot;cosmo&quot;</span>, <span class="dt">highlight =</span> <span class="st">&quot;zenburn&quot;</span>, <span class="dt">toc =</span> <span class="ot">TRUE</span>, <span class="dt">keep.md =</span> <span class="ot">TRUE</span>, <span class="dt">ioslides =</span> <span class="ot">FALSE</span>, 
+    <span class="dt">include.pdf =</span> <span class="ot">FALSE</span>) {
+    if (toc) 
+        toc &lt;=<span class="st"> &quot;true&quot;</span> else toc &lt;-<span class="st"> &quot;false&quot;</span>
+    if (keep.md) 
+        keep.md &lt;=<span class="st"> &quot;true&quot;</span> else keep.md &lt;-<span class="st"> &quot;false&quot;</span>
+    if (ioslides) 
+        hdoc &lt;-<span class="st"> &quot;ioslides_presentation&quot;</span> else hdoc &lt;-<span class="st"> &quot;html_document&quot;</span>
+    rmd.header &lt;-<span class="st"> </span><span class="kw">paste0</span>(<span class="st">&quot;---</span><span class="ch">\n</span><span class="st">title: &quot;</span>, title, <span class="st">&quot;</span><span class="ch">\n</span><span class="st">author: &quot;</span>, author, <span class="st">&quot;</span><span class="ch">\n</span><span class="st">output:</span><span class="ch">\n</span><span class="st">  &quot;</span>, 
+        hdoc, <span class="st">&quot;:</span><span class="ch">\n</span><span class="st">    toc: &quot;</span>, toc, <span class="st">&quot;</span><span class="ch">\n</span><span class="st">    theme: &quot;</span>, theme, <span class="st">&quot;</span><span class="ch">\n</span><span class="st">    highlight: &quot;</span>, 
+        highlight, <span class="st">&quot;</span><span class="ch">\n</span><span class="st">    keep_md: &quot;</span>, keep.md, <span class="st">&quot;</span><span class="ch">\n</span><span class="st">&quot;</span>)
+    if (ioslides) 
+        rmd.header &lt;-<span class="st"> </span><span class="kw">paste0</span>(rmd.header, <span class="st">&quot;    widescreen: true</span><span class="ch">\n</span><span class="st">&quot;</span>)
+    if (include.pdf) 
+        rmd.header &lt;-<span class="st"> </span><span class="kw">paste0</span>(rmd.header, <span class="st">&quot;  pdf_document:</span><span class="ch">\n</span><span class="st">    toc: &quot;</span>, toc, 
+            <span class="st">&quot;</span><span class="ch">\n</span><span class="st">    highlight: &quot;</span>, highlight, <span class="st">&quot;</span><span class="ch">\n</span><span class="st">&quot;</span>)
+    rmd.header &lt;-<span class="st"> </span><span class="kw">paste0</span>(rmd.header, <span class="st">&quot;---</span><span class="ch">\n</span><span class="st">&quot;</span>)
+    rmd.header
+}</code></pre>
+</div>
+<div id="genrmd" class="section level4">
+<h4>genRmd</h4>
+<p><code>genRmd</code> works on existing projects. It checks for existing <strong>R</strong> scripts. If no <strong>R</strong> files exist in the project’s <code>code</code> directory, the function will abort. Otherwise it will generate Rmd template files for each of the <strong>R</strong> scripts it finds.</p>
+<p>With <code>replace=TRUE</code> any existing Rmd files are regenerated with the provided template - be careful! With <code>replace=FALSE</code> (default) Rmd files are generated only for <strong>R</strong> scripts which do not yet have corresponding Rmd files. If <code>update.header=TRUE</code>, <code>replace</code> is ignored, and only existing Rmd files are regenerated, in this case strictly updating the yaml metadata header at the top of each Rmd file without altering any other Rmd content/documentation.</p>
+<p>The Rmd files are placed in the <code>/docs/Rmd</code> directory. This function assumes this project directory exists.</p>
+<pre class="sourceCode r"><code class="sourceCode r">genRmd &lt;-<span class="st"> </span>function(path, <span class="dt">replace =</span> <span class="ot">FALSE</span>, <span class="dt">header =</span> <span class="kw">rmdHeader</span>(), <span class="dt">update.header =</span> <span class="ot">FALSE</span>, 
+    ...) {
+    <span class="kw">stopifnot</span>(<span class="kw">is.character</span>(path))
+    files &lt;-<span class="st"> </span><span class="kw">list.files</span>(path, <span class="dt">pattern =</span> <span class="st">&quot;.R$&quot;</span>, <span class="dt">full =</span> <span class="ot">TRUE</span>)
+    <span class="kw">stopifnot</span>(<span class="kw">length</span>(files) &gt;<span class="st"> </span><span class="dv">0</span>)
+    rmd &lt;-<span class="st"> </span><span class="kw">gsub</span>(<span class="st">&quot;.R&quot;</span>, <span class="st">&quot;.Rmd&quot;</span>, <span class="kw">basename</span>(files))
+    rmd &lt;-<span class="st"> </span><span class="kw">file.path</span>(<span class="kw">dirname</span>(path), <span class="st">&quot;docs/Rmd&quot;</span>, rmd)
+    if (!(replace |<span class="st"> </span>update.header)) 
+        rmd &lt;-<span class="st"> </span>rmd[!<span class="kw">sapply</span>(rmd, file.exists)]
+    if (update.header) 
+        rmd &lt;-<span class="st"> </span>rmd[<span class="kw">sapply</span>(rmd, file.exists)]
+    <span class="kw">stopifnot</span>(<span class="kw">length</span>(rmd) &gt;<span class="st"> </span><span class="dv">0</span>)
+    
+    sinkRmd &lt;-<span class="st"> </span>function(x, ...) {
+        y1 &lt;-<span class="st"> </span>header
+        y2 &lt;-<span class="st"> </span><span class="kw">list</span>(...)$rmd.knitr.setup
+        y3 &lt;-<span class="st"> </span><span class="kw">list</span>(...)$rmd.template
+        if (<span class="kw">is.null</span>(y1)) 
+            y1 &lt;-<span class="st"> </span>rmd.header
+        if (<span class="kw">is.null</span>(y2)) 
+            y2 &lt;-<span class="st"> </span>rmd.knitr.setup
+        if (<span class="kw">is.null</span>(y3)) 
+            y3 &lt;-<span class="st"> </span>rmd.template
+        <span class="kw">sink</span>(x)
+        <span class="kw">sapply</span>(<span class="kw">c</span>(y1, y2, y3), cat)
+        <span class="kw">sink</span>()
+    }
+    
+    swapHeader &lt;-<span class="st"> </span>function(x) {
+        l &lt;-<span class="st"> </span><span class="kw">readLines</span>(x)
+        ind &lt;-<span class="st"> </span><span class="kw">which</span>(l ==<span class="st"> &quot;---&quot;</span>)
+        l &lt;-<span class="st"> </span>l[(ind[<span class="dv">2</span>] +<span class="st"> </span><span class="dv">1</span>):<span class="kw">length</span>(l)]
+        l &lt;-<span class="st"> </span><span class="kw">paste0</span>(l, <span class="st">&quot;</span><span class="ch">\n</span><span class="st">&quot;</span>)
+        <span class="kw">sink</span>(x)
+        <span class="kw">sapply</span>(<span class="kw">c</span>(header, l), cat)
+        <span class="kw">sink</span>()
+    }
+    
+    if (update.header) {
+        <span class="kw">sapply</span>(rmd, swapHeader, ...)
+        <span class="kw">cat</span>(<span class="st">&quot;yaml header updated for each .Rmd file.</span><span class="ch">\n</span><span class="st">&quot;</span>)
+    } else {
+        <span class="kw">sapply</span>(rmd, sinkRmd, ...)
+        <span class="kw">cat</span>(<span class="st">&quot;.Rmd files created for each .R file.</span><span class="ch">\n</span><span class="st">&quot;</span>)
+    }
+}</code></pre>
+</div>
+<div id="chunknames" class="section level4">
+<h4>chunkNames</h4>
+<p><code>chunkNames</code> can be used in two ways. It can return a list with length equal to the number of <strong>R</strong> files, where each list element is a vector of <strong>R</strong> code chunk names found in each <strong>R</strong> script.</p>
+<p>Alternatively, with <code>append.new=TRUE</code>, this list has each vector matched element-wise against chunk names found in existing Rmd files. If no Rmd files have yet been generated, the function will abort. Otherwise, for the Rmd files which do exist (and this may correspond to a subset of the <strong>R</strong> files), these Rmd files are appended with a list of code chunk names found in the current corresponding <strong>R</strong> files which have not yet been integrated into the current state of the Rmd files. This fascilitates updating of Rmd documentation when it falls behind scripts which have been updated.</p>
+<pre class="sourceCode r"><code class="sourceCode r">chunkNames &lt;-<span class="st"> </span>function(path, <span class="dt">rChunkID =</span> <span class="st">&quot;# @knitr&quot;</span>, <span class="dt">rmdChunkID =</span> <span class="st">&quot;```{r&quot;</span>, <span class="dt">append.new =</span> <span class="ot">FALSE</span>) {
+    files &lt;-<span class="st"> </span><span class="kw">list.files</span>(path, <span class="dt">pattern =</span> <span class="st">&quot;.R$&quot;</span>, <span class="dt">full =</span> <span class="ot">TRUE</span>)
+    <span class="kw">stopifnot</span>(<span class="kw">length</span>(files) &gt;<span class="st"> </span><span class="dv">0</span>)
+    l1 &lt;-<span class="st"> </span><span class="kw">lapply</span>(files, readLines)
+    l1 &lt;-<span class="st"> </span><span class="kw">rapply</span>(l1, function(x) x[<span class="kw">substr</span>(x, <span class="dv">1</span>, <span class="kw">nchar</span>(rChunkID)) ==<span class="st"> </span>rChunkID], 
+        <span class="dt">how =</span> <span class="st">&quot;replace&quot;</span>)
+    l1 &lt;-<span class="st"> </span><span class="kw">rapply</span>(l1, function(x, p) <span class="kw">gsub</span>(<span class="kw">paste0</span>(p, <span class="st">&quot; &quot;</span>), <span class="st">&quot;&quot;</span>, x), <span class="dt">how =</span> <span class="st">&quot;replace&quot;</span>, 
+        <span class="dt">p =</span> rChunkID)
+    if (!append.new) 
+        <span class="kw">return</span>(l1)
+    
+    appendRmd &lt;-<span class="st"> </span>function(x, rmd.files, rChunks, rmdChunks, ID) {
+        r1 &lt;-<span class="st"> </span>rmdChunks[[x]]
+        r2 &lt;-<span class="st"> </span>rChunks[[x]]
+        r.new &lt;-<span class="st"> </span>r2[!(r2 %in%<span class="st"> </span>r1)]
+        if (<span class="kw">length</span>(r.new)) {
+            r.new &lt;-<span class="st"> </span><span class="kw">paste0</span>(ID, <span class="st">&quot; &quot;</span>, r.new, <span class="st">&quot;}</span><span class="ch">\n</span><span class="st">```</span><span class="ch">\n</span><span class="st">&quot;</span>, <span class="dt">collapse =</span> <span class="st">&quot;&quot;</span>)  <span class="co"># Hard coded brace and backticks</span>
+            <span class="kw">sink</span>(rmd.files[x], <span class="dt">append =</span> <span class="ot">TRUE</span>)
+            <span class="kw">cat</span>(<span class="st">&quot;</span><span class="ch">\n</span><span class="st">NEW_CODE_CHUNKS</span><span class="ch">\n</span><span class="st">&quot;</span>)
+            <span class="kw">cat</span>(r.new)
+            <span class="kw">sink</span>()
+            <span class="kw">paste</span>(<span class="kw">basename</span>(rmd.files[x]), <span class="st">&quot;appended with new chunk names from .R file&quot;</span>)
+        } else <span class="kw">paste</span>(<span class="st">&quot;No new chunk names appended to&quot;</span>, <span class="kw">basename</span>(rmd.files[x]))
+    }
+    
+    rmd &lt;-<span class="st"> </span><span class="kw">gsub</span>(<span class="st">&quot;.R&quot;</span>, <span class="st">&quot;.Rmd&quot;</span>, <span class="kw">basename</span>(files))
+    rmd &lt;-<span class="st"> </span><span class="kw">file.path</span>(<span class="kw">dirname</span>(path), <span class="st">&quot;docs/Rmd&quot;</span>, rmd)
+    rmd &lt;-<span class="st"> </span>rmd[<span class="kw">sapply</span>(rmd, file.exists)]
+    <span class="kw">stopifnot</span>(<span class="kw">length</span>(rmd) &gt;<span class="st"> </span><span class="dv">0</span>)  <span class="co"># Rmd files must exist</span>
+    files.ind &lt;-<span class="st"> </span><span class="kw">match</span>(<span class="kw">gsub</span>(<span class="st">&quot;.Rmd&quot;</span>, <span class="st">&quot;&quot;</span>, <span class="kw">basename</span>(rmd)), <span class="kw">gsub</span>(<span class="st">&quot;.R&quot;</span>, <span class="st">&quot;&quot;</span>, <span class="kw">basename</span>(files)))  <span class="co"># Rmd exist for which R script</span>
+    l2 &lt;-<span class="st"> </span><span class="kw">lapply</span>(rmd, readLines)
+    l2 &lt;-<span class="st"> </span><span class="kw">rapply</span>(l2, function(x) x[<span class="kw">substr</span>(x, <span class="dv">1</span>, <span class="kw">nchar</span>(rmdChunkID)) ==<span class="st"> </span>rmdChunkID], 
+        <span class="dt">how =</span> <span class="st">&quot;replace&quot;</span>)
+    l2 &lt;-<span class="st"> </span><span class="kw">rapply</span>(l2, function(x, p) <span class="kw">gsub</span>(<span class="kw">paste0</span>(p, <span class="st">&quot; &quot;</span>), <span class="st">&quot;&quot;</span>, x), <span class="dt">how =</span> <span class="st">&quot;replace&quot;</span>, 
+        <span class="dt">p =</span> <span class="kw">gsub</span>(<span class="st">&quot;</span><span class="ch">\\</span><span class="st">{&quot;</span>, <span class="st">&quot;</span><span class="ch">\\\\</span><span class="st">{&quot;</span>, rmdChunkID))
+    l2 &lt;-<span class="st"> </span><span class="kw">rapply</span>(l2, function(x) <span class="kw">gsub</span>(<span class="st">&quot;}&quot;</span>, <span class="st">&quot;&quot;</span>, <span class="kw">sapply</span>(<span class="kw">strsplit</span>(x, <span class="st">&quot;,&quot;</span>), <span class="st">&quot;[[&quot;</span>, 
+        <span class="dv">1</span>)), <span class="dt">how =</span> <span class="st">&quot;replace&quot;</span>)
+    <span class="kw">sapply</span>(<span class="dv">1</span>:<span class="kw">length</span>(rmd), appendRmd, <span class="dt">rmd.files =</span> rmd, <span class="dt">rChunks =</span> l1[files.ind], 
+        <span class="dt">rmdChunks =</span> l2, <span class="dt">ID =</span> rmdChunkID)
+}</code></pre>
+<p>Regarding the creation and updating of Rmd files, <code>projman</code> simply assumes that there will be one <strong>R</strong> Markdown file corresponding to one <strong>R</strong> script. This is not always the case for a given project, but again, the purpose is to generate basic templates. Unnecessary files can always be deleted later, or edits made such that one <strong>R</strong> Markdown file reads multiple <strong>R</strong> scripts, as is the case with the Rmd file used to generate this document.</p>
+</div>
+
+
+</div>
+
+<script>
+
+// add bootstrap table styles to pandoc tables
+$(document).ready(function () {
+  $('tr.header').parent('thead').parent('table').addClass('table table-condensed');
+});
+
+</script>
+
+
+</body>
+</html>

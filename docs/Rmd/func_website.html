@@ -1,0 +1,231 @@
+<!DOCTYPE html>
+
+<html xmlns="http://www.w3.org/1999/xhtml">
+
+<head>
+
+<meta charset="utf-8">
+<meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+<meta name="generator" content="pandoc" />
+
+
+
+<title></title>
+
+<script src="libs/jquery-1.11.0/jquery.min.js"></script>
+<meta name="viewport" content="width=device-width, initial-scale=1.0" />
+<link href="libs/bootstrap-2.3.2/css/cosmo.min.css" rel="stylesheet" />
+<link href="libs/bootstrap-2.3.2/css/bootstrap-responsive.min.css" rel="stylesheet" />
+<script src="libs/bootstrap-2.3.2/js/bootstrap.min.js"></script>
+<style type="text/css">
+
+/* padding for bootstrap navbar */
+body {
+  padding-top: 50px;
+  padding-bottom: 40px;
+}
+@media (max-width: 979px) {
+  body {
+    padding-top: 0;
+  }
+}
+
+/* offset scroll position for anchor links (for fixed navbar)  */
+@media (min-width: 980px) {
+  .section h2 {
+    padding-top: 52px;
+    margin-top: -52px;
+  }
+  .section h3 {
+    padding-top: 52px;
+    margin-top: -52px;
+  }
+}
+
+
+/* don't use link color in navbar */
+.dropdown-menu>li>a {
+  color: black;
+}
+
+/* some padding for disqus */
+#disqus_thread {
+  margin-top: 45px;
+}
+
+</style>
+
+<link rel="stylesheet" href="libs/font-awesome-4.1.0/css/font-awesome.min.css"/>
+
+
+<style type="text/css">code{white-space: pre;}</style>
+<style type="text/css">
+table.sourceCode, tr.sourceCode, td.lineNumbers, td.sourceCode {
+  margin: 0; padding: 0; vertical-align: baseline; border: none; }
+table.sourceCode { width: 100%; line-height: 100%; background-color: #303030; color: #cccccc; }
+td.lineNumbers { text-align: right; padding-right: 4px; padding-left: 4px; }
+td.sourceCode { padding-left: 5px; }
+pre, code { color: #cccccc; background-color: #303030; }
+code > span.kw { color: #f0dfaf; }
+code > span.dt { color: #dfdfbf; }
+code > span.dv { color: #dcdccc; }
+code > span.bn { color: #dca3a3; }
+code > span.fl { color: #c0bed1; }
+code > span.ch { color: #dca3a3; }
+code > span.st { color: #cc9393; }
+code > span.co { color: #7f9f7f; }
+code > span.ot { color: #efef8f; }
+code > span.al { color: #ffcfaf; }
+code > span.fu { color: #efef8f; }
+code > span.er { color: #c3bf9f; }
+</style>
+<style type="text/css">
+  pre:not([class]) {
+    background-color: white;
+  }
+</style>
+
+
+
+</head>
+
+<body>
+
+<style type = "text/css">
+.main-container {
+  max-width: 940px;
+  margin-left: auto;
+  margin-right: auto;
+}
+</style>
+<div class="container-fluid main-container">
+
+<div class="navbar navbar-default navbar-fixed-top">
+  <div class="navbar-inner">
+    <div class="container">
+      <button type="button" class="btn btn-navbar" data-toggle="collapse" data-target=".nav-collapse">
+        <span class="icon-bar"></span>
+        <span class="icon-bar"></span>
+        <span class="icon-bar"></span>
+      </button>
+      <a class="brand" href="/">projman</a>
+      <div class="nav-collapse collapse">
+        <ul class="nav">
+          <li><a href="/">Home</a></li>
+          <li class="dropdown">
+            <a href="r-code" class="dropdown-toggle" data-toggle="dropdown">R Code <b class="caret"></b></a>
+            <ul class="dropdown-menu">
+              <li><a href="objects.html">Default objects</a></li>
+              <li class="divider"></li>
+              <li class="nav-header">Functions</li>
+              <li><a href="func_new.html">Start a new project</a></li>
+              <li><a href="func_rmd.html">Working with Rmd files</a></li>
+              <li><a href="func_website.html">Make a project website</a></li>
+            </ul>
+
+          <li class="dropdown">
+            <a href="this-project" class="dropdown-toggle" data-toggle="dropdown">This Project <b class="caret"></b></a>
+            <ul class="dropdown-menu">
+              <li><a href="proj_sankey.html">Sankey diagram</a></li>
+            </ul>
+
+          <li class="dropdown">
+            <a href="all-projects" class="dropdown-toggle" data-toggle="dropdown">All Projects <b class="caret"></b></a>
+            <ul class="dropdown-menu">
+              <li><a href="proj_sankey.html">Projects diagram</a></li>
+              <li class="divider"></li>
+              <li><a href="index.html">About</a></li>
+              <li><a href="index.html">Other</a></li>
+            </ul>
+        </ul>
+        <ul class="nav pull-right">
+          <a class="btn btn-primary" href="">
+            <i class="fa fa-github fa-lg"></i>
+            Website
+          </a>
+        </ul>
+      </div><!--/.nav-collapse -->
+    </div>
+  </div>
+</div>
+
+
+
+<div id="gennavbar" class="section level4">
+<h4>genNavbar</h4>
+<p><code>genNavbar</code> generates a navigation bar for a web page. The html file created should be written to the project’s <code>docs/Rmd/include</code> directory. The common navigation bar html is included prior to the body of the html for each web page in the project’s website. <code>menu</code> is a vector of names for each dropdown menu. <code>submenus</code> is a list of vectors of menu options corresponding to each menu. <code>files</code> is a similar list of vectors. Each element is either an html file for a web page to be associated with the submenu link, “header” to indicate the corresponding name in <code>submenus</code> is only a group label and not a link to a web page, or “divider” to indicate placement of a bar for separating groups in a dropdown menu.</p>
+<pre class="sourceCode r"><code class="sourceCode r">genNavbar &lt;-<span class="st"> </span>function(<span class="dt">htmlfile =</span> <span class="st">&quot;navbar.html&quot;</span>, title, menu, submenus, files, 
+    <span class="dt">site.link =</span> <span class="st">&quot;&quot;</span>, <span class="dt">site.name =</span> <span class="st">&quot;Website&quot;</span>) {
+    
+    fillSubmenu &lt;-<span class="st"> </span>function(x, name, file) {
+        if (file[x] ==<span class="st"> &quot;divider&quot;</span>) 
+            <span class="kw">return</span>(<span class="st">&quot;              &lt;li class=</span><span class="ch">\&quot;</span><span class="st">divider</span><span class="ch">\&quot;</span><span class="st">&gt;&lt;/li&gt;</span><span class="ch">\n</span><span class="st">&quot;</span>)
+        if (file[x] ==<span class="st"> &quot;header&quot;</span>) 
+            <span class="kw">return</span>(<span class="kw">paste0</span>(<span class="st">&quot;              &lt;li class=</span><span class="ch">\&quot;</span><span class="st">nav-header</span><span class="ch">\&quot;</span><span class="st">&gt;&quot;</span>, name[x], 
+                <span class="st">&quot;&lt;/li&gt;</span><span class="ch">\n</span><span class="st">&quot;</span>))
+        <span class="kw">paste0</span>(<span class="st">&quot;              &lt;li&gt;&lt;a href=</span><span class="ch">\&quot;</span><span class="st">&quot;</span>, file[x], <span class="st">&quot;</span><span class="ch">\&quot;</span><span class="st">&gt;&quot;</span>, name[x], <span class="st">&quot;&lt;/a&gt;&lt;/li&gt;</span><span class="ch">\n</span><span class="st">&quot;</span>)
+    }
+    
+    fillMenu &lt;-<span class="st"> </span>function(x, menu, submenus, files) {
+        <span class="kw">paste0</span>(<span class="st">&quot;&lt;li class=</span><span class="ch">\&quot;</span><span class="st">dropdown</span><span class="ch">\&quot;</span><span class="st">&gt;</span><span class="ch">\n</span><span class="st">            &lt;a href=</span><span class="ch">\&quot;</span><span class="st">&quot;</span>, <span class="kw">gsub</span>(<span class="st">&quot; &quot;</span>, 
+            <span class="st">&quot;-&quot;</span>, <span class="kw">tolower</span>(menu[x])), <span class="st">&quot;</span><span class="ch">\&quot;</span><span class="st"> class=</span><span class="ch">\&quot;</span><span class="st">dropdown-toggle</span><span class="ch">\&quot;</span><span class="st"> data-toggle=</span><span class="ch">\&quot;</span><span class="st">dropdown</span><span class="ch">\&quot;</span><span class="st">&gt;&quot;</span>, 
+            menu[x], <span class="st">&quot; &lt;b class=</span><span class="ch">\&quot;</span><span class="st">caret</span><span class="ch">\&quot;</span><span class="st">&gt;&lt;/b&gt;&lt;/a&gt;</span><span class="ch">\n</span><span class="st">            &lt;ul class=</span><span class="ch">\&quot;</span><span class="st">dropdown-menu</span><span class="ch">\&quot;</span><span class="st">&gt;</span><span class="ch">\n</span><span class="st">&quot;</span>, 
+            <span class="kw">paste</span>(<span class="kw">sapply</span>(<span class="dv">1</span>:<span class="kw">length</span>(submenus[[x]]), fillSubmenu, <span class="dt">name =</span> submenus[[x]], 
+                <span class="dt">file =</span> files[[x]]), <span class="dt">sep =</span> <span class="st">&quot;&quot;</span>, <span class="dt">collapse =</span> <span class="st">&quot;&quot;</span>), <span class="st">&quot;            &lt;/ul&gt;</span><span class="ch">\n</span><span class="st">&quot;</span>, 
+            <span class="dt">collapse =</span> <span class="st">&quot;&quot;</span>)
+    }
+    
+    x &lt;-<span class="st"> </span><span class="kw">paste0</span>(<span class="st">&quot;&lt;div class=</span><span class="ch">\&quot;</span><span class="st">navbar navbar-default navbar-fixed-top</span><span class="ch">\&quot;</span><span class="st">&gt;</span><span class="ch">\n</span><span class="st">  &lt;div class=</span><span class="ch">\&quot;</span><span class="st">navbar-inner</span><span class="ch">\&quot;</span><span class="st">&gt;</span><span class="ch">\n</span><span class="st">    &lt;div class=</span><span class="ch">\&quot;</span><span class="st">container</span><span class="ch">\&quot;</span><span class="st">&gt;</span><span class="ch">\n</span><span class="st">      &lt;button type=</span><span class="ch">\&quot;</span><span class="st">button</span><span class="ch">\&quot;</span><span class="st"> class=</span><span class="ch">\&quot;</span><span class="st">btn btn-navbar</span><span class="ch">\&quot;</span><span class="st"> data-toggle=</span><span class="ch">\&quot;</span><span class="st">collapse</span><span class="ch">\&quot;</span><span class="st"> data-target=</span><span class="ch">\&quot;</span><span class="st">.nav-collapse</span><span class="ch">\&quot;</span><span class="st">&gt;</span><span class="ch">\n</span><span class="st">        &lt;span class=</span><span class="ch">\&quot;</span><span class="st">icon-bar</span><span class="ch">\&quot;</span><span class="st">&gt;&lt;/span&gt;</span><span class="ch">\n</span><span class="st">        &lt;span class=</span><span class="ch">\&quot;</span><span class="st">icon-bar</span><span class="ch">\&quot;</span><span class="st">&gt;&lt;/span&gt;</span><span class="ch">\n</span><span class="st">        &lt;span class=</span><span class="ch">\&quot;</span><span class="st">icon-bar</span><span class="ch">\&quot;</span><span class="st">&gt;&lt;/span&gt;</span><span class="ch">\n</span><span class="st">      &lt;/button&gt;</span><span class="ch">\n</span><span class="st">      &lt;a class=</span><span class="ch">\&quot;</span><span class="st">brand</span><span class="ch">\&quot;</span><span class="st"> href=</span><span class="ch">\&quot;</span><span class="st">/</span><span class="ch">\&quot;</span><span class="st">&gt;&quot;</span>, 
+        title, <span class="st">&quot;&lt;/a&gt;</span><span class="ch">\n</span><span class="st">      &lt;div class=</span><span class="ch">\&quot;</span><span class="st">nav-collapse collapse</span><span class="ch">\&quot;</span><span class="st">&gt;</span><span class="ch">\n</span><span class="st">        &lt;ul class=</span><span class="ch">\&quot;</span><span class="st">nav</span><span class="ch">\&quot;</span><span class="st">&gt;</span><span class="ch">\n</span><span class="st">          &lt;li&gt;&lt;a href=</span><span class="ch">\&quot;</span><span class="st">/</span><span class="ch">\&quot;</span><span class="st">&gt;Home&lt;/a&gt;&lt;/li&gt;</span><span class="ch">\n</span><span class="st">          &quot;</span>, 
+        <span class="kw">paste</span>(<span class="kw">sapply</span>(<span class="dv">1</span>:<span class="kw">length</span>(menu), fillMenu, <span class="dt">menu =</span> menu, <span class="dt">submenus =</span> submenus, 
+            <span class="dt">files =</span> files), <span class="dt">sep =</span> <span class="st">&quot;&quot;</span>, <span class="dt">collapse =</span> <span class="st">&quot;</span><span class="ch">\n</span><span class="st">          &quot;</span>), <span class="st">&quot;        &lt;/ul&gt;</span><span class="ch">\n</span><span class="st">        &lt;ul class=</span><span class="ch">\&quot;</span><span class="st">nav pull-right</span><span class="ch">\&quot;</span><span class="st">&gt;</span><span class="ch">\n</span><span class="st">          &lt;a class=</span><span class="ch">\&quot;</span><span class="st">btn btn-primary</span><span class="ch">\&quot;</span><span class="st"> href=</span><span class="ch">\&quot;</span><span class="st">&quot;</span>, 
+        site.link, <span class="st">&quot;</span><span class="ch">\&quot;</span><span class="st">&gt;</span><span class="ch">\n</span><span class="st">            &lt;i class=</span><span class="ch">\&quot;</span><span class="st">fa fa-github fa-lg</span><span class="ch">\&quot;</span><span class="st">&gt;&lt;/i&gt;</span><span class="ch">\n</span><span class="st">            &quot;</span>, 
+        site.name, <span class="st">&quot;</span><span class="ch">\n</span><span class="st">          &lt;/a&gt;</span><span class="ch">\n</span><span class="st">        &lt;/ul&gt;</span><span class="ch">\n</span><span class="st">      &lt;/div&gt;&lt;!--/.nav-collapse --&gt;</span><span class="ch">\n</span><span class="st">    &lt;/div&gt;</span><span class="ch">\n</span><span class="st">  &lt;/div&gt;</span><span class="ch">\n</span><span class="st">&lt;/div&gt;</span><span class="ch">\n</span><span class="st">&quot;</span>, 
+        <span class="dt">collpase =</span> <span class="st">&quot;&quot;</span>)
+    <span class="kw">sink</span>(htmlfile)
+    <span class="kw">cat</span>(x)
+    <span class="kw">sink</span>()
+    x
+}</code></pre>
+</div>
+<div id="genoutyaml" class="section level4">
+<h4>genOutyaml</h4>
+<p><code>genOutyaml</code> generates the <code>_out.yaml</code> file for yaml front-matter common to all html files in the project website. The file should be written to the project’s <code>docs/Rmd</code> directory. <code>lib</code> specifies the library directory for any associated files. yaml <code>includes</code> for external html common to all project web pages in the site can also be specified with <code>header</code>, <code>before_body</code>, and <code>after_body</code>. These can be specified by file basename only (no path) and the function assumes these files are in the <code>docs/Rmd/include</code> directory. At this time all external libraries must be provided by the user, for example in <code>docs/Rmd/libs</code>. It is recommended. See the project repo <a href="https://github.com/leonawicz/ProjectManagement/tree/gh-pages" title="gh-pages">gh-pages</a> branch for an example.</p>
+<pre class="sourceCode r"><code class="sourceCode r">genOutyaml &lt;-<span class="st"> </span>function(file, <span class="dt">theme =</span> <span class="st">&quot;cosmo&quot;</span>, <span class="dt">highlight =</span> <span class="st">&quot;zenburn&quot;</span>, <span class="dt">lib =</span> <span class="ot">NULL</span>, 
+    <span class="dt">header =</span> <span class="ot">NULL</span>, <span class="dt">before_body =</span> <span class="ot">NULL</span>, <span class="dt">after_body =</span> <span class="ot">NULL</span>) {
+    output.yaml &lt;-<span class="st"> </span><span class="kw">paste0</span>(<span class="st">&quot;html_document:</span><span class="ch">\n</span><span class="st">  self_contained: false</span><span class="ch">\n</span><span class="st">  theme: &quot;</span>, 
+        theme, <span class="st">&quot;</span><span class="ch">\n</span><span class="st">  highlight: &quot;</span>, highlight, <span class="st">&quot;</span><span class="ch">\n</span><span class="st">  mathjax: null</span><span class="ch">\n</span><span class="st">  toc_depth: 2</span><span class="ch">\n</span><span class="st">&quot;</span>)
+    if (!<span class="kw">is.null</span>(lib)) 
+        output.yaml &lt;-<span class="st"> </span><span class="kw">paste0</span>(output.yaml, <span class="st">&quot;  lib_dir: &quot;</span>, lib, <span class="st">&quot;</span><span class="ch">\n</span><span class="st">&quot;</span>)
+    output.yaml &lt;-<span class="st"> </span><span class="kw">paste0</span>(output.yaml, <span class="st">&quot;  includes:</span><span class="ch">\n</span><span class="st">&quot;</span>)
+    if (!<span class="kw">is.null</span>(header)) 
+        output.yaml &lt;-<span class="st"> </span><span class="kw">paste0</span>(output.yaml, <span class="st">&quot;    in_header: include/&quot;</span>, header, 
+            <span class="st">&quot;</span><span class="ch">\n</span><span class="st">&quot;</span>)
+    if (!<span class="kw">is.null</span>(before_body)) 
+        output.yaml &lt;-<span class="st"> </span><span class="kw">paste0</span>(output.yaml, <span class="st">&quot;    before_body: include/&quot;</span>, before_body, 
+            <span class="st">&quot;</span><span class="ch">\n</span><span class="st">&quot;</span>)
+    if (!<span class="kw">is.null</span>(after_body)) 
+        output.yaml &lt;-<span class="st"> </span><span class="kw">paste0</span>(output.yaml, <span class="st">&quot;    after_body: include/&quot;</span>, after_body, 
+            <span class="st">&quot;</span><span class="ch">\n</span><span class="st">&quot;</span>)
+    <span class="kw">sink</span>(file)
+    <span class="kw">cat</span>(output.yaml)
+    <span class="kw">sink</span>()
+    output.yaml
+}</code></pre>
+</div>
+
+
+</div>
+
+<script>
+
+// add bootstrap table styles to pandoc tables
+$(document).ready(function () {
+  $('tr.header').parent('thead').parent('table').addClass('table table-condensed');
+});
+
+</script>
+
+
+</body>
+</html>

@@ -1,0 +1,182 @@
+<!DOCTYPE html>
+
+<html xmlns="http://www.w3.org/1999/xhtml">
+
+<head>
+
+<meta charset="utf-8">
+<meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+<meta name="generator" content="pandoc" />
+
+
+
+<title></title>
+
+<script src="libs/jquery-1.11.0/jquery.min.js"></script>
+<meta name="viewport" content="width=device-width, initial-scale=1.0" />
+<link href="libs/bootstrap-2.3.2/css/cosmo.min.css" rel="stylesheet" />
+<link href="libs/bootstrap-2.3.2/css/bootstrap-responsive.min.css" rel="stylesheet" />
+<script src="libs/bootstrap-2.3.2/js/bootstrap.min.js"></script>
+<style type="text/css">
+
+/* padding for bootstrap navbar */
+body {
+  padding-top: 50px;
+  padding-bottom: 40px;
+}
+@media (max-width: 979px) {
+  body {
+    padding-top: 0;
+  }
+}
+
+/* offset scroll position for anchor links (for fixed navbar)  */
+@media (min-width: 980px) {
+  .section h2 {
+    padding-top: 52px;
+    margin-top: -52px;
+  }
+  .section h3 {
+    padding-top: 52px;
+    margin-top: -52px;
+  }
+}
+
+
+/* don't use link color in navbar */
+.dropdown-menu>li>a {
+  color: black;
+}
+
+/* some padding for disqus */
+#disqus_thread {
+  margin-top: 45px;
+}
+
+</style>
+
+<link rel="stylesheet" href="libs/font-awesome-4.1.0/css/font-awesome.min.css"/>
+
+
+<style type="text/css">code{white-space: pre;}</style>
+<style type="text/css">
+table.sourceCode, tr.sourceCode, td.lineNumbers, td.sourceCode {
+  margin: 0; padding: 0; vertical-align: baseline; border: none; }
+table.sourceCode { width: 100%; line-height: 100%; background-color: #303030; color: #cccccc; }
+td.lineNumbers { text-align: right; padding-right: 4px; padding-left: 4px; }
+td.sourceCode { padding-left: 5px; }
+pre, code { color: #cccccc; background-color: #303030; }
+code > span.kw { color: #f0dfaf; }
+code > span.dt { color: #dfdfbf; }
+code > span.dv { color: #dcdccc; }
+code > span.bn { color: #dca3a3; }
+code > span.fl { color: #c0bed1; }
+code > span.ch { color: #dca3a3; }
+code > span.st { color: #cc9393; }
+code > span.co { color: #7f9f7f; }
+code > span.ot { color: #efef8f; }
+code > span.al { color: #ffcfaf; }
+code > span.fu { color: #efef8f; }
+code > span.er { color: #c3bf9f; }
+</style>
+<style type="text/css">
+  pre:not([class]) {
+    background-color: white;
+  }
+</style>
+
+
+
+</head>
+
+<body>
+
+<style type = "text/css">
+.main-container {
+  max-width: 940px;
+  margin-left: auto;
+  margin-right: auto;
+}
+</style>
+<div class="container-fluid main-container">
+
+<div class="navbar navbar-default navbar-fixed-top">
+  <div class="navbar-inner">
+    <div class="container">
+      <button type="button" class="btn btn-navbar" data-toggle="collapse" data-target=".nav-collapse">
+        <span class="icon-bar"></span>
+        <span class="icon-bar"></span>
+        <span class="icon-bar"></span>
+      </button>
+      <a class="brand" href="/">projman</a>
+      <div class="nav-collapse collapse">
+        <ul class="nav">
+          <li><a href="/">Home</a></li>
+          <li class="dropdown">
+            <a href="r-code" class="dropdown-toggle" data-toggle="dropdown">R Code <b class="caret"></b></a>
+            <ul class="dropdown-menu">
+              <li><a href="objects.html">Default objects</a></li>
+              <li class="divider"></li>
+              <li class="nav-header">Functions</li>
+              <li><a href="func_new.html">Start a new project</a></li>
+              <li><a href="func_rmd.html">Working with Rmd files</a></li>
+              <li><a href="func_website.html">Make a project website</a></li>
+            </ul>
+
+          <li class="dropdown">
+            <a href="this-project" class="dropdown-toggle" data-toggle="dropdown">This Project <b class="caret"></b></a>
+            <ul class="dropdown-menu">
+              <li><a href="proj_sankey.html">Sankey diagram</a></li>
+            </ul>
+
+          <li class="dropdown">
+            <a href="all-projects" class="dropdown-toggle" data-toggle="dropdown">All Projects <b class="caret"></b></a>
+            <ul class="dropdown-menu">
+              <li><a href="proj_sankey.html">Projects diagram</a></li>
+              <li class="divider"></li>
+              <li><a href="index.html">About</a></li>
+              <li><a href="index.html">Other</a></li>
+            </ul>
+        </ul>
+        <ul class="nav pull-right">
+          <a class="btn btn-primary" href="">
+            <i class="fa fa-github fa-lg"></i>
+            Website
+          </a>
+        </ul>
+      </div><!--/.nav-collapse -->
+    </div>
+  </div>
+</div>
+
+
+
+<div id="template-objects" class="section level3">
+<h3>Template objects</h3>
+<p>Character string objects are defined which are used to fill templates when generating new files for a project. A tentative default path is also included since this code relates to my own work.</p>
+<pre class="sourceCode r"><code class="sourceCode r"><span class="co"># For package &#39;projman&#39;</span>
+
+<span class="co"># data</span>
+rmd.knitr.setup &lt;-<span class="st"> &quot;</span><span class="ch">\n</span><span class="st">```{r knitr_setup, echo=FALSE}</span><span class="ch">\n</span><span class="st">opts_chunk$set(cache=FALSE, eval=FALSE, tidy=TRUE, messages=FALSE, warnings=FALSE)</span><span class="ch">\n</span><span class="st">read_chunk(</span><span class="ch">\&quot;\&quot;</span><span class="st">)</span><span class="ch">\n</span><span class="st">```</span><span class="ch">\n</span><span class="st">&quot;</span>
+
+rmd.template &lt;-<span class="st"> &quot;</span><span class="ch">\n\n</span><span class="st">## Introduction</span><span class="ch">\n</span><span class="st">ADD_TEXT_HERE</span><span class="ch">\n\n</span><span class="st">### Motivation</span><span class="ch">\n</span><span class="st">ADD_TEXT_HERE</span><span class="ch">\n\n</span><span class="st">### Details</span><span class="ch">\n</span><span class="st">ADD_TEXT_HERE</span><span class="ch">\n\n</span><span class="st">#### Capabilities</span><span class="ch">\n</span><span class="st">ADD_TEXT_HERE</span><span class="ch">\n\n</span><span class="st">#### Limitations</span><span class="ch">\n</span><span class="st">ADD_TEXT_HERE</span><span class="ch">\n\n</span><span class="st">## Related items</span><span class="ch">\n\n</span><span class="st">### Files and Data</span><span class="ch">\n</span><span class="st">ADD_TEXT_HERE</span><span class="ch">\n\n</span><span class="st">### Code flow</span><span class="ch">\n</span><span class="st">ADD_TEXT_HERE</span><span class="ch">\n\n</span><span class="st">```{r code_sankey, echo=F, eval=T}</span><span class="ch">\n</span><span class="st">```</span><span class="ch">\n\n</span><span class="st">```{r code_sankey_embed, echo=F, eval=T, comment=NA, results=</span><span class="ch">\&quot;</span><span class="st">asis</span><span class="ch">\&quot;</span><span class="st">, tidy=F}</span><span class="ch">\n</span><span class="st">```</span><span class="ch">\n\n</span><span class="st">## R code</span><span class="ch">\n\n</span><span class="st">### Setup</span><span class="ch">\n</span><span class="st">ADD_TEXT_HERE: EXAMPLE</span><span class="ch">\n</span><span class="st">Setup consists of loading required **R** packages and additional files, preparing any command line arguments for use, and defining functions and other **R** objects.</span><span class="ch">\n\n</span><span class="st">&quot;</span>
+
+<span class="co"># default path</span>
+matt.proj.path &lt;-<span class="st"> &quot;C:/github&quot;</span></code></pre>
+</div>
+
+
+</div>
+
+<script>
+
+// add bootstrap table styles to pandoc tables
+$(document).ready(function () {
+  $('tr.header').parent('thead').parent('table').addClass('table table-condensed');
+});
+
+</script>
+
+
+</body>
+</html>
