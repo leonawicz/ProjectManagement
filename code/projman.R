@@ -3,9 +3,6 @@
 # For package 'projman'
 
 # data
-rmd.header <- 
-'---\ntitle: INSERT_TITLE_HERE\nauthor: Matthew Leonawicz\noutput:\n  html_document:\n    toc: true\n    theme: united\n    keep_md: true\n  ioslides_presentation:\n    widescreen: true\n    keep_md: true\n  pdf_document:\n    toc: true\n    highlight: zenburn\n---\n'
-
 rmd.knitr.setup <-
 '\n```{r knitr_setup, echo=FALSE}
 opts_chunk$set(cache=FALSE, eval=FALSE, tidy=TRUE, messages=FALSE, warnings=FALSE)
@@ -162,9 +159,52 @@ chunkNames <- function(path, rChunkID="# @knitr", rmdChunkID="```{r", append.new
 	sapply(1:length(rmd), appendRmd, rmd.files=rmd, rChunks=l1[files.ind], rmdChunks=l2, ID=rmdChunkID)
 }
 
+# @knitr function5
+genNavbar <- function(htmlfile="navbar.html", title, menu, submenus, files, site.link="", site.name="Website"){
+
+	fillSubmenu <- function(x, name, file){
+		if(file[x]=="divider") return('              <li class="divider"></li>\n')
+		if(file[x]=="header") return(paste0('              <li class="nav-header">', name[x], '</li>\n'))
+		paste0('              <li><a href="', file[x], '">', name[x], '</a></li>\n')
+	}
+	
+	fillMenu <- function(x, menu, submenus, files){
+		paste0(
+		'<li class="dropdown">\n            <a href="', 
+			gsub(" ", "-", tolower(menu[x])), 
+			'" class="dropdown-toggle" data-toggle="dropdown">', menu[x], 
+			' <b class="caret"></b></a>\n            <ul class="dropdown-menu">\n',
+			paste(sapply(1:length(submenus[[x]]), fillSubmenu, name=submenus[[x]], file=files[[x]]), sep="", collapse=""),
+			'            </ul>\n          </ul>\n', collapse="")
+	}
+	
+	x <- paste0(
+		'<div class="navbar navbar-default navbar-fixed-top">\n  <div class="navbar-inner">\n    <div class="container">\n      <button type="button" class="btn btn-navbar" data-toggle="collapse" data-target=".nav-collapse">\n        <span class="icon-bar"></span>\n        <span class="icon-bar"></span>\n        <span class="icon-bar"></span>\n      </button>\n      <a class="brand" href="/">', title, '</a>\n      <div class="nav-collapse collapse">\n        <ul class="nav">\n          <li><a href="/">Home</a></li>\n          ',
+		paste(sapply(1:length(menu), fillMenu, menu=menu, submenus=submenus, files=files), sep="", collapse="\n          "),
+		'        </ul>\n        <ul class="nav pull-right">\n          <a class="btn btn-primary" href="', site.link, '">\n            <i class="fa fa-github fa-lg"></i>\n            ',site.name,'\n          </a>\n        </ul>\n      </div><!--/.nav-collapse -->\n    </div>\n  </div>\n</div>\n',
+		collpase="")
+	sink(htmlfile)
+	cat(x)
+	sink()
+	x
+}
+
+# @knitr function6
+genOutyaml <- function(file, theme="cosmo", highlight="zenburn", lib=NULL, header=NULL, before_body=NULL, after_body=NULL){
+	output.yaml <- paste0('html_document:\n  self_contained: false\n  theme: ', theme, '\n  highlight: ', highlight, '\n  mathjax: null\n  toc_depth: 2\n')
+	if(!is.null(lib)) output.yaml <- paste0(output.yaml, '  lib_dir: ', lib, '\n')
+	output.yaml <- paste0(output.yaml, '  includes:\n')
+	if(!is.null(header)) output.yaml <- paste0(output.yaml, '    in_header: include/', header, '\n')
+	if(!is.null(before_body)) output.yaml <- paste0(output.yaml, '    before_body: include/', before_body, '\n')
+	if(!is.null(after_body)) output.yaml <- paste0(output.yaml, '    after_body: include/', after_body, '\n')
+	sink(file)
+	cat(output.yaml)
+	sink()
+	output.yaml
+}
 
 # @knitr testing
-proj.name <- "TEST_PROJECT" #"ProjectManagement"
+proj.name <- "ProjectManagement"
 proj.location <- matt.proj.path
 
 newProject(proj.name, proj.location, overwrite=T)
@@ -172,3 +212,20 @@ newProject(proj.name, proj.location, overwrite=T)
 genRmd(path=file.path(matt.proj.path, proj.name, "code"), header=rmdHeader(), update.header=T)
 
 chunkNames(path=file.path(matt.proj.path, proj.name, "code"), append.new=TRUE)
+
+proj.title <- "projman"
+proj.menu <- c("R Code", "This Project", "All Projects")
+proj.submenu <- list(
+	c("Default objects", "divider", "Functions", "Start a new project", "Working with Rmd files", "Make a project website"),
+	c("Sankey diagram"),
+	c("Projects diagram", "divider", "About", "Other")
+)
+
+proj.files <- list(
+	c("xyz.html", "divider", "header", "xyz.html", "xyz.html", "xyz.html"),
+	c("xyz.html"),
+	c("xyz.html", "divider", "xyz.html", "xyz.html")
+)
+
+genNavbar(htmlfile=file.path(proj.location, proj.name, "docs/html/include/navbar.html"), title=proj.title, menu=proj.menu, submenus=proj.submenu, files=proj.files)
+genOutyaml(file=file.path(proj.location, proj.name, "docs/html/_output.yaml"), lib="libs", before_body="navbar.html")
