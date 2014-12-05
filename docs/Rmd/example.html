@@ -1,0 +1,214 @@
+<!DOCTYPE html>
+
+<html xmlns="http://www.w3.org/1999/xhtml">
+
+<head>
+
+<meta charset="utf-8">
+<meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+<meta name="generator" content="pandoc" />
+
+<meta name="author" content="Matthew Leonawicz" />
+
+
+<title>Project Management</title>
+
+<script src="libs/jquery-1.11.0/jquery.min.js"></script>
+<meta name="viewport" content="width=device-width, initial-scale=1.0" />
+<link href="libs/bootstrap-2.3.2/css/united.min.css" rel="stylesheet" />
+<link href="libs/bootstrap-2.3.2/css/bootstrap-responsive.min.css" rel="stylesheet" />
+<script src="libs/bootstrap-2.3.2/js/bootstrap.min.js"></script>
+<style type="text/css">
+
+/* padding for bootstrap navbar */
+body {
+  padding-top: 50px;
+  padding-bottom: 40px;
+}
+@media (max-width: 979px) {
+  body {
+    padding-top: 0;
+  }
+}
+
+/* offset scroll position for anchor links (for fixed navbar)  */
+@media (min-width: 980px) {
+  .section h2 {
+    padding-top: 52px;
+    margin-top: -52px;
+  }
+  .section h3 {
+    padding-top: 52px;
+    margin-top: -52px;
+  }
+}
+
+
+/* don't use link color in navbar */
+.dropdown-menu>li>a {
+  color: black;
+}
+
+/* some padding for disqus */
+#disqus_thread {
+  margin-top: 45px;
+}
+
+</style>
+
+<link rel="stylesheet" href="libs/font-awesome-4.1.0/css/font-awesome.min.css"/>
+
+
+<style type="text/css">code{white-space: pre;}</style>
+<style type="text/css">
+table.sourceCode, tr.sourceCode, td.lineNumbers, td.sourceCode {
+  margin: 0; padding: 0; vertical-align: baseline; border: none; }
+table.sourceCode { width: 100%; line-height: 100%; background-color: #303030; color: #cccccc; }
+td.lineNumbers { text-align: right; padding-right: 4px; padding-left: 4px; }
+td.sourceCode { padding-left: 5px; }
+pre, code { color: #cccccc; background-color: #303030; }
+code > span.kw { color: #f0dfaf; }
+code > span.dt { color: #dfdfbf; }
+code > span.dv { color: #dcdccc; }
+code > span.bn { color: #dca3a3; }
+code > span.fl { color: #c0bed1; }
+code > span.ch { color: #dca3a3; }
+code > span.st { color: #cc9393; }
+code > span.co { color: #7f9f7f; }
+code > span.ot { color: #efef8f; }
+code > span.al { color: #ffcfaf; }
+code > span.fu { color: #efef8f; }
+code > span.er { color: #c3bf9f; }
+</style>
+<style type="text/css">
+  pre:not([class]) {
+    background-color: white;
+  }
+</style>
+
+
+
+</head>
+
+<body>
+
+<style type = "text/css">
+.main-container {
+  max-width: 940px;
+  margin-left: auto;
+  margin-right: auto;
+}
+</style>
+<div class="container-fluid main-container">
+
+<div class="navbar navbar-default navbar-fixed-top">
+  <div class="navbar-inner">
+    <div class="container">
+      <button type="button" class="btn btn-navbar" data-toggle="collapse" data-target=".nav-collapse">
+        <span class="icon-bar"></span>
+        <span class="icon-bar"></span>
+        <span class="icon-bar"></span>
+      </button>
+      <a class="brand" href="/">Project Management</a>
+      <div class="nav-collapse collapse">
+        <ul class="nav">
+          <li><a href="/">Home</a></li>
+          <li class="dropdown">
+            <a href="projman" class="dropdown-toggle" data-toggle="dropdown">projman <b class="caret"></b></a>
+            <ul class="dropdown-menu">
+              <li class="nav-header">About projman</li>
+              <li><a href="proj_intro.html">Introduction</a></li>
+              <li><a href="proj_sankey.html">Related items</a></li>
+              <li><a href="example.html">Example usage</a></li>
+            </ul>
+
+          <li class="dropdown">
+            <a href="r-code" class="dropdown-toggle" data-toggle="dropdown">R Code <b class="caret"></b></a>
+            <ul class="dropdown-menu">
+              <li><a href="objects.html">Default objects</a></li>
+              <li class="divider"></li>
+              <li class="nav-header">Functions</li>
+              <li><a href="func_new.html">Start a new project</a></li>
+              <li><a href="func_rmd.html">Working with Rmd files</a></li>
+              <li><a href="func_website.html">Make a project website</a></li>
+            </ul>
+
+          <li class="dropdown">
+            <a href="all-projects" class="dropdown-toggle" data-toggle="dropdown">All Projects <b class="caret"></b></a>
+            <ul class="dropdown-menu">
+              <li><a href="proj_sankey.html">Projects diagram</a></li>
+              <li class="divider"></li>
+              <li><a href="index.html">About</a></li>
+              <li><a href="index.html">Other</a></li>
+            </ul>
+        </ul>
+        <ul class="nav pull-right">
+          <a class="btn btn-primary" href="https://github.com/leonawicz/ProjectManagement">
+            <i class="fa fa-github fa-lg"></i>
+            Github
+          </a>
+        </ul>
+      </div><!--/.nav-collapse -->
+    </div>
+  </div>
+</div>
+
+<div id="header">
+<h1 class="title">Project Management</h1>
+<h4 class="author"><em>Matthew Leonawicz</em></h4>
+</div>
+
+
+<div id="example-usage" class="section level2">
+<h2>Example usage</h2>
+<p>This is how <code>projman</code> functions can be used to create and manipulate a project, using the <code>projman</code> project itself as an example. The code below is not intended to be run directly, but servers as a guide.</p>
+</div>
+<div id="r-code" class="section level2">
+<h2>R code</h2>
+<div id="create-a-project" class="section level3">
+<h3>Create a project</h3>
+<p>Note that I use my own default path for storing a project when creating a new project. See the <code>projman</code> <a href="objects.html" title="default objects">default objects</a> and <a href="func_new.html" title="new project">creating a new project</a> for more details.</p>
+<pre class="sourceCode r"><code class="sourceCode r">proj.name &lt;-<span class="st"> &quot;ProjectManagement&quot;</span>  <span class="co"># Project name</span>
+proj.location &lt;-<span class="st"> </span>matt.proj.path  <span class="co"># Use default file location</span>
+
+<span class="kw">newProject</span>(proj.name, proj.location, <span class="dt">overwrite =</span> T)  <span class="co"># create a new project</span>
+
+rfile.path &lt;-<span class="st"> </span><span class="kw">file.path</span>(matt.proj.path, proj.name, <span class="st">&quot;code&quot;</span>)  <span class="co"># path to R scripts</span>
+
+<span class="co"># generate Rmd files from existing R scripts using default yaml front-matter</span>
+<span class="kw">genRmd</span>(<span class="dt">path =</span> rfile.path, <span class="dt">header =</span> <span class="kw">rmdHeader</span>())</code></pre>
+</div>
+<div id="update-a-project" class="section level3">
+<h3>Update a project</h3>
+<p>Functions can be used to create, read, or update. See <a href="func_rmd.html" title="Rmd-related functions">Rmd-related functions</a>.</p>
+<pre class="sourceCode r"><code class="sourceCode r"><span class="co"># update yaml front-matter only</span>
+<span class="kw">genRmd</span>(<span class="dt">path =</span> rfile.path, <span class="dt">header =</span> <span class="kw">rmdHeader</span>(), <span class="dt">update.header =</span> <span class="ot">TRUE</span>)
+
+<span class="co"># obtain knitr code chunk names in existing R scripts</span>
+<span class="kw">chunkNames</span>(<span class="dt">path =</span> <span class="kw">file.path</span>(matt.proj.path, proj.name, <span class="st">&quot;code&quot;</span>))
+
+<span class="co"># append new knitr code chunk names found in existing R scripts to any Rmd</span>
+<span class="co"># files which are outdated</span>
+<span class="kw">chunkNames</span>(<span class="dt">path =</span> <span class="kw">file.path</span>(matt.proj.path, proj.name, <span class="st">&quot;code&quot;</span>), <span class="dt">append.new =</span> <span class="ot">TRUE</span>)</code></pre>
+</div>
+<div id="prepare-a-project-website" class="section level3">
+<h3>Prepare a project website</h3>
+<p>With some additional project-specific setup, files can be generated which will assist in creating a project website. See <a href="func_website.html" title="website-related functions">website-related functions</a>.</p>
+</div>
+</div>
+
+
+</div>
+
+<script>
+
+// add bootstrap table styles to pandoc tables
+$(document).ready(function () {
+  $('tr.header').parent('thead').parent('table').addClass('table table-condensed');
+});
+
+</script>
+
+
+</body>
+</html>
