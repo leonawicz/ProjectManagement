@@ -2,7 +2,7 @@
 ## Eclipse
 #################
 
-libs
+libs/
 .Rhistory
 *.pydevproject
 .project
