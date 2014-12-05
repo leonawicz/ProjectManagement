@@ -54,7 +54,7 @@ The vectors are combined in a data frame and the `igraph` package is used to gro
 ```{r igraph}
 ```
 
-The `rchats` package has functionality for turning this into an interactive D3 visualization,
+The `rcharts` package has functionality for turning this into an interactive D3 visualization,
 which is nice, particularly the mouseover interactivity, since there can be so much visual overlap among projects.
 Additional javascript can be included to alter the colors.
 My strengths are in **R** so I borrowed this code snippet from online,
@@ -62,6 +62,8 @@ but if you have skills with javascript and D3 you could probably do better with 
 
 ```{r rcharts}
 ```
+
+Embed the chart in a document when rendering.
 
 ```{r sankey_embed, eval=T, comment=NA, results="asis", tidy=F}
 ```

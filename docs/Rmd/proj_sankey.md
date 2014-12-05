@@ -23,7 +23,18 @@ Two packages are required.
 
 ```r
 require(igraph)
+```
+
+```
+## Loading required package: igraph
+```
+
+```r
 require(rCharts)
+```
+
+```
+## Loading required package: rCharts
 ```
 
 Current projects are hardcoded and are updated by hand when my work changes. A necessary evil.
@@ -114,7 +125,7 @@ gw$source <- as.character(gw$source)
 gw$target <- as.character(gw$target)
 ```
 
-The `rchats` package has functionality for turning this into an interactive D3 visualization,
+The `rcharts` package has functionality for turning this into an interactive D3 visualization,
 which is nice, particularly the mouseover interactivity, since there can be so much visual overlap among projects.
 Additional javascript can be included to alter the colors.
 My strengths are in **R** so I borrowed this code snippet from online,
@@ -131,6 +142,8 @@ p$set(data = gw, nodeWidth = 15, nodePadding = 10, layout = 32, width = 900,
 
 p$setTemplate(afterScript = "\n<script>\n  var cscale = d3.scale.category20b();\n  d3.selectAll('#{{ chartId }} svg path.link')\n    .style('stroke', function(d){\n      return cscale(d.source.name);\n    })\n  d3.selectAll('#{{ chartId }} svg .node rect')\n    .style('fill', function(d){\n      return cscale(d.name)\n    })\n    .style('stroke', 'none')\n</script>\n")
 ```
+
+Embed the chart in a document when rendering.
 
 
 ```r
@@ -159,7 +172,7 @@ p$show("iframesrc", cdn=T)
   &lt;/head&gt;
   &lt;body &gt;
     
-    &lt;div id = &#039;chart660744c2047&#039; class = &#039;rChart d3_sankey&#039;&gt;&lt;/div&gt;    
+    &lt;div id = &#039;chart14c43129305c&#039; class = &#039;rChart d3_sankey&#039;&gt;&lt;/div&gt;    
     ï»¿&lt;!--Attribution:
 Mike Bostock https://github.com/d3/d3-plugins/tree/master/sankey
 Mike Bostock http://bost.ocks.org/mike/sankey/
@@ -168,7 +181,7 @@ Mike Bostock http://bost.ocks.org/mike/sankey/
 &lt;script&gt;
 (function(){
 var params = {
- &quot;dom&quot;: &quot;chart660744c2047&quot;,
+ &quot;dom&quot;: &quot;chart14c43129305c&quot;,
 &quot;width&quot;:    900,
 &quot;height&quot;:    800,
 &quot;data&quot;: {
@@ -186,7 +199,7 @@ var params = {
 &quot;top&quot;:     20 
 },
 &quot;title&quot;: &quot;Matt&#039;s Projects&quot;,
-&quot;id&quot;: &quot;chart660744c2047&quot; 
+&quot;id&quot;: &quot;chart14c43129305c&quot; 
 };
 
 params.units ? units = &quot; &quot; + params.units : units = &quot;&quot;;
@@ -306,11 +319,11 @@ node.append(&quot;text&quot;)
     
     &lt;script&gt;
       var cscale = d3.scale.category20b();
-      d3.selectAll(&#039;#chart660744c2047 svg path.link&#039;)
+      d3.selectAll(&#039;#chart14c43129305c svg path.link&#039;)
         .style(&#039;stroke&#039;, function(d){
           return cscale(d.source.name);
         })
-      d3.selectAll(&#039;#chart660744c2047 svg .node rect&#039;)
+      d3.selectAll(&#039;#chart14c43129305c svg .node rect&#039;)
         .style(&#039;fill&#039;, function(d){
           return cscale(d.name)
         })
@@ -318,7 +331,7 @@ node.append(&quot;text&quot;)
     &lt;/script&gt;
         
   &lt;/body&gt;
-&lt;/html&gt; ' scrolling='no' frameBorder='0' seamless class='rChart  http://timelyportfolio.github.io/rCharts_d3_sankey/libraries/widgets/d3_sankey  ' id='iframe-chart660744c2047'> </iframe>
+&lt;/html&gt; ' scrolling='no' frameBorder='0' seamless class='rChart  http://timelyportfolio.github.io/rCharts_d3_sankey/libraries/widgets/d3_sankey  ' id='iframe-chart14c43129305c'> </iframe>
  <style>iframe.rChart{ width: 100%; height: 400px;}</style>
 <style>iframe.rChart{ width: 100%; height: 840px;}</style>
 

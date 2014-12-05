@@ -16,7 +16,7 @@ read_chunk("../../code/example.R")
 
 ## Example usage
 This is how `projman` functions can be used to create and manipulate a project, using the `projman` project itself as an example.
-The code below is not intended to be run directly, but servers as a guide.
+The code below is not intended to be run directly, but serves as a guide.
 
 ## R code
 
@@ -37,5 +37,5 @@ Functions can be used to create, read, or update. See [Rmd-related functions](fu
 With some additional project-specific setup, files can be generated which will assist in creating a project website.
 See [website-related functions](func_website.html "website-related functions").
 
-```{r ex_website_project}
+```{r ex_website}
 ```
