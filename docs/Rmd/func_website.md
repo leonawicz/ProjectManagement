@@ -16,7 +16,7 @@ or "divider" to indicate placement of a bar for separating groups in a dropdown 
 
 ```r
 genNavbar <- function(htmlfile = "navbar.html", title, menu, submenus, files, 
-    site.link = "", site.name = "Website") {
+    site.link = "", site.name = "Github") {
     
     fillSubmenu <- function(x, name, file) {
         if (file[x] == "divider") 

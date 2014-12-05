@@ -5,46 +5,61 @@ Matthew Leonawicz
 
 
 ## Introduction
-ADD_TEXT_HERE
+I have begun using a Sankey diagram to illustrate various types of connections among my projects.
+Here the purpose is to show the code used to create the project hierarchy graph shows elsewhere (and below).
 
 ### Motivation
-ADD_TEXT_HERE
+I have created this diagram showing project and collaborator relationships that occur in my current work as part of this `projman` Project Management Project.
+However, this is a special case shown here.
+In general, the reason for folding this type of graph into all of my individual projects as part of project management
+is to show code and data relationships that exist for a specific project.
+For example, `projman` has its own code flow diagram as do my other projects.
+But here the focus is on the particular project hierarchy diagram that is part of this project.
 
-### Details
-ADD_TEXT_HERE
-
-#### Capabilities
-ADD_TEXT_HERE
-
-#### Limitations
-ADD_TEXT_HERE
-
-## Project hierarchy R code
-Here is the code used to generate the current project hierarchy Sankey diagram.
-Current projects are hardcoded and are updated by hand when my work changes.
+## Project hierarchy **R** code
+Here is the code used to generate the current project hierarchy diagram.
+Two packages are required.
 
 
 ```r
 require(igraph)
 require(rCharts)
+```
 
-proj.mp <- c("Alfresco Noatak", "Alfresco Statewide", "Spatial Lightning Analysis", "Data Extraction and Uncertainty Analysis", "Growing Season", "Mussel Project", "Land Carbon")
-proj.etal <- c("Alfresco CRU/GCM Experimental Design", "Bird Project", "NWT/Comm. Charts DS", "Sea Ice Edge Maps and Spinoff Projects", "Shiny App Server Migration")
-proj.m <- c("CMIP3/CMIP5 GCM Comparisons", "Effective Spatial Scale Analysis", "Randscape Development", "Alfresco Outputs", "Projman")
-proj.ongoing <- c("SNAP Data QA/QC", "Training/Supervision", "R Shiny Apps General Maintenance", "New App Development", "SNAP Tech Blog", "Continuing Education")
+Current projects are hardcoded and are updated by hand when my work changes. A necessary evil.
+This is essentially the data, consisting of both projects and collaborators.
+
+
+```r
+proj.mp <- c("Alfresco Noatak", "Alfresco Statewide", "Spatial Lightning Analysis", 
+    "Data Extraction and Uncertainty Analysis", "Growing Season", "Mussel Project", 
+    "Land Carbon")
+proj.etal <- c("Alfresco CRU/GCM Experimental Design", "Bird Project", "NWT/Comm. Charts DS", 
+    "Sea Ice Edge Maps and Spinoff Projects", "Shiny App Server Migration")
+proj.m <- c("CMIP3/CMIP5 GCM Comparisons", "Effective Spatial Scale Analysis", 
+    "Randscape Development", "Alfresco Outputs", "Projman")
+proj.ongoing <- c("SNAP Data QA/QC", "Training/Supervision", "R Shiny Apps General Maintenance", 
+    "New App Development", "SNAP Tech Blog", "Continuing Education")
 proj.halted <- c("FRP/FRI Scale-Conditional Alfresco Maps", "Moose Project")
-projects.list <-list(proj.mp, proj.etal, proj.m, proj.ongoing, proj.halted)
+projects.list <- list(proj.mp, proj.etal, proj.m, proj.ongoing, proj.halted)
+```
 
-actors.etal <- list(c("Paul", "Alec"), "Angie", c("Angie", "Bob"), "Angie", "Bob")
+
+```r
+actors.etal <- list(c("Paul", "Alec"), "Angie", c("Angie", "Bob"), "Angie", 
+    "Bob")
 actors.all <- unique(c("Matt", "Paul", unlist(actors.etal)))
-status.colors <- rep(c("green", "blue", "orange", "purple", "red"), times=sapply(projects.list, length))
-status.colors <- rep(c("green", "blue", "orange", "purple", "red"), times=sapply(projects.list, length))
+```
 
+Directional connections must be made among project and among people and projects.
+The connections are expressed by element-wise comparison of the equal-length `to` and `from` vectors.
+
+
+```r
 from <- c(
 	# LHS
 	rep("Collaborators", length(actors.all[actors.all!="Matt"])),
 	rep("Matt", length(c(proj.m, proj.ongoing, proj.halted))),
-	# Middle
 	rep(c("Matt", "Paul"), length(proj.mp)),
 	rep("Matt", length(proj.etal)),
 	unlist(actors.etal),
@@ -61,13 +76,12 @@ from <- c(
 	rep("Data Extraction and Uncertainty Analysis", 4)
 	
 )
+
 to <- c(
-	# Middle
 	actors.all[actors.all!="Matt"],
 	proj.m,
 	proj.ongoing,
 	proj.halted,
-	# RHS
 	rep(proj.mp, 2),
 	proj.etal,
 	rep(proj.etal, times=sapply(actors.etal, length)),
@@ -83,68 +97,39 @@ to <- c(
 	rep("FRP/FRI Scale-Conditional Alfresco Maps", 2), # from "Alfresco Noatak", "Alfresco Statewide"
 	c("CMIP3/CMIP5 GCM Comparisons", "Effective Spatial Scale Analysis", "Randscape Development", "Alfresco Outputs") # from "Data Extraction and Uncertainty Analysis"
 )
-relations <- data.frame(from=from, to=to)
-g <- graph.data.frame(relations, directed=T, vertices=data.frame(c("Collaborators", actors.all, unlist(projects.list))))
+```
 
-#V(g)$weight = 0
-#V(g)[degree(g,mode="out")==0]$weight <- runif(n=length(V(g)[degree(g,mode="out")==0]),min=0,max=100)
-#E(g)[to(V(g)$weight>0)]$weight <- V(g)[V(g)$weight>0]$weight
-#while(max(is.na(E(g)$weight))) {
-#	df <- get.data.frame(g)
-#	for (i in 1:nrow(df)) {
-#		x = df[i,]
-#		if(max(df$from==x$to)) {
-#			E(g)[from(x$from) & to(x$to)]$weight = sum(E(g)[from(x$to)]$weight)
-#		}
-#	}
-#}
+The vectors are combined in a data frame and the `igraph` package is used to grow the tree diagram.
+
+
+```r
+relations <- data.frame(from = from, to = to)
+g <- graph.data.frame(relations, directed = T, vertices = data.frame(c("Collaborators", 
+    actors.all, unlist(projects.list))))
+
 gw <- get.data.frame(g)
 gw$value <- 1
-colnames(gw) <- c("source","target","value")
+colnames(gw) <- c("source", "target", "value")
 gw$source <- as.character(gw$source)
 gw$target <- as.character(gw$target)
+```
+
+The `rchats` package has functionality for turning this into an interactive D3 visualization,
+which is nice, particularly the mouseover interactivity, since there can be so much visual overlap among projects.
+Additional javascript can be included to alter the colors.
+My strengths are in **R** so I borrowed this code snippet from online,
+but if you have skills with javascript and D3 you could probably do better with color control and opacity I imagine.
+
+
+```r
 p <- rCharts$new()
-p$setLib('http://timelyportfolio.github.io/rCharts_d3_sankey/libraries/widgets/d3_sankey')
+p$setLib("http://timelyportfolio.github.io/rCharts_d3_sankey/libraries/widgets/d3_sankey")
 p$setTemplate(script = "http://timelyportfolio.github.io/rCharts_d3_sankey/libraries/widgets/d3_sankey/layouts/chart.html")
-p$set(
-data = gw,
-nodeWidth = 15,
-nodePadding = 10,
-layout = 32,
-width = 900,
-height = 800,
-margin = list(right = 20, left = 20, bottom = 20, top = 20),
-title = "Matt's Projects"
-)
+p$set(data = gw, nodeWidth = 15, nodePadding = 10, layout = 32, width = 900, 
+    height = 800, margin = list(right = 20, left = 20, bottom = 20, top = 20), 
+    title = "Matt's Projects")
 
-p$setTemplate(
-  afterScript = "
-<script>
-  var cscale = d3.scale.category20b();
-
-  // to be specific in case you have more than one chart
-  d3.selectAll('#{{ chartId }} svg path.link')
-    .style('stroke', function(d){
-      //here we will use the source color
-      //if you want target then sub target for source
-      //or if you want something other than gray
-      //supply a constant
-      //or use a categorical scale or gradient
-      //return d.source.color;
-      return cscale(d.source.name);
-    })
-   //note no changes were made to opacity
-   //to do uncomment below but will affect mouseover
-   //so will need to define mouseover and mouseout
-   //happy to show how to do this also
-   // .style('stroke-opacity', .7)
-  d3.selectAll('#{{ chartId }} svg .node rect')
-    .style('fill', function(d){
-      return cscale(d.name)
-    })
-    .style('stroke', 'none')
-</script>
-")
+p$setTemplate(afterScript = "\n<script>\n  var cscale = d3.scale.category20b();\n  d3.selectAll('#{{ chartId }} svg path.link')\n    .style('stroke', function(d){\n      return cscale(d.source.name);\n    })\n  d3.selectAll('#{{ chartId }} svg .node rect')\n    .style('fill', function(d){\n      return cscale(d.name)\n    })\n    .style('stroke', 'none')\n</script>\n")
 ```
 
 
@@ -174,7 +159,7 @@ p$show("iframesrc", cdn=T)
   &lt;/head&gt;
   &lt;body &gt;
     
-    &lt;div id = &#039;chart16cb6d31d3&#039; class = &#039;rChart d3_sankey&#039;&gt;&lt;/div&gt;    
+    &lt;div id = &#039;chart11d04ca5b9b&#039; class = &#039;rChart d3_sankey&#039;&gt;&lt;/div&gt;    
     ï»¿&lt;!--Attribution:
 Mike Bostock https://github.com/d3/d3-plugins/tree/master/sankey
 Mike Bostock http://bost.ocks.org/mike/sankey/
@@ -183,7 +168,7 @@ Mike Bostock http://bost.ocks.org/mike/sankey/
 &lt;script&gt;
 (function(){
 var params = {
- &quot;dom&quot;: &quot;chart16cb6d31d3&quot;,
+ &quot;dom&quot;: &quot;chart11d04ca5b9b&quot;,
 &quot;width&quot;:    900,
 &quot;height&quot;:    800,
 &quot;data&quot;: {
@@ -201,7 +186,7 @@ var params = {
 &quot;top&quot;:     20 
 },
 &quot;title&quot;: &quot;Matt&#039;s Projects&quot;,
-&quot;id&quot;: &quot;chart16cb6d31d3&quot; 
+&quot;id&quot;: &quot;chart11d04ca5b9b&quot; 
 };
 
 params.units ? units = &quot; &quot; + params.units : units = &quot;&quot;;
@@ -321,24 +306,11 @@ node.append(&quot;text&quot;)
     
     &lt;script&gt;
       var cscale = d3.scale.category20b();
-    
-      // to be specific in case you have more than one chart
-      d3.selectAll(&#039;#chart16cb6d31d3 svg path.link&#039;)
+      d3.selectAll(&#039;#chart11d04ca5b9b svg path.link&#039;)
         .style(&#039;stroke&#039;, function(d){
-          //here we will use the source color
-          //if you want target then sub target for source
-          //or if you want something other than gray
-          //supply a constant
-          //or use a categorical scale or gradient
-          //return d.source.color;
           return cscale(d.source.name);
         })
-       //note no changes were made to opacity
-       //to do uncomment below but will affect mouseover
-       //so will need to define mouseover and mouseout
-       //happy to show how to do this also
-       // .style(&#039;stroke-opacity&#039;, .7)
-      d3.selectAll(&#039;#chart16cb6d31d3 svg .node rect&#039;)
+      d3.selectAll(&#039;#chart11d04ca5b9b svg .node rect&#039;)
         .style(&#039;fill&#039;, function(d){
           return cscale(d.name)
         })
@@ -346,6 +318,7 @@ node.append(&quot;text&quot;)
     &lt;/script&gt;
         
   &lt;/body&gt;
-&lt;/html&gt; ' scrolling='no' frameBorder='0' seamless class='rChart  http://timelyportfolio.github.io/rCharts_d3_sankey/libraries/widgets/d3_sankey  ' id='iframe-chart16cb6d31d3'> </iframe>
+&lt;/html&gt; ' scrolling='no' frameBorder='0' seamless class='rChart  http://timelyportfolio.github.io/rCharts_d3_sankey/libraries/widgets/d3_sankey  ' id='iframe-chart11d04ca5b9b'> </iframe>
  <style>iframe.rChart{ width: 100%; height: 400px;}</style>
 <style>iframe.rChart{ width: 100%; height: 840px;}</style>
+

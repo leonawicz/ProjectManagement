@@ -9,12 +9,12 @@ The output from this function is passed directly to `genRmd` below.
 
 ```r
 rmdHeader <- function(title = "INSERT_TITLE_HERE", author = "Matthew Leonawicz", 
-    theme = "cosmo", highlight = "zenburn", toc = TRUE, keep.md = TRUE, ioslides = FALSE, 
+    theme = "united", highlight = "zenburn", toc = TRUE, keep.md = TRUE, ioslides = FALSE, 
     include.pdf = FALSE) {
     if (toc) 
-        toc <= "true" else toc <- "false"
+        toc <- "true" else toc <- "false"
     if (keep.md) 
-        keep.md <= "true" else keep.md <- "false"
+        keep.md <- "true" else keep.md <- "false"
     if (ioslides) 
         hdoc <- "ioslides_presentation" else hdoc <- "html_document"
     rmd.header <- paste0("---\ntitle: ", title, "\nauthor: ", author, "\noutput:\n  ", 

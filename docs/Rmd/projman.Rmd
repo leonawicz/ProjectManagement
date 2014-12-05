@@ -3,10 +3,10 @@ title: Project Management
 author: Matthew Leonawicz
 output:
   html_document:
-    toc: TRUE
-    theme: cosmo
+    toc: false
+    theme: united
     highlight: zenburn
-    keep_md: TRUE
+    keep_md: true
 ---
 
 ```{r knitr_setup, echo=FALSE}
@@ -167,4 +167,3 @@ It is recommended. See the project repo [gh-pages](https://github.com/leonawicz/
 
 ```{r function6}
 ```
-

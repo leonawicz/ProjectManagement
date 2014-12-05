@@ -70,9 +70,9 @@ newProject <- function(name, path,
 }
 
 # @knitr function2
-rmdHeader <- function(title="INSERT_TITLE_HERE", author="Matthew Leonawicz", theme="cosmo", highlight="zenburn", toc=TRUE, keep.md=TRUE, ioslides=FALSE, include.pdf=FALSE){
-	if(toc) toc <= "true" else toc <- "false"
-	if(keep.md) keep.md <= "true" else keep.md <- "false"
+rmdHeader <- function(title="INSERT_TITLE_HERE", author="Matthew Leonawicz", theme="united", highlight="zenburn", toc=TRUE, keep.md=TRUE, ioslides=FALSE, include.pdf=FALSE){
+	if(toc) toc <- "true" else toc <- "false"
+	if(keep.md) keep.md <- "true" else keep.md <- "false"
 	if(ioslides) hdoc <- "ioslides_presentation" else hdoc <- "html_document"
 	rmd.header <- paste0('---\ntitle: ', title, '\nauthor: ', author, '\noutput:\n  ', hdoc, ':\n    toc: ', toc, '\n    theme: ', theme, '\n    highlight: ', highlight, '\n    keep_md: ', keep.md, '\n')
 	if(ioslides) rmd.header <- paste0(rmd.header, '    widescreen: true\n')
@@ -160,7 +160,7 @@ chunkNames <- function(path, rChunkID="# @knitr", rmdChunkID="```{r", append.new
 }
 
 # @knitr function5
-genNavbar <- function(htmlfile="navbar.html", title, menu, submenus, files, site.link="", site.name="Website"){
+genNavbar <- function(htmlfile="navbar.html", title, menu, submenus, files, site.link="", site.name="Github"){
 
 	fillSubmenu <- function(x, name, file){
 		if(file[x]=="divider") return('              <li class="divider"></li>\n')
@@ -202,30 +202,3 @@ genOutyaml <- function(file, theme="cosmo", highlight="zenburn", lib=NULL, heade
 	sink()
 	output.yaml
 }
-
-# @knitr testing
-proj.name <- "ProjectManagement"
-proj.location <- matt.proj.path
-
-newProject(proj.name, proj.location, overwrite=T)
-
-genRmd(path=file.path(matt.proj.path, proj.name, "code"), header=rmdHeader(), update.header=T)
-
-chunkNames(path=file.path(matt.proj.path, proj.name, "code"), append.new=TRUE)
-
-proj.title <- "projman"
-proj.menu <- c("R Code", "This Project", "All Projects")
-proj.submenu <- list(
-	c("Default objects", "divider", "Functions", "Start a new project", "Working with Rmd files", "Make a project website"),
-	c("Sankey diagram"),
-	c("Projects diagram", "divider", "About", "Other")
-)
-
-proj.files <- list(
-	c("objects.html", "divider", "header", "func_new.html", "func_rmd.html", "func_website.html"),
-	c("proj_sankey.html"),
-	c("proj_sankey.html", "divider", "index.html", "index.html")
-)
-
-genNavbar(htmlfile=file.path(proj.location, proj.name, "docs/Rmd/include/navbar.html"), title=proj.title, menu=proj.menu, submenus=proj.submenu, files=proj.files)
-genOutyaml(file=file.path(proj.location, proj.name, "docs/Rmd/_output.yaml"), lib="libs", header="in_header.html", before_body="navbar.html")

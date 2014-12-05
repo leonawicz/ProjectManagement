@@ -1,9 +1,10 @@
 ---
 output:
   html_document:
-    theme: cosmo
+    toc: false
+    theme: united
     highlight: zenburn
-    keep_md: TRUE
+    keep_md: true
 ---
 
 ```{r knitr_setup, echo=FALSE}

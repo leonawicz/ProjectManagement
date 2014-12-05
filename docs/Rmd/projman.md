@@ -76,7 +76,7 @@ Here is a project hierarchy diagram showing the relationships among all my curre
   &lt;/head&gt;
   &lt;body &gt;
     
-    &lt;div id = &#039;chart16c2650191a&#039; class = &#039;rChart d3_sankey&#039;&gt;&lt;/div&gt;    
+    &lt;div id = &#039;chart11d04ca5b9b&#039; class = &#039;rChart d3_sankey&#039;&gt;&lt;/div&gt;    
     ï»¿&lt;!--Attribution:
 Mike Bostock https://github.com/d3/d3-plugins/tree/master/sankey
 Mike Bostock http://bost.ocks.org/mike/sankey/
@@ -85,7 +85,7 @@ Mike Bostock http://bost.ocks.org/mike/sankey/
 &lt;script&gt;
 (function(){
 var params = {
- &quot;dom&quot;: &quot;chart16c2650191a&quot;,
+ &quot;dom&quot;: &quot;chart11d04ca5b9b&quot;,
 &quot;width&quot;:    900,
 &quot;height&quot;:    800,
 &quot;data&quot;: {
@@ -103,7 +103,7 @@ var params = {
 &quot;top&quot;:     20 
 },
 &quot;title&quot;: &quot;Matt&#039;s Projects&quot;,
-&quot;id&quot;: &quot;chart16c2650191a&quot; 
+&quot;id&quot;: &quot;chart11d04ca5b9b&quot; 
 };
 
 params.units ? units = &quot; &quot; + params.units : units = &quot;&quot;;
@@ -223,24 +223,11 @@ node.append(&quot;text&quot;)
     
     &lt;script&gt;
       var cscale = d3.scale.category20b();
-    
-      // to be specific in case you have more than one chart
-      d3.selectAll(&#039;#chart16c2650191a svg path.link&#039;)
+      d3.selectAll(&#039;#chart11d04ca5b9b svg path.link&#039;)
         .style(&#039;stroke&#039;, function(d){
-          //here we will use the source color
-          //if you want target then sub target for source
-          //or if you want something other than gray
-          //supply a constant
-          //or use a categorical scale or gradient
-          //return d.source.color;
           return cscale(d.source.name);
         })
-       //note no changes were made to opacity
-       //to do uncomment below but will affect mouseover
-       //so will need to define mouseover and mouseout
-       //happy to show how to do this also
-       // .style(&#039;stroke-opacity&#039;, .7)
-      d3.selectAll(&#039;#chart16c2650191a svg .node rect&#039;)
+      d3.selectAll(&#039;#chart11d04ca5b9b svg .node rect&#039;)
         .style(&#039;fill&#039;, function(d){
           return cscale(d.name)
         })
@@ -248,7 +235,7 @@ node.append(&quot;text&quot;)
     &lt;/script&gt;
         
   &lt;/body&gt;
-&lt;/html&gt; ' scrolling='no' frameBorder='0' seamless class='rChart  http://timelyportfolio.github.io/rCharts_d3_sankey/libraries/widgets/d3_sankey  ' id='iframe-chart16c2650191a'> </iframe>
+&lt;/html&gt; ' scrolling='no' frameBorder='0' seamless class='rChart  http://timelyportfolio.github.io/rCharts_d3_sankey/libraries/widgets/d3_sankey  ' id='iframe-chart11d04ca5b9b'> </iframe>
  <style>iframe.rChart{ width: 100%; height: 400px;}</style>
 <style>iframe.rChart{ width: 100%; height: 840px;}</style>
 
@@ -316,12 +303,12 @@ The output from this function is passed directly to `genRmd` below.
 
 ```r
 rmdHeader <- function(title = "INSERT_TITLE_HERE", author = "Matthew Leonawicz", 
-    theme = "cosmo", highlight = "zenburn", toc = TRUE, keep.md = TRUE, ioslides = FALSE, 
+    theme = "united", highlight = "zenburn", toc = TRUE, keep.md = TRUE, ioslides = FALSE, 
     include.pdf = FALSE) {
     if (toc) 
-        toc <= "true" else toc <- "false"
+        toc <- "true" else toc <- "false"
     if (keep.md) 
-        keep.md <= "true" else keep.md <- "false"
+        keep.md <- "true" else keep.md <- "false"
     if (ioslides) 
         hdoc <- "ioslides_presentation" else hdoc <- "html_document"
     rmd.header <- paste0("---\ntitle: ", title, "\nauthor: ", author, "\noutput:\n  ", 
@@ -476,7 +463,7 @@ or "divider" to indicate placement of a bar for separating groups in a dropdown 
 
 ```r
 genNavbar <- function(htmlfile = "navbar.html", title, menu, submenus, files, 
-    site.link = "", site.name = "Website") {
+    site.link = "", site.name = "Github") {
     
     fillSubmenu <- function(x, name, file) {
         if (file[x] == "divider") 
@@ -544,4 +531,3 @@ genOutyaml <- function(file, theme = "cosmo", highlight = "zenburn", lib = NULL,
     output.yaml
 }
 ```
-
