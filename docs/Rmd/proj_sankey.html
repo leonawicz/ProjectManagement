@@ -170,10 +170,8 @@ code > span.er { color: #c3bf9f; }
 <div id="project-hierarchy-r-code" class="section level2">
 <h2>Project hierarchy <strong>R</strong> code</h2>
 <p>Here is the code used to generate the current project hierarchy diagram. Two packages are required.</p>
-<pre class="sourceCode r"><code class="sourceCode r"><span class="kw">require</span>(igraph)</code></pre>
-<pre><code>## Loading required package: igraph</code></pre>
-<pre class="sourceCode r"><code class="sourceCode r"><span class="kw">require</span>(rCharts)</code></pre>
-<pre><code>## Loading required package: rCharts</code></pre>
+<pre class="sourceCode r"><code class="sourceCode r"><span class="kw">require</span>(igraph)
+<span class="kw">require</span>(rCharts)</code></pre>
 <p>Current projects are hardcoded and are updated by hand when my work changes. A necessary evil. This is essentially the data, consisting of both projects and collaborators.</p>
 <pre class="sourceCode r"><code class="sourceCode r">proj.mp &lt;-<span class="st"> </span><span class="kw">c</span>(<span class="st">&quot;Alfresco Noatak&quot;</span>, <span class="st">&quot;Alfresco Statewide&quot;</span>, <span class="st">&quot;Spatial Lightning Analysis&quot;</span>, 
     <span class="st">&quot;Data Extraction and Uncertainty Analysis&quot;</span>, <span class="st">&quot;Growing Season&quot;</span>, <span class="st">&quot;Mussel Project&quot;</span>, 
@@ -273,7 +271,7 @@ p$<span class="kw">setTemplate</span>(<span class="dt">afterScript =</span> <spa
   &lt;/head&gt;
   &lt;body &gt;
     
-    &lt;div id = 'chart6606d9b52f2' class = 'rChart d3_sankey'&gt;&lt;/div&gt;    
+    &lt;div id = 'chart660744c2047' class = 'rChart d3_sankey'&gt;&lt;/div&gt;    
     ï»¿&lt;!--Attribution:
 Mike Bostock https://github.com/d3/d3-plugins/tree/master/sankey
 Mike Bostock http://bost.ocks.org/mike/sankey/
@@ -282,7 +280,7 @@ Mike Bostock http://bost.ocks.org/mike/sankey/
 &lt;script&gt;
 (function(){
 var params = {
- &quot;dom&quot;: &quot;chart6606d9b52f2&quot;,
+ &quot;dom&quot;: &quot;chart660744c2047&quot;,
 &quot;width&quot;:    900,
 &quot;height&quot;:    800,
 &quot;data&quot;: {
@@ -300,7 +298,7 @@ var params = {
 &quot;top&quot;:     20 
 },
 &quot;title&quot;: &quot;Matt's Projects&quot;,
-&quot;id&quot;: &quot;chart6606d9b52f2&quot; 
+&quot;id&quot;: &quot;chart660744c2047&quot; 
 };
 
 params.units ? units = &quot; &quot; + params.units : units = &quot;&quot;;
@@ -420,11 +418,11 @@ node.append(&quot;text&quot;)
     
     &lt;script&gt;
       var cscale = d3.scale.category20b();
-      d3.selectAll('#chart6606d9b52f2 svg path.link')
+      d3.selectAll('#chart660744c2047 svg path.link')
         .style('stroke', function(d){
           return cscale(d.source.name);
         })
-      d3.selectAll('#chart6606d9b52f2 svg .node rect')
+      d3.selectAll('#chart660744c2047 svg .node rect')
         .style('fill', function(d){
           return cscale(d.name)
         })
@@ -432,7 +430,7 @@ node.append(&quot;text&quot;)
     &lt;/script&gt;
         
   &lt;/body&gt;
-&lt;/html&gt; " scrolling="no" frameBorder="0" seamless class="rChart  http://timelyportfolio.github.io/rCharts_d3_sankey/libraries/widgets/d3_sankey  " id="iframe-chart6606d9b52f2">
+&lt;/html&gt; " scrolling="no" frameBorder="0" seamless class="rChart  http://timelyportfolio.github.io/rCharts_d3_sankey/libraries/widgets/d3_sankey  " id="iframe-chart660744c2047">
 </iframe>
 <style>iframe.rChart{ width: 100%; height: 400px;}</style>
 <style>iframe.rChart{ width: 100%; height: 840px;}</style>
