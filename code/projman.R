@@ -222,9 +222,9 @@ proj.submenu <- list(
 )
 
 proj.files <- list(
-	c("xyz.html", "divider", "header", "xyz.html", "xyz.html", "xyz.html"),
-	c("xyz.html"),
-	c("xyz.html", "divider", "xyz.html", "xyz.html")
+	c("index.html", "divider", "header", "index.html", "index.html", "index.html"),
+	c("proj_sankey.html"),
+	c("project_hierarchy.html", "divider", "index.html", "index.html")
 )
 
 genNavbar(htmlfile=file.path(proj.location, proj.name, "docs/html/include/navbar.html"), title=proj.title, menu=proj.menu, submenus=proj.submenu, files=proj.files)
