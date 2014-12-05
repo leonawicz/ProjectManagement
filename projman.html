@@ -216,7 +216,7 @@ code > span.er { color: #c3bf9f; }
   &lt;/head&gt;
   &lt;body &gt;
     
-    &lt;div id = 'chart14c43129305c' class = 'rChart d3_sankey'&gt;&lt;/div&gt;    
+    &lt;div id = 'chart67430921c84' class = 'rChart d3_sankey'&gt;&lt;/div&gt;    
     ï»¿&lt;!--Attribution:
 Mike Bostock https://github.com/d3/d3-plugins/tree/master/sankey
 Mike Bostock http://bost.ocks.org/mike/sankey/
@@ -225,7 +225,7 @@ Mike Bostock http://bost.ocks.org/mike/sankey/
 &lt;script&gt;
 (function(){
 var params = {
- &quot;dom&quot;: &quot;chart14c43129305c&quot;,
+ &quot;dom&quot;: &quot;chart67430921c84&quot;,
 &quot;width&quot;:    900,
 &quot;height&quot;:    800,
 &quot;data&quot;: {
@@ -243,7 +243,7 @@ var params = {
 &quot;top&quot;:     20 
 },
 &quot;title&quot;: &quot;Matt's Projects&quot;,
-&quot;id&quot;: &quot;chart14c43129305c&quot; 
+&quot;id&quot;: &quot;chart67430921c84&quot; 
 };
 
 params.units ? units = &quot; &quot; + params.units : units = &quot;&quot;;
@@ -363,11 +363,11 @@ node.append(&quot;text&quot;)
     
     &lt;script&gt;
       var cscale = d3.scale.category20b();
-      d3.selectAll('#chart14c43129305c svg path.link')
+      d3.selectAll('#chart67430921c84 svg path.link')
         .style('stroke', function(d){
           return cscale(d.source.name);
         })
-      d3.selectAll('#chart14c43129305c svg .node rect')
+      d3.selectAll('#chart67430921c84 svg .node rect')
         .style('fill', function(d){
           return cscale(d.name)
         })
@@ -375,7 +375,7 @@ node.append(&quot;text&quot;)
     &lt;/script&gt;
         
   &lt;/body&gt;
-&lt;/html&gt; " scrolling="no" frameBorder="0" seamless class="rChart  http://timelyportfolio.github.io/rCharts_d3_sankey/libraries/widgets/d3_sankey  " id="iframe-chart14c43129305c">
+&lt;/html&gt; " scrolling="no" frameBorder="0" seamless class="rChart  http://timelyportfolio.github.io/rCharts_d3_sankey/libraries/widgets/d3_sankey  " id="iframe-chart67430921c84">
 </iframe>
 <style>iframe.rChart{ width: 100%; height: 400px;}</style>
 <style>iframe.rChart{ width: 100%; height: 840px;}</style>
@@ -389,7 +389,7 @@ node.append(&quot;text&quot;)
 <pre class="sourceCode r"><code class="sourceCode r"><span class="co"># For package &#39;projman&#39;</span>
 
 <span class="co"># data</span>
-rmd.knitr.setup &lt;-<span class="st"> &quot;</span><span class="ch">\n</span><span class="st">```{r knitr_setup, echo=FALSE}</span><span class="ch">\n</span><span class="st">opts_chunk$set(cache=FALSE, eval=FALSE, tidy=TRUE, messages=FALSE, warnings=FALSE)</span><span class="ch">\n</span><span class="st">read_chunk(</span><span class="ch">\&quot;\&quot;</span><span class="st">)</span><span class="ch">\n</span><span class="st">```</span><span class="ch">\n</span><span class="st">&quot;</span>
+rmd.knitr.setup &lt;-<span class="st"> &quot;</span><span class="ch">\n</span><span class="st">```{r knitr_setup, echo=FALSE}</span><span class="ch">\n</span><span class="st">opts_chunk$set(cache=FALSE, eval=FALSE, tidy=TRUE, message=FALSE, warning=FALSE)</span><span class="ch">\n</span><span class="st">read_chunk(</span><span class="ch">\&quot;\&quot;</span><span class="st">)</span><span class="ch">\n</span><span class="st">```</span><span class="ch">\n</span><span class="st">&quot;</span>
 
 rmd.template &lt;-<span class="st"> &quot;</span><span class="ch">\n\n</span><span class="st">## Introduction</span><span class="ch">\n</span><span class="st">ADD_TEXT_HERE</span><span class="ch">\n\n</span><span class="st">### Motivation</span><span class="ch">\n</span><span class="st">ADD_TEXT_HERE</span><span class="ch">\n\n</span><span class="st">### Details</span><span class="ch">\n</span><span class="st">ADD_TEXT_HERE</span><span class="ch">\n\n</span><span class="st">#### Capabilities</span><span class="ch">\n</span><span class="st">ADD_TEXT_HERE</span><span class="ch">\n\n</span><span class="st">#### Limitations</span><span class="ch">\n</span><span class="st">ADD_TEXT_HERE</span><span class="ch">\n\n</span><span class="st">## Related items</span><span class="ch">\n\n</span><span class="st">### Files and Data</span><span class="ch">\n</span><span class="st">ADD_TEXT_HERE</span><span class="ch">\n\n</span><span class="st">### Code flow</span><span class="ch">\n</span><span class="st">ADD_TEXT_HERE</span><span class="ch">\n\n</span><span class="st">```{r code_sankey, echo=F, eval=T}</span><span class="ch">\n</span><span class="st">```</span><span class="ch">\n\n</span><span class="st">```{r code_sankey_embed, echo=F, eval=T, comment=NA, results=</span><span class="ch">\&quot;</span><span class="st">asis</span><span class="ch">\&quot;</span><span class="st">, tidy=F}</span><span class="ch">\n</span><span class="st">```</span><span class="ch">\n\n</span><span class="st">## R code</span><span class="ch">\n\n</span><span class="st">### Setup</span><span class="ch">\n</span><span class="st">ADD_TEXT_HERE: EXAMPLE</span><span class="ch">\n</span><span class="st">Setup consists of loading required **R** packages and additional files, preparing any command line arguments for use, and defining functions and other **R** objects.</span><span class="ch">\n\n</span><span class="st">&quot;</span>
 
