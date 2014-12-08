@@ -38,5 +38,4 @@ it is nice to not have to create all the corresponding Rmd files by hand and cop
 
 The project management code is not yet in package form.
 Many additional features are yet to be incorporated.
-Generic code relating to the further processing of Rmd files into various other output files via `rmarkdown` and `knitr` will fold into this project,
-but this has not been done yet.
+Generic code relating to the further processing of Rmd files into various other output files via `rmarkdown` and `knitr` remains at an early development stage.
