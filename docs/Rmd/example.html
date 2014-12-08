@@ -109,7 +109,7 @@ code > span.er { color: #c3bf9f; }
         <span class="icon-bar"></span>
         <span class="icon-bar"></span>
       </button>
-      <a class="brand" href="/">Project Management</a>
+      <a class="brand" href="proj_intro.html ">Project Management</a>
       <div class="nav-collapse collapse">
         <ul class="nav">
           <li><a href="/">Home</a></li>
@@ -138,8 +138,8 @@ code > span.er { color: #c3bf9f; }
             <ul class="dropdown-menu">
               <li><a href="proj_sankey.html">Projects diagram</a></li>
               <li class="divider"></li>
-              <li><a href="index.html">About</a></li>
-              <li><a href="index.html">Other</a></li>
+              <li><a href="proj_intro.html">About</a></li>
+              <li><a href="proj_intro.html">Other</a></li>
             </ul>
         </ul>
         <ul class="nav pull-right">
@@ -205,15 +205,15 @@ proj.submenu &lt;-<span class="st"> </span><span class="kw">list</span>(<span cl
 
 proj.files &lt;-<span class="st"> </span><span class="kw">list</span>(<span class="kw">c</span>(<span class="st">&quot;header&quot;</span>, <span class="st">&quot;proj_intro.html&quot;</span>, <span class="st">&quot;proj_sankey.html&quot;</span>, <span class="st">&quot;example.html&quot;</span>), 
     <span class="kw">c</span>(<span class="st">&quot;objects.html&quot;</span>, <span class="st">&quot;divider&quot;</span>, <span class="st">&quot;header&quot;</span>, <span class="st">&quot;func_new.html&quot;</span>, <span class="st">&quot;func_rmd.html&quot;</span>, 
-        <span class="st">&quot;func_website.html&quot;</span>), <span class="kw">c</span>(<span class="st">&quot;proj_sankey.html&quot;</span>, <span class="st">&quot;divider&quot;</span>, <span class="st">&quot;index.html&quot;</span>, 
-        <span class="st">&quot;index.html&quot;</span>))
+        <span class="st">&quot;func_website.html&quot;</span>), <span class="kw">c</span>(<span class="st">&quot;proj_sankey.html&quot;</span>, <span class="st">&quot;divider&quot;</span>, <span class="st">&quot;proj_intro.html&quot;</span>, 
+        <span class="st">&quot;proj_intro.html&quot;</span>))
 
 proj.github &lt;-<span class="st"> &quot;https://github.com/leonawicz/ProjectManagement&quot;</span>
 
 <span class="co"># generate navigation bar html file common to all pages</span>
 <span class="kw">genNavbar</span>(<span class="dt">htmlfile =</span> <span class="kw">file.path</span>(proj.location, proj.name, <span class="st">&quot;docs/Rmd/include/navbar.html&quot;</span>), 
     <span class="dt">title =</span> proj.title, <span class="dt">menu =</span> proj.menu, <span class="dt">submenus =</span> proj.submenu, <span class="dt">files =</span> proj.files, 
-    <span class="dt">site.link =</span> proj.github)
+    <span class="dt">home.url =</span> <span class="st">&quot;proj_intro.html&quot;</span>, <span class="dt">site.link =</span> proj.github)
 
 <span class="co"># generate _output.yaml file Note that external libraries are expected,</span>
 <span class="co"># stored in the &#39;libs&#39; directory below</span>

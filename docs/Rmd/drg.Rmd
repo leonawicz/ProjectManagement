@@ -26,8 +26,12 @@ I prefer to keep them separate because I rarely want to generate pdf files from 
 
 ## R code
 
+### Initial setup
+
 ```{r setup}
 ```
+
+### Render documents
 
 ```{r save}
 ```

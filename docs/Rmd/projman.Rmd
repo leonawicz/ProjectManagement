@@ -45,21 +45,25 @@ it is nice to not have to create all the corresponding Rmd files by hand and cop
 
 The project management code is not yet in package form.
 Many additional features are yet to be incorporated.
-Generic code relating to the further processing of Rmd files into various other output files via `rmarkdown` and `knitr` will fold into this project,
-but this has not been done yet.
+Generic code relating to the further processing of Rmd files into various other output files via `rmarkdown` and `knitr` remains at an early development stage.
 
 ## Related items
-Currently there is only this unpackaged **R** script and accompanying code for a projects hierarchy diagram.
-No additional related items are available at this time, but those referenced above will eventually be included.
+Currently there is only this unpackaged **R** script, accompanying code for a projects hierarchy diagram
+and a code flow diagram based on the current development of this project, and a simple script for generating documents based on project **R** code.
 
 ### Files and Data
-This project does not use any data. `sankey.R` is used to produce of project hierarchy diagram of my current projects.
+This project does not use any data.
+It does make use of supplemental libraries for formatting during html document generation.
+`proj_sankey.R` and `code_sankey.R` are used to produce of project hierarchy diagram of my current projects and a code flow diagram for this project, respectively.
+`drg.R` is used to assist in dynamic report generation.
 
 ### Code flow
 The Sankey diagram has become part of project management.
-Each project has its own, detailing the relationships among **R** code and data relevent to the project,
+Each project has its own, detailing the relationships among **R** code and data relevant to the project,
 and in some cases, how they relate to code and data files which are more general and span multiple projects.
-This diagram be available for this project once more project code has been developed.
+In general, for my projects I would only provide the code flow diagram here among the rest of the project documentation,
+but since this is the project management project and I am introducing its use,
+in this case I will also show the [code](code_sankey.html "code") I use to make the diagram.
 
 ### Current projects
 Here is a project hierarchy diagram showing the relationships among all my current projects.

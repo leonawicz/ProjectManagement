@@ -160,7 +160,7 @@ chunkNames <- function(path, rChunkID="# @knitr", rmdChunkID="```{r", append.new
 }
 
 # @knitr function5
-genNavbar <- function(htmlfile="navbar.html", title, menu, submenus, files, site.link="", site.name="Github"){
+genNavbar <- function(htmlfile="navbar.html", title, menu, submenus, files, home.url="/", site.link="", site.name="Github"){
 
 	fillSubmenu <- function(x, name, file){
 		if(file[x]=="divider") return('              <li class="divider"></li>\n')
@@ -179,7 +179,7 @@ genNavbar <- function(htmlfile="navbar.html", title, menu, submenus, files, site
 	}
 	
 	x <- paste0(
-		'<div class="navbar navbar-default navbar-fixed-top">\n  <div class="navbar-inner">\n    <div class="container">\n      <button type="button" class="btn btn-navbar" data-toggle="collapse" data-target=".nav-collapse">\n        <span class="icon-bar"></span>\n        <span class="icon-bar"></span>\n        <span class="icon-bar"></span>\n      </button>\n      <a class="brand" href="/">', title, '</a>\n      <div class="nav-collapse collapse">\n        <ul class="nav">\n          <li><a href="/">Home</a></li>\n          ',
+		'<div class="navbar navbar-default navbar-fixed-top">\n  <div class="navbar-inner">\n    <div class="container">\n      <button type="button" class="btn btn-navbar" data-toggle="collapse" data-target=".nav-collapse">\n        <span class="icon-bar"></span>\n        <span class="icon-bar"></span>\n        <span class="icon-bar"></span>\n      </button>\n      <a class="brand" href="', home.url,' ">', title, '</a>\n      <div class="nav-collapse collapse">\n        <ul class="nav">\n          <li><a href="/">Home</a></li>\n          ',
 		paste(sapply(1:length(menu), fillMenu, menu=menu, submenus=submenus, files=files), sep="", collapse="\n          "),
 		'        </ul>\n        <ul class="nav pull-right">\n          <a class="btn btn-primary" href="', site.link, '">\n            <i class="fa fa-github fa-lg"></i>\n            ',site.name,'\n          </a>\n        </ul>\n      </div><!--/.nav-collapse -->\n    </div>\n  </div>\n</div>\n',
 		collpase="")

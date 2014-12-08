@@ -33,13 +33,13 @@ proj.submenu <- list(
 proj.files <- list(
 	c("header", "proj_intro.html", "proj_sankey.html", "example.html"),
 	c("objects.html", "divider", "header", "func_new.html", "func_rmd.html", "func_website.html"),
-	c("proj_sankey.html", "divider", "index.html", "index.html")
+	c("proj_sankey.html", "divider", "proj_intro.html", "proj_intro.html")
 )
 
 proj.github <- "https://github.com/leonawicz/ProjectManagement"
 
 # generate navigation bar html file common to all pages
-genNavbar(htmlfile=file.path(proj.location, proj.name, "docs/Rmd/include/navbar.html"), title=proj.title, menu=proj.menu, submenus=proj.submenu, files=proj.files, site.link=proj.github)
+genNavbar(htmlfile=file.path(proj.location, proj.name, "docs/Rmd/include/navbar.html"), title=proj.title, menu=proj.menu, submenus=proj.submenu, files=proj.files, home.url="proj_intro.html", site.link=proj.github)
 
 # generate _output.yaml file
 # Note that external libraries are expected, stored in the "libs" directory below

@@ -10,11 +10,14 @@ output:
 ---
 
 ## Related items
-Currently there is only this unpackaged **R** script and accompanying code for a projects hierarchy diagram.
-No additional related items are available at this time, but those referenced above will eventually be included.
+Currently there is only this unpackaged **R** script, accompanying code for a projects hierarchy diagram
+and a code flow diagram based on the current development of this project, and a simple script for generating documents based on project **R** code.
 
 ### Files and Data
-This project does not use any data. `sankey.R` is used to produce of project hierarchy diagram of my current projects.
+This project does not use any data.
+It does make use of supplemental libraries for formatting during html document generation.
+`proj_sankey.R` and `code_sankey.R` are used to produce of project hierarchy diagram of my current projects and a code flow diagram for this project, respectively.
+`drg.R` is used to assist in dynamic report generation.
 
 ### Code flow
 The Sankey diagram has become part of project management.
@@ -31,6 +34,9 @@ read_chunk("../../code/code_sankey.R")
 
 ## **R** code
 Here is the code used to generate the code flow diagram.
+
+### Initial setup
+
 Two packages are required.
 
 ```{r sankey_packages}
@@ -51,10 +57,14 @@ The connections are expressed by element-wise comparison of the equal-length `to
 ```{r links, tidy=FALSE}
 ```
 
+### Create a directional tree graph
+
 The vectors are combined in a data frame and the `igraph` package is used to grow the tree diagram.
 
 ```{r igraph}
 ```
+
+### Display with rCharts
 
 The `rcharts` package has functionality for turning this into an interactive D3 visualization,
 which is nice, particularly the mouseover interactivity, since there can be so much visual overlap among files for complex projects.

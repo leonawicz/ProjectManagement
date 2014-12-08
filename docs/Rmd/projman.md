@@ -33,21 +33,25 @@ it is nice to not have to create all the corresponding Rmd files by hand and cop
 
 The project management code is not yet in package form.
 Many additional features are yet to be incorporated.
-Generic code relating to the further processing of Rmd files into various other output files via `rmarkdown` and `knitr` will fold into this project,
-but this has not been done yet.
+Generic code relating to the further processing of Rmd files into various other output files via `rmarkdown` and `knitr` remains at an early development stage.
 
 ## Related items
-Currently there is only this unpackaged **R** script and accompanying code for a projects hierarchy diagram.
-No additional related items are available at this time, but those referenced above will eventually be included.
+Currently there is only this unpackaged **R** script, accompanying code for a projects hierarchy diagram
+and a code flow diagram based on the current development of this project, and a simple script for generating documents based on project **R** code.
 
 ### Files and Data
-This project does not use any data. `sankey.R` is used to produce of project hierarchy diagram of my current projects.
+This project does not use any data.
+It does make use of supplemental libraries for formatting during html document generation.
+`proj_sankey.R` and `code_sankey.R` are used to produce of project hierarchy diagram of my current projects and a code flow diagram for this project, respectively.
+`drg.R` is used to assist in dynamic report generation.
 
 ### Code flow
 The Sankey diagram has become part of project management.
-Each project has its own, detailing the relationships among **R** code and data relevent to the project,
+Each project has its own, detailing the relationships among **R** code and data relevant to the project,
 and in some cases, how they relate to code and data files which are more general and span multiple projects.
-This diagram be available for this project once more project code has been developed.
+In general, for my projects I would only provide the code flow diagram here among the rest of the project documentation,
+but since this is the project management project and I am introducing its use,
+in this case I will also show the [code](code_sankey.html "code") I use to make the diagram.
 
 ### Current projects
 Here is a project hierarchy diagram showing the relationships among all my current projects.
@@ -76,7 +80,7 @@ Here is a project hierarchy diagram showing the relationships among all my curre
   &lt;/head&gt;
   &lt;body &gt;
     
-    &lt;div id = &#039;chart67430921c84&#039; class = &#039;rChart d3_sankey&#039;&gt;&lt;/div&gt;    
+    &lt;div id = &#039;chart15f81629746b&#039; class = &#039;rChart d3_sankey&#039;&gt;&lt;/div&gt;    
     ï»¿&lt;!--Attribution:
 Mike Bostock https://github.com/d3/d3-plugins/tree/master/sankey
 Mike Bostock http://bost.ocks.org/mike/sankey/
@@ -85,7 +89,7 @@ Mike Bostock http://bost.ocks.org/mike/sankey/
 &lt;script&gt;
 (function(){
 var params = {
- &quot;dom&quot;: &quot;chart67430921c84&quot;,
+ &quot;dom&quot;: &quot;chart15f81629746b&quot;,
 &quot;width&quot;:    900,
 &quot;height&quot;:    800,
 &quot;data&quot;: {
@@ -103,7 +107,7 @@ var params = {
 &quot;top&quot;:     20 
 },
 &quot;title&quot;: &quot;Matt&#039;s Projects&quot;,
-&quot;id&quot;: &quot;chart67430921c84&quot; 
+&quot;id&quot;: &quot;chart15f81629746b&quot; 
 };
 
 params.units ? units = &quot; &quot; + params.units : units = &quot;&quot;;
@@ -223,11 +227,11 @@ node.append(&quot;text&quot;)
     
     &lt;script&gt;
       var cscale = d3.scale.category20b();
-      d3.selectAll(&#039;#chart67430921c84 svg path.link&#039;)
+      d3.selectAll(&#039;#chart15f81629746b svg path.link&#039;)
         .style(&#039;stroke&#039;, function(d){
           return cscale(d.source.name);
         })
-      d3.selectAll(&#039;#chart67430921c84 svg .node rect&#039;)
+      d3.selectAll(&#039;#chart15f81629746b svg .node rect&#039;)
         .style(&#039;fill&#039;, function(d){
           return cscale(d.name)
         })
@@ -235,7 +239,7 @@ node.append(&quot;text&quot;)
     &lt;/script&gt;
         
   &lt;/body&gt;
-&lt;/html&gt; ' scrolling='no' frameBorder='0' seamless class='rChart  http://timelyportfolio.github.io/rCharts_d3_sankey/libraries/widgets/d3_sankey  ' id='iframe-chart67430921c84'> </iframe>
+&lt;/html&gt; ' scrolling='no' frameBorder='0' seamless class='rChart  http://timelyportfolio.github.io/rCharts_d3_sankey/libraries/widgets/d3_sankey  ' id='iframe-chart15f81629746b'> </iframe>
  <style>iframe.rChart{ width: 100%; height: 400px;}</style>
 <style>iframe.rChart{ width: 100%; height: 840px;}</style>
 
@@ -463,7 +467,7 @@ or "divider" to indicate placement of a bar for separating groups in a dropdown 
 
 ```r
 genNavbar <- function(htmlfile = "navbar.html", title, menu, submenus, files, 
-    site.link = "", site.name = "Github") {
+    home.url = "/", site.link = "", site.name = "Github") {
     
     fillSubmenu <- function(x, name, file) {
         if (file[x] == "divider") 
@@ -483,8 +487,8 @@ genNavbar <- function(htmlfile = "navbar.html", title, menu, submenus, files,
             collapse = "")
     }
     
-    x <- paste0("<div class=\"navbar navbar-default navbar-fixed-top\">\n  <div class=\"navbar-inner\">\n    <div class=\"container\">\n      <button type=\"button\" class=\"btn btn-navbar\" data-toggle=\"collapse\" data-target=\".nav-collapse\">\n        <span class=\"icon-bar\"></span>\n        <span class=\"icon-bar\"></span>\n        <span class=\"icon-bar\"></span>\n      </button>\n      <a class=\"brand\" href=\"/\">", 
-        title, "</a>\n      <div class=\"nav-collapse collapse\">\n        <ul class=\"nav\">\n          <li><a href=\"/\">Home</a></li>\n          ", 
+    x <- paste0("<div class=\"navbar navbar-default navbar-fixed-top\">\n  <div class=\"navbar-inner\">\n    <div class=\"container\">\n      <button type=\"button\" class=\"btn btn-navbar\" data-toggle=\"collapse\" data-target=\".nav-collapse\">\n        <span class=\"icon-bar\"></span>\n        <span class=\"icon-bar\"></span>\n        <span class=\"icon-bar\"></span>\n      </button>\n      <a class=\"brand\" href=\"", 
+        home.url, " \">", title, "</a>\n      <div class=\"nav-collapse collapse\">\n        <ul class=\"nav\">\n          <li><a href=\"/\">Home</a></li>\n          ", 
         paste(sapply(1:length(menu), fillMenu, menu = menu, submenus = submenus, 
             files = files), sep = "", collapse = "\n          "), "        </ul>\n        <ul class=\"nav pull-right\">\n          <a class=\"btn btn-primary\" href=\"", 
         site.link, "\">\n            <i class=\"fa fa-github fa-lg\"></i>\n            ", 

@@ -109,7 +109,7 @@ code > span.er { color: #c3bf9f; }
         <span class="icon-bar"></span>
         <span class="icon-bar"></span>
       </button>
-      <a class="brand" href="/">Project Management</a>
+      <a class="brand" href="proj_intro.html ">Project Management</a>
       <div class="nav-collapse collapse">
         <ul class="nav">
           <li><a href="/">Home</a></li>
@@ -138,8 +138,8 @@ code > span.er { color: #c3bf9f; }
             <ul class="dropdown-menu">
               <li><a href="proj_sankey.html">Projects diagram</a></li>
               <li class="divider"></li>
-              <li><a href="index.html">About</a></li>
-              <li><a href="index.html">Other</a></li>
+              <li><a href="proj_intro.html">About</a></li>
+              <li><a href="proj_intro.html">Other</a></li>
             </ul>
         </ul>
         <ul class="nav pull-right">
@@ -176,20 +176,20 @@ code > span.er { color: #c3bf9f; }
 <div id="limitations" class="section level4">
 <h4>Limitations</h4>
 <p>While <code>projman</code> assists with project documentation, this mainly takes the form of file generation and appending. Documentation is unique to every project of course. Every script is different. The most that is possible is to auto-fill commonly used code chunk names and metadata. Each document must be written individually by the author, but when a project has many <strong>R</strong> scripts requiring documentation, it is nice to not have to create all the corresponding Rmd files by hand and copy and paste generic contents.</p>
-<p>The project management code is not yet in package form. Many additional features are yet to be incorporated. Generic code relating to the further processing of Rmd files into various other output files via <code>rmarkdown</code> and <code>knitr</code> will fold into this project, but this has not been done yet.</p>
+<p>The project management code is not yet in package form. Many additional features are yet to be incorporated. Generic code relating to the further processing of Rmd files into various other output files via <code>rmarkdown</code> and <code>knitr</code> remains at an early development stage.</p>
 </div>
 </div>
 </div>
 <div id="related-items" class="section level2">
 <h2>Related items</h2>
-<p>Currently there is only this unpackaged <strong>R</strong> script and accompanying code for a projects hierarchy diagram. No additional related items are available at this time, but those referenced above will eventually be included.</p>
+<p>Currently there is only this unpackaged <strong>R</strong> script, accompanying code for a projects hierarchy diagram and a code flow diagram based on the current development of this project, and a simple script for generating documents based on project <strong>R</strong> code.</p>
 <div id="files-and-data" class="section level3">
 <h3>Files and Data</h3>
-<p>This project does not use any data. <code>sankey.R</code> is used to produce of project hierarchy diagram of my current projects.</p>
+<p>This project does not use any data. It does make use of supplemental libraries for formatting during html document generation. <code>proj_sankey.R</code> and <code>code_sankey.R</code> are used to produce of project hierarchy diagram of my current projects and a code flow diagram for this project, respectively. <code>drg.R</code> is used to assist in dynamic report generation.</p>
 </div>
 <div id="code-flow" class="section level3">
 <h3>Code flow</h3>
-<p>The Sankey diagram has become part of project management. Each project has its own, detailing the relationships among <strong>R</strong> code and data relevent to the project, and in some cases, how they relate to code and data files which are more general and span multiple projects. This diagram be available for this project once more project code has been developed.</p>
+<p>The Sankey diagram has become part of project management. Each project has its own, detailing the relationships among <strong>R</strong> code and data relevant to the project, and in some cases, how they relate to code and data files which are more general and span multiple projects. In general, for my projects I would only provide the code flow diagram here among the rest of the project documentation, but since this is the project management project and I am introducing its use, in this case I will also show the <a href="code_sankey.html" title="code">code</a> I use to make the diagram.</p>
 </div>
 <div id="current-projects" class="section level3">
 <h3>Current projects</h3>
@@ -216,7 +216,7 @@ code > span.er { color: #c3bf9f; }
   &lt;/head&gt;
   &lt;body &gt;
     
-    &lt;div id = 'chart67430921c84' class = 'rChart d3_sankey'&gt;&lt;/div&gt;    
+    &lt;div id = 'chart15f81629746b' class = 'rChart d3_sankey'&gt;&lt;/div&gt;    
     ï»¿&lt;!--Attribution:
 Mike Bostock https://github.com/d3/d3-plugins/tree/master/sankey
 Mike Bostock http://bost.ocks.org/mike/sankey/
@@ -225,7 +225,7 @@ Mike Bostock http://bost.ocks.org/mike/sankey/
 &lt;script&gt;
 (function(){
 var params = {
- &quot;dom&quot;: &quot;chart67430921c84&quot;,
+ &quot;dom&quot;: &quot;chart15f81629746b&quot;,
 &quot;width&quot;:    900,
 &quot;height&quot;:    800,
 &quot;data&quot;: {
@@ -243,7 +243,7 @@ var params = {
 &quot;top&quot;:     20 
 },
 &quot;title&quot;: &quot;Matt's Projects&quot;,
-&quot;id&quot;: &quot;chart67430921c84&quot; 
+&quot;id&quot;: &quot;chart15f81629746b&quot; 
 };
 
 params.units ? units = &quot; &quot; + params.units : units = &quot;&quot;;
@@ -363,11 +363,11 @@ node.append(&quot;text&quot;)
     
     &lt;script&gt;
       var cscale = d3.scale.category20b();
-      d3.selectAll('#chart67430921c84 svg path.link')
+      d3.selectAll('#chart15f81629746b svg path.link')
         .style('stroke', function(d){
           return cscale(d.source.name);
         })
-      d3.selectAll('#chart67430921c84 svg .node rect')
+      d3.selectAll('#chart15f81629746b svg .node rect')
         .style('fill', function(d){
           return cscale(d.name)
         })
@@ -375,7 +375,7 @@ node.append(&quot;text&quot;)
     &lt;/script&gt;
         
   &lt;/body&gt;
-&lt;/html&gt; " scrolling="no" frameBorder="0" seamless class="rChart  http://timelyportfolio.github.io/rCharts_d3_sankey/libraries/widgets/d3_sankey  " id="iframe-chart67430921c84">
+&lt;/html&gt; " scrolling="no" frameBorder="0" seamless class="rChart  http://timelyportfolio.github.io/rCharts_d3_sankey/libraries/widgets/d3_sankey  " id="iframe-chart15f81629746b">
 </iframe>
 <style>iframe.rChart{ width: 100%; height: 400px;}</style>
 <style>iframe.rChart{ width: 100%; height: 840px;}</style>
@@ -549,7 +549,7 @@ matt.proj.path &lt;-<span class="st"> &quot;C:/github&quot;</span></code></pre>
 <h4>genNavbar</h4>
 <p><code>genNavbar</code> generates a navigation bar for a web page. The html file created should be written to the project’s <code>docs/Rmd/include</code> directory. The common navigation bar html is included prior to the body of the html for each web page in the project’s website. <code>menu</code> is a vector of names for each dropdown menu. <code>submenus</code> is a list of vectors of menu options corresponding to each menu. <code>files</code> is a similar list of vectors. Each element is either an html file for a web page to be associated with the submenu link, “header” to indicate the corresponding name in <code>submenus</code> is only a group label and not a link to a web page, or “divider” to indicate placement of a bar for separating groups in a dropdown menu.</p>
 <pre class="sourceCode r"><code class="sourceCode r">genNavbar &lt;-<span class="st"> </span>function(<span class="dt">htmlfile =</span> <span class="st">&quot;navbar.html&quot;</span>, title, menu, submenus, files, 
-    <span class="dt">site.link =</span> <span class="st">&quot;&quot;</span>, <span class="dt">site.name =</span> <span class="st">&quot;Github&quot;</span>) {
+    <span class="dt">home.url =</span> <span class="st">&quot;/&quot;</span>, <span class="dt">site.link =</span> <span class="st">&quot;&quot;</span>, <span class="dt">site.name =</span> <span class="st">&quot;Github&quot;</span>) {
     
     fillSubmenu &lt;-<span class="st"> </span>function(x, name, file) {
         if (file[x] ==<span class="st"> &quot;divider&quot;</span>) 
@@ -569,8 +569,8 @@ matt.proj.path &lt;-<span class="st"> &quot;C:/github&quot;</span></code></pre>
             <span class="dt">collapse =</span> <span class="st">&quot;&quot;</span>)
     }
     
-    x &lt;-<span class="st"> </span><span class="kw">paste0</span>(<span class="st">&quot;&lt;div class=</span><span class="ch">\&quot;</span><span class="st">navbar navbar-default navbar-fixed-top</span><span class="ch">\&quot;</span><span class="st">&gt;</span><span class="ch">\n</span><span class="st">  &lt;div class=</span><span class="ch">\&quot;</span><span class="st">navbar-inner</span><span class="ch">\&quot;</span><span class="st">&gt;</span><span class="ch">\n</span><span class="st">    &lt;div class=</span><span class="ch">\&quot;</span><span class="st">container</span><span class="ch">\&quot;</span><span class="st">&gt;</span><span class="ch">\n</span><span class="st">      &lt;button type=</span><span class="ch">\&quot;</span><span class="st">button</span><span class="ch">\&quot;</span><span class="st"> class=</span><span class="ch">\&quot;</span><span class="st">btn btn-navbar</span><span class="ch">\&quot;</span><span class="st"> data-toggle=</span><span class="ch">\&quot;</span><span class="st">collapse</span><span class="ch">\&quot;</span><span class="st"> data-target=</span><span class="ch">\&quot;</span><span class="st">.nav-collapse</span><span class="ch">\&quot;</span><span class="st">&gt;</span><span class="ch">\n</span><span class="st">        &lt;span class=</span><span class="ch">\&quot;</span><span class="st">icon-bar</span><span class="ch">\&quot;</span><span class="st">&gt;&lt;/span&gt;</span><span class="ch">\n</span><span class="st">        &lt;span class=</span><span class="ch">\&quot;</span><span class="st">icon-bar</span><span class="ch">\&quot;</span><span class="st">&gt;&lt;/span&gt;</span><span class="ch">\n</span><span class="st">        &lt;span class=</span><span class="ch">\&quot;</span><span class="st">icon-bar</span><span class="ch">\&quot;</span><span class="st">&gt;&lt;/span&gt;</span><span class="ch">\n</span><span class="st">      &lt;/button&gt;</span><span class="ch">\n</span><span class="st">      &lt;a class=</span><span class="ch">\&quot;</span><span class="st">brand</span><span class="ch">\&quot;</span><span class="st"> href=</span><span class="ch">\&quot;</span><span class="st">/</span><span class="ch">\&quot;</span><span class="st">&gt;&quot;</span>, 
-        title, <span class="st">&quot;&lt;/a&gt;</span><span class="ch">\n</span><span class="st">      &lt;div class=</span><span class="ch">\&quot;</span><span class="st">nav-collapse collapse</span><span class="ch">\&quot;</span><span class="st">&gt;</span><span class="ch">\n</span><span class="st">        &lt;ul class=</span><span class="ch">\&quot;</span><span class="st">nav</span><span class="ch">\&quot;</span><span class="st">&gt;</span><span class="ch">\n</span><span class="st">          &lt;li&gt;&lt;a href=</span><span class="ch">\&quot;</span><span class="st">/</span><span class="ch">\&quot;</span><span class="st">&gt;Home&lt;/a&gt;&lt;/li&gt;</span><span class="ch">\n</span><span class="st">          &quot;</span>, 
+    x &lt;-<span class="st"> </span><span class="kw">paste0</span>(<span class="st">&quot;&lt;div class=</span><span class="ch">\&quot;</span><span class="st">navbar navbar-default navbar-fixed-top</span><span class="ch">\&quot;</span><span class="st">&gt;</span><span class="ch">\n</span><span class="st">  &lt;div class=</span><span class="ch">\&quot;</span><span class="st">navbar-inner</span><span class="ch">\&quot;</span><span class="st">&gt;</span><span class="ch">\n</span><span class="st">    &lt;div class=</span><span class="ch">\&quot;</span><span class="st">container</span><span class="ch">\&quot;</span><span class="st">&gt;</span><span class="ch">\n</span><span class="st">      &lt;button type=</span><span class="ch">\&quot;</span><span class="st">button</span><span class="ch">\&quot;</span><span class="st"> class=</span><span class="ch">\&quot;</span><span class="st">btn btn-navbar</span><span class="ch">\&quot;</span><span class="st"> data-toggle=</span><span class="ch">\&quot;</span><span class="st">collapse</span><span class="ch">\&quot;</span><span class="st"> data-target=</span><span class="ch">\&quot;</span><span class="st">.nav-collapse</span><span class="ch">\&quot;</span><span class="st">&gt;</span><span class="ch">\n</span><span class="st">        &lt;span class=</span><span class="ch">\&quot;</span><span class="st">icon-bar</span><span class="ch">\&quot;</span><span class="st">&gt;&lt;/span&gt;</span><span class="ch">\n</span><span class="st">        &lt;span class=</span><span class="ch">\&quot;</span><span class="st">icon-bar</span><span class="ch">\&quot;</span><span class="st">&gt;&lt;/span&gt;</span><span class="ch">\n</span><span class="st">        &lt;span class=</span><span class="ch">\&quot;</span><span class="st">icon-bar</span><span class="ch">\&quot;</span><span class="st">&gt;&lt;/span&gt;</span><span class="ch">\n</span><span class="st">      &lt;/button&gt;</span><span class="ch">\n</span><span class="st">      &lt;a class=</span><span class="ch">\&quot;</span><span class="st">brand</span><span class="ch">\&quot;</span><span class="st"> href=</span><span class="ch">\&quot;</span><span class="st">&quot;</span>, 
+        home.url, <span class="st">&quot; </span><span class="ch">\&quot;</span><span class="st">&gt;&quot;</span>, title, <span class="st">&quot;&lt;/a&gt;</span><span class="ch">\n</span><span class="st">      &lt;div class=</span><span class="ch">\&quot;</span><span class="st">nav-collapse collapse</span><span class="ch">\&quot;</span><span class="st">&gt;</span><span class="ch">\n</span><span class="st">        &lt;ul class=</span><span class="ch">\&quot;</span><span class="st">nav</span><span class="ch">\&quot;</span><span class="st">&gt;</span><span class="ch">\n</span><span class="st">          &lt;li&gt;&lt;a href=</span><span class="ch">\&quot;</span><span class="st">/</span><span class="ch">\&quot;</span><span class="st">&gt;Home&lt;/a&gt;&lt;/li&gt;</span><span class="ch">\n</span><span class="st">          &quot;</span>, 
         <span class="kw">paste</span>(<span class="kw">sapply</span>(<span class="dv">1</span>:<span class="kw">length</span>(menu), fillMenu, <span class="dt">menu =</span> menu, <span class="dt">submenus =</span> submenus, 
             <span class="dt">files =</span> files), <span class="dt">sep =</span> <span class="st">&quot;&quot;</span>, <span class="dt">collapse =</span> <span class="st">&quot;</span><span class="ch">\n</span><span class="st">          &quot;</span>), <span class="st">&quot;        &lt;/ul&gt;</span><span class="ch">\n</span><span class="st">        &lt;ul class=</span><span class="ch">\&quot;</span><span class="st">nav pull-right</span><span class="ch">\&quot;</span><span class="st">&gt;</span><span class="ch">\n</span><span class="st">          &lt;a class=</span><span class="ch">\&quot;</span><span class="st">btn btn-primary</span><span class="ch">\&quot;</span><span class="st"> href=</span><span class="ch">\&quot;</span><span class="st">&quot;</span>, 
         site.link, <span class="st">&quot;</span><span class="ch">\&quot;</span><span class="st">&gt;</span><span class="ch">\n</span><span class="st">            &lt;i class=</span><span class="ch">\&quot;</span><span class="st">fa fa-github fa-lg</span><span class="ch">\&quot;</span><span class="st">&gt;&lt;/i&gt;</span><span class="ch">\n</span><span class="st">            &quot;</span>, 

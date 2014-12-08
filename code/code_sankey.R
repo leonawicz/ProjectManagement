@@ -20,7 +20,7 @@ c4 <- gsub(".Rmd", ".html", c2)
 
 # @knitr links
 from <- c(
-	c0,	rep("projman.R", length(c2b)), c2, c2, rep("example.R", length(c1a)), c1b, rep(c(c1a, c1c), each=length(c4))
+	c0,	rep("projman.Rmd", length(c2b)), c2, c2, rep("example.R", length(c1a)), c1b, rep(c(c1a, c1c), each=length(c4))
 
 )
 to <- c(
@@ -31,24 +31,9 @@ to <- c(
 relations <- data.frame(from=from, to=to)
 g <- graph.data.frame(relations, directed=T, vertices=data.frame(c(c0, c1a, c1b, c1c, c2, c3, c4)))
 
-#V(g)$weight = 0
-#V(g)[degree(g,mode="out")==0]$weight <- 1
-#E(g)[to(V(g)$weight>0)]$weight <- V(g)[V(g)$weight>0]$weight
-#while(max(is.na(E(g)$weight))) {
-#	df <- get.data.frame(g)
-#	for (i in 1:nrow(df)) {
-#		x = df[i,]
-#		if(max(df$from==x$to)) {
-#			E(g)[from(x$from) & to(x$to)]$weight = sum(E(g)[from(x$to)]$weight)
-#		}
-#	}
-#}
-
-#val <- rep(1, length(to))
 gw <- get.data.frame(g)
+gw$value <- 1
 colnames(gw) <- c("source","target","value")
-#ind <- gw$value == 1
-gw$value <- 1#[ind] <- val[ind]*4 # hardcoded
 gw$source <- as.character(gw$source)
 gw$target <- as.character(gw$target)
 
@@ -56,7 +41,7 @@ gw$target <- as.character(gw$target)
 p <- rCharts$new()
 p$setLib('http://timelyportfolio.github.io/rCharts_d3_sankey/libraries/widgets/d3_sankey')
 p$setTemplate(script = "http://timelyportfolio.github.io/rCharts_d3_sankey/libraries/widgets/d3_sankey/layouts/chart.html")
-p$set(data=gw, nodeWidth=15, nodePadding=10, layout=32, width=900, height=840, margin=list(right=20, left=20, bottom=50, top=50), title="Code Flow")
+p$set(data=gw, nodeWidth=15, nodePadding=10, layout=32, width=900, height=800, margin=list(right=20, left=20, bottom=50, top=50), title="Code Flow")
 
 p$setTemplate(
   afterScript="
@@ -74,9 +59,9 @@ p$setTemplate(
 </script>
 ")
 
-# @knitr code_sankey_save
+# @knitr sankey_save
 out <- "C:/github/ProjectManagement/code/codeflow.html"
 p$save(out)
 
-# @knitr code_sankey_embed
+# @knitr sankey_embed
 p$show("iframesrc", cdn=T)

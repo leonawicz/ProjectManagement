@@ -16,7 +16,7 @@ or "divider" to indicate placement of a bar for separating groups in a dropdown 
 
 ```r
 genNavbar <- function(htmlfile = "navbar.html", title, menu, submenus, files, 
-    site.link = "", site.name = "Github") {
+    home.url = "/", site.link = "", site.name = "Github") {
     
     fillSubmenu <- function(x, name, file) {
         if (file[x] == "divider") 
@@ -36,8 +36,8 @@ genNavbar <- function(htmlfile = "navbar.html", title, menu, submenus, files,
             collapse = "")
     }
     
-    x <- paste0("<div class=\"navbar navbar-default navbar-fixed-top\">\n  <div class=\"navbar-inner\">\n    <div class=\"container\">\n      <button type=\"button\" class=\"btn btn-navbar\" data-toggle=\"collapse\" data-target=\".nav-collapse\">\n        <span class=\"icon-bar\"></span>\n        <span class=\"icon-bar\"></span>\n        <span class=\"icon-bar\"></span>\n      </button>\n      <a class=\"brand\" href=\"/\">", 
-        title, "</a>\n      <div class=\"nav-collapse collapse\">\n        <ul class=\"nav\">\n          <li><a href=\"/\">Home</a></li>\n          ", 
+    x <- paste0("<div class=\"navbar navbar-default navbar-fixed-top\">\n  <div class=\"navbar-inner\">\n    <div class=\"container\">\n      <button type=\"button\" class=\"btn btn-navbar\" data-toggle=\"collapse\" data-target=\".nav-collapse\">\n        <span class=\"icon-bar\"></span>\n        <span class=\"icon-bar\"></span>\n        <span class=\"icon-bar\"></span>\n      </button>\n      <a class=\"brand\" href=\"", 
+        home.url, " \">", title, "</a>\n      <div class=\"nav-collapse collapse\">\n        <ul class=\"nav\">\n          <li><a href=\"/\">Home</a></li>\n          ", 
         paste(sapply(1:length(menu), fillMenu, menu = menu, submenus = submenus, 
             files = files), sep = "", collapse = "\n          "), "        </ul>\n        <ul class=\"nav pull-right\">\n          <a class=\"btn btn-primary\" href=\"", 
         site.link, "\">\n            <i class=\"fa fa-github fa-lg\"></i>\n            ", 

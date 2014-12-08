@@ -3,7 +3,7 @@ Matthew Leonawicz
 
 ## Introduction
 This is a project management project.
-While current projects are shown in the chart below, the aim of this project is the development of convenient **R**-related project management tools.
+The aim of this project is the development of convenient **R**-related project management tools.
 
 ### Motivation
 I am working on these tools to enhance my own workflow across multiple **R** projects.
