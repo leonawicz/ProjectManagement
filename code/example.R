@@ -31,7 +31,7 @@ proj.submenu <- list(
 )
 
 proj.files <- list(
-	c("header", "proj_intro.html", "proj_sankey.html", "example.html"),
+	c("header", "proj_intro.html", "code_sankey.html", "example.html"),
 	c("objects.html", "divider", "header", "func_new.html", "func_rmd.html", "func_website.html"),
 	c("proj_sankey.html", "divider", "proj_intro.html", "proj_intro.html")
 )
