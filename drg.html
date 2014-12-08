@@ -8,9 +8,10 @@
 <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
 <meta name="generator" content="pandoc" />
 
+<meta name="author" content="Matthew Leonawicz" />
 
 
-<title></title>
+<title>Project Management</title>
 
 <script src="libs/jquery-1.11.0/jquery.min.js"></script>
 <meta name="viewport" content="width=device-width, initial-scale=1.0" />
@@ -152,31 +153,48 @@ code > span.er { color: #c3bf9f; }
   </div>
 </div>
 
+<div id="header">
+<h1 class="title">Project Management</h1>
+<h4 class="author"><em>Matthew Leonawicz</em></h4>
+</div>
 
 
-<div id="newproject" class="section level4">
-<h4>newProject</h4>
-<p><code>newProject</code> creates a new named project directory structure at the specified file path. If a directory with this project name already exists in this location on the file system and <code>overwrite=FALSE</code>, the function will abort. Default project subdirectories are created unless a different vector of folder names is explicitly passed to <code>newProject</code>. If one of the subdirectories is <code>docs</code> then the default vector of subdirectories under <code>docs</code> is also created. This argument can also be set explicitly. The current function only creates directories, not files, so <code>overwrite=TRUE</code> is safe to use on any existing project.</p>
-<pre class="sourceCode r"><code class="sourceCode r">newProject &lt;-<span class="st"> </span>function(name, path, <span class="dt">dirs =</span> <span class="kw">c</span>(<span class="st">&quot;code&quot;</span>, <span class="st">&quot;data&quot;</span>, <span class="st">&quot;docs&quot;</span>, <span class="st">&quot;plots&quot;</span>, 
-    <span class="st">&quot;workspaces&quot;</span>), <span class="dt">docs.dirs =</span> <span class="kw">c</span>(<span class="st">&quot;diagrams&quot;</span>, <span class="st">&quot;ioslides&quot;</span>, <span class="st">&quot;notebook&quot;</span>, <span class="st">&quot;pdf&quot;</span>, 
-    <span class="st">&quot;Rmd/include&quot;</span>, <span class="st">&quot;timeline&quot;</span>, <span class="st">&quot;tufte&quot;</span>), <span class="dt">overwrite =</span> <span class="ot">FALSE</span>) {
-    
-    <span class="kw">stopifnot</span>(<span class="kw">is.character</span>(name))
-    name &lt;-<span class="st"> </span><span class="kw">file.path</span>(path, name)
-    if (<span class="kw">file.exists</span>(name) &amp;&amp;<span class="st"> </span>!overwrite) 
-        <span class="kw">stop</span>(<span class="st">&quot;This project already exists.&quot;</span>)
-    <span class="kw">dir.create</span>(name, <span class="dt">recursive =</span> <span class="ot">TRUE</span>, <span class="dt">showWarnings =</span> <span class="ot">FALSE</span>)
-    if (!<span class="kw">file.exists</span>(name)) 
-        <span class="kw">stop</span>(<span class="st">&quot;Directory appears invalid.&quot;</span>)
-    
-    path.dirs &lt;-<span class="st"> </span><span class="kw">file.path</span>(name, dirs)
-    <span class="kw">sapply</span>(path.dirs, dir.create, <span class="dt">showWarnings =</span> <span class="ot">FALSE</span>)
-    path.docs &lt;-<span class="st"> </span><span class="kw">file.path</span>(name, <span class="st">&quot;docs&quot;</span>, docs.dirs)
-    if (<span class="st">&quot;docs&quot;</span> %in%<span class="st"> </span>dirs) 
-        <span class="kw">sapply</span>(path.docs, dir.create, <span class="dt">recursive =</span> <span class="ot">TRUE</span>, <span class="dt">showWarnings =</span> <span class="ot">FALSE</span>)
-    if (overwrite) 
-        <span class="kw">cat</span>(<span class="st">&quot;Project directories updated.</span><span class="ch">\n</span><span class="st">&quot;</span>) else <span class="kw">cat</span>(<span class="st">&quot;Project directories created.</span><span class="ch">\n</span><span class="st">&quot;</span>)
-}</code></pre>
+<div id="dynamic-report-generation" class="section level2">
+<h2>Dynamic report generation</h2>
+<p>The script, <code>drg.R</code>, is used to compile reports in various formats based on project <strong>R</strong> and/or Rmd files. Using this project management project as an example, markdown and html files are generated for existing Rmd files. This is not clear from the code below because <code>output_format=&quot;all&quot;</code> is ambiguous. In the yaml front-matter of each Rmd file for this project, the file type <code>html_document:</code> and specific flag <code>keep_md: true</code> are specified.</p>
+<p>No other output files are specified such as pdf. To make pdf files for example, they would be specified directly in this script or the Rmd front-matter would have to be updated to include them. I prefer to keep them separate because I rarely want to generate pdf files from most Rmd files and when I do I will want them written to another location.</p>
+</div>
+<div id="r-code" class="section level2">
+<h2>R code</h2>
+<div id="initial-setup" class="section level3">
+<h3>Initial setup</h3>
+<pre class="sourceCode r"><code class="sourceCode r"><span class="kw">library</span>(rmarkdown)
+<span class="kw">library</span>(knitr)
+
+<span class="kw">setwd</span>(<span class="st">&quot;C:/github/ProjectManagement/docs/Rmd&quot;</span>)
+
+<span class="co"># R scripts</span>
+files.r &lt;-<span class="st"> </span><span class="kw">list.files</span>(<span class="st">&quot;../../code&quot;</span>, <span class="dt">pattern =</span> <span class="st">&quot;.R$&quot;</span>, <span class="dt">full =</span> T)
+<span class="co"># files.r &lt;- files.r[basename(files.r)!=&#39;drg.R&#39;]</span>
+files.Rmd &lt;-<span class="st"> </span><span class="kw">list.files</span>(<span class="dt">pattern =</span> <span class="st">&quot;.Rmd$&quot;</span>, <span class="dt">full =</span> T)
+
+<span class="co"># potential non-Rmd directories for writing various output files</span>
+outtype &lt;-<span class="st"> </span><span class="kw">file.path</span>(<span class="kw">dirname</span>(<span class="kw">getwd</span>()), <span class="kw">list.dirs</span>(<span class="st">&quot;../&quot;</span>, <span class="dt">full =</span> F, <span class="dt">recursive =</span> F))
+outtype &lt;-<span class="st"> </span>outtype[<span class="kw">basename</span>(outtype) !=<span class="st"> &quot;Rmd&quot;</span>]</code></pre>
+</div>
+<div id="render-documents" class="section level3">
+<h3>Render documents</h3>
+<pre class="sourceCode r"><code class="sourceCode r"><span class="co"># write all yaml front-matter-specified outputs to Rmd directory for all Rmd</span>
+<span class="co"># files</span>
+<span class="kw">lapply</span>(files.Rmd, render, <span class="dt">output_format =</span> <span class="st">&quot;all&quot;</span>)
+
+<span class="co"># write all specific outputs to specific directories for all Rmd files</span>
+<span class="co"># lapply(files.Rmd, render, output_format=html_document(),</span>
+<span class="co"># output_dir=outtype[basename(outtype)==&#39;all&#39;]) lapply(files.Rmd, render,</span>
+<span class="co"># output_format=md_document(), output_dir=outtype[basename(outtype)==&#39;all&#39;])</span>
+<span class="kw">lapply</span>(files.Rmd, render, <span class="dt">output_format =</span> <span class="st">&quot;pdf_document&quot;</span>, <span class="dt">output_dir =</span> outtype[<span class="kw">basename</span>(outtype) ==<span class="st"> </span>
+<span class="st">    &quot;pdf&quot;</span>], <span class="dt">intermediates_dir =</span> outtype[<span class="kw">basename</span>(outtype) ==<span class="st"> &quot;pdf&quot;</span>])</code></pre>
+</div>
 </div>
 
 
