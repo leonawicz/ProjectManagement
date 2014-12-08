@@ -1,52 +1,33 @@
 ---
-title: INSERT_TITLE_HERE
+title: Project Management
 author: Matthew Leonawicz
 output:
   html_document:
-    toc: true
-    theme: cosmo
+    toc: false
+    theme: united
     highlight: zenburn
     keep_md: true
 ---
 
 ```{r knitr_setup, echo=FALSE}
-opts_chunk$set(cache=FALSE, eval=FALSE, tidy=TRUE, messages=FALSE, warnings=FALSE)
-read_chunk("")
+opts_chunk$set(cache=FALSE, eval=FALSE, tidy=TRUE, message=FALSE, warning=FALSE)
+read_chunk("../../code/drg.R")
 ```
 
+## Dynamic report generation
+The script, `drg.R`, is used to compile reports in various formats based on project **R** and/or Rmd files.
+Using this project management project as an example, markdown and html files are generated for existing Rmd files.
+This is not clear from the code below because `output_format="all"` is ambiguous.
+In the yaml front-matter of each Rmd file for this project, the file type `html_document:` and specific flag `keep_md: true` are specified.
 
-## Introduction
-ADD_TEXT_HERE
-
-### Motivation
-ADD_TEXT_HERE
-
-### Details
-ADD_TEXT_HERE
-
-#### Capabilities
-ADD_TEXT_HERE
-
-#### Limitations
-ADD_TEXT_HERE
-
-## Related items
-
-### Files and Data
-ADD_TEXT_HERE
-
-### Code flow
-ADD_TEXT_HERE
-
-```{r code_sankey, echo=F, eval=T}
-```
-
-```{r code_sankey_embed, echo=F, eval=T, comment=NA, results="asis", tidy=F}
-```
+No other output files are specified such as pdf.
+To make pdf files for example, they would be specified directly in this script or the Rmd front-matter would have to be updated to include them.
+I prefer to keep them separate because I rarely want to generate pdf files from most Rmd files and when I do I will want them written to another location.
 
 ## R code
 
-### Setup
-ADD_TEXT_HERE: EXAMPLE
-Setup consists of loading required **R** packages and additional files, preparing any command line arguments for use, and defining functions and other **R** objects.
+```{r setup}
+```
 
+```{r save}
+```
