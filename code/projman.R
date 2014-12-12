@@ -205,7 +205,7 @@ genOutyaml <- function(file, theme="cosmo", highlight="zenburn", lib=NULL, heade
 
 # @knitr functions7
 # Functions for Gitgub user website
-genAppsDiv <- function(file="C:/github/leonawicz.github.io/assets/apps_container.html", type="apps", main="Shiny Apps",
+genAppDiv <- function(file="C:/github/leonawicz.github.io/assets/apps_container.html", type="apps", main="Shiny Apps",
 	apps.url="http://shiny.snap.uaf.edu", github.url="https://github.com/ua-snap/shiny-apps/tree/master", apps.dir="C:/github/shiny-apps", img.loc="_images/cropped", ...){
 	
 	apps.img <- list.files(file.path(apps.dir, img.loc))
@@ -216,7 +216,7 @@ genAppsDiv <- function(file="C:/github/leonawicz.github.io/assets/apps_container
 		app <- apps[i]
 	    app.url <- file.path(apps.url, app)
 	    dots <- list(...)
-	    if(is.null(dots$col)) col <- "warning"
+	    if(is.null(dots$col)) col <- "warning" else col <- dots$col
 	    if(is.null(dots$panel.main)) panel.main <- gsub("_", " ", app) else panel.main <- dots$panel.main
 	    if(length(panel.main) > 1) panel.main <- panel.main[i]
 	    x <- paste0('<div class="col-lg-4">
@@ -224,7 +224,7 @@ genAppsDiv <- function(file="C:/github/leonawicz.github.io/assets/apps_container
 			<div class="panel panel-', col, '">
 			  <div class="panel-heading"><h3 class="panel-title">', panel.main, '</h3>
 			  </div>
-			  <div class="panel-body"><a href="', app.url, '" target="_blank"><img src="', file.path(github.url, img.loc, apps.img[i]), '" alt="', apps[i], '" width=100% height=200px></a><p>My first web application.</p>
+			  <div class="panel-body"><a href="', app.url, '" target="_blank"><img src="', file.path(gsub("/tree/", "/raw/", github.url), img.loc, apps.img[i]), '" alt="', apps[i], '" width=100% height=200px></a><p>An <strong>R</strong> Shiny web application.</p>
 				<div class="btn-group btn-group-justified">
 				  <a href="', app.url, '" target="_blank" class="btn btn-success">Launch</a>
 				  <a href="', file.path(github.url, app), '" target="_blank" class="btn btn-info">Github</a>
@@ -243,12 +243,83 @@ genAppsDiv <- function(file="C:/github/leonawicz.github.io/assets/apps_container
 		ind <- ind[ind %in% 1:n]
 		y <- c(y, paste0('<div class="row">\n', paste0(sapply(ind, fillRow, ...), collapse="\n"), '</div>\n'))
 	}
-	z <- '</div>'
+	z <- '</div>\n'
 	sink(file)
 	sapply(c(x, y, z), cat)
 	sink()
 	cat("div container html created for Shiny Apps.\n")
 }
 
-genAppsDiv()
-#genAppsDiv(panel.main=rep("Jussanothashinyapp", 18))
+genAppDiv()
+#genAppDiv(panel.main=rep("Jussanothashinyapp", 18))
+
+# @knitr functions8
+genPanelDiv <- function(outDir="C:/github/leonawicz.github.io/assets", type="projects", main="Projects",
+	github.user="leonawicz", prjs.dir="C:/github", exclude=c("leonawicz.github.io", "shiny-apps"), img.loc="_images/cropped", ...){
+	stopifnot(github.user %in% c("leonawicz", "ua-snap"))
+	if(type=="apps"){
+		filename <- "apps_container.html"
+		web.url <- "http://shiny.snap.uaf.edu"
+		gh.url.tail <- "shiny-apps/tree/master"
+		target <- ' target="_blank"'
+		go.label <- "Launch"
+		prjs.dir <- file.path(prjs.dir, "shiny-apps")
+		prjs.img <- list.files(file.path(prjs.dir, img.loc))
+		prjs <- sapply(strsplit(prjs.img, "\\."), "[[", 1)
+	}
+	if(type=="projects"){
+		filename <- "projects_container.html"
+		web.url <- paste0("http://", github.user, ".github.io")
+		gh.url.tail <- ""
+		target <- ""
+		go.label <- "Website"
+		prjs <- list.dirs(prjs.dir, full=TRUE, recursive=FALSE)
+		prjs <- prjs[!(basename(prjs) %in% exclude)]
+		prjs.img <- sapply(1:length(prjs), function(i, a) list.files(file.path(a[i], "plots"), pattern=paste0("^_", basename(a)[i])), a=prjs)
+		prjs <- basename(prjs)
+	}
+	gh.url <- file.path("https://github.com", github.user, gh.url.tail)
+	x <- paste0('<div class="container">\n  <div class="row">\n    <div class="col-lg-12">\n      <div class="page-header">\n        <h3 id="', type, '">', main, '</h3>\n      </div>\n    </div>\n  </div>\n  ')
+	
+    fillRow <- function(i, ...){
+		prj <- prjs[i]
+		if(type=="apps") img.src <- file.path(gsub("/tree/", "/raw/", gh.url), img.loc, prjs.img[i])
+		if(type=="projects") img.src <- file.path(gh.url, prj, "raw/master/plots", prjs.img[i])
+	    web.url <- file.path(web.url, prj)
+	    dots <- list(...)
+	    if(is.null(dots$col)) col <- "warning" else col <- dots$col
+	    if(is.null(dots$panel.main)) panel.main <- gsub("_", " ", prj) else panel.main <- dots$panel.main
+	    if(length(panel.main) > 1) panel.main <- panel.main[i]
+	    x <- paste0('<div class="col-lg-4">
+		  <div class="bs-component">
+			<div class="panel panel-', col, '">
+			  <div class="panel-heading"><h3 class="panel-title">', panel.main, '</h3>
+			  </div>
+			  <div class="panel-body"><a href="', web.url, '"', target, '><img src="', img.src, '" alt="', prj, '" width=100% height=200px></a><p>Details...</p>
+				<div class="btn-group btn-group-justified">
+				  <a href="', web.url, '"', target, ' class="btn btn-success">', go.label, '</a>
+				  <a href="', file.path(gh.url, prj), '" class="btn btn-info">Github</a>
+				</div>
+			  </div>
+			</div>
+		  </div>
+		</div>')
+	}
+	
+	n <- length(prjs)
+	seq1 <- seq(1, n, by=3)
+	y <- c()
+	for(j in 1:length(seq1)){
+		ind <- seq1[j]:(seq1[j] + 2)
+		ind <- ind[ind %in% 1:n]
+		y <- c(y, paste0('<div class="row">\n', paste0(sapply(ind, fillRow, ...), collapse="\n"), '</div>\n'))
+	}
+	z <- '</div>\n'
+	sink(file.path(outDir, filename))
+	sapply(c(x, y, z), cat)
+	sink()
+	cat("div container html file created.\n")
+}
+
+genPanelDiv(type="projects", main="Projects", github.user="leonawicz", col="primary")
+genPanelDiv(type="apps", main="Shiny Apps", github.user="ua-snap")
