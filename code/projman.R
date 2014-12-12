@@ -224,7 +224,7 @@ genAppDiv <- function(file="C:/github/leonawicz.github.io/assets/apps_container.
 			<div class="panel panel-', col, '">
 			  <div class="panel-heading"><h3 class="panel-title">', panel.main, '</h3>
 			  </div>
-			  <div class="panel-body"><a href="', app.url, '" target="_blank"><img src="', file.path(gsub("/tree/", "/raw/", github.url), img.loc, apps.img[i]), '" alt="', apps[i], '" width=100% height=200px></a>
+			  <div class="panel-body"><a href="', app.url, '" target="_blank"><img src="', file.path(gsub("/tree/", "/raw/", github.url), img.loc, apps.img[i]), '" alt="', apps[i], '" width=100% height=200px></a><p></p>
 				<div class="btn-group btn-group-justified">
 				  <a href="', app.url, '" target="_blank" class="btn btn-success">Launch</a>
 				  <a href="', file.path(github.url, app), '" target="_blank" class="btn btn-info">Github</a>
@@ -295,7 +295,7 @@ genPanelDiv <- function(outDir="C:/github/leonawicz.github.io/assets", type="pro
 			<div class="panel panel-', col, '">
 			  <div class="panel-heading"><h3 class="panel-title">', panel.main, '</h3>
 			  </div>
-			  <div class="panel-body"><a href="', web.url, '"', target, '><img src="', img.src, '" alt="', prj, '" width=100% height=200px></a>
+			  <div class="panel-body"><a href="', web.url, '"', target, '><img src="', img.src, '" alt="', prj, '" width=100% height=200px></a><p></p>
 				<div class="btn-group btn-group-justified">
 				  <a href="', web.url, '"', target, ' class="btn btn-success">', go.label, '</a>
 				  <a href="', file.path(gh.url, prj), '" class="btn btn-info">Github</a>
