@@ -3,11 +3,13 @@
 # For package 'projman'
 
 # data
-rmd.knitr.setup <-
-'\n```{r knitr_setup, echo=FALSE}
+rmd.knitr.setup <- function(file){
+paste0('\n```{r knitr_setup, echo=FALSE}
 opts_chunk$set(cache=FALSE, eval=FALSE, tidy=TRUE, message=FALSE, warning=FALSE)
-read_chunk("")
-```\n'
+#read_chunk("../../code/proj_sankey.R")
+read_chunk("../../code/', file, '")
+```\n')
+}
 
 rmd.template <-
 '\n
@@ -97,7 +99,7 @@ genRmd <- function(path, replace=FALSE, header=rmdHeader(), update.header=FALSE,
 		y2 <- list(...)$rmd.knitr.setup
 		y3 <- list(...)$rmd.template
 		if(is.null(y1)) y1 <- rmd.header
-		if(is.null(y2)) y2 <- rmd.knitr.setup
+		if(is.null(y2)) y2 <- rmd.knitr.setup(gsub(".Rmd", ".R", basename(x)))
 		if(is.null(y3)) y3 <- rmd.template
 		sink(x)
 		sapply(c(y1, y2, y3), cat)
@@ -160,7 +162,7 @@ chunkNames <- function(path, rChunkID="# @knitr", rmdChunkID="```{r", append.new
 }
 
 # @knitr function5
-genNavbar <- function(htmlfile="navbar.html", title, menu, submenus, files, title.url="/", home.url="/", site.url="", site.name="Github"){
+genNavbar <- function(htmlfile="navbar.html", title, menu, submenus, files, title.url="index.html", home.url="index.html", site.url="", site.name="Github", include.home=FALSE){
 
 	fillSubmenu <- function(x, name, file){
 		if(file[x]=="divider") return('              <li class="divider"></li>\n')
@@ -178,8 +180,10 @@ genNavbar <- function(htmlfile="navbar.html", title, menu, submenus, files, titl
 			'            </ul>\n', collapse="")
 	}
 	
+	if(include.home) home <- paste0('<li><a href="', home.url, '">Home</a></li>\n          ') else home <- ""
 	x <- paste0(
-		'<div class="navbar navbar-default navbar-fixed-top">\n  <div class="navbar-inner">\n    <div class="container">\n      <button type="button" class="btn btn-navbar" data-toggle="collapse" data-target=".nav-collapse">\n        <span class="icon-bar"></span>\n        <span class="icon-bar"></span>\n        <span class="icon-bar"></span>\n      </button>\n      <a class="brand" href="', title.url, '">', title, '</a>\n      <div class="nav-collapse collapse">\n        <ul class="nav">\n          <li><a href="', home.url, '">Home</a></li>\n          ',
+		'<div class="navbar navbar-default navbar-fixed-top">\n  <div class="navbar-inner">\n    <div class="container">\n      <button type="button" class="btn btn-navbar" data-toggle="collapse" data-target=".nav-collapse">\n        <span class="icon-bar"></span>\n        <span class="icon-bar"></span>\n        <span class="icon-bar"></span>\n      </button>\n      <a class="brand" href="', title.url, '">', title, '</a>\n      <div class="nav-collapse collapse">\n        <ul class="nav">\n          ',
+		home,
 		paste(sapply(1:length(menu), fillMenu, menu=menu, submenus=submenus, files=files), sep="", collapse="\n          "),
 		'        </ul>\n        <ul class="nav pull-right">\n          <a class="btn btn-primary" href="', site.url, '">\n            <i class="fa fa-github fa-lg"></i>\n            ',site.name,'\n          </a>\n        </ul>\n      </div><!--/.nav-collapse -->\n    </div>\n  </div>\n</div>\n',
 		collpase="")
@@ -194,9 +198,9 @@ genOutyaml <- function(file, theme="cosmo", highlight="zenburn", lib=NULL, heade
 	output.yaml <- paste0('html_document:\n  self_contained: false\n  theme: ', theme, '\n  highlight: ', highlight, '\n  mathjax: null\n  toc_depth: 2\n')
 	if(!is.null(lib)) output.yaml <- paste0(output.yaml, '  lib_dir: ', lib, '\n')
 	output.yaml <- paste0(output.yaml, '  includes:\n')
-	if(!is.null(header)) output.yaml <- paste0(output.yaml, '    in_header: include/', header, '\n')
-	if(!is.null(before_body)) output.yaml <- paste0(output.yaml, '    before_body: include/', before_body, '\n')
-	if(!is.null(after_body)) output.yaml <- paste0(output.yaml, '    after_body: include/', after_body, '\n')
+	if(!is.null(header)) output.yaml <- paste0(output.yaml, '    in_header: ', header, '\n')
+	if(!is.null(before_body)) output.yaml <- paste0(output.yaml, '    before_body: ', before_body, '\n')
+	if(!is.null(after_body)) output.yaml <- paste0(output.yaml, '    after_body: ', after_body, '\n')
 	sink(file)
 	cat(output.yaml)
 	sink()
@@ -250,7 +254,7 @@ genAppDiv <- function(file="C:/github/leonawicz.github.io/assets/apps_container.
 	cat("div container html created for Shiny Apps.\n")
 }
 
-genAppDiv()
+#genAppDiv()
 #genAppDiv(panel.main=rep("Jussanothashinyapp", 18))
 
 # @knitr functions8
@@ -321,5 +325,5 @@ genPanelDiv <- function(outDir="C:/github/leonawicz.github.io/assets", type="pro
 	cat("div container html file created.\n")
 }
 
-genPanelDiv(type="projects", main="Projects", github.user="leonawicz", col="primary")
-genPanelDiv(type="apps", main="Shiny Apps", github.user="ua-snap")
+#genPanelDiv(type="projects", main="Projects", github.user="leonawicz", col="primary")
+#genPanelDiv(type="apps", main="Shiny Apps", github.user="ua-snap")

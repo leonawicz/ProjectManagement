@@ -4,7 +4,7 @@ proj.location <- matt.proj.path # Use default file location
 
 newProject(proj.name, proj.location, overwrite=T) # create a new project
 
-rfile.path <- file.path(matt.proj.path, proj.name, "code") # path to R scripts
+rfile.path <- file.path(proj.location, proj.name, "code") # path to R scripts
 
 # generate Rmd files from existing R scripts using default yaml front-matter
 genRmd(path=rfile.path, header=rmdHeader())
@@ -14,10 +14,10 @@ genRmd(path=rfile.path, header=rmdHeader())
 genRmd(path=rfile.path, header=rmdHeader(), update.header=TRUE)
 
 # obtain knitr code chunk names in existing R scripts
-chunkNames(path=file.path(matt.proj.path, proj.name, "code"))
+chunkNames(path=file.path(proj.location, proj.name, "code"))
 
 # append new knitr code chunk names found in existing R scripts to any Rmd files which are outdated
-chunkNames(path=file.path(matt.proj.path, proj.name, "code"), append.new=TRUE)
+chunkNames(path=file.path(proj.location, proj.name, "code"), append.new=TRUE)
 
 # @knitr ex_website
 # Setup for generating a project website
