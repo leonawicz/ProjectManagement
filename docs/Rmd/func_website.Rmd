@@ -24,7 +24,7 @@ Each element is either an html file for a web page to be associated with the sub
 "header" to indicate the corresponding name in `submenus` is only a group label and not a link to a web page,
 or "divider" to indicate placement of a bar for separating groups in a dropdown menu.
 
-```{r function5}
+```{r fun_genNavbar}
 ```
 
 #### genOutyaml
@@ -37,5 +37,5 @@ These can be specified by file basename only (no path) and the function assumes 
 At this time all external libraries must be provided by the user, for example in `docs/Rmd/libs`.
 It is recommended. See the project repo [gh-pages](https://github.com/leonawicz/ProjectManagement/tree/gh-pages "gh-pages") branch for an example.
 
-```{r function6}
+```{r fun_genOutyaml}
 ```

@@ -20,5 +20,5 @@ If one of the subdirectories is `docs` then the default vector of subdirectories
 This argument can also be set explicitly.
 The current function only creates directories, not files, so `overwrite=TRUE` is safe to use on any existing project.
 
-```{r function1}
+```{r fun_newProject}
 ```

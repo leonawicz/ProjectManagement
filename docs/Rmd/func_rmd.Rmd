@@ -17,7 +17,15 @@ read_chunk("../../code/projman.R")
 It has default arguments specific to my own projects but can be changed.
 The output from this function is passed directly to `genRmd` below.
 
-```{r function2}
+```{r fun_rmdHeader}
+```
+
+#### rmdknitrSetup
+`rmdknitrSetup` generates the `knitr` global options setup code cunk for Rmd files as a character string to be inserted at the top of a file following the yaml header.
+The only option at this time is the ability to include or exclude a source reference to a project-related clode flow diagram **R** script via `include.sankey`.
+The output from this function is passed directly to `genRmd` below.
+
+```{r fun_rmdknitrSetup}
 ```
 
 #### genRmd
@@ -33,7 +41,7 @@ in this case strictly updating the yaml metadata header at the top of each Rmd f
 The Rmd files are placed in the `/docs/Rmd` directory.
 This function assumes this project directory exists.
 
-```{r function3}
+```{r fun_genRmd}
 ```
 
 #### chunkNames
@@ -48,10 +56,48 @@ these Rmd files are appended with a list of code chunk names found in the curren
 which have not yet been integrated into the current state of the Rmd files.
 This fascilitates updating of Rmd documentation when it falls behind scripts which have been updated.
 
-```{r function4}
+```{r fun_chunkNames}
 ```
 
 Regarding the creation and updating of Rmd files, `projman` simply assumes that there will be one **R** Markdown file corresponding to one **R** script.
 This is not always the case for a given project, but again, the purpose is to generate basic templates.
 Unnecessary files can always be deleted later, or edits made such that one **R** Markdown file reads multiple **R** scripts,
 as is the case with the Rmd file used to generate this document.
+
+#### rmd2rnw
+`rmd2rnw` converts all Rmd files found in a directory to Rnw files, saving the latter to a specified location.
+The Rmd files are not removed.
+This function speeds up the process of duplicating files when wanting to make PDFs from Rnw files when only Rmd files exist.
+The user still makes specific changes by hand, for example, any required changes to `knitr` code chunk options that must differ for PDF output vs. html output.
+The primary benefit is in not having to fuss with large amounts of standard substitutions which can be automated, such as swapping code chunk enclosure styles.
+
+```{r fun_rmd2rnw}
+```
+
+#### moveDocs
+`moveDocs` relocates files by renaming with a new file path.
+Specifically, it scans for md and html files in the `docs/Rmd` directory and/or pdf files in the `docs/Rnw` directory.
+If such files are found in the respective locations, they are moved to `docs/md`, `docs/html`, and `docs/pdf`, respectively.
+
+The intent is to clean up the Rmd and Rnw directories after `knitr` has been used to knit documents in place.
+I do this because I have more success knitting documents with the confluence of `RStudio`, `rmarkdown`, `knitr`, `pandoc`, and `LaTeX` when the knitting occurs all within the directory of the originating files.
+The process is more prone to throwing errors when trying to specify alternate locations for outputs.
+
+`moveDocs` makes a nominal effort to replace a possible relative path with a full file path before proceeding, if the former is supplied.
+Default arguments include `move=TRUE` which will call `file.rename` and `copy=FALSE` which, if `TRUE` (and `move=FALSE`), will alternatively call `file.copy`.
+If both are `TRUE`, any file(s) found are moved.
+
+This function will always overwrite any existing file versions previously moved to the output directories, by way of `file.rename`.
+To keep the behavior consistent, when `move=FALSE` and `copy=TRUE`, `file.copy` always executes with its argument, `overwrite=TRUE`.
+This should never cause problems because in the context I intend for this function,
+the types of files being moved or copied from `docs/Rmd` and `docs/Rnw` are never used as inputs to other files, functions, or processes,
+nor are they meant to be edited by hand after being generated.
+
+If there are LaTeX-associated files present (.TeX, .aux, and .txt files with the same file names as local pdf files.),
+these files will be removed if `remove.latex=TRUE` (default).
+If `FALSE`, the default `latexDir="LaTeX"` means that these files will be moved to the `docs/LaTeX` directory rather than deleted.
+If this directory does not exist, it will be created.
+An alternate location can be specified, such as "pdf" if you want to keep these files with the related pdf files after those are moved by `moveDocs` as well to `docs/pdf`.
+
+```{r fun_moveDocs}
+```
