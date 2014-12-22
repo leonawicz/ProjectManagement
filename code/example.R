@@ -7,6 +7,8 @@ docDir <- c("Rmd/include", "md", "html", "Rnw", "pdf", "timeline")
 newProject(proj.name, proj.location, docs.dirs=docDir, overwrite=T) # create a new project
 
 rfile.path <- file.path(proj.location, proj.name, "code") # path to R scripts
+docs.path <- file.path(proj.location, proj.name, "docs")
+rmd.path <- file.path(docs.path, "Rmd")
 
 # generate Rmd files from existing R scripts using default yaml front-matter
 genRmd(path=rfile.path, header=rmdHeader())
@@ -26,8 +28,8 @@ chunkNames(path=file.path(proj.location, proj.name, "code"), append.new=TRUE)
 
 # @knitr ex_website
 # Setup for generating a project website
-index.url <- "proj_intro.html" # temporary
-file.copy(index.url, "index.html")
+index.url <- file.path(rmd.path, "proj_intro.html") # temporary
+file.copy(index.url, file.path(rmd.path, "index.html"))
 
 proj.title <- "Project Management"
 proj.menu <- c("projman", "R Code", "All Projects")
@@ -59,7 +61,7 @@ genOutyaml(file=yaml.out, lib=libs, header=common.header, before_body="include/n
 # @knitr knit_setup
 library(rmarkdown)
 library(knitr)
-setwd(file.path(proj.location, proj.name, "docs/Rmd"))
+setwd(rmd.path)
 
 # R scripts
 #files.r <- list.files("../../code", pattern=".R$", full=T)
@@ -75,4 +77,4 @@ files.Rmd <- list.files(pattern=".Rmd$", full=T)
 # write all yaml front-matter-specified outputs to Rmd directory for all Rmd files
 lapply(files.Rmd, render, output_format="all")
 
-moveDocs(path.docs=file.path(proj.location, proj.name, "docs"))
+moveDocs(path.docs=docs.path)
