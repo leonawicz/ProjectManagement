@@ -219,8 +219,8 @@ moveDocs <- function(path.docs, type=c("md", "html","pdf"), move=TRUE, copy=FALS
 	}
 }
 
-# Functions for Github project websites
 # @knitr fun_genNavbar
+# Functions for Github project websites
 genNavbar <- function(htmlfile="navbar.html", title, menu, submenus, files, title.url="index.html", home.url="index.html", site.url="", site.name="Github", include.home=FALSE){
 
 	fillSubmenu <- function(x, name, file){
