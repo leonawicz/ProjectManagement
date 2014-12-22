@@ -1,0 +1,171 @@
+<!DOCTYPE html>
+
+<html xmlns="http://www.w3.org/1999/xhtml">
+
+<head>
+
+<meta charset="utf-8">
+<meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+<meta name="generator" content="pandoc" />
+
+<meta name="author" content="Matthew Leonawicz" />
+
+
+<title>Project Management</title>
+
+<script src="include/libs/jquery-1.11.0/jquery.min.js"></script>
+<meta name="viewport" content="width=device-width, initial-scale=1.0" />
+<link href="include/libs/bootstrap-2.3.2/css/united.min.css" rel="stylesheet" />
+<link href="include/libs/bootstrap-2.3.2/css/bootstrap-responsive.min.css" rel="stylesheet" />
+<script src="include/libs/bootstrap-2.3.2/js/bootstrap.min.js"></script>
+<style type="text/css">
+
+/* padding for bootstrap navbar */
+body {
+  padding-top: 50px;
+  padding-bottom: 40px;
+}
+@media (max-width: 979px) {
+  body {
+    padding-top: 0;
+  }
+}
+
+/* offset scroll position for anchor links (for fixed navbar)  */
+@media (min-width: 980px) {
+  .section h2 {
+    padding-top: 52px;
+    margin-top: -52px;
+  }
+  .section h3 {
+    padding-top: 52px;
+    margin-top: -52px;
+  }
+}
+
+
+/* don't use link color in navbar */
+.dropdown-menu>li>a {
+  color: black;
+}
+
+/* some padding for disqus */
+#disqus_thread {
+  margin-top: 45px;
+}
+
+</style>
+
+<link rel="stylesheet" href="libs/font-awesome-4.1.0/css/font-awesome.min.css"/>
+
+
+
+
+</head>
+
+<body>
+
+<style type = "text/css">
+.main-container {
+  max-width: 940px;
+  margin-left: auto;
+  margin-right: auto;
+}
+</style>
+<div class="container-fluid main-container">
+
+<div class="navbar navbar-default navbar-fixed-top">
+  <div class="navbar-inner">
+    <div class="container">
+      <button type="button" class="btn btn-navbar" data-toggle="collapse" data-target=".nav-collapse">
+        <span class="icon-bar"></span>
+        <span class="icon-bar"></span>
+        <span class="icon-bar"></span>
+      </button>
+      <a class="brand" href="index.html">Project Management</a>
+      <div class="nav-collapse collapse">
+        <ul class="nav">
+          <li class="dropdown">
+            <a href="projman" class="dropdown-toggle" data-toggle="dropdown">projman <b class="caret"></b></a>
+            <ul class="dropdown-menu">
+              <li class="nav-header">About projman</li>
+              <li><a href="proj_intro.html">Introduction</a></li>
+              <li><a href="code_sankey.html">Related items</a></li>
+              <li><a href="example.html">Example usage</a></li>
+            </ul>
+
+          <li class="dropdown">
+            <a href="r-code" class="dropdown-toggle" data-toggle="dropdown">R Code <b class="caret"></b></a>
+            <ul class="dropdown-menu">
+              <li><a href="objects.html">Default objects</a></li>
+              <li class="divider"></li>
+              <li class="nav-header">Functions</li>
+              <li><a href="func_new.html">Start a new project</a></li>
+              <li><a href="func_rmd.html">Working with Rmd files</a></li>
+              <li><a href="func_website.html">Make a project website</a></li>
+              <li><a href="func_user_website.html">Github user website</a></li>
+            </ul>
+
+          <li class="dropdown">
+            <a href="all-projects" class="dropdown-toggle" data-toggle="dropdown">All Projects <b class="caret"></b></a>
+            <ul class="dropdown-menu">
+              <li><a href="proj_sankey.html">Projects diagram</a></li>
+              <li class="divider"></li>
+              <li><a href="proj_intro.html">About</a></li>
+              <li><a href="proj_intro.html">Other</a></li>
+            </ul>
+        </ul>
+        <ul class="nav pull-right">
+          <a class="btn btn-primary" href="https://github.com/leonawicz/ProjectManagement">
+            <i class="fa fa-github fa-lg"></i>
+            Github
+          </a>
+        </ul>
+      </div><!--/.nav-collapse -->
+    </div>
+  </div>
+</div>
+
+<div id="header">
+<h1 class="title">Project Management</h1>
+<h4 class="author"><em>Matthew Leonawicz</em></h4>
+</div>
+
+
+<div id="introduction" class="section level2">
+<h2>Introduction</h2>
+<p>This is a project management project. The aim of this project is the development of convenient <strong>R</strong>-related project management tools.</p>
+<div id="motivation" class="section level3">
+<h3>Motivation</h3>
+<p>I am working on these tools to enhance my own workflow across multiple <strong>R</strong> projects.</p>
+</div>
+<div id="details" class="section level3">
+<h3>Details</h3>
+<p><strong>R</strong> code for the project will be compiled into an <strong>R</strong> package, <code>projman</code> for easy use. This is a personal package and will not be available anywhere but my github repository, but you are welcome to explore the package and functions. It is unlikely that you would manage your <strong>R</strong> projects in the same manner that I do, but if you do, or just want some ideas, feel free to explore.</p>
+<div id="capabilities" class="section level4">
+<h4>Capabilities</h4>
+<p><code>projman</code> can create a new project. This essentially generates a specific directory structure which I use often to manage project files. For an existing project, once <strong>R</strong> scripts have been created, <code>projman</code> can generate template Rmd files for each. For existing Rmd files, <code>projman</code> can conveniently append these <strong>R</strong> Markdown files with a list of any new <code>knitr</code> code chunk names in project <strong>R</strong> scripts being developed which have not yet been included in the respective Rmd files.</p>
+</div>
+<div id="limitations" class="section level4">
+<h4>Limitations</h4>
+<p>While <code>projman</code> assists with project documentation, this mainly takes the form of file generation and appending. Documentation is unique to every project of course. Every script is different. The most that is possible is to auto-fill commonly used code chunk names and metadata. Each document must be written individually by the author, but when a project has many <strong>R</strong> scripts requiring documentation, it is nice to not have to create all the corresponding Rmd files by hand and copy and paste generic contents.</p>
+<p>The project management code is not yet in package form. Many additional features are yet to be incorporated. Generic code relating to the further processing of Rmd files into various other output files via <code>rmarkdown</code> and <code>knitr</code> remains at an early development stage.</p>
+</div>
+</div>
+</div>
+
+
+</div>
+
+<script>
+
+// add bootstrap table styles to pandoc tables
+$(document).ready(function () {
+  $('tr.header').parent('thead').parent('table').addClass('table table-condensed');
+});
+
+</script>
+
+
+</body>
+</html>

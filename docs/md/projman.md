@@ -80,7 +80,7 @@ Here is a project hierarchy diagram showing the relationships among all my curre
   &lt;/head&gt;
   &lt;body &gt;
     
-    &lt;div id = &#039;chartd5419491d1a&#039; class = &#039;rChart d3_sankey&#039;&gt;&lt;/div&gt;    
+    &lt;div id = &#039;chart1b344ae3351d&#039; class = &#039;rChart d3_sankey&#039;&gt;&lt;/div&gt;    
     ï»¿&lt;!--Attribution:
 Mike Bostock https://github.com/d3/d3-plugins/tree/master/sankey
 Mike Bostock http://bost.ocks.org/mike/sankey/
@@ -89,7 +89,7 @@ Mike Bostock http://bost.ocks.org/mike/sankey/
 &lt;script&gt;
 (function(){
 var params = {
- &quot;dom&quot;: &quot;chartd5419491d1a&quot;,
+ &quot;dom&quot;: &quot;chart1b344ae3351d&quot;,
 &quot;width&quot;:    900,
 &quot;height&quot;:    800,
 &quot;data&quot;: {
@@ -107,7 +107,7 @@ var params = {
 &quot;top&quot;:     20 
 },
 &quot;title&quot;: &quot;Matt&#039;s Projects&quot;,
-&quot;id&quot;: &quot;chartd5419491d1a&quot; 
+&quot;id&quot;: &quot;chart1b344ae3351d&quot; 
 };
 
 params.units ? units = &quot; &quot; + params.units : units = &quot;&quot;;
@@ -227,11 +227,11 @@ node.append(&quot;text&quot;)
     
     &lt;script&gt;
       var cscale = d3.scale.category20b();
-      d3.selectAll(&#039;#chartd5419491d1a svg path.link&#039;)
+      d3.selectAll(&#039;#chart1b344ae3351d svg path.link&#039;)
         .style(&#039;stroke&#039;, function(d){
           return cscale(d.source.name);
         })
-      d3.selectAll(&#039;#chartd5419491d1a svg .node rect&#039;)
+      d3.selectAll(&#039;#chart1b344ae3351d svg .node rect&#039;)
         .style(&#039;fill&#039;, function(d){
           return cscale(d.name)
         })
@@ -239,7 +239,7 @@ node.append(&quot;text&quot;)
     &lt;/script&gt;
         
   &lt;/body&gt;
-&lt;/html&gt; ' scrolling='no' frameBorder='0' seamless class='rChart  http://timelyportfolio.github.io/rCharts_d3_sankey/libraries/widgets/d3_sankey  ' id='iframe-chartd5419491d1a'> </iframe>
+&lt;/html&gt; ' scrolling='no' frameBorder='0' seamless class='rChart  http://timelyportfolio.github.io/rCharts_d3_sankey/libraries/widgets/d3_sankey  ' id='iframe-chart1b344ae3351d'> </iframe>
  <style>iframe.rChart{ width: 100%; height: 400px;}</style>
 <style>iframe.rChart{ width: 100%; height: 840px;}</style>
 
@@ -254,7 +254,6 @@ A tentative default path is also included since this code relates to my own work
 # For package 'projman'
 
 # data
-rmd.knitr.setup <- "\n```{r knitr_setup, echo=FALSE}\nopts_chunk$set(cache=FALSE, eval=FALSE, tidy=TRUE, message=FALSE, warning=FALSE)\nread_chunk(\"\")\n```\n"
 
 rmd.template <- "\n\n## Introduction\nADD_TEXT_HERE\n\n### Motivation\nADD_TEXT_HERE\n\n### Details\nADD_TEXT_HERE\n\n#### Capabilities\nADD_TEXT_HERE\n\n#### Limitations\nADD_TEXT_HERE\n\n## Related items\n\n### Files and Data\nADD_TEXT_HERE\n\n### Code flow\nADD_TEXT_HERE\n\n```{r code_sankey, echo=F, eval=T}\n```\n\n```{r code_sankey_embed, echo=F, eval=T, comment=NA, results=\"asis\", tidy=F}\n```\n\n## R code\n\n### Setup\nADD_TEXT_HERE: EXAMPLE\nSetup consists of loading required **R** packages and additional files, preparing any command line arguments for use, and defining functions and other **R** objects.\n\n"
 
@@ -278,8 +277,8 @@ The current function only creates directories, not files, so `overwrite=TRUE` is
 
 ```r
 newProject <- function(name, path, dirs = c("code", "data", "docs", "plots", 
-    "workspaces"), docs.dirs = c("diagrams", "ioslides", "notebook", "pdf", 
-    "Rmd/include", "timeline", "tufte"), overwrite = FALSE) {
+    "workspaces"), docs.dirs = c("diagrams", "ioslides", "notebook", "Rmd/include", 
+    "md", "html", "Rnw", "pdf", "timeline", "tufte"), overwrite = FALSE) {
     
     stopifnot(is.character(name))
     name <- file.path(path, name)
@@ -328,6 +327,22 @@ rmdHeader <- function(title = "INSERT_TITLE_HERE", author = "Matthew Leonawicz",
 }
 ```
 
+#### rmdknitrSetup
+`rmdknitrSetup` generates the `knitr` global options setup code cunk for Rmd files as a character string to be inserted at the top of a file following the yaml header.
+The only option at this time is the ability to include or exclude a source reference to a project-related clode flow diagram **R** script via `include.sankey`.
+The output from this function is passed directly to `genRmd` below.
+
+
+```r
+rmdknitrSetup <- function(file, include.sankey = TRUE) {
+    x <- paste0("\n```{r knitr_setup, echo=FALSE}\nopts_chunk$set(cache=FALSE, eval=FALSE, tidy=TRUE, message=FALSE, warning=FALSE)\n")
+    if (include.sankey) 
+        x <- paste0(x, "read_chunk(\"../../code/proj_sankey.R\")\n")
+    x <- paste0(x, "read_chunk(\"../../code/", file, "\")\n```\n")
+    x
+}
+```
+
 #### genRmd
 `genRmd` works on existing projects. It checks for existing **R** scripts.
 If no **R** files exist in the project's `code` directory, the function will abort.
@@ -343,8 +358,8 @@ This function assumes this project directory exists.
 
 
 ```r
-genRmd <- function(path, replace = FALSE, header = rmdHeader(), update.header = FALSE, 
-    ...) {
+genRmd <- function(path, replace = FALSE, header = rmdHeader(), knitrSetupChunk = rmdknitrSetup(), 
+    update.header = FALSE, ...) {
     stopifnot(is.character(path))
     files <- list.files(path, pattern = ".R$", full = TRUE)
     stopifnot(length(files) > 0)
@@ -358,12 +373,12 @@ genRmd <- function(path, replace = FALSE, header = rmdHeader(), update.header = 
     
     sinkRmd <- function(x, ...) {
         y1 <- header
-        y2 <- list(...)$rmd.knitr.setup
+        y2 <- kniterSetupChunk
         y3 <- list(...)$rmd.template
         if (is.null(y1)) 
             y1 <- rmd.header
         if (is.null(y2)) 
-            y2 <- rmd.knitr.setup
+            y2 <- rmd.knitr.setup(gsub(".Rmd", ".R", basename(x)))
         if (is.null(y3)) 
             y3 <- rmd.template
         sink(x)
@@ -452,6 +467,111 @@ This is not always the case for a given project, but again, the purpose is to ge
 Unnecessary files can always be deleted later, or edits made such that one **R** Markdown file reads multiple **R** scripts,
 as is the case with the Rmd file used to generate this document.
 
+#### rmd2rnw
+`rmd2rnw` converts all Rmd files found in a directory to Rnw files, saving the latter to a specified location.
+The Rmd files are not removed.
+This function speeds up the process of duplicating files when wanting to make PDFs from Rnw files when only Rmd files exist.
+The user still makes specific changes by hand, for example, any required changes to `knitr` code chunk options that must differ for PDF output vs. html output.
+The primary benefit is in not having to fuss with large amounts of standard substitutions which can be automated, such as swapping code chunk enclosure styles.
+
+
+```r
+rmd2rnw <- function(path, outDir = file.path(dirname(path), "Rnw")) {
+    files <- list.files(path, pattern = ".Rmd$", full = TRUE)
+    x <- lapply(files, readLines)
+    # do some conversion here...  parse Rmd author and title 1. insert LaTeX
+    # header info 2. swap knitr code chunk identifiers for Rnw style 3. swap
+    # section and subsection titles based on number of consecutive '#' signs at
+    # the beginning of an Rmd line
+    files <- file.path(outDir, basename(files))
+    files <- gsub(".Rmd", ".Rnw", files)
+    
+    sinkRnw <- function(i, files, txt) {
+        txt <- txt[[i]]
+        file <- files[i]
+        sink(file)
+        cat(txt)
+        sink()
+    }
+    
+    lapply(1:length(files), sinkRnw, files = files, txt = x)
+}
+```
+
+#### moveDocs
+`moveDocs` relocates files by renaming with a new file path.
+Specifically, it scans for md and html files in the `docs/Rmd` directory and/or pdf files in the `docs/Rnw` directory.
+If such files are found in the respective locations, they are moved to `docs/md`, `docs/html`, and `docs/pdf`, respectively.
+
+The intent is to clean up the Rmd and Rnw directories after `knitr` has been used to knit documents in place.
+I do this because I have more success knitting documents with the confluence of `RStudio`, `rmarkdown`, `knitr`, `pandoc`, and `LaTeX` when the knitting occurs all within the directory of the originating files.
+The process is more prone to throwing errors when trying to specify alternate locations for outputs.
+
+`moveDocs` makes a nominal effort to replace a possible relative path with a full file path before proceeding, if the former is supplied.
+Default arguments include `move=TRUE` which will call `file.rename` and `copy=FALSE` which, if `TRUE` (and `move=FALSE`), will alternatively call `file.copy`.
+If both are `TRUE`, any file(s) found are moved.
+
+This function will always overwrite any existing file versions previously moved to the output directories, by way of `file.rename`.
+To keep the behavior consistent, when `move=FALSE` and `copy=TRUE`, `file.copy` always executes with its argument, `overwrite=TRUE`.
+This should never cause problems because in the context I intend for this function,
+the types of files being moved or copied from `docs/Rmd` and `docs/Rnw` are never used as inputs to other files, functions, or processes,
+nor are they meant to be edited by hand after being generated.
+
+If there are LaTeX-associated files present (.TeX, .aux, and .txt files with the same file names as local pdf files.),
+these files will be removed if `remove.latex=TRUE` (default).
+If `FALSE`, the default `latexDir="LaTeX"` means that these files will be moved to the `docs/LaTeX` directory rather than deleted.
+If this directory does not exist, it will be created.
+An alternate location can be specified, such as "pdf" if you want to keep these files with the related pdf files after those are moved by `moveDocs` as well to `docs/pdf`.
+
+
+```r
+moveDocs <- function(path.docs, type = c("md", "html", "pdf"), move = TRUE, 
+    copy = FALSE, remove.latex = TRUE, latexDir = "LaTeX") {
+    if (any(!(type %in% c("md", "html", "pdf")))) 
+        stop("type must be among 'md', 'html', and 'pdf'")
+    stopifnot(move | copy)
+    if (path.docs == "." | path.docs == "./") 
+        path.docs <- getwd()
+    if (strsplit(path.docs, "/")[[1]][1] == "..") {
+        tmp <- strsplit(path.docs, "/")[[1]][-1]
+        if (length(tmp)) 
+            path.docs <- file.path(getwd(), paste0(tmp, collapse = "/")) else stop("Check path.docs argument.")
+    }
+    for (i in 1:length(type)) {
+        if (type[i] == "pdf") 
+            origin <- "Rnw" else origin <- "Rmd"
+        path.i <- file.path(path.docs, origin)
+        infiles <- list.files(path.i, pattern = paste0(".", type[i], "$"), full = TRUE)
+        if (length(infiles)) {
+            infiles <- infiles[basename(dirname(infiles)) == origin]
+            if (length(infiles)) {
+                outfiles <- file.path(path.docs, type[i], basename(infiles))
+                if (move) 
+                  file.rename(infiles, outfiles) else if (copy) 
+                  file.copy(infiles, outfiles, overwrite = TRUE)
+                if (type[i] == "pdf") {
+                  extensions <- c("TeX", "aux", "txt")
+                  pat <- paste0("^", rep(gsub("pdf", "", basename(infiles)), 
+                    length(extensions)), rep(extensions, each = length(infiles)), 
+                    "$")
+                  latex.files <- sapply(1:length(pat), function(p, path, pat) list.files(path, 
+                    pattern = pat[p], full = TRUE), path = path.i, pat = pat)
+                  if (remove.latex) {
+                    file.remove(latex.files)
+                  } else {
+                    dir.create()
+                    file.rename(latex.files, file.path(path.docs, latexDir, 
+                      basename(latex.files)))
+                  }
+                }
+            }
+        }
+    }
+}
+
+# Functions for Github project websites
+```
+
 #### genNavbar
 
 `genNavbar` generates a navigation bar for a web page.
@@ -467,7 +587,8 @@ or "divider" to indicate placement of a bar for separating groups in a dropdown 
 
 ```r
 genNavbar <- function(htmlfile = "navbar.html", title, menu, submenus, files, 
-    title.url = "/", home.url = "/", site.url = "", site.name = "Github") {
+    title.url = "index.html", home.url = "index.html", site.url = "", site.name = "Github", 
+    include.home = FALSE) {
     
     fillSubmenu <- function(x, name, file) {
         if (file[x] == "divider") 
@@ -487,11 +608,12 @@ genNavbar <- function(htmlfile = "navbar.html", title, menu, submenus, files,
             collapse = "")
     }
     
+    if (include.home) 
+        home <- paste0("<li><a href=\"", home.url, "\">Home</a></li>\n          ") else home <- ""
     x <- paste0("<div class=\"navbar navbar-default navbar-fixed-top\">\n  <div class=\"navbar-inner\">\n    <div class=\"container\">\n      <button type=\"button\" class=\"btn btn-navbar\" data-toggle=\"collapse\" data-target=\".nav-collapse\">\n        <span class=\"icon-bar\"></span>\n        <span class=\"icon-bar\"></span>\n        <span class=\"icon-bar\"></span>\n      </button>\n      <a class=\"brand\" href=\"", 
-        title.url, "\">", title, "</a>\n      <div class=\"nav-collapse collapse\">\n        <ul class=\"nav\">\n          <li><a href=\"", 
-        home.url, "\">Home</a></li>\n          ", paste(sapply(1:length(menu), 
-            fillMenu, menu = menu, submenus = submenus, files = files), sep = "", 
-            collapse = "\n          "), "        </ul>\n        <ul class=\"nav pull-right\">\n          <a class=\"btn btn-primary\" href=\"", 
+        title.url, "\">", title, "</a>\n      <div class=\"nav-collapse collapse\">\n        <ul class=\"nav\">\n          ", 
+        home, paste(sapply(1:length(menu), fillMenu, menu = menu, submenus = submenus, 
+            files = files), sep = "", collapse = "\n          "), "        </ul>\n        <ul class=\"nav pull-right\">\n          <a class=\"btn btn-primary\" href=\"", 
         site.url, "\">\n            <i class=\"fa fa-github fa-lg\"></i>\n            ", 
         site.name, "\n          </a>\n        </ul>\n      </div><!--/.nav-collapse -->\n    </div>\n  </div>\n</div>\n", 
         collpase = "")
@@ -522,17 +644,188 @@ genOutyaml <- function(file, theme = "cosmo", highlight = "zenburn", lib = NULL,
         output.yaml <- paste0(output.yaml, "  lib_dir: ", lib, "\n")
     output.yaml <- paste0(output.yaml, "  includes:\n")
     if (!is.null(header)) 
-        output.yaml <- paste0(output.yaml, "    in_header: include/", header, 
-            "\n")
+        output.yaml <- paste0(output.yaml, "    in_header: ", header, "\n")
     if (!is.null(before_body)) 
-        output.yaml <- paste0(output.yaml, "    before_body: include/", before_body, 
+        output.yaml <- paste0(output.yaml, "    before_body: ", before_body, 
             "\n")
     if (!is.null(after_body)) 
-        output.yaml <- paste0(output.yaml, "    after_body: include/", after_body, 
-            "\n")
+        output.yaml <- paste0(output.yaml, "    after_body: ", after_body, "\n")
     sink(file)
     cat(output.yaml)
     sink()
     output.yaml
 }
+```
+
+#### genAppDiv
+
+`genAppDiv` generates an html file storing a container div element which organizes Shiny web applications.
+The function scans a directory of Shiny app subdirectories.
+This apps directory should be a local repository.
+
+Specifically, the `genAppDiv` looks for a named directory of image files.
+There should be one image per app, named exactly as the respective app directory is named.
+Only apps with corresponding images are built into the html container.
+If you wish to leave out, say, a developmental app from being linked to on you Github user website, do not include an image file for that app.
+
+The container element includes an image link to each app's url as well as a link to the source code on Github.
+Although the app scans for images in a local repository, the images referenced in the output html are of course not local.
+They point to the same images stored on Github, hence why it is useful for the local directory of apps to be a Github repository.
+
+This function will probably be removed in favor of the more general `genPanelDiv` function.
+
+
+
+```r
+# Functions for Github user website
+genAppDiv <- function(file = "C:/github/leonawicz.github.io/assets/apps_container.html", 
+    type = "apps", main = "Shiny Apps", apps.url = "http://shiny.snap.uaf.edu", 
+    github.url = "https://github.com/ua-snap/shiny-apps/tree/master", apps.dir = "C:/github/shiny-apps", 
+    img.loc = "_images/cropped", ...) {
+    
+    apps.img <- list.files(file.path(apps.dir, img.loc))
+    apps <- sapply(strsplit(apps.img, "\\."), "[[", 1)
+    x <- paste0("<div class=\"container\">\n  <div class=\"row\">\n    <div class=\"col-lg-12\">\n      <div class=\"page-header\">\n        <h3 id=\"", 
+        type, "\">", main, "</h3>\n      </div>\n    </div>\n  </div>\n  ")
+    
+    fillRow <- function(i, ...) {
+        app <- apps[i]
+        app.url <- file.path(apps.url, app)
+        dots <- list(...)
+        if (is.null(dots$col)) 
+            col <- "warning" else col <- dots$col
+        if (is.null(dots$panel.main)) 
+            panel.main <- gsub("_", " ", app) else panel.main <- dots$panel.main
+        if (length(panel.main) > 1) 
+            panel.main <- panel.main[i]
+        x <- paste0("<div class=\"col-lg-4\">\n\t\t  <div class=\"bs-component\">\n\t\t\t<div class=\"panel panel-", 
+            col, "\">\n\t\t\t  <div class=\"panel-heading\"><h3 class=\"panel-title\">", 
+            panel.main, "</h3>\n\t\t\t  </div>\n\t\t\t  <div class=\"panel-body\"><a href=\"", 
+            app.url, "\" target=\"_blank\"><img src=\"", file.path(gsub("/tree/", 
+                "/raw/", github.url), img.loc, apps.img[i]), "\" alt=\"", apps[i], 
+            "\" width=100% height=200px></a><p></p>\n\t\t\t\t<div class=\"btn-group btn-group-justified\">\n\t\t\t\t  <a href=\"", 
+            app.url, "\" target=\"_blank\" class=\"btn btn-success\">Launch</a>\n\t\t\t\t  <a href=\"", 
+            file.path(github.url, app), "\" target=\"_blank\" class=\"btn btn-info\">Github</a>\n\t\t\t\t</div>\n\t\t\t  </div>\n\t\t\t</div>\n\t\t  </div>\n\t\t</div>")
+    }
+    
+    n <- length(apps)
+    seq1 <- seq(1, n, by = 3)
+    y <- c()
+    for (j in 1:length(seq1)) {
+        ind <- seq1[j]:(seq1[j] + 2)
+        ind <- ind[ind %in% 1:n]
+        y <- c(y, paste0("<div class=\"row\">\n", paste0(sapply(ind, fillRow, 
+            ...), collapse = "\n"), "</div>\n"))
+    }
+    z <- "</div>\n"
+    sink(file)
+    sapply(c(x, y, z), cat)
+    sink()
+    cat("div container html created for Shiny Apps.\n")
+}
+
+# genAppDiv() genAppDiv(panel.main=rep('Jussanothashinyapp', 18))
+```
+
+#### genPanelDiv
+
+`genPanelDiv` generates an html file storing a container div element which in its current state of development organizes two types of content: **R** projects and Shiny web applications.
+
+The `type` argument can be either `projects` or `apps` and essentially bifurcates the behavior of `genPanelDiv`.
+The purpose of the function is to generate an html file defining a container div element to display and reference either my **R** projects or my Shiny apps.
+
+For projects, the function scans a directory of local repositories and takes any directories found to be the names of projects.
+There is an `exclude` argument for dropping any known directories that are to be avoided.
+My defaults are `exclude="leonawicz.github.io", "shiny-apps"` since the first is just a local repository for my Github user account web site and not a "project" in the same sense of my other projects
+and the second is the local repository which is scanned by `genPanelDiv` when `type="apps"`.
+
+For apps, the function scans a directory of Shiny app subdirectories.
+Unlike for projects, where `genPanelDiv` scans a directory of multiple local repositories, this apps directory should be a specific local repository. The apps contained within are not inndividual repositories.
+I have taken this approach for now simply because this is how my apps tend to be stored.
+
+Specifically, the `genAppDiv` looks for a named directory of image files.
+There should be one image per app, named exactly as the respective app directory is named.
+Only apps with corresponding images are built into the html container.
+If you wish to leave out, say, a developmental app from being linked to on you Github user website, do not include an image file for that app.
+
+The container element includes an image link to each app's url as well as a link to the source code on Github.
+Although the app scans for images in a local repository, the images referenced in the output html are of course not local.
+They point to the same images stored on Github, hence why it is useful for the local directory of apps to be a Github repository.
+
+This function makes the more specific `genAppDiv` redundant and will likely replace it.
+
+
+```r
+genPanelDiv <- function(outDir = "C:/github/leonawicz.github.io/assets", type = "projects", 
+    main = "Projects", github.user = "leonawicz", prjs.dir = "C:/github", exclude = c("leonawicz.github.io", 
+        "shiny-apps"), img.loc = "_images/cropped", ...) {
+    stopifnot(github.user %in% c("leonawicz", "ua-snap"))
+    if (type == "apps") {
+        filename <- "apps_container.html"
+        web.url <- "http://shiny.snap.uaf.edu"
+        gh.url.tail <- "shiny-apps/tree/master"
+        target <- " target=\"_blank\""
+        go.label <- "Launch"
+        prjs.dir <- file.path(prjs.dir, "shiny-apps")
+        prjs.img <- list.files(file.path(prjs.dir, img.loc))
+        prjs <- sapply(strsplit(prjs.img, "\\."), "[[", 1)
+    }
+    if (type == "projects") {
+        filename <- "projects_container.html"
+        web.url <- paste0("http://", github.user, ".github.io")
+        gh.url.tail <- ""
+        target <- ""
+        go.label <- "Website"
+        prjs <- list.dirs(prjs.dir, full = TRUE, recursive = FALSE)
+        prjs <- prjs[!(basename(prjs) %in% exclude)]
+        prjs.img <- sapply(1:length(prjs), function(i, a) list.files(file.path(a[i], 
+            "plots"), pattern = paste0("^_", basename(a)[i])), a = prjs)
+        prjs <- basename(prjs)
+    }
+    gh.url <- file.path("https://github.com", github.user, gh.url.tail)
+    x <- paste0("<div class=\"container\">\n  <div class=\"row\">\n    <div class=\"col-lg-12\">\n      <div class=\"page-header\">\n        <h3 id=\"", 
+        type, "\">", main, "</h3>\n      </div>\n    </div>\n  </div>\n  ")
+    
+    fillRow <- function(i, ...) {
+        prj <- prjs[i]
+        if (type == "apps") 
+            img.src <- file.path(gsub("/tree/", "/raw/", gh.url), img.loc, prjs.img[i])
+        if (type == "projects") 
+            img.src <- file.path(gh.url, prj, "raw/master/plots", prjs.img[i])
+        web.url <- file.path(web.url, prj)
+        dots <- list(...)
+        if (is.null(dots$col)) 
+            col <- "warning" else col <- dots$col
+        if (is.null(dots$panel.main)) 
+            panel.main <- gsub("_", " ", prj) else panel.main <- dots$panel.main
+        if (length(panel.main) > 1) 
+            panel.main <- panel.main[i]
+        x <- paste0("<div class=\"col-lg-4\">\n\t\t  <div class=\"bs-component\">\n\t\t\t<div class=\"panel panel-", 
+            col, "\">\n\t\t\t  <div class=\"panel-heading\"><h3 class=\"panel-title\">", 
+            panel.main, "</h3>\n\t\t\t  </div>\n\t\t\t  <div class=\"panel-body\"><a href=\"", 
+            web.url, "\"", target, "><img src=\"", img.src, "\" alt=\"", prj, 
+            "\" width=100% height=200px></a><p></p>\n\t\t\t\t<div class=\"btn-group btn-group-justified\">\n\t\t\t\t  <a href=\"", 
+            web.url, "\"", target, " class=\"btn btn-success\">", go.label, 
+            "</a>\n\t\t\t\t  <a href=\"", file.path(gh.url, prj), "\" class=\"btn btn-info\">Github</a>\n\t\t\t\t</div>\n\t\t\t  </div>\n\t\t\t</div>\n\t\t  </div>\n\t\t</div>")
+    }
+    
+    n <- length(prjs)
+    seq1 <- seq(1, n, by = 3)
+    y <- c()
+    for (j in 1:length(seq1)) {
+        ind <- seq1[j]:(seq1[j] + 2)
+        ind <- ind[ind %in% 1:n]
+        y <- c(y, paste0("<div class=\"row\">\n", paste0(sapply(ind, fillRow, 
+            ...), collapse = "\n"), "</div>\n"))
+    }
+    z <- "</div>\n"
+    sink(file.path(outDir, filename))
+    sapply(c(x, y, z), cat)
+    sink()
+    cat("div container html file created.\n")
+}
+
+# genPanelDiv(type='projects', main='Projects', github.user='leonawicz',
+# col='primary') genPanelDiv(type='apps', main='Shiny Apps',
+# github.user='ua-snap')
 ```

@@ -12,8 +12,8 @@ The current function only creates directories, not files, so `overwrite=TRUE` is
 
 ```r
 newProject <- function(name, path, dirs = c("code", "data", "docs", "plots", 
-    "workspaces"), docs.dirs = c("diagrams", "ioslides", "notebook", "pdf", 
-    "Rmd/include", "timeline", "tufte"), overwrite = FALSE) {
+    "workspaces"), docs.dirs = c("diagrams", "ioslides", "notebook", "Rmd/include", 
+    "md", "html", "Rnw", "pdf", "timeline", "tufte"), overwrite = FALSE) {
     
     stopifnot(is.character(name))
     name <- file.path(path, name)

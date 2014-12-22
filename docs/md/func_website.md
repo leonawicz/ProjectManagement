@@ -16,7 +16,8 @@ or "divider" to indicate placement of a bar for separating groups in a dropdown 
 
 ```r
 genNavbar <- function(htmlfile = "navbar.html", title, menu, submenus, files, 
-    title.url = "/", home.url = "/", site.url = "", site.name = "Github") {
+    title.url = "index.html", home.url = "index.html", site.url = "", site.name = "Github", 
+    include.home = FALSE) {
     
     fillSubmenu <- function(x, name, file) {
         if (file[x] == "divider") 
@@ -36,11 +37,12 @@ genNavbar <- function(htmlfile = "navbar.html", title, menu, submenus, files,
             collapse = "")
     }
     
+    if (include.home) 
+        home <- paste0("<li><a href=\"", home.url, "\">Home</a></li>\n          ") else home <- ""
     x <- paste0("<div class=\"navbar navbar-default navbar-fixed-top\">\n  <div class=\"navbar-inner\">\n    <div class=\"container\">\n      <button type=\"button\" class=\"btn btn-navbar\" data-toggle=\"collapse\" data-target=\".nav-collapse\">\n        <span class=\"icon-bar\"></span>\n        <span class=\"icon-bar\"></span>\n        <span class=\"icon-bar\"></span>\n      </button>\n      <a class=\"brand\" href=\"", 
-        title.url, "\">", title, "</a>\n      <div class=\"nav-collapse collapse\">\n        <ul class=\"nav\">\n          <li><a href=\"", 
-        home.url, "\">Home</a></li>\n          ", paste(sapply(1:length(menu), 
-            fillMenu, menu = menu, submenus = submenus, files = files), sep = "", 
-            collapse = "\n          "), "        </ul>\n        <ul class=\"nav pull-right\">\n          <a class=\"btn btn-primary\" href=\"", 
+        title.url, "\">", title, "</a>\n      <div class=\"nav-collapse collapse\">\n        <ul class=\"nav\">\n          ", 
+        home, paste(sapply(1:length(menu), fillMenu, menu = menu, submenus = submenus, 
+            files = files), sep = "", collapse = "\n          "), "        </ul>\n        <ul class=\"nav pull-right\">\n          <a class=\"btn btn-primary\" href=\"", 
         site.url, "\">\n            <i class=\"fa fa-github fa-lg\"></i>\n            ", 
         site.name, "\n          </a>\n        </ul>\n      </div><!--/.nav-collapse -->\n    </div>\n  </div>\n</div>\n", 
         collpase = "")
@@ -71,14 +73,12 @@ genOutyaml <- function(file, theme = "cosmo", highlight = "zenburn", lib = NULL,
         output.yaml <- paste0(output.yaml, "  lib_dir: ", lib, "\n")
     output.yaml <- paste0(output.yaml, "  includes:\n")
     if (!is.null(header)) 
-        output.yaml <- paste0(output.yaml, "    in_header: include/", header, 
-            "\n")
+        output.yaml <- paste0(output.yaml, "    in_header: ", header, "\n")
     if (!is.null(before_body)) 
-        output.yaml <- paste0(output.yaml, "    before_body: include/", before_body, 
+        output.yaml <- paste0(output.yaml, "    before_body: ", before_body, 
             "\n")
     if (!is.null(after_body)) 
-        output.yaml <- paste0(output.yaml, "    after_body: include/", after_body, 
-            "\n")
+        output.yaml <- paste0(output.yaml, "    after_body: ", after_body, "\n")
     sink(file)
     cat(output.yaml)
     sink()
