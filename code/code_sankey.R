@@ -60,7 +60,7 @@ p$setTemplate(
 ")
 
 # @knitr sankey_save
-out <- "C:/github/ProjectManagement/code/codeflow.html"
+out <- "C:/github/ProjectManagement/docs/html/codeflow.html"
 p$save(out)
 
 # @knitr sankey_embed
