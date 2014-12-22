@@ -13,11 +13,11 @@
 
 <title>Project Management</title>
 
-<script src="include/libs/jquery-1.11.0/jquery.min.js"></script>
+<script src="libs/jquery-1.11.0/jquery.min.js"></script>
 <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-<link href="include/libs/bootstrap-2.3.2/css/united.min.css" rel="stylesheet" />
-<link href="include/libs/bootstrap-2.3.2/css/bootstrap-responsive.min.css" rel="stylesheet" />
-<script src="include/libs/bootstrap-2.3.2/js/bootstrap.min.js"></script>
+<link href="libs/bootstrap-2.3.2/css/united.min.css" rel="stylesheet" />
+<link href="libs/bootstrap-2.3.2/css/bootstrap-responsive.min.css" rel="stylesheet" />
+<script src="libs/bootstrap-2.3.2/js/bootstrap.min.js"></script>
 <style type="text/css">
 
 /* padding for bootstrap navbar */
@@ -216,7 +216,7 @@ code > span.er { color: #c3bf9f; }
   &lt;/head&gt;
   &lt;body &gt;
     
-    &lt;div id = 'chart1b344ae3351d' class = 'rChart d3_sankey'&gt;&lt;/div&gt;    
+    &lt;div id = 'chart1b34478b7277' class = 'rChart d3_sankey'&gt;&lt;/div&gt;    
     ï»¿&lt;!--Attribution:
 Mike Bostock https://github.com/d3/d3-plugins/tree/master/sankey
 Mike Bostock http://bost.ocks.org/mike/sankey/
@@ -225,7 +225,7 @@ Mike Bostock http://bost.ocks.org/mike/sankey/
 &lt;script&gt;
 (function(){
 var params = {
- &quot;dom&quot;: &quot;chart1b344ae3351d&quot;,
+ &quot;dom&quot;: &quot;chart1b34478b7277&quot;,
 &quot;width&quot;:    900,
 &quot;height&quot;:    800,
 &quot;data&quot;: {
@@ -243,7 +243,7 @@ var params = {
 &quot;top&quot;:     20 
 },
 &quot;title&quot;: &quot;Matt's Projects&quot;,
-&quot;id&quot;: &quot;chart1b344ae3351d&quot; 
+&quot;id&quot;: &quot;chart1b34478b7277&quot; 
 };
 
 params.units ? units = &quot; &quot; + params.units : units = &quot;&quot;;
@@ -363,11 +363,11 @@ node.append(&quot;text&quot;)
     
     &lt;script&gt;
       var cscale = d3.scale.category20b();
-      d3.selectAll('#chart1b344ae3351d svg path.link')
+      d3.selectAll('#chart1b34478b7277 svg path.link')
         .style('stroke', function(d){
           return cscale(d.source.name);
         })
-      d3.selectAll('#chart1b344ae3351d svg .node rect')
+      d3.selectAll('#chart1b34478b7277 svg .node rect')
         .style('fill', function(d){
           return cscale(d.name)
         })
@@ -375,7 +375,7 @@ node.append(&quot;text&quot;)
     &lt;/script&gt;
         
   &lt;/body&gt;
-&lt;/html&gt; " scrolling="no" frameBorder="0" seamless class="rChart  http://timelyportfolio.github.io/rCharts_d3_sankey/libraries/widgets/d3_sankey  " id="iframe-chart1b344ae3351d">
+&lt;/html&gt; " scrolling="no" frameBorder="0" seamless class="rChart  http://timelyportfolio.github.io/rCharts_d3_sankey/libraries/widgets/d3_sankey  " id="iframe-chart1b34478b7277">
 </iframe>
 <style>iframe.rChart{ width: 100%; height: 400px;}</style>
 <style>iframe.rChart{ width: 100%; height: 840px;}</style>
@@ -602,7 +602,8 @@ matt.proj.path &lt;-<span class="st"> &quot;C:/github&quot;</span></code></pre>
         if (type[i] ==<span class="st"> &quot;pdf&quot;</span>) 
             origin &lt;-<span class="st"> &quot;Rnw&quot;</span> else origin &lt;-<span class="st"> &quot;Rmd&quot;</span>
         path.i &lt;-<span class="st"> </span><span class="kw">file.path</span>(path.docs, origin)
-        infiles &lt;-<span class="st"> </span><span class="kw">list.files</span>(path.i, <span class="dt">pattern =</span> <span class="kw">paste0</span>(<span class="st">&quot;.&quot;</span>, type[i], <span class="st">&quot;$&quot;</span>), <span class="dt">full =</span> <span class="ot">TRUE</span>)
+        infiles &lt;-<span class="st"> </span><span class="kw">list.files</span>(path.i, <span class="dt">pattern =</span> <span class="kw">paste0</span>(<span class="st">&quot;</span><span class="ch">\\</span><span class="st">.&quot;</span>, type[i], <span class="st">&quot;$&quot;</span>), 
+            <span class="dt">full =</span> <span class="ot">TRUE</span>)
         if (<span class="kw">length</span>(infiles)) {
             infiles &lt;-<span class="st"> </span>infiles[<span class="kw">basename</span>(<span class="kw">dirname</span>(infiles)) ==<span class="st"> </span>origin]
             if (<span class="kw">length</span>(infiles)) {

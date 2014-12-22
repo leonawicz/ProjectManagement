@@ -244,7 +244,8 @@ moveDocs <- function(path.docs, type = c("md", "html", "pdf"), move = TRUE,
         if (type[i] == "pdf") 
             origin <- "Rnw" else origin <- "Rmd"
         path.i <- file.path(path.docs, origin)
-        infiles <- list.files(path.i, pattern = paste0(".", type[i], "$"), full = TRUE)
+        infiles <- list.files(path.i, pattern = paste0("\\.", type[i], "$"), 
+            full = TRUE)
         if (length(infiles)) {
             infiles <- infiles[basename(dirname(infiles)) == origin]
             if (length(infiles)) {
