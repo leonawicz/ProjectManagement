@@ -54,7 +54,7 @@ genNavbar(htmlfile=file.path(proj.location, proj.name, "docs/Rmd/include/navbar.
 # generate _output.yaml file
 # Note that external libraries are expected, stored in the "libs" directory below
 yaml.out <- file.path(proj.location, proj.name, "docs/Rmd/_output.yaml")
-libs <- "include/libs"
+libs <- "libs"
 common.header <- "include/in_header.html"
 genOutyaml(file=yaml.out, lib=libs, header=common.header, before_body="include/navbar.html")
 
