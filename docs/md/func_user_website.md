@@ -7,14 +7,15 @@
 The function scans a directory of Shiny app subdirectories.
 This apps directory should be a local repository.
 
-Specifically, the `genAppDiv` looks for a named directory of image files.
+Specifically, `genAppDiv` looks for a named directory of image files.
 There should be one image per app, named exactly as the respective app directory is named.
 Only apps with corresponding images are built into the html container.
 If you wish to leave out, say, a developmental app from being linked to on you Github user website, do not include an image file for that app.
 
 The container element includes an image link to each app's url as well as a link to the source code on Github.
-Although the app scans for images in a local repository, the images referenced in the output html are of course not local.
+Although the function scans for images in directory inside a local repository, the images referenced in the output html are of course not local.
 They point to the same images stored on Github, hence why it is useful for the local directory of apps to be a Github repository.
+As an example, a repository may contain the directories, `app1`, `app2`, `app3`, and `images`.
 
 This function will probably be removed in favor of the more general `genPanelDiv` function.
 

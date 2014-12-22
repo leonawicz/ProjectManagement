@@ -212,7 +212,7 @@ The process is more prone to throwing errors when trying to specify alternate lo
 
 `moveDocs` makes a nominal effort to replace a possible relative path with a full file path before proceeding, if the former is supplied.
 Default arguments include `move=TRUE` which will call `file.rename` and `copy=FALSE` which, if `TRUE` (and `move=FALSE`), will alternatively call `file.copy`.
-If both are `TRUE`, any file(s) found are moved.
+If both are `TRUE`, any files found are moved.
 
 This function will always overwrite any existing file versions previously moved to the output directories, by way of `file.rename`.
 To keep the behavior consistent, when `move=FALSE` and `copy=TRUE`, `file.copy` always executes with its argument, `overwrite=TRUE`.
@@ -272,6 +272,4 @@ moveDocs <- function(path.docs, type = c("md", "html", "pdf"), move = TRUE,
         }
     }
 }
-
-# Functions for Github project websites
 ```

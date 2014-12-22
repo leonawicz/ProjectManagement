@@ -15,6 +15,7 @@ or "divider" to indicate placement of a bar for separating groups in a dropdown 
 
 
 ```r
+# Functions for Github project websites
 genNavbar <- function(htmlfile = "navbar.html", title, menu, submenus, files, 
     title.url = "index.html", home.url = "index.html", site.url = "", site.name = "Github", 
     include.home = FALSE) {

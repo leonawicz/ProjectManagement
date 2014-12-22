@@ -80,7 +80,7 @@ Here is a project hierarchy diagram showing the relationships among all my curre
   &lt;/head&gt;
   &lt;body &gt;
     
-    &lt;div id = &#039;chart1b34478b7277&#039; class = &#039;rChart d3_sankey&#039;&gt;&lt;/div&gt;    
+    &lt;div id = &#039;chart1b34208a4b4f&#039; class = &#039;rChart d3_sankey&#039;&gt;&lt;/div&gt;    
     ï»¿&lt;!--Attribution:
 Mike Bostock https://github.com/d3/d3-plugins/tree/master/sankey
 Mike Bostock http://bost.ocks.org/mike/sankey/
@@ -89,7 +89,7 @@ Mike Bostock http://bost.ocks.org/mike/sankey/
 &lt;script&gt;
 (function(){
 var params = {
- &quot;dom&quot;: &quot;chart1b34478b7277&quot;,
+ &quot;dom&quot;: &quot;chart1b34208a4b4f&quot;,
 &quot;width&quot;:    900,
 &quot;height&quot;:    800,
 &quot;data&quot;: {
@@ -107,7 +107,7 @@ var params = {
 &quot;top&quot;:     20 
 },
 &quot;title&quot;: &quot;Matt&#039;s Projects&quot;,
-&quot;id&quot;: &quot;chart1b34478b7277&quot; 
+&quot;id&quot;: &quot;chart1b34208a4b4f&quot; 
 };
 
 params.units ? units = &quot; &quot; + params.units : units = &quot;&quot;;
@@ -227,11 +227,11 @@ node.append(&quot;text&quot;)
     
     &lt;script&gt;
       var cscale = d3.scale.category20b();
-      d3.selectAll(&#039;#chart1b34478b7277 svg path.link&#039;)
+      d3.selectAll(&#039;#chart1b34208a4b4f svg path.link&#039;)
         .style(&#039;stroke&#039;, function(d){
           return cscale(d.source.name);
         })
-      d3.selectAll(&#039;#chart1b34478b7277 svg .node rect&#039;)
+      d3.selectAll(&#039;#chart1b34208a4b4f svg .node rect&#039;)
         .style(&#039;fill&#039;, function(d){
           return cscale(d.name)
         })
@@ -239,7 +239,7 @@ node.append(&quot;text&quot;)
     &lt;/script&gt;
         
   &lt;/body&gt;
-&lt;/html&gt; ' scrolling='no' frameBorder='0' seamless class='rChart  http://timelyportfolio.github.io/rCharts_d3_sankey/libraries/widgets/d3_sankey  ' id='iframe-chart1b34478b7277'> </iframe>
+&lt;/html&gt; ' scrolling='no' frameBorder='0' seamless class='rChart  http://timelyportfolio.github.io/rCharts_d3_sankey/libraries/widgets/d3_sankey  ' id='iframe-chart1b34208a4b4f'> </iframe>
  <style>iframe.rChart{ width: 100%; height: 400px;}</style>
 <style>iframe.rChart{ width: 100%; height: 840px;}</style>
 
@@ -509,7 +509,7 @@ The process is more prone to throwing errors when trying to specify alternate lo
 
 `moveDocs` makes a nominal effort to replace a possible relative path with a full file path before proceeding, if the former is supplied.
 Default arguments include `move=TRUE` which will call `file.rename` and `copy=FALSE` which, if `TRUE` (and `move=FALSE`), will alternatively call `file.copy`.
-If both are `TRUE`, any file(s) found are moved.
+If both are `TRUE`, any files found are moved.
 
 This function will always overwrite any existing file versions previously moved to the output directories, by way of `file.rename`.
 To keep the behavior consistent, when `move=FALSE` and `copy=TRUE`, `file.copy` always executes with its argument, `overwrite=TRUE`.
@@ -569,8 +569,6 @@ moveDocs <- function(path.docs, type = c("md", "html", "pdf"), move = TRUE,
         }
     }
 }
-
-# Functions for Github project websites
 ```
 
 #### genNavbar
@@ -587,6 +585,7 @@ or "divider" to indicate placement of a bar for separating groups in a dropdown 
 
 
 ```r
+# Functions for Github project websites
 genNavbar <- function(htmlfile = "navbar.html", title, menu, submenus, files, 
     title.url = "index.html", home.url = "index.html", site.url = "", site.name = "Github", 
     include.home = FALSE) {
@@ -664,14 +663,15 @@ genOutyaml <- function(file, theme = "cosmo", highlight = "zenburn", lib = NULL,
 The function scans a directory of Shiny app subdirectories.
 This apps directory should be a local repository.
 
-Specifically, the `genAppDiv` looks for a named directory of image files.
+Specifically, `genAppDiv` looks for a named directory of image files.
 There should be one image per app, named exactly as the respective app directory is named.
 Only apps with corresponding images are built into the html container.
 If you wish to leave out, say, a developmental app from being linked to on you Github user website, do not include an image file for that app.
 
 The container element includes an image link to each app's url as well as a link to the source code on Github.
-Although the app scans for images in a local repository, the images referenced in the output html are of course not local.
+Although the function scans for images in directory inside a local repository, the images referenced in the output html are of course not local.
 They point to the same images stored on Github, hence why it is useful for the local directory of apps to be a Github repository.
+As an example, a repository may contain the directories, `app1`, `app2`, `app3`, and `images`.
 
 This function will probably be removed in favor of the more general `genPanelDiv` function.
 

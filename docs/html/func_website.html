@@ -157,7 +157,8 @@ code > span.er { color: #c3bf9f; }
 <div id="gennavbar" class="section level4">
 <h4>genNavbar</h4>
 <p><code>genNavbar</code> generates a navigation bar for a web page. The html file created should be written to the project’s <code>docs/Rmd/include</code> directory. The common navigation bar html is included prior to the body of the html for each web page in the project’s website. <code>menu</code> is a vector of names for each dropdown menu. <code>submenus</code> is a list of vectors of menu options corresponding to each menu. <code>files</code> is a similar list of vectors. Each element is either an html file for a web page to be associated with the submenu link, “header” to indicate the corresponding name in <code>submenus</code> is only a group label and not a link to a web page, or “divider” to indicate placement of a bar for separating groups in a dropdown menu.</p>
-<pre class="sourceCode r"><code class="sourceCode r">genNavbar &lt;-<span class="st"> </span>function(<span class="dt">htmlfile =</span> <span class="st">&quot;navbar.html&quot;</span>, title, menu, submenus, files, 
+<pre class="sourceCode r"><code class="sourceCode r"><span class="co"># Functions for Github project websites</span>
+genNavbar &lt;-<span class="st"> </span>function(<span class="dt">htmlfile =</span> <span class="st">&quot;navbar.html&quot;</span>, title, menu, submenus, files, 
     <span class="dt">title.url =</span> <span class="st">&quot;index.html&quot;</span>, <span class="dt">home.url =</span> <span class="st">&quot;index.html&quot;</span>, <span class="dt">site.url =</span> <span class="st">&quot;&quot;</span>, <span class="dt">site.name =</span> <span class="st">&quot;Github&quot;</span>, 
     <span class="dt">include.home =</span> <span class="ot">FALSE</span>) {
     
