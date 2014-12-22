@@ -3,13 +3,6 @@
 # For package 'projman'
 
 # data
-rmd.knitr.setup <- function(file){
-paste0('\n```{r knitr_setup, echo=FALSE}
-opts_chunk$set(cache=FALSE, eval=FALSE, tidy=TRUE, message=FALSE, warning=FALSE)
-#read_chunk("../../code/proj_sankey.R")
-read_chunk("../../code/', file, '")
-```\n')
-}
 
 rmd.template <-
 '\n
@@ -52,10 +45,10 @@ Setup consists of loading required **R** packages and additional files, preparin
 # default path
 matt.proj.path <- "C:/github"
 
-# @knitr function1
+# @knitr fun_newProject
 newProject <- function(name, path,
 	dirs=c("code", "data", "docs", "plots", "workspaces"),
-	docs.dirs=c("diagrams", "ioslides", "notebook", "pdf", "Rmd/include", "timeline", "tufte"),
+	docs.dirs=c("diagrams", "ioslides", "notebook", "Rmd/include", "md", "html", "Rnw", "pdf", "timeline", "tufte"),
 	overwrite=FALSE){
 	
 	stopifnot(is.character(name))
@@ -71,7 +64,7 @@ newProject <- function(name, path,
 	if(overwrite) cat("Project directories updated.\n") else cat("Project directories created.\n")
 }
 
-# @knitr function2
+# @knitr fun_rmdHeader
 rmdHeader <- function(title="INSERT_TITLE_HERE", author="Matthew Leonawicz", theme="united", highlight="zenburn", toc=TRUE, keep.md=TRUE, ioslides=FALSE, include.pdf=FALSE){
 	if(toc) toc <- "true" else toc <- "false"
 	if(keep.md) keep.md <- "true" else keep.md <- "false"
@@ -83,8 +76,16 @@ rmdHeader <- function(title="INSERT_TITLE_HERE", author="Matthew Leonawicz", the
 	rmd.header
 }
 
-# @knitr function3
-genRmd <- function(path, replace=FALSE, header=rmdHeader(), update.header=FALSE, ...){
+# @knitr fun_rmdknitrSetup
+rmdknitrSetup <- function(file, include.sankey=TRUE){
+	x <- paste0('\n```{r knitr_setup, echo=FALSE}\nopts_chunk$set(cache=FALSE, eval=FALSE, tidy=TRUE, message=FALSE, warning=FALSE)\n')
+	if(include.sankey) x <- paste0(x, 'read_chunk("../../code/proj_sankey.R")\n')
+	x <- paste0(x, 'read_chunk("../../code/', file, '")\n```\n')
+	x
+}
+
+# @knitr fun_genRmd
+genRmd <- function(path, replace=FALSE, header=rmdHeader(), knitrSetupChunk=rmdknitrSetup(), update.header=FALSE, ...){
 	stopifnot(is.character(path))
 	files <- list.files(path, pattern=".R$", full=TRUE)
 	stopifnot(length(files) > 0)
@@ -96,7 +97,7 @@ genRmd <- function(path, replace=FALSE, header=rmdHeader(), update.header=FALSE,
 	
 	sinkRmd <- function(x, ...){
 		y1 <- header
-		y2 <- list(...)$rmd.knitr.setup
+		y2 <- kniterSetupChunk
 		y3 <- list(...)$rmd.template
 		if(is.null(y1)) y1 <- rmd.header
 		if(is.null(y2)) y2 <- rmd.knitr.setup(gsub(".Rmd", ".R", basename(x)))
@@ -125,7 +126,7 @@ genRmd <- function(path, replace=FALSE, header=rmdHeader(), update.header=FALSE,
 	}
 }
 
-# @knitr function4
+# @knitr fun_chunkNames
 chunkNames <- function(path, rChunkID="# @knitr", rmdChunkID="```{r", append.new=FALSE){
 	files <- list.files(path, pattern=".R$", full=TRUE)
 	stopifnot(length(files) > 0)
@@ -161,7 +162,65 @@ chunkNames <- function(path, rChunkID="# @knitr", rmdChunkID="```{r", append.new
 	sapply(1:length(rmd), appendRmd, rmd.files=rmd, rChunks=l1[files.ind], rmdChunks=l2, ID=rmdChunkID)
 }
 
-# @knitr function5
+# @knitr fun_rmd2rnw
+rmd2rnw <- function(path, outDir=file.path(dirname(path), "Rnw")){
+	files <- list.files(path, pattern=".Rmd$", full=TRUE)
+	x <- lapply(files, readLines)
+	# do some conversion here...
+	# parse Rmd author and title
+	# 1. insert LaTeX header info
+	# 2. swap knitr code chunk identifiers for Rnw style
+	# 3. swap section and subsection titles based on number of consecutive '#' signs at the beginning of an Rmd line
+	files <-file.path(outDir, basename(files))
+	files <- gsub(".Rmd", ".Rnw", files)
+	
+	sinkRnw <- function(i, files, txt){
+		txt <- txt[[i]]
+		file <- files[i]
+		sink(file)
+		cat(txt)
+		sink()
+	}
+	
+	lapply(1:length(files), sinkRnw, files=files, txt=x)
+}
+
+# @knitr fun_moveDocs
+moveDocs <- function(path.docs, type=c("md", "html","pdf"), move=TRUE, copy=FALSE, remove.latex=TRUE, latexDir="LaTeX"){
+	if(any(!(type %in% c("md", "html","pdf")))) stop("type must be among 'md', 'html', and 'pdf'")
+	stopifnot(move | copy)
+	if(path.docs=="." | path.docs=="./") path.docs <- getwd()
+	if(strsplit(path.docs, "/")[[1]][1]==".."){
+		tmp <- strsplit(path.docs, "/")[[1]][-1]
+		if(length(tmp)) path.docs <- file.path(getwd(), paste0(tmp, collapse="/")) else stop("Check path.docs argument.")
+	}
+	for(i in 1:length(type)){
+		if(type[i]=="pdf") origin <- "Rnw" else origin <- "Rmd"
+		path.i <- file.path(path.docs, origin)
+		infiles <- list.files(path.i, pattern=paste0(".", type[i], "$"), full=TRUE)
+		if(length(infiles)){
+			infiles <- infiles[basename(dirname(infiles))==origin]
+			if(length(infiles)){
+				outfiles <- file.path(path.docs, type[i], basename(infiles))
+				if(move) file.rename(infiles, outfiles) else if(copy) file.copy(infiles, outfiles, overwrite=TRUE)
+				if(type[i]=="pdf"){
+					extensions <- c("TeX", "aux", "txt")
+					pat <- paste0("^", rep(gsub("pdf", "", basename(infiles)), length(extensions)), rep(extensions, each=length(infiles)), "$")
+					latex.files <- sapply(1:length(pat), function(p, path, pat) list.files(path, pattern=pat[p], full=TRUE), path=path.i, pat=pat)
+					if(remove.latex){
+						file.remove(latex.files)
+					} else {
+						dir.create()
+						file.rename(latex.files, file.path(path.docs, latexDir, basename(latex.files)))
+					}
+				}
+			}
+		}
+	}
+}
+
+# Functions for Github project websites
+# @knitr fun_genNavbar
 genNavbar <- function(htmlfile="navbar.html", title, menu, submenus, files, title.url="index.html", home.url="index.html", site.url="", site.name="Github", include.home=FALSE){
 
 	fillSubmenu <- function(x, name, file){
@@ -193,7 +252,7 @@ genNavbar <- function(htmlfile="navbar.html", title, menu, submenus, files, titl
 	x
 }
 
-# @knitr function6
+# @knitr fun_genOutyaml
 genOutyaml <- function(file, theme="cosmo", highlight="zenburn", lib=NULL, header=NULL, before_body=NULL, after_body=NULL){
 	output.yaml <- paste0('html_document:\n  self_contained: false\n  theme: ', theme, '\n  highlight: ', highlight, '\n  mathjax: null\n  toc_depth: 2\n')
 	if(!is.null(lib)) output.yaml <- paste0(output.yaml, '  lib_dir: ', lib, '\n')
@@ -207,8 +266,8 @@ genOutyaml <- function(file, theme="cosmo", highlight="zenburn", lib=NULL, heade
 	output.yaml
 }
 
-# @knitr functions7
-# Functions for Gitgub user website
+# @knitr fun_genAppDiv
+# Functions for Github user website
 genAppDiv <- function(file="C:/github/leonawicz.github.io/assets/apps_container.html", type="apps", main="Shiny Apps",
 	apps.url="http://shiny.snap.uaf.edu", github.url="https://github.com/ua-snap/shiny-apps/tree/master", apps.dir="C:/github/shiny-apps", img.loc="_images/cropped", ...){
 	
@@ -257,7 +316,7 @@ genAppDiv <- function(file="C:/github/leonawicz.github.io/assets/apps_container.
 #genAppDiv()
 #genAppDiv(panel.main=rep("Jussanothashinyapp", 18))
 
-# @knitr functions8
+# @knitr fun_genPanelDiv
 genPanelDiv <- function(outDir="C:/github/leonawicz.github.io/assets", type="projects", main="Projects",
 	github.user="leonawicz", prjs.dir="C:/github", exclude=c("leonawicz.github.io", "shiny-apps"), img.loc="_images/cropped", ...){
 	stopifnot(github.user %in% c("leonawicz", "ua-snap"))
