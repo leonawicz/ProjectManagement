@@ -213,7 +213,7 @@ moveDocs <- function(path.docs, type=c("md", "html","pdf"), move=TRUE, copy=FALS
 						subfiles <- unique(unlist(lapply(1:length(html.dirs.recur), function(p, path) list.files(path[p], full=TRUE), path=html.dirs.recur)))
 						subfiles <- subfiles[!(subfiles %in% html.dirs.recur)]
 						print(subfiles)
-						file.copy(subfiles, gsub("/Rmd", "/html", subfiles))
+						file.copy(subfiles, gsub("/Rmd", "/html", subfiles), overwrite=TRUE)
 						if(move) unlink(html.dirs, recursive=TRUE)
 					}
 				}
