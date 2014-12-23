@@ -201,6 +201,22 @@ moveDocs <- function(path.docs, type=c("md", "html","pdf"), move=TRUE, copy=FALS
 		if(length(infiles)){
 			infiles <- infiles[basename(dirname(infiles))==origin]
 			if(length(infiles)){
+				if(type[i]=="html"){
+					html.dirs <- gsub("\\.html", "_files", infiles)
+					dirs <- list.dirs(path.i, recursive=FALSE)
+					ind <- which(dirs %in% html.dirs)
+					if(length(ind)){
+						html.dirs <- dirs[ind]
+						html.dirs.recur <- list.dirs(html.dirs)
+						print(html.dirs.recur)
+						for(p in 1:length(html.dirs.recur))	dir.create(gsub("/Rmd", "/html", html.dirs.recur[p]), recursive=TRUE, showWarnings=FALSE)
+						subfiles <- unique(unlist(lapply(1:length(html.dirs.recur), function(p, path) list.files(path[p], full=TRUE), path=html.dirs.recur)))
+						subfiles <- subfiles[!(subfiles %in% html.dirs.recur)]
+						print(subfiles)
+						file.copy(subfiles, gsub("/Rmd", "/html", subfiles))
+						if(move) unlink(html.dirs, recursive=TRUE)
+					}
+				}
 				outfiles <- file.path(path.docs, type[i], basename(infiles))
 				if(move) file.rename(infiles, outfiles) else if(copy) file.copy(infiles, outfiles, overwrite=TRUE)
 				if(type[i]=="pdf"){
