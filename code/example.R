@@ -79,6 +79,8 @@ moveDocs(path.docs=docs.path)
 # if also making PDFs for a project, speed up the Rmd to Rnw file conversion/duplication
 rnw.path <- file.path(docs.path, "Rnw")
 setwd(rnw.path)
-convertDocs(path=rmd.path, emphasis="replace", overwrite=TRUE) # function under development
-knit2pdf("projman.Rnw")) # example
-moveDocs(path.docs=docs.path, type="pdf")
+#themes <- knit_theme$get()
+highlight <- "solarized-dark"
+convertDocs(path=rmd.path, emphasis="replace", overwrite=TRUE, highlight=highlight)
+lapply(list.files(pattern=".Rnw$"), knit2pdf)
+moveDocs(path.docs=docs.path, type="pdf", remove.latex=FALSE)
