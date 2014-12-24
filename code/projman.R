@@ -65,7 +65,7 @@ newProject <- function(name, path,
 }
 
 # @knitr fun_rmdHeader
-rmdHeader <- function(title="INSERT_TITLE_HERE", author="Matthew Leonawicz", theme="united", highlight="zenburn", toc=TRUE, keep.md=TRUE, ioslides=FALSE, include.pdf=FALSE){
+rmdHeader <- function(title="INSERT_TITLE_HERE", author="Matthew Leonawicz", theme="united", highlight="zenburn", toc=FALSE, keep.md=TRUE, ioslides=FALSE, include.pdf=FALSE){
 	if(toc) toc <- "true" else toc <- "false"
 	if(keep.md) keep.md <- "true" else keep.md <- "false"
 	if(ioslides) hdoc <- "ioslides_presentation" else hdoc <- "html_document"
@@ -166,7 +166,7 @@ chunkNames <- function(path, rChunkID="# @knitr", rmdChunkID="```{r", append.new
 }
 
 # @knitr fun_convertDocs
-convertDocs <- function(path, rmdChunkID=c("```{r", "}", "```"), rnwChunkID=c("<<", ">>=", "@"), doc.title=NULL, doc.author=NULL, emphasis="replace", overwrite=FALSE, ...){
+convertDocs <- function(path, rmdChunkID=c("```{r", "}", "```"), rnwChunkID=c("<<", ">>=", "@"), emphasis="replace", overwrite=FALSE, ...){
 	stopifnot(is.character(path))
 	type <- basename(path)
 	rmd.files <- list.files(path, pattern=".Rmd$", full=TRUE)
@@ -182,7 +182,8 @@ convertDocs <- function(path, rmdChunkID=c("```{r", "}", "```"), rnwChunkID=c("<
 		doc.class.string <- paste0("\\documentclass{", doc.class, "}")
 		doc.packages.string <- paste0(sapply(doc.packages, function(x) paste0("\\usepackage{", x, "}")), collapse="\n")
 		if("geometry" %in% doc.packages) doc.packages.string <- c(doc.packages.string, "\\geometry{verbose, tmargin=2.5cm, bmargin=2.5cm, lmargin=2.5cm, rmargin=2.5cm}")
-		header.rnw <- c(doc.class.string, doc.packages.string, "\\begin{document}\n")
+		header.rnw <- c(doc.class.string, doc.packages.string, "\\begin{document}\n")#,
+			#paste0("<<highlight, echo=FALSE>>=\nknit_theme$set(knit_theme$get('", theme, "'))\n@\n"))
 	} else if(type=="Rnw") {
 		stopifnot(length(rnw.files) > 0)
 		outDir <- file.path(dirname(path), "Rmd")
@@ -270,21 +271,29 @@ convertDocs <- function(path, rmdChunkID=c("```{r", "}", "```"), rnwChunkID=c("<
 	}
 	
 	swap <- function(file, header=NULL, outDir, ...){
+		title <- list(...)$title
+		author <- list(...)$author
+		highlight <- list(...)$highlight
 		ext <- tail(strsplit(file, "\\.")[[1]], 1)
 		l <- readLines(file)
 		l <- l[substr(l, 1, 7)!="<style>"] # Strip any html style lines
 		if(ext=="Rmd"){
+			hl.default <- "solarized-light"
 			out.ext <- "Rnw"
 			h.ind <- 1:which(l=="---")[2]
 			h <- l[h.ind]
 			t.ind <- which(substr(h, 1, 7)=="title: ")
 			a.ind <- which(substr(h, 1, 8)=="author: ")
-			if(is.null(doc.title) & length(t.ind)) doc.title <- substr(h[t.ind], 8, nchar(h[t.ind]))
-			if(is.null(doc.author) & length(a.ind)) doc.author <- substr(h[a.ind], 9, nchar(h[a.ind]))
-			if(!is.null(doc.title)) header <- c(header, paste0("\\title{", doc.title, "}"))
-			if(!is.null(doc.author)) header <- c(header, paste0("\\author{", doc.author, "}"))
-			if(!is.null(doc.title)) header <- c(header, "\\maketitle\n")
+			highlight.ind <- which(substr(h, 1, 11)=="highlight: ")
+			if(is.null(title) & length(t.ind)) title <- substr(h[t.ind], 8, nchar(h[t.ind])) else if(is.null(title)) title <- ""
+			if(is.null(author) & length(a.ind)) author <- substr(h[a.ind], 9, nchar(h[a.ind])) else if(is.null(author)) author <- ""
+			if(is.null(highlight) & length(highlight.ind)) highlight <- substr(h[highlight.ind], 12, nchar(h[highlight.ind])) else if(is.null(highlight)) highlight <- hl.default else if(!(highlight %in% knit_theme$get())) highlight <- hl.default
+			if(!is.null(title)) header <- c(header, paste0("\\title{", title, "}"))
+			if(!is.null(author)) header <- c(header, paste0("\\author{", author, "}"))
+			if(!is.null(title)) header <- c(header, "\\maketitle\n")
+			header <- c(header, paste0("<<highlight, echo=FALSE>>=\nknit_theme$set(knit_theme$get('", highlight, "'))\n@\n"))
 		} else if(ext=="Rnw") {
+			hl.default <- "tango"
 			out.ext <- "Rmd"
 			begin.doc <- which(l=="\\begin{document}")
 			make.title <- which(l=="\\maketitle")
@@ -292,9 +301,16 @@ convertDocs <- function(path, rmdChunkID=c("```{r", "}", "```"), rnwChunkID=c("<
 			h <- l[h.ind]
 			t.ind <- which(substr(h, 1, 6)=="\\title")
 			a.ind <- which(substr(h, 1, 7)=="\\author")
-			if(is.null(doc.title) & length(t.ind)) doc.title <- substr(h[t.ind], 8, nchar(h[t.ind])-1)
-			if(is.null(doc.author) & length(a.ind)) doc.author <- substr(h[a.ind], 9, nchar(h[a.ind])-1)
-			header <- rmdHeader(title=doc.title, author=doc.author)
+			highlight.ind <- which(substr(l, 1, 11)=="<<highlight")
+			if(is.null(title) & length(t.ind)) title <- substr(h[t.ind], 8, nchar(h[t.ind])-1)
+			if(is.null(author) & length(a.ind)) author <- substr(h[a.ind], 9, nchar(h[a.ind])-1)
+			if(length(highlight.ind)){
+				l1 <- l[highlight.ind+1]
+				h1 <- substr(l1, nchar("knit_theme$set(knit_theme$get('") + 1, nchar(l1) - nchar("'))\n"))
+				if(!(h1 %in% knit_theme$get())) h1 <- hl.default
+			}
+			if(is.null(highlight) & length(highlight.ind)) highlight <- h1 else if(is.null(highlight)) highlight <- hl.default else if(!(highlight %in% knit_theme$get())) highlight <- hl.default
+			header <- rmdHeader(title=title, author=author, highlight=highlight)
 		}
 		header <- paste0(header, collapse="\n")
 		l <- paste0(l[-h.ind], "\n")
@@ -303,8 +319,8 @@ convertDocs <- function(path, rmdChunkID=c("```{r", "}", "```"), rnwChunkID=c("<
 		l <- swapHeadings(from=from, to=to, x=l)
 		chunks <- swapChunks(from=from, to=to, x=l)
 		l <- chunks[[1]]
-		if(ext=="Rmd") l[-chunks[[2]]] <- sapply(l[-chunks[[2]]], function(v, p, r) gsub(p, r, v), p="_", r="\\\\_")
 		if(ext=="Rmd") l <- swapEmphasis(x=l, emphasis=emphasis)
+		if(ext=="Rmd") l[-chunks[[2]]] <- sapply(l[-chunks[[2]]], function(v, p, r) gsub(p, r, v), p="_", r="\\\\_")
 		l <- c(header, l, "\n\\end{document}\n")
 		outfile <- file.path(outDir, gsub(paste0("\\.", ext), paste0("\\.", out.ext), basename(file)))
 		if(overwrite || !file.exists(outfile)){
@@ -325,7 +341,7 @@ convertDocs <- function(path, rmdChunkID=c("```{r", "}", "```"), rnwChunkID=c("<
 }
 
 # @knitr fun_moveDocs
-moveDocs <- function(path.docs, type=c("md", "html","pdf"), move=TRUE, copy=FALSE, remove.latex=TRUE, latexDir="LaTeX"){
+moveDocs <- function(path.docs, type=c("md", "html","pdf"), move=TRUE, copy=FALSE, remove.latex=TRUE, latexDir="latex"){
 	if(any(!(type %in% c("md", "html","pdf")))) stop("type must be among 'md', 'html', and 'pdf'")
 	stopifnot(move | copy)
 	if(path.docs=="." | path.docs=="./") path.docs <- getwd()
@@ -337,6 +353,20 @@ moveDocs <- function(path.docs, type=c("md", "html","pdf"), move=TRUE, copy=FALS
 		if(type[i]=="pdf") origin <- "Rnw" else origin <- "Rmd"
 		path.i <- file.path(path.docs, origin)
 		infiles <- list.files(path.i, pattern=paste0("\\.", type[i], "$"), full=TRUE)
+		if(type[i]=="pdf"){
+			extensions <- c("tex", "aux", "log")
+			all.pdfs <- basename(list.files(path.docs, pattern=".pdf$", full=T, recursive=T))
+			pat <- paste0("^", rep(gsub("pdf", "", all.pdfs), length(extensions)), rep(extensions, each=length(all.pdfs)), "$")
+			latex.files <- sapply(1:length(pat), function(p, path, pat) list.files(path, pattern=pat[p], full=TRUE), path=path.i, pat=pat)
+			if(!is.list(latex.files)){
+				if(remove.latex){
+					unlink(latex.files)
+				} else {
+					dir.create(file.path(path.docs, latexDir), showWarnings=FALSE, recursive=TRUE)
+					file.rename(latex.files, file.path(path.docs, latexDir, basename(latex.files)))
+				}
+			}
+		}
 		if(length(infiles)){
 			infiles <- infiles[basename(dirname(infiles))==origin]
 			if(length(infiles)){
@@ -347,11 +377,9 @@ moveDocs <- function(path.docs, type=c("md", "html","pdf"), move=TRUE, copy=FALS
 					if(length(ind)){
 						html.dirs <- dirs[ind]
 						html.dirs.recur <- list.dirs(html.dirs)
-						print(html.dirs.recur)
 						for(p in 1:length(html.dirs.recur))	dir.create(gsub("/Rmd", "/html", html.dirs.recur[p]), recursive=TRUE, showWarnings=FALSE)
 						subfiles <- unique(unlist(lapply(1:length(html.dirs.recur), function(p, path) list.files(path[p], full=TRUE), path=html.dirs.recur)))
 						subfiles <- subfiles[!(subfiles %in% html.dirs.recur)]
-						print(subfiles)
 						file.copy(subfiles, gsub("/Rmd", "/html", subfiles), overwrite=TRUE)
 						if(move) unlink(html.dirs, recursive=TRUE)
 					}
@@ -359,20 +387,6 @@ moveDocs <- function(path.docs, type=c("md", "html","pdf"), move=TRUE, copy=FALS
 				outfiles <- file.path(path.docs, type[i], basename(infiles))
 				if(move) file.rename(infiles, outfiles) else if(copy) file.copy(infiles, outfiles, overwrite=TRUE)
 			}
-		}
-		if(type[i]=="pdf"){
-			extensions <- c("TeX", "aux", "txt")
-			pat <- paste0("^", rep(gsub("pdf", "", basename(infiles)), length(extensions)), rep(extensions, each=length(infiles)), "$")
-			print(path.i)
-			print(pat)
-			latex.files <- sapply(1:length(pat), function(p, path, pat) list.files(path, pattern=pat[p], full=TRUE), path=path.i, pat=pat)
-			print(latex.files)
-			#if(remove.latex){
-			#	file.remove(latex.files)
-			#} else {
-			#	dir.create(file.path(path.docs, latexDir), showWarnings=FALSE, recursive=TRUE)
-			#	file.rename(latex.files, file.path(path.docs, latexDir, basename(latex.files)))
-			#}
 		}
 	}
 }
