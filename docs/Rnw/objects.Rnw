@@ -1,5 +1,5 @@
 \documentclass{article}
-\documentclass{geometry}
+\usepackage{geometry}
 \geometry{verbose, tmargin=2.5cm, bmargin=2.5cm, lmargin=2.5cm, rmargin=2.5cm}
 \begin{document}
 
@@ -14,3 +14,5 @@ A tentative default path is also included since this code relates to my own work
 
 <<template_objects>>=
 @
+
+\end{document}

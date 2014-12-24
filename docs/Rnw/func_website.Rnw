@@ -1,5 +1,5 @@
 \documentclass{article}
-\documentclass{geometry}
+\usepackage{geometry}
 \geometry{verbose, tmargin=2.5cm, bmargin=2.5cm, lmargin=2.5cm, rmargin=2.5cm}
 \begin{document}
 
@@ -10,14 +10,14 @@ read_chunk("../../code/projman.R")
 
 \subsubsection{genNavbar}
 
-genNavbar generates a navigation bar for a web page.
-The html file created should be written to the project's docs/Rmd/include directory.
+\texttt{genNavbar} generates a navigation bar for a web page.
+The html file created should be written to the project's \texttt{docs/Rmd/include} directory.
 The common navigation bar html is included prior to the body of the html for each web page in the project's website.
-menu is a vector of names for each dropdown menu.
-submenus is a list of vectors of menu options corresponding to each menu.
-files is a similar list of vectors.
+\texttt{menu} is a vector of names for each dropdown menu.
+\texttt{submenus} is a list of vectors of menu options corresponding to each menu.
+\texttt{files} is a similar list of vectors.
 Each element is either an html file for a web page to be associated with the submenu link,
-"header" to indicate the corresponding name in submenus is only a group label and not a link to a web page,
+"header" to indicate the corresponding name in \texttt{submenus} is only a group label and not a link to a web page,
 or "divider" to indicate placement of a bar for separating groups in a dropdown menu.
 
 <<fun_genNavbar>>=
@@ -25,13 +25,15 @@ or "divider" to indicate placement of a bar for separating groups in a dropdown 
 
 \subsubsection{genOutyaml}
 
-genOutyaml generates the _out.yaml file for yaml front-matter common to all html files in the project website.
-The file should be written to the project's docs/Rmd directory.
-lib specifies the library directory for any associated files.
-yaml includes for external html common to all project web pages in the site can also be specified with header, before_body, and after_body.
-These can be specified by file basename only (no path) and the function assumes these files are in the docs/Rmd/include directory.
-At this time all external libraries must be provided by the user, for example in docs/Rmd/libs.
+\texttt{genOutyaml} generates the \texttt{\_out.yaml} file for yaml front-matter common to all html files in the project website.
+The file should be written to the project's \texttt{docs/Rmd} directory.
+\texttt{lib} specifies the library directory for any associated files.
+yaml \texttt{includes} for external html common to all project web pages in the site can also be specified with \texttt{header}, \texttt{before\_body}, and \texttt{after\_body}.
+These can be specified by file basename only (no path) and the function assumes these files are in the \texttt{docs/Rmd/include} directory.
+At this time all external libraries must be provided by the user, for example in \texttt{docs/Rmd/libs}.
 It is recommended. See the project repo [gh-pages](https://github.com/leonawicz/ProjectManagement/tree/gh-pages "gh-pages") branch for an example.
 
 <<fun_genOutyaml>>=
 @
+
+\end{document}

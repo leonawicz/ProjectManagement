@@ -1,5 +1,5 @@
 \documentclass{article}
-\documentclass{geometry}
+\usepackage{geometry}
 \geometry{verbose, tmargin=2.5cm, bmargin=2.5cm, lmargin=2.5cm, rmargin=2.5cm}
 \begin{document}
 
@@ -13,10 +13,10 @@ read_chunk("../../code/drg.R")
 @
 
 \section{Dynamic report generation}
-The script, drg.R, is used to compile reports in various formats based on project **R** and/or Rmd files.
+The script, \texttt{drg.R}, is used to compile reports in various formats based on project \textbf{R} and/or Rmd files.
 Using this project management project as an example, markdown and html files are generated for existing Rmd files.
-This is not clear from the code below because output_format="all" is ambiguous.
-In the yaml front-matter of each Rmd file for this project, the file type html_document: and specific flag keep_md: true are specified.
+This is not clear from the code below because \texttt{output\_format="all"} is ambiguous.
+In the yaml front-matter of each Rmd file for this project, the file type \texttt{html\_document:} and specific flag \texttt{keep\_md: true} are specified.
 
 No other output files are specified such as pdf.
 To make pdf files for example, they would be specified directly in this script or the Rmd front-matter would have to be updated to include them.
@@ -33,3 +33,5 @@ I prefer to keep them separate because I rarely want to generate pdf files from 
 
 <<save>>=
 @
+
+\end{document}
