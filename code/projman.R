@@ -357,8 +357,9 @@ moveDocs <- function(path.docs, type=c("md", "html","pdf"), move=TRUE, copy=FALS
 			extensions <- c("tex", "aux", "log")
 			all.pdfs <- basename(list.files(path.docs, pattern=".pdf$", full=T, recursive=T))
 			pat <- paste0("^", rep(gsub("pdf", "", all.pdfs), length(extensions)), rep(extensions, each=length(all.pdfs)), "$")
-			latex.files <- sapply(1:length(pat), function(p, path, pat) list.files(path, pattern=pat[p], full=TRUE), path=path.i, pat=pat)
-			if(!is.list(latex.files)){
+			latex.files <- unlist(sapply(1:length(pat), function(p, path, pat) list.files(path, pattern=pat[p], full=TRUE), path=path.i, pat=pat))
+			print(latex.files)
+			if(length(latex.files)){
 				if(remove.latex){
 					unlink(latex.files)
 				} else {
