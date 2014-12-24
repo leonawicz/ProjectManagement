@@ -24,7 +24,7 @@ chunkNames(path=file.path(proj.location, proj.name, "code"))
 chunkNames(path=file.path(proj.location, proj.name, "code"), append.new=TRUE)
 
 # if also making PDFs for a project, speed up the Rmd to Rnw file conversion/duplication
-#rmd2rnw(path=file.path(proj.location, proj.name, "Rmd")) # function under development
+convertDocs(path=rmd.path, strip.emphasis=TRUE) # function under development
 
 # @knitr ex_website
 # Setup for generating a project website
