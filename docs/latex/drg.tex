@@ -1,0 +1,117 @@
+\documentclass{article}\usepackage[]{graphicx}\usepackage[]{color}
+%% maxwidth is the original width if it is less than linewidth
+%% otherwise use linewidth (to make sure the graphics do not exceed the margin)
+\makeatletter
+\def\maxwidth{ %
+  \ifdim\Gin@nat@width>\linewidth
+    \linewidth
+  \else
+    \Gin@nat@width
+  \fi
+}
+\makeatother
+
+\definecolor{fgcolor}{rgb}{0.514, 0.58, 0.588}
+\newcommand{\hlnum}[1]{\textcolor[rgb]{0.863,0.196,0.184}{#1}}%
+\newcommand{\hlstr}[1]{\textcolor[rgb]{0.863,0.196,0.184}{#1}}%
+\newcommand{\hlcom}[1]{\textcolor[rgb]{0.345,0.431,0.459}{#1}}%
+\newcommand{\hlopt}[1]{\textcolor[rgb]{0.576,0.631,0.631}{#1}}%
+\newcommand{\hlstd}[1]{\textcolor[rgb]{0.514,0.58,0.588}{#1}}%
+\newcommand{\hlkwa}[1]{\textcolor[rgb]{0.796,0.294,0.086}{#1}}%
+\newcommand{\hlkwb}[1]{\textcolor[rgb]{0.522,0.6,0}{#1}}%
+\newcommand{\hlkwc}[1]{\textcolor[rgb]{0.796,0.294,0.086}{#1}}%
+\newcommand{\hlkwd}[1]{\textcolor[rgb]{0.576,0.631,0.631}{#1}}%
+
+\usepackage{framed}
+\makeatletter
+\newenvironment{kframe}{%
+ \def\at@end@of@kframe{}%
+ \ifinner\ifhmode%
+  \def\at@end@of@kframe{\end{minipage}}%
+  \begin{minipage}{\columnwidth}%
+ \fi\fi%
+ \def\FrameCommand##1{\hskip\@totalleftmargin \hskip-\fboxsep
+ \colorbox{shadecolor}{##1}\hskip-\fboxsep
+     % There is no \\@totalrightmargin, so:
+     \hskip-\linewidth \hskip-\@totalleftmargin \hskip\columnwidth}%
+ \MakeFramed {\advance\hsize-\width
+   \@totalleftmargin\z@ \linewidth\hsize
+   \@setminipage}}%
+ {\par\unskip\endMakeFramed%
+ \at@end@of@kframe}
+\makeatother
+
+\definecolor{shadecolor}{rgb}{.97, .97, .97}
+\definecolor{messagecolor}{rgb}{0, 0, 0}
+\definecolor{warningcolor}{rgb}{1, 0, 1}
+\definecolor{errorcolor}{rgb}{1, 0, 0}
+\newenvironment{knitrout}{}{} % an empty environment to be redefined in TeX
+
+\usepackage{alltt}
+\usepackage{geometry}
+\geometry{verbose, tmargin=2.5cm, bmargin=2.5cm, lmargin=2.5cm, rmargin=2.5cm}
+\IfFileExists{upquote.sty}{\usepackage{upquote}}{}
+\begin{document}
+
+\title{Project Management}
+\author{Matthew Leonawicz}
+\maketitle
+
+
+
+
+
+\section{Dynamic report generation}
+The script, \texttt{drg.R}, is used to compile reports in various formats based on project \textbf{R} and/or Rmd files.
+Using this project management project as an example, markdown and html files are generated for existing Rmd files.
+This is not clear from the code below because \texttt{output\_format="all"} is ambiguous.
+In the yaml front-matter of each Rmd file for this project, the file type \texttt{html\_document:} and specific flag \texttt{keep\_md: true} are specified.
+
+No other output files are specified such as pdf.
+To make pdf files for example, they would be specified directly in this script or the Rmd front-matter would have to be updated to include them.
+I prefer to keep them separate because I rarely want to generate pdf files from most Rmd files and when I do I will want them written to another location.
+
+\section{R code}
+
+\subsection{Initial setup}
+
+\begin{knitrout}
+\definecolor{shadecolor}{rgb}{0, 0.169, 0.212}\color{fgcolor}\begin{kframe}
+\begin{alltt}
+\hlkwd{library}\hlstd{(rmarkdown)}
+\hlkwd{library}\hlstd{(knitr)}
+
+\hlkwd{setwd}\hlstd{(}\hlstr{"C:/github/ProjectManagement/docs/Rmd"}\hlstd{)}
+
+\hlcom{# R scripts}
+\hlstd{files.r} \hlkwb{<-} \hlkwd{list.files}\hlstd{(}\hlstr{"../../code"}\hlstd{,} \hlkwc{pattern} \hlstd{=} \hlstr{".R$"}\hlstd{,} \hlkwc{full} \hlstd{= T)}
+\hlcom{# files.r <- files.r[basename(files.r)!='drg.R']}
+\hlstd{files.Rmd} \hlkwb{<-} \hlkwd{list.files}\hlstd{(}\hlkwc{pattern} \hlstd{=} \hlstr{".Rmd$"}\hlstd{,} \hlkwc{full} \hlstd{= T)}
+
+\hlcom{# potential non-Rmd directories for writing various output files}
+\hlstd{outtype} \hlkwb{<-} \hlkwd{file.path}\hlstd{(}\hlkwd{dirname}\hlstd{(}\hlkwd{getwd}\hlstd{()),} \hlkwd{list.dirs}\hlstd{(}\hlstr{"../"}\hlstd{,} \hlkwc{full} \hlstd{= F,} \hlkwc{recursive} \hlstd{= F))}
+\hlstd{outtype} \hlkwb{<-} \hlstd{outtype[}\hlkwd{basename}\hlstd{(outtype)} \hlopt{!=} \hlstr{"Rmd"}\hlstd{]}
+\end{alltt}
+\end{kframe}
+\end{knitrout}
+
+\subsection{Render documents}
+
+\begin{knitrout}
+\definecolor{shadecolor}{rgb}{0, 0.169, 0.212}\color{fgcolor}\begin{kframe}
+\begin{alltt}
+\hlcom{# write all yaml front-matter-specified outputs to Rmd directory for all Rmd}
+\hlcom{# files}
+\hlkwd{lapply}\hlstd{(files.Rmd, render,} \hlkwc{output_format} \hlstd{=} \hlstr{"all"}\hlstd{)}
+
+\hlcom{# write all specific outputs to specific directories for all Rmd files}
+\hlcom{# lapply(files.Rmd, render, output_format=html_document(),}
+\hlcom{# output_dir=outtype[basename(outtype)=='all']) lapply(files.Rmd, render,}
+\hlcom{# output_format=md_document(), output_dir=outtype[basename(outtype)=='all'])}
+\hlkwd{lapply}\hlstd{(files.Rmd, render,} \hlkwc{output_format} \hlstd{=} \hlstr{"pdf_document"}\hlstd{,} \hlkwc{output_dir} \hlstd{= outtype[}\hlkwd{basename}\hlstd{(outtype)} \hlopt{==}
+    \hlstr{"pdf"}\hlstd{],} \hlkwc{intermediates_dir} \hlstd{= outtype[}\hlkwd{basename}\hlstd{(outtype)} \hlopt{==} \hlstr{"pdf"}\hlstd{])}
+\end{alltt}
+\end{kframe}
+\end{knitrout}
+
+\end{document}

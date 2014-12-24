@@ -1,0 +1,83 @@
+\documentclass{article}\usepackage[]{graphicx}\usepackage[]{color}
+%% maxwidth is the original width if it is less than linewidth
+%% otherwise use linewidth (to make sure the graphics do not exceed the margin)
+\makeatletter
+\def\maxwidth{ %
+  \ifdim\Gin@nat@width>\linewidth
+    \linewidth
+  \else
+    \Gin@nat@width
+  \fi
+}
+\makeatother
+
+\definecolor{fgcolor}{rgb}{0.514, 0.58, 0.588}
+\newcommand{\hlnum}[1]{\textcolor[rgb]{0.863,0.196,0.184}{#1}}%
+\newcommand{\hlstr}[1]{\textcolor[rgb]{0.863,0.196,0.184}{#1}}%
+\newcommand{\hlcom}[1]{\textcolor[rgb]{0.345,0.431,0.459}{#1}}%
+\newcommand{\hlopt}[1]{\textcolor[rgb]{0.576,0.631,0.631}{#1}}%
+\newcommand{\hlstd}[1]{\textcolor[rgb]{0.514,0.58,0.588}{#1}}%
+\newcommand{\hlkwa}[1]{\textcolor[rgb]{0.796,0.294,0.086}{#1}}%
+\newcommand{\hlkwb}[1]{\textcolor[rgb]{0.522,0.6,0}{#1}}%
+\newcommand{\hlkwc}[1]{\textcolor[rgb]{0.796,0.294,0.086}{#1}}%
+\newcommand{\hlkwd}[1]{\textcolor[rgb]{0.576,0.631,0.631}{#1}}%
+
+\usepackage{framed}
+\makeatletter
+\newenvironment{kframe}{%
+ \def\at@end@of@kframe{}%
+ \ifinner\ifhmode%
+  \def\at@end@of@kframe{\end{minipage}}%
+  \begin{minipage}{\columnwidth}%
+ \fi\fi%
+ \def\FrameCommand##1{\hskip\@totalleftmargin \hskip-\fboxsep
+ \colorbox{shadecolor}{##1}\hskip-\fboxsep
+     % There is no \\@totalrightmargin, so:
+     \hskip-\linewidth \hskip-\@totalleftmargin \hskip\columnwidth}%
+ \MakeFramed {\advance\hsize-\width
+   \@totalleftmargin\z@ \linewidth\hsize
+   \@setminipage}}%
+ {\par\unskip\endMakeFramed%
+ \at@end@of@kframe}
+\makeatother
+
+\definecolor{shadecolor}{rgb}{.97, .97, .97}
+\definecolor{messagecolor}{rgb}{0, 0, 0}
+\definecolor{warningcolor}{rgb}{1, 0, 1}
+\definecolor{errorcolor}{rgb}{1, 0, 0}
+\newenvironment{knitrout}{}{} % an empty environment to be redefined in TeX
+
+\usepackage{alltt}
+\usepackage{geometry}
+\geometry{verbose, tmargin=2.5cm, bmargin=2.5cm, lmargin=2.5cm, rmargin=2.5cm}
+\IfFileExists{upquote.sty}{\usepackage{upquote}}{}
+\begin{document}
+
+\title{}
+\author{}
+\maketitle
+
+
+
+
+
+\subsection{Template objects}
+Character string objects are defined which are used to fill templates when generating new files for a project.
+A tentative default path is also included since this code relates to my own work.
+
+\begin{knitrout}
+\definecolor{shadecolor}{rgb}{0, 0.169, 0.212}\color{fgcolor}\begin{kframe}
+\begin{alltt}
+\hlcom{# For package 'projman'}
+
+\hlcom{# data}
+
+\hlstd{rmd.template} \hlkwb{<-} \hlstr{"\textbackslash{}n\textbackslash{}n## Introduction\textbackslash{}nADD_TEXT_HERE\textbackslash{}n\textbackslash{}n### Motivation\textbackslash{}nADD_TEXT_HERE\textbackslash{}n\textbackslash{}n### Details\textbackslash{}nADD_TEXT_HERE\textbackslash{}n\textbackslash{}n#### Capabilities\textbackslash{}nADD_TEXT_HERE\textbackslash{}n\textbackslash{}n#### Limitations\textbackslash{}nADD_TEXT_HERE\textbackslash{}n\textbackslash{}n## Related items\textbackslash{}n\textbackslash{}n### Files and Data\textbackslash{}nADD_TEXT_HERE\textbackslash{}n\textbackslash{}n### Code flow\textbackslash{}nADD_TEXT_HERE\textbackslash{}n\textbackslash{}n```\{r code_sankey, echo=F, eval=T\}\textbackslash{}n```\textbackslash{}n\textbackslash{}n```\{r code_sankey_embed, echo=F, eval=T, comment=NA, results=\textbackslash{}"asis\textbackslash{}", tidy=F\}\textbackslash{}n```\textbackslash{}n\textbackslash{}n## R code\textbackslash{}n\textbackslash{}n### Setup\textbackslash{}nADD_TEXT_HERE: EXAMPLE\textbackslash{}nSetup consists of loading required **R** packages and additional files, preparing any command line arguments for use, and defining functions and other **R** objects.\textbackslash{}n\textbackslash{}n"}
+
+\hlcom{# default path}
+\hlstd{matt.proj.path} \hlkwb{<-} \hlstr{"C:/github"}
+\end{alltt}
+\end{kframe}
+\end{knitrout}
+
+\end{document}

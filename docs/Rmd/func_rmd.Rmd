@@ -22,7 +22,7 @@ The output from this function is passed directly to `genRmd` below.
 
 #### rmdknitrSetup
 `rmdknitrSetup` generates the `knitr` global options setup code cunk for Rmd files as a character string to be inserted at the top of a file following the yaml header.
-The only option at this time is the ability to include or exclude a source reference to a project-related clode flow diagram **R** script via `include.sankey`.
+The only option at this time is the ability to include or exclude a source reference to a project-related code flow diagram **R** script via `include.sankey`.
 The output from this function is passed directly to `genRmd` below.
 
 ```{r fun_rmdknitrSetup}

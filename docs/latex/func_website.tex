@@ -1,0 +1,156 @@
+\documentclass{article}\usepackage[]{graphicx}\usepackage[]{color}
+%% maxwidth is the original width if it is less than linewidth
+%% otherwise use linewidth (to make sure the graphics do not exceed the margin)
+\makeatletter
+\def\maxwidth{ %
+  \ifdim\Gin@nat@width>\linewidth
+    \linewidth
+  \else
+    \Gin@nat@width
+  \fi
+}
+\makeatother
+
+\definecolor{fgcolor}{rgb}{0.514, 0.58, 0.588}
+\newcommand{\hlnum}[1]{\textcolor[rgb]{0.863,0.196,0.184}{#1}}%
+\newcommand{\hlstr}[1]{\textcolor[rgb]{0.863,0.196,0.184}{#1}}%
+\newcommand{\hlcom}[1]{\textcolor[rgb]{0.345,0.431,0.459}{#1}}%
+\newcommand{\hlopt}[1]{\textcolor[rgb]{0.576,0.631,0.631}{#1}}%
+\newcommand{\hlstd}[1]{\textcolor[rgb]{0.514,0.58,0.588}{#1}}%
+\newcommand{\hlkwa}[1]{\textcolor[rgb]{0.796,0.294,0.086}{#1}}%
+\newcommand{\hlkwb}[1]{\textcolor[rgb]{0.522,0.6,0}{#1}}%
+\newcommand{\hlkwc}[1]{\textcolor[rgb]{0.796,0.294,0.086}{#1}}%
+\newcommand{\hlkwd}[1]{\textcolor[rgb]{0.576,0.631,0.631}{#1}}%
+
+\usepackage{framed}
+\makeatletter
+\newenvironment{kframe}{%
+ \def\at@end@of@kframe{}%
+ \ifinner\ifhmode%
+  \def\at@end@of@kframe{\end{minipage}}%
+  \begin{minipage}{\columnwidth}%
+ \fi\fi%
+ \def\FrameCommand##1{\hskip\@totalleftmargin \hskip-\fboxsep
+ \colorbox{shadecolor}{##1}\hskip-\fboxsep
+     % There is no \\@totalrightmargin, so:
+     \hskip-\linewidth \hskip-\@totalleftmargin \hskip\columnwidth}%
+ \MakeFramed {\advance\hsize-\width
+   \@totalleftmargin\z@ \linewidth\hsize
+   \@setminipage}}%
+ {\par\unskip\endMakeFramed%
+ \at@end@of@kframe}
+\makeatother
+
+\definecolor{shadecolor}{rgb}{.97, .97, .97}
+\definecolor{messagecolor}{rgb}{0, 0, 0}
+\definecolor{warningcolor}{rgb}{1, 0, 1}
+\definecolor{errorcolor}{rgb}{1, 0, 0}
+\newenvironment{knitrout}{}{} % an empty environment to be redefined in TeX
+
+\usepackage{alltt}
+\usepackage{geometry}
+\geometry{verbose, tmargin=2.5cm, bmargin=2.5cm, lmargin=2.5cm, rmargin=2.5cm}
+\IfFileExists{upquote.sty}{\usepackage{upquote}}{}
+\begin{document}
+
+\title{}
+\author{}
+\maketitle
+
+
+
+
+
+\subsubsection{genNavbar}
+
+\texttt{genNavbar} generates a navigation bar for a web page.
+The html file created should be written to the project's \texttt{docs/Rmd/include} directory.
+The common navigation bar html is included prior to the body of the html for each web page in the project's website.
+\texttt{menu} is a vector of names for each dropdown menu.
+\texttt{submenus} is a list of vectors of menu options corresponding to each menu.
+\texttt{files} is a similar list of vectors.
+Each element is either an html file for a web page to be associated with the submenu link,
+"header" to indicate the corresponding name in \texttt{submenus} is only a group label and not a link to a web page,
+or "divider" to indicate placement of a bar for separating groups in a dropdown menu.
+
+\begin{knitrout}
+\definecolor{shadecolor}{rgb}{0, 0.169, 0.212}\color{fgcolor}\begin{kframe}
+\begin{alltt}
+\hlcom{# Functions for Github project websites}
+\hlstd{genNavbar} \hlkwb{<-} \hlkwa{function}\hlstd{(}\hlkwc{htmlfile} \hlstd{=} \hlstr{"navbar.html"}\hlstd{,} \hlkwc{title}\hlstd{,} \hlkwc{menu}\hlstd{,} \hlkwc{submenus}\hlstd{,} \hlkwc{files}\hlstd{,}
+    \hlkwc{title.url} \hlstd{=} \hlstr{"index.html"}\hlstd{,} \hlkwc{home.url} \hlstd{=} \hlstr{"index.html"}\hlstd{,} \hlkwc{site.url} \hlstd{=} \hlstr{""}\hlstd{,} \hlkwc{site.name} \hlstd{=} \hlstr{"Github"}\hlstd{,}
+    \hlkwc{include.home} \hlstd{=} \hlnum{FALSE}\hlstd{) \{}
+
+    \hlstd{fillSubmenu} \hlkwb{<-} \hlkwa{function}\hlstd{(}\hlkwc{x}\hlstd{,} \hlkwc{name}\hlstd{,} \hlkwc{file}\hlstd{) \{}
+        \hlkwa{if} \hlstd{(file[x]} \hlopt{==} \hlstr{"divider"}\hlstd{)}
+            \hlkwd{return}\hlstd{(}\hlstr{"              <li class=\textbackslash{}"divider\textbackslash{}"></li>\textbackslash{}n"}\hlstd{)}
+        \hlkwa{if} \hlstd{(file[x]} \hlopt{==} \hlstr{"header"}\hlstd{)}
+            \hlkwd{return}\hlstd{(}\hlkwd{paste0}\hlstd{(}\hlstr{"              <li class=\textbackslash{}"nav-header\textbackslash{}">"}\hlstd{, name[x],}
+                \hlstr{"</li>\textbackslash{}n"}\hlstd{))}
+        \hlkwd{paste0}\hlstd{(}\hlstr{"              <li><a href=\textbackslash{}""}\hlstd{, file[x],} \hlstr{"\textbackslash{}">"}\hlstd{, name[x],} \hlstr{"</a></li>\textbackslash{}n"}\hlstd{)}
+    \hlstd{\}}
+
+    \hlstd{fillMenu} \hlkwb{<-} \hlkwa{function}\hlstd{(}\hlkwc{x}\hlstd{,} \hlkwc{menu}\hlstd{,} \hlkwc{submenus}\hlstd{,} \hlkwc{files}\hlstd{) \{}
+        \hlkwd{paste0}\hlstd{(}\hlstr{"<li class=\textbackslash{}"dropdown\textbackslash{}">\textbackslash{}n            <a href=\textbackslash{}""}\hlstd{,} \hlkwd{gsub}\hlstd{(}\hlstr{" "}\hlstd{,}
+            \hlstr{"-"}\hlstd{,} \hlkwd{tolower}\hlstd{(menu[x])),} \hlstr{"\textbackslash{}" class=\textbackslash{}"dropdown-toggle\textbackslash{}" data-toggle=\textbackslash{}"dropdown\textbackslash{}">"}\hlstd{,}
+            \hlstd{menu[x],} \hlstr{" <b class=\textbackslash{}"caret\textbackslash{}"></b></a>\textbackslash{}n            <ul class=\textbackslash{}"dropdown-menu\textbackslash{}">\textbackslash{}n"}\hlstd{,}
+            \hlkwd{paste}\hlstd{(}\hlkwd{sapply}\hlstd{(}\hlnum{1}\hlopt{:}\hlkwd{length}\hlstd{(submenus[[x]]), fillSubmenu,} \hlkwc{name} \hlstd{= submenus[[x]],}
+                \hlkwc{file} \hlstd{= files[[x]]),} \hlkwc{sep} \hlstd{=} \hlstr{""}\hlstd{,} \hlkwc{collapse} \hlstd{=} \hlstr{""}\hlstd{),} \hlstr{"            </ul>\textbackslash{}n"}\hlstd{,}
+            \hlkwc{collapse} \hlstd{=} \hlstr{""}\hlstd{)}
+    \hlstd{\}}
+
+    \hlkwa{if} \hlstd{(include.home)}
+        \hlstd{home} \hlkwb{<-} \hlkwd{paste0}\hlstd{(}\hlstr{"<li><a href=\textbackslash{}""}\hlstd{, home.url,} \hlstr{"\textbackslash{}">Home</a></li>\textbackslash{}n          "}\hlstd{)} \hlkwa{else} \hlstd{home} \hlkwb{<-} \hlstr{""}
+    \hlstd{x} \hlkwb{<-} \hlkwd{paste0}\hlstd{(}\hlstr{"<div class=\textbackslash{}"navbar navbar-default navbar-fixed-top\textbackslash{}">\textbackslash{}n  <div class=\textbackslash{}"navbar-inner\textbackslash{}">\textbackslash{}n    <div class=\textbackslash{}"container\textbackslash{}">\textbackslash{}n      <button type=\textbackslash{}"button\textbackslash{}" class=\textbackslash{}"btn btn-navbar\textbackslash{}" data-toggle=\textbackslash{}"collapse\textbackslash{}" data-target=\textbackslash{}".nav-collapse\textbackslash{}">\textbackslash{}n        <span class=\textbackslash{}"icon-bar\textbackslash{}"></span>\textbackslash{}n        <span class=\textbackslash{}"icon-bar\textbackslash{}"></span>\textbackslash{}n        <span class=\textbackslash{}"icon-bar\textbackslash{}"></span>\textbackslash{}n      </button>\textbackslash{}n      <a class=\textbackslash{}"brand\textbackslash{}" href=\textbackslash{}""}\hlstd{,}
+        \hlstd{title.url,} \hlstr{"\textbackslash{}">"}\hlstd{, title,} \hlstr{"</a>\textbackslash{}n      <div class=\textbackslash{}"nav-collapse collapse\textbackslash{}">\textbackslash{}n        <ul class=\textbackslash{}"nav\textbackslash{}">\textbackslash{}n          "}\hlstd{,}
+        \hlstd{home,} \hlkwd{paste}\hlstd{(}\hlkwd{sapply}\hlstd{(}\hlnum{1}\hlopt{:}\hlkwd{length}\hlstd{(menu), fillMenu,} \hlkwc{menu} \hlstd{= menu,} \hlkwc{submenus} \hlstd{= submenus,}
+            \hlkwc{files} \hlstd{= files),} \hlkwc{sep} \hlstd{=} \hlstr{""}\hlstd{,} \hlkwc{collapse} \hlstd{=} \hlstr{"\textbackslash{}n          "}\hlstd{),} \hlstr{"        </ul>\textbackslash{}n        <ul class=\textbackslash{}"nav pull-right\textbackslash{}">\textbackslash{}n          <a class=\textbackslash{}"btn btn-primary\textbackslash{}" href=\textbackslash{}""}\hlstd{,}
+        \hlstd{site.url,} \hlstr{"\textbackslash{}">\textbackslash{}n            <i class=\textbackslash{}"fa fa-github fa-lg\textbackslash{}"></i>\textbackslash{}n            "}\hlstd{,}
+        \hlstd{site.name,} \hlstr{"\textbackslash{}n          </a>\textbackslash{}n        </ul>\textbackslash{}n      </div><!--/.nav-collapse -->\textbackslash{}n    </div>\textbackslash{}n  </div>\textbackslash{}n</div>\textbackslash{}n"}\hlstd{,}
+        \hlkwc{collpase} \hlstd{=} \hlstr{""}\hlstd{)}
+    \hlkwd{sink}\hlstd{(htmlfile)}
+    \hlkwd{cat}\hlstd{(x)}
+    \hlkwd{sink}\hlstd{()}
+    \hlstd{x}
+\hlstd{\}}
+\end{alltt}
+\end{kframe}
+\end{knitrout}
+
+\subsubsection{genOutyaml}
+
+\texttt{genOutyaml} generates the \texttt{\_out.yaml} file for yaml front-matter common to all html files in the project website.
+The file should be written to the project's \texttt{docs/Rmd} directory.
+\texttt{lib} specifies the library directory for any associated files.
+yaml \texttt{includes} for external html common to all project web pages in the site can also be specified with \texttt{header}, \texttt{before\_body}, and \texttt{after\_body}.
+These can be specified by file basename only (no path) and the function assumes these files are in the \texttt{docs/Rmd/include} directory.
+At this time all external libraries must be provided by the user, for example in \texttt{docs/Rmd/libs}.
+It is recommended. See the project repo [gh-pages](https://github.com/leonawicz/ProjectManagement/tree/gh-pages "gh-pages") branch for an example.
+
+\begin{knitrout}
+\definecolor{shadecolor}{rgb}{0, 0.169, 0.212}\color{fgcolor}\begin{kframe}
+\begin{alltt}
+\hlstd{genOutyaml} \hlkwb{<-} \hlkwa{function}\hlstd{(}\hlkwc{file}\hlstd{,} \hlkwc{theme} \hlstd{=} \hlstr{"cosmo"}\hlstd{,} \hlkwc{highlight} \hlstd{=} \hlstr{"zenburn"}\hlstd{,} \hlkwc{lib} \hlstd{=} \hlkwa{NULL}\hlstd{,}
+    \hlkwc{header} \hlstd{=} \hlkwa{NULL}\hlstd{,} \hlkwc{before_body} \hlstd{=} \hlkwa{NULL}\hlstd{,} \hlkwc{after_body} \hlstd{=} \hlkwa{NULL}\hlstd{) \{}
+    \hlstd{output.yaml} \hlkwb{<-} \hlkwd{paste0}\hlstd{(}\hlstr{"html_document:\textbackslash{}n  self_contained: false\textbackslash{}n  theme: "}\hlstd{,}
+        \hlstd{theme,} \hlstr{"\textbackslash{}n  highlight: "}\hlstd{, highlight,} \hlstr{"\textbackslash{}n  mathjax: null\textbackslash{}n  toc_depth: 2\textbackslash{}n"}\hlstd{)}
+    \hlkwa{if} \hlstd{(}\hlopt{!}\hlkwd{is.null}\hlstd{(lib))}
+        \hlstd{output.yaml} \hlkwb{<-} \hlkwd{paste0}\hlstd{(output.yaml,} \hlstr{"  lib_dir: "}\hlstd{, lib,} \hlstr{"\textbackslash{}n"}\hlstd{)}
+    \hlstd{output.yaml} \hlkwb{<-} \hlkwd{paste0}\hlstd{(output.yaml,} \hlstr{"  includes:\textbackslash{}n"}\hlstd{)}
+    \hlkwa{if} \hlstd{(}\hlopt{!}\hlkwd{is.null}\hlstd{(header))}
+        \hlstd{output.yaml} \hlkwb{<-} \hlkwd{paste0}\hlstd{(output.yaml,} \hlstr{"    in_header: "}\hlstd{, header,} \hlstr{"\textbackslash{}n"}\hlstd{)}
+    \hlkwa{if} \hlstd{(}\hlopt{!}\hlkwd{is.null}\hlstd{(before_body))}
+        \hlstd{output.yaml} \hlkwb{<-} \hlkwd{paste0}\hlstd{(output.yaml,} \hlstr{"    before_body: "}\hlstd{, before_body,}
+            \hlstr{"\textbackslash{}n"}\hlstd{)}
+    \hlkwa{if} \hlstd{(}\hlopt{!}\hlkwd{is.null}\hlstd{(after_body))}
+        \hlstd{output.yaml} \hlkwb{<-} \hlkwd{paste0}\hlstd{(output.yaml,} \hlstr{"    after_body: "}\hlstd{, after_body,} \hlstr{"\textbackslash{}n"}\hlstd{)}
+    \hlkwd{sink}\hlstd{(file)}
+    \hlkwd{cat}\hlstd{(output.yaml)}
+    \hlkwd{sink}\hlstd{()}
+    \hlstd{output.yaml}
+\hlstd{\}}
+\end{alltt}
+\end{kframe}
+\end{knitrout}
+
+\end{document}

@@ -1,0 +1,220 @@
+\documentclass{article}\usepackage[]{graphicx}\usepackage[]{color}
+%% maxwidth is the original width if it is less than linewidth
+%% otherwise use linewidth (to make sure the graphics do not exceed the margin)
+\makeatletter
+\def\maxwidth{ %
+  \ifdim\Gin@nat@width>\linewidth
+    \linewidth
+  \else
+    \Gin@nat@width
+  \fi
+}
+\makeatother
+
+\definecolor{fgcolor}{rgb}{0.514, 0.58, 0.588}
+\newcommand{\hlnum}[1]{\textcolor[rgb]{0.863,0.196,0.184}{#1}}%
+\newcommand{\hlstr}[1]{\textcolor[rgb]{0.863,0.196,0.184}{#1}}%
+\newcommand{\hlcom}[1]{\textcolor[rgb]{0.345,0.431,0.459}{#1}}%
+\newcommand{\hlopt}[1]{\textcolor[rgb]{0.576,0.631,0.631}{#1}}%
+\newcommand{\hlstd}[1]{\textcolor[rgb]{0.514,0.58,0.588}{#1}}%
+\newcommand{\hlkwa}[1]{\textcolor[rgb]{0.796,0.294,0.086}{#1}}%
+\newcommand{\hlkwb}[1]{\textcolor[rgb]{0.522,0.6,0}{#1}}%
+\newcommand{\hlkwc}[1]{\textcolor[rgb]{0.796,0.294,0.086}{#1}}%
+\newcommand{\hlkwd}[1]{\textcolor[rgb]{0.576,0.631,0.631}{#1}}%
+
+\usepackage{framed}
+\makeatletter
+\newenvironment{kframe}{%
+ \def\at@end@of@kframe{}%
+ \ifinner\ifhmode%
+  \def\at@end@of@kframe{\end{minipage}}%
+  \begin{minipage}{\columnwidth}%
+ \fi\fi%
+ \def\FrameCommand##1{\hskip\@totalleftmargin \hskip-\fboxsep
+ \colorbox{shadecolor}{##1}\hskip-\fboxsep
+     % There is no \\@totalrightmargin, so:
+     \hskip-\linewidth \hskip-\@totalleftmargin \hskip\columnwidth}%
+ \MakeFramed {\advance\hsize-\width
+   \@totalleftmargin\z@ \linewidth\hsize
+   \@setminipage}}%
+ {\par\unskip\endMakeFramed%
+ \at@end@of@kframe}
+\makeatother
+
+\definecolor{shadecolor}{rgb}{.97, .97, .97}
+\definecolor{messagecolor}{rgb}{0, 0, 0}
+\definecolor{warningcolor}{rgb}{1, 0, 1}
+\definecolor{errorcolor}{rgb}{1, 0, 0}
+\newenvironment{knitrout}{}{} % an empty environment to be redefined in TeX
+
+\usepackage{alltt}
+\usepackage{geometry}
+\geometry{verbose, tmargin=2.5cm, bmargin=2.5cm, lmargin=2.5cm, rmargin=2.5cm}
+\IfFileExists{upquote.sty}{\usepackage{upquote}}{}
+\begin{document}
+
+\title{Matt's Projects}
+\author{Matthew Leonawicz}
+\maketitle
+
+
+
+
+
+
+\section{Introduction}
+I have begun using a Sankey diagram to illustrate various types of connections among my projects.
+Here the purpose is to show the code used to create the project hierarchy graph shows elsewhere (and below).
+
+\subsection{Motivation}
+I have created this diagram showing project and collaborator relationships that occur in my current work as part of this \texttt{projman} Project Management Project.
+However, this is a special case shown here.
+In general, the reason for folding this type of graph into all of my individual projects as part of project management
+is to show code and data relationships that exist for a specific project.
+For example, \texttt{projman} has its own code flow diagram as do my other projects.
+But here the focus is on the particular project hierarchy diagram that is part of this project.
+
+\section{Project hierarchy \textbf{R} code}
+Here is the code used to generate the current project hierarchy diagram.
+Two packages are required.
+
+\begin{knitrout}
+\definecolor{shadecolor}{rgb}{0, 0.169, 0.212}\color{fgcolor}\begin{kframe}
+\begin{alltt}
+\hlkwd{require}\hlstd{(igraph)}
+\hlkwd{require}\hlstd{(rCharts)}
+\end{alltt}
+\end{kframe}
+\end{knitrout}
+
+Current projects are hardcoded and are updated by hand when my work changes. A necessary evil.
+This is essentially the data, consisting of both projects and collaborators.
+
+\begin{knitrout}
+\definecolor{shadecolor}{rgb}{0, 0.169, 0.212}\color{fgcolor}\begin{kframe}
+\begin{alltt}
+\hlstd{proj.mp} \hlkwb{<-} \hlkwd{c}\hlstd{(}\hlstr{"Alfresco Noatak"}\hlstd{,} \hlstr{"Alfresco Statewide"}\hlstd{,} \hlstr{"Spatial Lightning Analysis"}\hlstd{,}
+    \hlstr{"Data Extraction and Uncertainty Analysis"}\hlstd{,} \hlstr{"Growing Season"}\hlstd{,} \hlstr{"Mussel Project"}\hlstd{,}
+    \hlstr{"Land Carbon"}\hlstd{)}
+\hlstd{proj.etal} \hlkwb{<-} \hlkwd{c}\hlstd{(}\hlstr{"Alfresco CRU/GCM Experimental Design"}\hlstd{,} \hlstr{"Bird Project"}\hlstd{,} \hlstr{"NWT/Comm. Charts DS"}\hlstd{,}
+    \hlstr{"Sea Ice Edge Maps and Spinoff Projects"}\hlstd{,} \hlstr{"Shiny App Server Migration"}\hlstd{)}
+\hlstd{proj.m} \hlkwb{<-} \hlkwd{c}\hlstd{(}\hlstr{"CMIP3/CMIP5 GCM Comparisons"}\hlstd{,} \hlstr{"Effective Spatial Scale Analysis"}\hlstd{,}
+    \hlstr{"Randscape Development"}\hlstd{,} \hlstr{"Alfresco Outputs"}\hlstd{,} \hlstr{"Projman"}\hlstd{)}
+\hlstd{proj.ongoing} \hlkwb{<-} \hlkwd{c}\hlstd{(}\hlstr{"SNAP Data QA/QC"}\hlstd{,} \hlstr{"Training/Supervision"}\hlstd{,} \hlstr{"R Shiny Apps General Maintenance"}\hlstd{,}
+    \hlstr{"New App Development"}\hlstd{,} \hlstr{"SNAP Tech Blog"}\hlstd{,} \hlstr{"Continuing Education"}\hlstd{)}
+\hlstd{proj.halted} \hlkwb{<-} \hlkwd{c}\hlstd{(}\hlstr{"FRP/FRI Scale-Conditional Alfresco Maps"}\hlstd{,} \hlstr{"Moose Project"}\hlstd{)}
+\hlstd{projects.list} \hlkwb{<-} \hlkwd{list}\hlstd{(proj.mp, proj.etal, proj.m, proj.ongoing, proj.halted)}
+\end{alltt}
+\end{kframe}
+\end{knitrout}
+
+\begin{knitrout}
+\definecolor{shadecolor}{rgb}{0, 0.169, 0.212}\color{fgcolor}\begin{kframe}
+\begin{alltt}
+\hlstd{actors.etal} \hlkwb{<-} \hlkwd{list}\hlstd{(}\hlkwd{c}\hlstd{(}\hlstr{"Paul"}\hlstd{,} \hlstr{"Alec"}\hlstd{),} \hlstr{"Angie"}\hlstd{,} \hlkwd{c}\hlstd{(}\hlstr{"Angie"}\hlstd{,} \hlstr{"Bob"}\hlstd{),} \hlstr{"Angie"}\hlstd{,}
+    \hlstr{"Bob"}\hlstd{)}
+\hlstd{actors.all} \hlkwb{<-} \hlkwd{unique}\hlstd{(}\hlkwd{c}\hlstd{(}\hlstr{"Matt"}\hlstd{,} \hlstr{"Paul"}\hlstd{,} \hlkwd{unlist}\hlstd{(actors.etal)))}
+\end{alltt}
+\end{kframe}
+\end{knitrout}
+
+Directional connections must be made among project and among people and projects.
+The connections are expressed by element-wise comparison of the equal-length \texttt{to} and \texttt{from} vectors.
+
+\begin{knitrout}
+\definecolor{shadecolor}{rgb}{0, 0.169, 0.212}\color{fgcolor}\begin{kframe}
+\begin{alltt}
+\hlstd{from} \hlkwb{<-} \hlkwd{c}\hlstd{(}
+        \hlcom{# LHS}
+        \hlkwd{rep}\hlstd{(}\hlstr{"Collaborators"}\hlstd{,} \hlkwd{length}\hlstd{(actors.all[actors.all}\hlopt{!=}\hlstr{"Matt"}\hlstd{])),}
+        \hlkwd{rep}\hlstd{(}\hlstr{"Matt"}\hlstd{,} \hlkwd{length}\hlstd{(}\hlkwd{c}\hlstd{(proj.m, proj.ongoing, proj.halted))),}
+        \hlkwd{rep}\hlstd{(}\hlkwd{c}\hlstd{(}\hlstr{"Matt"}\hlstd{,} \hlstr{"Paul"}\hlstd{),} \hlkwd{length}\hlstd{(proj.mp)),}
+        \hlkwd{rep}\hlstd{(}\hlstr{"Matt"}\hlstd{,} \hlkwd{length}\hlstd{(proj.etal)),}
+        \hlkwd{unlist}\hlstd{(actors.etal),}
+        \hlcom{# Specific connections}
+        \hlkwd{rep}\hlstd{(}\hlstr{"Alfresco Outputs"}\hlstd{,} \hlnum{3}\hlstd{),}
+        \hlkwd{rep}\hlstd{(}\hlstr{"SNAP Data QA/QC"}\hlstd{,} \hlnum{4}\hlstd{),}
+        \hlkwd{rep}\hlstd{(}\hlstr{"Spatial Lightning Analysis"}\hlstd{,} \hlnum{3}\hlstd{),}
+        \hlkwd{rep}\hlstd{(}\hlstr{"Sea Ice Edge Maps and Spinoff Projects"}\hlstd{,} \hlnum{2}\hlstd{),}
+        \hlkwd{rep}\hlstd{(}\hlstr{"Training/Supervision"}\hlstd{,} \hlnum{2}\hlstd{),}
+        \hlkwd{rep}\hlstd{(}\hlstr{"Randscape Development"}\hlstd{,} \hlnum{2}\hlstd{),}
+        \hlkwd{rep}\hlstd{(}\hlstr{"Effective Spatial Scale Analysis"}\hlstd{,} \hlnum{2}\hlstd{),}
+        \hlkwd{rep}\hlstd{(}\hlstr{"NWT/Comm. Charts DS"}\hlstd{,} \hlnum{1}\hlstd{),}
+        \hlkwd{c}\hlstd{(}\hlstr{"Alfresco Noatak"}\hlstd{,} \hlstr{"Alfresco Statewide"}\hlstd{),}
+        \hlkwd{rep}\hlstd{(}\hlstr{"Data Extraction and Uncertainty Analysis"}\hlstd{,} \hlnum{4}\hlstd{)}
+
+\hlstd{)}
+
+\hlstd{to} \hlkwb{<-} \hlkwd{c}\hlstd{(}
+        \hlstd{actors.all[actors.all}\hlopt{!=}\hlstr{"Matt"}\hlstd{],}
+        \hlstd{proj.m,}
+        \hlstd{proj.ongoing,}
+        \hlstd{proj.halted,}
+        \hlkwd{rep}\hlstd{(proj.mp,} \hlnum{2}\hlstd{),}
+        \hlstd{proj.etal,}
+        \hlkwd{rep}\hlstd{(proj.etal,} \hlkwc{times}\hlstd{=}\hlkwd{sapply}\hlstd{(actors.etal, length)),}
+        \hlcom{# Specific connections}
+        \hlkwd{c}\hlstd{(}\hlstr{"CMIP3/CMIP5 GCM Comparisons"}\hlstd{,} \hlstr{"Land Carbon"}\hlstd{,} \hlstr{"Bird Project"}\hlstd{),} \hlcom{# from "Alfresco Outputs"}
+        \hlkwd{c}\hlstd{(}\hlstr{"Alfresco Outputs"}\hlstd{,} \hlstr{"CMIP3/CMIP5 GCM Comparisons"}\hlstd{,} \hlstr{"Alfresco CRU/GCM Experimental Design"}\hlstd{,} \hlstr{"NWT/Comm. Charts DS"}\hlstd{),} \hlcom{# from "SNAP Data QA/QC"}
+        \hlkwd{c}\hlstd{(}\hlstr{"Alfresco Noatak"}\hlstd{,} \hlstr{"Alfresco Statewide"}\hlstd{,} \hlstr{"Randscape Development"}\hlstd{),} \hlcom{# from "Spatial Lightning Analysis}
+        \hlkwd{c}\hlstd{(}\hlstr{"Randscape Development"}\hlstd{,} \hlstr{"Alfresco Outputs"}\hlstd{),} \hlcom{# from "Sea Ice Edge Maps and Spinoff Projects"}
+        \hlkwd{c}\hlstd{(}\hlstr{"Bird Project"}\hlstd{,} \hlstr{"NWT/Comm. Charts DS"}\hlstd{),} \hlcom{# from "Training/Supervision"}
+        \hlkwd{c}\hlstd{(}\hlstr{"Alfresco Outputs"}\hlstd{,} \hlstr{"Effective Spatial Scale Analysis"}\hlstd{),} \hlcom{# from "Randscape Development}
+        \hlkwd{c}\hlstd{(}\hlstr{"Alfresco Outputs"}\hlstd{,} \hlstr{"FRP/FRI Scale-Conditional Alfresco Maps"}\hlstd{),} \hlcom{# from "Effective Spatial Scale Analysis"}
+        \hlkwd{c}\hlstd{(}\hlstr{"CMIP3/CMIP5 GCM Comparisons"}\hlstd{),} \hlcom{#from "NWT/Comm. Charts DS"}
+        \hlkwd{rep}\hlstd{(}\hlstr{"FRP/FRI Scale-Conditional Alfresco Maps"}\hlstd{,} \hlnum{2}\hlstd{),} \hlcom{# from "Alfresco Noatak", "Alfresco Statewide"}
+        \hlkwd{c}\hlstd{(}\hlstr{"CMIP3/CMIP5 GCM Comparisons"}\hlstd{,} \hlstr{"Effective Spatial Scale Analysis"}\hlstd{,} \hlstr{"Randscape Development"}\hlstd{,} \hlstr{"Alfresco Outputs"}\hlstd{)} \hlcom{# from "Data Extraction and Uncertainty Analysis"}
+\hlstd{)}
+\end{alltt}
+\end{kframe}
+\end{knitrout}
+
+The vectors are combined in a data frame and the \texttt{igraph} package is used to grow the tree diagram.
+
+\begin{knitrout}
+\definecolor{shadecolor}{rgb}{0, 0.169, 0.212}\color{fgcolor}\begin{kframe}
+\begin{alltt}
+\hlstd{relations} \hlkwb{<-} \hlkwd{data.frame}\hlstd{(}\hlkwc{from} \hlstd{= from,} \hlkwc{to} \hlstd{= to)}
+\hlstd{g} \hlkwb{<-} \hlkwd{graph.data.frame}\hlstd{(relations,} \hlkwc{directed} \hlstd{= T,} \hlkwc{vertices} \hlstd{=} \hlkwd{data.frame}\hlstd{(}\hlkwd{c}\hlstd{(}\hlstr{"Collaborators"}\hlstd{,}
+    \hlstd{actors.all,} \hlkwd{unlist}\hlstd{(projects.list))))}
+
+\hlstd{gw} \hlkwb{<-} \hlkwd{get.data.frame}\hlstd{(g)}
+\hlstd{gw}\hlopt{$}\hlstd{value} \hlkwb{<-} \hlnum{1}
+\hlkwd{colnames}\hlstd{(gw)} \hlkwb{<-} \hlkwd{c}\hlstd{(}\hlstr{"source"}\hlstd{,} \hlstr{"target"}\hlstd{,} \hlstr{"value"}\hlstd{)}
+\hlstd{gw}\hlopt{$}\hlstd{source} \hlkwb{<-} \hlkwd{as.character}\hlstd{(gw}\hlopt{$}\hlstd{source)}
+\hlstd{gw}\hlopt{$}\hlstd{target} \hlkwb{<-} \hlkwd{as.character}\hlstd{(gw}\hlopt{$}\hlstd{target)}
+\end{alltt}
+\end{kframe}
+\end{knitrout}
+
+The \texttt{rcharts} package has functionality for turning this into an interactive D3 visualization,
+which is nice, particularly the mouseover interactivity, since there can be so much visual overlap among projects.
+Additional javascript can be included to alter the colors.
+My strengths are in \textbf{R} so I borrowed this code snippet from online,
+but if you have skills with javascript and D3 you could probably do better with color control and opacity I imagine.
+
+\begin{knitrout}
+\definecolor{shadecolor}{rgb}{0, 0.169, 0.212}\color{fgcolor}\begin{kframe}
+\begin{alltt}
+\hlstd{p} \hlkwb{<-} \hlstd{rCharts}\hlopt{$}\hlkwd{new}\hlstd{()}
+\hlstd{p}\hlopt{$}\hlkwd{setLib}\hlstd{(}\hlstr{"http://timelyportfolio.github.io/rCharts_d3_sankey/libraries/widgets/d3_sankey"}\hlstd{)}
+\hlstd{p}\hlopt{$}\hlkwd{setTemplate}\hlstd{(}\hlkwc{script} \hlstd{=} \hlstr{"http://timelyportfolio.github.io/rCharts_d3_sankey/libraries/widgets/d3_sankey/layouts/chart.html"}\hlstd{)}
+\hlstd{p}\hlopt{$}\hlkwd{set}\hlstd{(}\hlkwc{data} \hlstd{= gw,} \hlkwc{nodeWidth} \hlstd{=} \hlnum{15}\hlstd{,} \hlkwc{nodePadding} \hlstd{=} \hlnum{10}\hlstd{,} \hlkwc{layout} \hlstd{=} \hlnum{32}\hlstd{,} \hlkwc{width} \hlstd{=} \hlnum{900}\hlstd{,}
+    \hlkwc{height} \hlstd{=} \hlnum{800}\hlstd{,} \hlkwc{margin} \hlstd{=} \hlkwd{list}\hlstd{(}\hlkwc{right} \hlstd{=} \hlnum{20}\hlstd{,} \hlkwc{left} \hlstd{=} \hlnum{20}\hlstd{,} \hlkwc{bottom} \hlstd{=} \hlnum{20}\hlstd{,} \hlkwc{top} \hlstd{=} \hlnum{20}\hlstd{),}
+    \hlkwc{title} \hlstd{=} \hlstr{"Matt's Projects"}\hlstd{)}
+
+\hlstd{p}\hlopt{$}\hlkwd{setTemplate}\hlstd{(}\hlkwc{afterScript} \hlstd{=} \hlstr{"\textbackslash{}n<script>\textbackslash{}n  var cscale = d3.scale.category20b();\textbackslash{}n  d3.selectAll('#\{\{ chartId \}\} svg path.link')\textbackslash{}n    .style('stroke', function(d)\{\textbackslash{}n      return cscale(d.source.name);\textbackslash{}n    \})\textbackslash{}n  d3.selectAll('#\{\{ chartId \}\} svg .node rect')\textbackslash{}n    .style('fill', function(d)\{\textbackslash{}n      return cscale(d.name)\textbackslash{}n    \})\textbackslash{}n    .style('stroke', 'none')\textbackslash{}n</script>\textbackslash{}n"}\hlstd{)}
+\end{alltt}
+\end{kframe}
+\end{knitrout}
+
+Embed the chart in a document when rendering.
+
+\begin{kframe}
+\begin{alltt}
+\hlstd{p}\hlopt{$}\hlkwd{show}\hlstd{(}\hlstr{"iframesrc"}\hlstd{,} \hlkwc{cdn}\hlstd{=T)}
+\end{alltt}
+\end{kframe}
+
+
+\end{document}

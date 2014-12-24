@@ -1,0 +1,99 @@
+\documentclass{article}\usepackage[]{graphicx}\usepackage[]{color}
+%% maxwidth is the original width if it is less than linewidth
+%% otherwise use linewidth (to make sure the graphics do not exceed the margin)
+\makeatletter
+\def\maxwidth{ %
+  \ifdim\Gin@nat@width>\linewidth
+    \linewidth
+  \else
+    \Gin@nat@width
+  \fi
+}
+\makeatother
+
+\definecolor{fgcolor}{rgb}{0.514, 0.58, 0.588}
+\newcommand{\hlnum}[1]{\textcolor[rgb]{0.863,0.196,0.184}{#1}}%
+\newcommand{\hlstr}[1]{\textcolor[rgb]{0.863,0.196,0.184}{#1}}%
+\newcommand{\hlcom}[1]{\textcolor[rgb]{0.345,0.431,0.459}{#1}}%
+\newcommand{\hlopt}[1]{\textcolor[rgb]{0.576,0.631,0.631}{#1}}%
+\newcommand{\hlstd}[1]{\textcolor[rgb]{0.514,0.58,0.588}{#1}}%
+\newcommand{\hlkwa}[1]{\textcolor[rgb]{0.796,0.294,0.086}{#1}}%
+\newcommand{\hlkwb}[1]{\textcolor[rgb]{0.522,0.6,0}{#1}}%
+\newcommand{\hlkwc}[1]{\textcolor[rgb]{0.796,0.294,0.086}{#1}}%
+\newcommand{\hlkwd}[1]{\textcolor[rgb]{0.576,0.631,0.631}{#1}}%
+
+\usepackage{framed}
+\makeatletter
+\newenvironment{kframe}{%
+ \def\at@end@of@kframe{}%
+ \ifinner\ifhmode%
+  \def\at@end@of@kframe{\end{minipage}}%
+  \begin{minipage}{\columnwidth}%
+ \fi\fi%
+ \def\FrameCommand##1{\hskip\@totalleftmargin \hskip-\fboxsep
+ \colorbox{shadecolor}{##1}\hskip-\fboxsep
+     % There is no \\@totalrightmargin, so:
+     \hskip-\linewidth \hskip-\@totalleftmargin \hskip\columnwidth}%
+ \MakeFramed {\advance\hsize-\width
+   \@totalleftmargin\z@ \linewidth\hsize
+   \@setminipage}}%
+ {\par\unskip\endMakeFramed%
+ \at@end@of@kframe}
+\makeatother
+
+\definecolor{shadecolor}{rgb}{.97, .97, .97}
+\definecolor{messagecolor}{rgb}{0, 0, 0}
+\definecolor{warningcolor}{rgb}{1, 0, 1}
+\definecolor{errorcolor}{rgb}{1, 0, 0}
+\newenvironment{knitrout}{}{} % an empty environment to be redefined in TeX
+
+\usepackage{alltt}
+\usepackage{geometry}
+\geometry{verbose, tmargin=2.5cm, bmargin=2.5cm, lmargin=2.5cm, rmargin=2.5cm}
+\IfFileExists{upquote.sty}{\usepackage{upquote}}{}
+\begin{document}
+
+\title{}
+\author{}
+\maketitle
+
+
+
+
+
+\subsubsection{newProject}
+\texttt{newProject} creates a new named project directory structure at the specified file path.
+If a directory with this project name already exists in this location on the file system and \texttt{overwrite=FALSE}, the function will abort.
+Default project subdirectories are created unless a different vector of folder names is explicitly passed to \texttt{newProject}.
+If one of the subdirectories is \texttt{docs} then the default vector of subdirectories under \texttt{docs} is also created.
+This argument can also be set explicitly.
+The current function only creates directories, not files, so \texttt{overwrite=TRUE} is safe to use on any existing project.
+
+\begin{knitrout}
+\definecolor{shadecolor}{rgb}{0, 0.169, 0.212}\color{fgcolor}\begin{kframe}
+\begin{alltt}
+\hlstd{newProject} \hlkwb{<-} \hlkwa{function}\hlstd{(}\hlkwc{name}\hlstd{,} \hlkwc{path}\hlstd{,} \hlkwc{dirs} \hlstd{=} \hlkwd{c}\hlstd{(}\hlstr{"code"}\hlstd{,} \hlstr{"data"}\hlstd{,} \hlstr{"docs"}\hlstd{,} \hlstr{"plots"}\hlstd{,}
+    \hlstr{"workspaces"}\hlstd{),} \hlkwc{docs.dirs} \hlstd{=} \hlkwd{c}\hlstd{(}\hlstr{"diagrams"}\hlstd{,} \hlstr{"ioslides"}\hlstd{,} \hlstr{"notebook"}\hlstd{,} \hlstr{"Rmd/include"}\hlstd{,}
+    \hlstr{"md"}\hlstd{,} \hlstr{"html"}\hlstd{,} \hlstr{"Rnw"}\hlstd{,} \hlstr{"pdf"}\hlstd{,} \hlstr{"timeline"}\hlstd{,} \hlstr{"tufte"}\hlstd{),} \hlkwc{overwrite} \hlstd{=} \hlnum{FALSE}\hlstd{) \{}
+
+    \hlkwd{stopifnot}\hlstd{(}\hlkwd{is.character}\hlstd{(name))}
+    \hlstd{name} \hlkwb{<-} \hlkwd{file.path}\hlstd{(path, name)}
+    \hlkwa{if} \hlstd{(}\hlkwd{file.exists}\hlstd{(name)} \hlopt{&& !}\hlstd{overwrite)}
+        \hlkwd{stop}\hlstd{(}\hlstr{"This project already exists."}\hlstd{)}
+    \hlkwd{dir.create}\hlstd{(name,} \hlkwc{recursive} \hlstd{=} \hlnum{TRUE}\hlstd{,} \hlkwc{showWarnings} \hlstd{=} \hlnum{FALSE}\hlstd{)}
+    \hlkwa{if} \hlstd{(}\hlopt{!}\hlkwd{file.exists}\hlstd{(name))}
+        \hlkwd{stop}\hlstd{(}\hlstr{"Directory appears invalid."}\hlstd{)}
+
+    \hlstd{path.dirs} \hlkwb{<-} \hlkwd{file.path}\hlstd{(name, dirs)}
+    \hlkwd{sapply}\hlstd{(path.dirs, dir.create,} \hlkwc{showWarnings} \hlstd{=} \hlnum{FALSE}\hlstd{)}
+    \hlstd{path.docs} \hlkwb{<-} \hlkwd{file.path}\hlstd{(name,} \hlstr{"docs"}\hlstd{, docs.dirs)}
+    \hlkwa{if} \hlstd{(}\hlstr{"docs"} \hlopt{%in%} \hlstd{dirs)}
+        \hlkwd{sapply}\hlstd{(path.docs, dir.create,} \hlkwc{recursive} \hlstd{=} \hlnum{TRUE}\hlstd{,} \hlkwc{showWarnings} \hlstd{=} \hlnum{FALSE}\hlstd{)}
+    \hlkwa{if} \hlstd{(overwrite)}
+        \hlkwd{cat}\hlstd{(}\hlstr{"Project directories updated.\textbackslash{}n"}\hlstd{)} \hlkwa{else} \hlkwd{cat}\hlstd{(}\hlstr{"Project directories created.\textbackslash{}n"}\hlstd{)}
+\hlstd{\}}
+\end{alltt}
+\end{kframe}
+\end{knitrout}
+
+\end{document}

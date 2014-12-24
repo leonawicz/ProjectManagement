@@ -7,6 +7,10 @@
 \author{Matthew Leonawicz}
 \maketitle
 
+<<highlight, echo=FALSE>>=
+knit_theme$set(knit_theme$get('solarized-dark'))
+@
+
 <<knitr_setup, echo=FALSE>>=
 opts_chunk$set(cache=FALSE, eval=FALSE, tidy=TRUE, message=FALSE, warning=FALSE)
 read_chunk("../../code/drg.R")

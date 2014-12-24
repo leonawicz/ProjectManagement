@@ -7,6 +7,10 @@
 \author{Matthew Leonawicz}
 \maketitle
 
+<<highlight, echo=FALSE>>=
+knit_theme$set(knit_theme$get('solarized-dark'))
+@
+
 \section{Related items}
 Currently there is only this unpackaged \textbf{R} script, accompanying code for a projects hierarchy diagram
 and a code flow diagram based on the current development of this project, and a simple script for generating documents based on project \textbf{R} code.
@@ -26,11 +30,11 @@ but since this is the project management project and I am introducing its use,
 in this case I will also show the code I use to make the diagram.
 
 <<knitr_setup, echo=FALSE>>=
-opts_chunk$set(cache=FALSE, eval=TRUE, tidy=TRUE, message=FALSE, warning=FALSE)
+opts_chunk$set(cache=FALSE, eval=FALSE, tidy=TRUE, message=FALSE, warning=FALSE)
 read_chunk("../../code/code_sankey.R")
 @
 
-\section{\_\_R\_\_ code}
+\section{\textbf{R} code}
 Here is the code used to generate the code flow diagram.
 
 \subsection{Initial setup}

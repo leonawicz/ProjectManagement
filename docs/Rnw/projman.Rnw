@@ -7,6 +7,10 @@
 \author{Matthew Leonawicz}
 \maketitle
 
+<<highlight, echo=FALSE>>=
+knit_theme$set(knit_theme$get('solarized-dark'))
+@
+
 <<knitr_setup, echo=FALSE>>=
 opts_chunk$set(cache=FALSE, eval=FALSE, tidy=TRUE, message=FALSE, warning=FALSE)
 read_chunk("../../code/proj_sankey.R")
@@ -72,7 +76,7 @@ Here is a project hierarchy diagram showing the relationships among all my curre
 <<sankey_embed, echo=F, eval=T, comment=NA, results="asis", tidy=F>>=
 @
 
-\section{\_\_R\_\_ code}
+\section{\textbf{R} code}
 
 \subsection{Template objects}
 Character string objects are defined which are used to fill templates when generating new files for a project.
@@ -107,7 +111,7 @@ The output from this function is passed directly to \texttt{genRmd} below.
 
 \subsubsection{rmdknitrSetup}
 \texttt{rmdknitrSetup} generates the \texttt{knitr} global options setup code cunk for Rmd files as a character string to be inserted at the top of a file following the yaml header.
-The only option at this time is the ability to include or exclude a source reference to a project-related clode flow diagram \textbf{R} script via \texttt{include.sankey}.
+The only option at this time is the ability to include or exclude a source reference to a project-related code flow diagram \textbf{R} script via \texttt{include.sankey}.
 The output from this function is passed directly to \texttt{genRmd} below.
 
 <<fun_rmdknitrSetup>>=

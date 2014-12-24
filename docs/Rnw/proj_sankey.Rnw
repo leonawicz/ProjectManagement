@@ -7,8 +7,12 @@
 \author{Matthew Leonawicz}
 \maketitle
 
+<<highlight, echo=FALSE>>=
+knit_theme$set(knit_theme$get('solarized-dark'))
+@
+
 <<knitr_setup, echo=FALSE>>=
-opts_chunk$set(cache=FALSE, eval=TRUE, tidy=TRUE, message=FALSE, warning=FALSE)
+opts_chunk$set(cache=FALSE, eval=FALSE, tidy=TRUE, message=FALSE, warning=FALSE)
 read_chunk("../../code/proj_sankey.R")
 @
 
@@ -25,7 +29,7 @@ is to show code and data relationships that exist for a specific project.
 For example, \texttt{projman} has its own code flow diagram as do my other projects.
 But here the focus is on the particular project hierarchy diagram that is part of this project.
 
-\section{Project hierarchy \_\_R\_\_ code}
+\section{Project hierarchy \textbf{R} code}
 Here is the code used to generate the current project hierarchy diagram.
 Two packages are required.
 

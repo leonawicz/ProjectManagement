@@ -1,0 +1,989 @@
+\documentclass{article}\usepackage[]{graphicx}\usepackage[]{color}
+%% maxwidth is the original width if it is less than linewidth
+%% otherwise use linewidth (to make sure the graphics do not exceed the margin)
+\makeatletter
+\def\maxwidth{ %
+  \ifdim\Gin@nat@width>\linewidth
+    \linewidth
+  \else
+    \Gin@nat@width
+  \fi
+}
+\makeatother
+
+\definecolor{fgcolor}{rgb}{0.514, 0.58, 0.588}
+\newcommand{\hlnum}[1]{\textcolor[rgb]{0.863,0.196,0.184}{#1}}%
+\newcommand{\hlstr}[1]{\textcolor[rgb]{0.863,0.196,0.184}{#1}}%
+\newcommand{\hlcom}[1]{\textcolor[rgb]{0.345,0.431,0.459}{#1}}%
+\newcommand{\hlopt}[1]{\textcolor[rgb]{0.576,0.631,0.631}{#1}}%
+\newcommand{\hlstd}[1]{\textcolor[rgb]{0.514,0.58,0.588}{#1}}%
+\newcommand{\hlkwa}[1]{\textcolor[rgb]{0.796,0.294,0.086}{#1}}%
+\newcommand{\hlkwb}[1]{\textcolor[rgb]{0.522,0.6,0}{#1}}%
+\newcommand{\hlkwc}[1]{\textcolor[rgb]{0.796,0.294,0.086}{#1}}%
+\newcommand{\hlkwd}[1]{\textcolor[rgb]{0.576,0.631,0.631}{#1}}%
+
+\usepackage{framed}
+\makeatletter
+\newenvironment{kframe}{%
+ \def\at@end@of@kframe{}%
+ \ifinner\ifhmode%
+  \def\at@end@of@kframe{\end{minipage}}%
+  \begin{minipage}{\columnwidth}%
+ \fi\fi%
+ \def\FrameCommand##1{\hskip\@totalleftmargin \hskip-\fboxsep
+ \colorbox{shadecolor}{##1}\hskip-\fboxsep
+     % There is no \\@totalrightmargin, so:
+     \hskip-\linewidth \hskip-\@totalleftmargin \hskip\columnwidth}%
+ \MakeFramed {\advance\hsize-\width
+   \@totalleftmargin\z@ \linewidth\hsize
+   \@setminipage}}%
+ {\par\unskip\endMakeFramed%
+ \at@end@of@kframe}
+\makeatother
+
+\definecolor{shadecolor}{rgb}{.97, .97, .97}
+\definecolor{messagecolor}{rgb}{0, 0, 0}
+\definecolor{warningcolor}{rgb}{1, 0, 1}
+\definecolor{errorcolor}{rgb}{1, 0, 0}
+\newenvironment{knitrout}{}{} % an empty environment to be redefined in TeX
+
+\usepackage{alltt}
+\usepackage{geometry}
+\geometry{verbose, tmargin=2.5cm, bmargin=2.5cm, lmargin=2.5cm, rmargin=2.5cm}
+\IfFileExists{upquote.sty}{\usepackage{upquote}}{}
+\begin{document}
+
+\title{Project Management}
+\author{Matthew Leonawicz}
+\maketitle
+
+
+
+
+
+
+\section{Introduction}
+This is a project management project.
+While current projects are shown in the chart below, the aim of this project is the development of convenient \textbf{R}-related project management tools.
+
+\subsection{Motivation}
+I am working on these tools to enhance my own workflow across multiple \textbf{R} projects.
+
+\subsection{Details}
+\textbf{R} code for the project will be compiled into an \textbf{R} package, \texttt{projman} for easy use.
+This is a personal package and will not be available anywhere but my github repository,
+but you are welcome to explore the package and functions.
+It is unlikely that you would manage your \textbf{R} projects in the same manner that I do,
+but if you do, or just want some ideas, feel free to explore.
+
+\subsubsection{Capabilities}
+\texttt{projman} can create a new project. This essentially generates a specific directory structure which I use often to manage project files.
+For an existing project, once \textbf{R} scripts have been created, \texttt{projman} can generate template Rmd files for each.
+For existing Rmd files, \texttt{projman} can conveniently append these \textbf{R} Markdown files with a list of any new \texttt{knitr} code chunk names
+in project \textbf{R} scripts being developed which have not yet been included in the respective Rmd files.
+
+\subsubsection{Limitations}
+While \texttt{projman} assists with project documentation, this mainly takes the form of file generation and appending.
+Documentation is unique to every project of course. Every script is different.
+The most that is possible is to auto-fill commonly used code chunk names and metadata.
+Each document must be written individually by the author, but when a project has many \textbf{R} scripts requiring documentation,
+it is nice to not have to create all the corresponding Rmd files by hand and copy and paste generic contents.
+
+The project management code is not yet in package form.
+Many additional features are yet to be incorporated.
+Generic code relating to the further processing of Rmd files into various other output files via \texttt{rmarkdown} and \texttt{knitr} remains at an early development stage.
+
+\section{Related items}
+Currently there is only this unpackaged \textbf{R} script, accompanying code for a projects hierarchy diagram
+and a code flow diagram based on the current development of this project, and a simple script for generating documents based on project \textbf{R} code.
+
+\subsection{Files and Data}
+This project does not use any data.
+It does make use of supplemental libraries for formatting during html document generation.
+\texttt{proj\_sankey.R} and \texttt{code\_sankey.R} are used to produce of project hierarchy diagram of my current projects and a code flow diagram for this project, respectively.
+\texttt{drg.R} is used to assist in dynamic report generation.
+
+\subsection{Code flow}
+The Sankey diagram has become part of project management.
+Each project has its own, detailing the relationships among \textbf{R} code and data relevant to the project,
+and in some cases, how they relate to code and data files which are more general and span multiple projects.
+In general, for my projects I would only provide the code flow diagram here among the rest of the project documentation,
+but since this is the project management project and I am introducing its use,
+in this case I will also show the [code](code\_sankey.html "code") I use to make the diagram.
+
+\subsection{Current projects}
+Here is a project hierarchy diagram showing the relationships among all my current projects.
+
+
+
+\begin{kframe}
+
+
+{\ttfamily\noindent\bfseries\color{errorcolor}{Error in eval(expr, envir, enclos): object 'p' not found}}\end{kframe}
+
+\section{\textbf{R} code}
+
+\subsection{Template objects}
+Character string objects are defined which are used to fill templates when generating new files for a project.
+A tentative default path is also included since this code relates to my own work.
+
+\begin{knitrout}
+\definecolor{shadecolor}{rgb}{0, 0.169, 0.212}\color{fgcolor}\begin{kframe}
+\begin{alltt}
+\hlcom{# For package 'projman'}
+
+\hlcom{# data}
+
+\hlstd{rmd.template} \hlkwb{<-} \hlstr{"\textbackslash{}n\textbackslash{}n## Introduction\textbackslash{}nADD_TEXT_HERE\textbackslash{}n\textbackslash{}n### Motivation\textbackslash{}nADD_TEXT_HERE\textbackslash{}n\textbackslash{}n### Details\textbackslash{}nADD_TEXT_HERE\textbackslash{}n\textbackslash{}n#### Capabilities\textbackslash{}nADD_TEXT_HERE\textbackslash{}n\textbackslash{}n#### Limitations\textbackslash{}nADD_TEXT_HERE\textbackslash{}n\textbackslash{}n## Related items\textbackslash{}n\textbackslash{}n### Files and Data\textbackslash{}nADD_TEXT_HERE\textbackslash{}n\textbackslash{}n### Code flow\textbackslash{}nADD_TEXT_HERE\textbackslash{}n\textbackslash{}n```\{r code_sankey, echo=F, eval=T\}\textbackslash{}n```\textbackslash{}n\textbackslash{}n```\{r code_sankey_embed, echo=F, eval=T, comment=NA, results=\textbackslash{}"asis\textbackslash{}", tidy=F\}\textbackslash{}n```\textbackslash{}n\textbackslash{}n## R code\textbackslash{}n\textbackslash{}n### Setup\textbackslash{}nADD_TEXT_HERE: EXAMPLE\textbackslash{}nSetup consists of loading required **R** packages and additional files, preparing any command line arguments for use, and defining functions and other **R** objects.\textbackslash{}n\textbackslash{}n"}
+
+\hlcom{# default path}
+\hlstd{matt.proj.path} \hlkwb{<-} \hlstr{"C:/github"}
+\end{alltt}
+\end{kframe}
+\end{knitrout}
+
+\subsection{Package functions}
+Functions are defined for creating new projects, generating Rmd files for project \textbf{R} scripts,
+and appending these \textbf{R} Markdown files with updated information from the corresponding \textbf{R} scripts as their development continues.
+Additional functions will be incorporated later.
+
+\subsubsection{newProject}
+\texttt{newProject} creates a new named project directory structure at the specified file path.
+If a directory with this project name already exists in this location on the file system and \texttt{overwrite=FALSE}, the function will abort.
+Default project subdirectories are created unless a different vector of folder names is explicitly passed to \texttt{newProject}.
+If one of the subdirectories is \texttt{docs} then the default vector of subdirectories under \texttt{docs} is also created.
+This argument can also be set explicitly.
+The current function only creates directories, not files, so \texttt{overwrite=TRUE} is safe to use on any existing project.
+
+\begin{knitrout}
+\definecolor{shadecolor}{rgb}{0, 0.169, 0.212}\color{fgcolor}\begin{kframe}
+\begin{alltt}
+\hlstd{newProject} \hlkwb{<-} \hlkwa{function}\hlstd{(}\hlkwc{name}\hlstd{,} \hlkwc{path}\hlstd{,} \hlkwc{dirs} \hlstd{=} \hlkwd{c}\hlstd{(}\hlstr{"code"}\hlstd{,} \hlstr{"data"}\hlstd{,} \hlstr{"docs"}\hlstd{,} \hlstr{"plots"}\hlstd{,}
+    \hlstr{"workspaces"}\hlstd{),} \hlkwc{docs.dirs} \hlstd{=} \hlkwd{c}\hlstd{(}\hlstr{"diagrams"}\hlstd{,} \hlstr{"ioslides"}\hlstd{,} \hlstr{"notebook"}\hlstd{,} \hlstr{"Rmd/include"}\hlstd{,}
+    \hlstr{"md"}\hlstd{,} \hlstr{"html"}\hlstd{,} \hlstr{"Rnw"}\hlstd{,} \hlstr{"pdf"}\hlstd{,} \hlstr{"timeline"}\hlstd{,} \hlstr{"tufte"}\hlstd{),} \hlkwc{overwrite} \hlstd{=} \hlnum{FALSE}\hlstd{) \{}
+
+    \hlkwd{stopifnot}\hlstd{(}\hlkwd{is.character}\hlstd{(name))}
+    \hlstd{name} \hlkwb{<-} \hlkwd{file.path}\hlstd{(path, name)}
+    \hlkwa{if} \hlstd{(}\hlkwd{file.exists}\hlstd{(name)} \hlopt{&& !}\hlstd{overwrite)}
+        \hlkwd{stop}\hlstd{(}\hlstr{"This project already exists."}\hlstd{)}
+    \hlkwd{dir.create}\hlstd{(name,} \hlkwc{recursive} \hlstd{=} \hlnum{TRUE}\hlstd{,} \hlkwc{showWarnings} \hlstd{=} \hlnum{FALSE}\hlstd{)}
+    \hlkwa{if} \hlstd{(}\hlopt{!}\hlkwd{file.exists}\hlstd{(name))}
+        \hlkwd{stop}\hlstd{(}\hlstr{"Directory appears invalid."}\hlstd{)}
+
+    \hlstd{path.dirs} \hlkwb{<-} \hlkwd{file.path}\hlstd{(name, dirs)}
+    \hlkwd{sapply}\hlstd{(path.dirs, dir.create,} \hlkwc{showWarnings} \hlstd{=} \hlnum{FALSE}\hlstd{)}
+    \hlstd{path.docs} \hlkwb{<-} \hlkwd{file.path}\hlstd{(name,} \hlstr{"docs"}\hlstd{, docs.dirs)}
+    \hlkwa{if} \hlstd{(}\hlstr{"docs"} \hlopt{%in%} \hlstd{dirs)}
+        \hlkwd{sapply}\hlstd{(path.docs, dir.create,} \hlkwc{recursive} \hlstd{=} \hlnum{TRUE}\hlstd{,} \hlkwc{showWarnings} \hlstd{=} \hlnum{FALSE}\hlstd{)}
+    \hlkwa{if} \hlstd{(overwrite)}
+        \hlkwd{cat}\hlstd{(}\hlstr{"Project directories updated.\textbackslash{}n"}\hlstd{)} \hlkwa{else} \hlkwd{cat}\hlstd{(}\hlstr{"Project directories created.\textbackslash{}n"}\hlstd{)}
+\hlstd{\}}
+\end{alltt}
+\end{kframe}
+\end{knitrout}
+
+\subsubsection{rmdHeader}
+\texttt{rmdHeader} generates the yaml metadata header for Rmd files as a character string to be inserted at the top of a file.
+It has default arguments specific to my own projects but can be changed.
+The output from this function is passed directly to \texttt{genRmd} below.
+
+\begin{knitrout}
+\definecolor{shadecolor}{rgb}{0, 0.169, 0.212}\color{fgcolor}\begin{kframe}
+\begin{alltt}
+\hlstd{rmdHeader} \hlkwb{<-} \hlkwa{function}\hlstd{(}\hlkwc{title} \hlstd{=} \hlstr{"INSERT_TITLE_HERE"}\hlstd{,} \hlkwc{author} \hlstd{=} \hlstr{"Matthew Leonawicz"}\hlstd{,}
+    \hlkwc{theme} \hlstd{=} \hlstr{"united"}\hlstd{,} \hlkwc{highlight} \hlstd{=} \hlstr{"zenburn"}\hlstd{,} \hlkwc{toc} \hlstd{=} \hlnum{FALSE}\hlstd{,} \hlkwc{keep.md} \hlstd{=} \hlnum{TRUE}\hlstd{,} \hlkwc{ioslides} \hlstd{=} \hlnum{FALSE}\hlstd{,}
+    \hlkwc{include.pdf} \hlstd{=} \hlnum{FALSE}\hlstd{) \{}
+    \hlkwa{if} \hlstd{(toc)}
+        \hlstd{toc} \hlkwb{<-} \hlstr{"true"} \hlkwa{else} \hlstd{toc} \hlkwb{<-} \hlstr{"false"}
+    \hlkwa{if} \hlstd{(keep.md)}
+        \hlstd{keep.md} \hlkwb{<-} \hlstr{"true"} \hlkwa{else} \hlstd{keep.md} \hlkwb{<-} \hlstr{"false"}
+    \hlkwa{if} \hlstd{(ioslides)}
+        \hlstd{hdoc} \hlkwb{<-} \hlstr{"ioslides_presentation"} \hlkwa{else} \hlstd{hdoc} \hlkwb{<-} \hlstr{"html_document"}
+    \hlstd{rmd.header} \hlkwb{<-} \hlstr{"---\textbackslash{}n"}
+    \hlkwa{if} \hlstd{(}\hlopt{!}\hlkwd{is.null}\hlstd{(title))}
+        \hlstd{rmd.header} \hlkwb{<-} \hlkwd{paste0}\hlstd{(rmd.header,} \hlstr{"title: "}\hlstd{, title,} \hlstr{"\textbackslash{}n"}\hlstd{)}
+    \hlkwa{if} \hlstd{(}\hlopt{!}\hlkwd{is.null}\hlstd{(author))}
+        \hlstd{rmd.header} \hlkwb{<-} \hlkwd{paste0}\hlstd{(rmd.header,} \hlstr{"author: "}\hlstd{, author,} \hlstr{"\textbackslash{}n"}\hlstd{)}
+    \hlstd{rmd.header} \hlkwb{<-} \hlkwd{paste0}\hlstd{(rmd.header,} \hlstr{"output:\textbackslash{}n  "}\hlstd{, hdoc,} \hlstr{":\textbackslash{}n    toc: "}\hlstd{, toc,}
+        \hlstr{"\textbackslash{}n    theme: "}\hlstd{, theme,} \hlstr{"\textbackslash{}n    highlight: "}\hlstd{, highlight,} \hlstr{"\textbackslash{}n    keep_md: "}\hlstd{,}
+        \hlstd{keep.md,} \hlstr{"\textbackslash{}n"}\hlstd{)}
+    \hlkwa{if} \hlstd{(ioslides)}
+        \hlstd{rmd.header} \hlkwb{<-} \hlkwd{paste0}\hlstd{(rmd.header,} \hlstr{"    widescreen: true\textbackslash{}n"}\hlstd{)}
+    \hlkwa{if} \hlstd{(include.pdf)}
+        \hlstd{rmd.header} \hlkwb{<-} \hlkwd{paste0}\hlstd{(rmd.header,} \hlstr{"  pdf_document:\textbackslash{}n    toc: "}\hlstd{, toc,}
+            \hlstr{"\textbackslash{}n    highlight: "}\hlstd{, highlight,} \hlstr{"\textbackslash{}n"}\hlstd{)}
+    \hlstd{rmd.header} \hlkwb{<-} \hlkwd{paste0}\hlstd{(rmd.header,} \hlstr{"---\textbackslash{}n"}\hlstd{)}
+    \hlstd{rmd.header}
+\hlstd{\}}
+\end{alltt}
+\end{kframe}
+\end{knitrout}
+
+\subsubsection{rmdknitrSetup}
+\texttt{rmdknitrSetup} generates the \texttt{knitr} global options setup code cunk for Rmd files as a character string to be inserted at the top of a file following the yaml header.
+The only option at this time is the ability to include or exclude a source reference to a project-related code flow diagram \textbf{R} script via \texttt{include.sankey}.
+The output from this function is passed directly to \texttt{genRmd} below.
+
+\begin{knitrout}
+\definecolor{shadecolor}{rgb}{0, 0.169, 0.212}\color{fgcolor}\begin{kframe}
+\begin{alltt}
+\hlstd{rmdknitrSetup} \hlkwb{<-} \hlkwa{function}\hlstd{(}\hlkwc{file}\hlstd{,} \hlkwc{include.sankey} \hlstd{=} \hlnum{TRUE}\hlstd{) \{}
+    \hlstd{x} \hlkwb{<-} \hlkwd{paste0}\hlstd{(}\hlstr{"\textbackslash{}n```\{r knitr_setup, echo=FALSE\}\textbackslash{}nopts_chunk$set(cache=FALSE, eval=FALSE, tidy=TRUE, message=FALSE, warning=FALSE)\textbackslash{}n"}\hlstd{)}
+    \hlkwa{if} \hlstd{(include.sankey)}
+        \hlstd{x} \hlkwb{<-} \hlkwd{paste0}\hlstd{(x,} \hlstr{"read_chunk(\textbackslash{}"../../code/proj_sankey.R\textbackslash{}")\textbackslash{}n"}\hlstd{)}
+    \hlstd{x} \hlkwb{<-} \hlkwd{paste0}\hlstd{(x,} \hlstr{"read_chunk(\textbackslash{}"../../code/"}\hlstd{, file,} \hlstr{"\textbackslash{}")\textbackslash{}n```\textbackslash{}n"}\hlstd{)}
+    \hlstd{x}
+\hlstd{\}}
+\end{alltt}
+\end{kframe}
+\end{knitrout}
+
+\subsubsection{genRmd}
+\texttt{genRmd} works on existing projects. It checks for existing \textbf{R} scripts.
+If no \textbf{R} files exist in the project's \texttt{code} directory, the function will abort.
+Otherwise it will generate Rmd template files for each of the \textbf{R} scripts it finds.
+
+With \texttt{replace=TRUE} any existing Rmd files are regenerated with the provided template - be careful!
+With \texttt{replace=FALSE} (default) Rmd files are generated only for \textbf{R} scripts which do not yet have corresponding Rmd files.
+If \texttt{update.header=TRUE}, \texttt{replace} is ignored, and only existing Rmd files are regenerated,
+in this case strictly updating the yaml metadata header at the top of each Rmd file without altering any other Rmd content/documentation. 
+
+The Rmd files are placed in the \texttt{/docs/Rmd} directory.
+This function assumes this project directory exists.
+
+\begin{knitrout}
+\definecolor{shadecolor}{rgb}{0, 0.169, 0.212}\color{fgcolor}\begin{kframe}
+\begin{alltt}
+\hlstd{genRmd} \hlkwb{<-} \hlkwa{function}\hlstd{(}\hlkwc{path}\hlstd{,} \hlkwc{replace} \hlstd{=} \hlnum{FALSE}\hlstd{,} \hlkwc{header} \hlstd{=} \hlkwd{rmdHeader}\hlstd{(),} \hlkwc{knitrSetupChunk} \hlstd{=} \hlkwd{rmdknitrSetup}\hlstd{(),}
+    \hlkwc{update.header} \hlstd{=} \hlnum{FALSE}\hlstd{,} \hlkwc{...}\hlstd{) \{}
+    \hlkwd{stopifnot}\hlstd{(}\hlkwd{is.character}\hlstd{(path))}
+    \hlstd{files} \hlkwb{<-} \hlkwd{list.files}\hlstd{(path,} \hlkwc{pattern} \hlstd{=} \hlstr{".R$"}\hlstd{,} \hlkwc{full} \hlstd{=} \hlnum{TRUE}\hlstd{)}
+    \hlkwd{stopifnot}\hlstd{(}\hlkwd{length}\hlstd{(files)} \hlopt{>} \hlnum{0}\hlstd{)}
+    \hlstd{rmd} \hlkwb{<-} \hlkwd{gsub}\hlstd{(}\hlstr{".R"}\hlstd{,} \hlstr{".Rmd"}\hlstd{,} \hlkwd{basename}\hlstd{(files))}
+    \hlstd{rmd} \hlkwb{<-} \hlkwd{file.path}\hlstd{(}\hlkwd{dirname}\hlstd{(path),} \hlstr{"docs/Rmd"}\hlstd{, rmd)}
+    \hlkwa{if} \hlstd{(}\hlopt{!}\hlstd{(replace} \hlopt{|} \hlstd{update.header))}
+        \hlstd{rmd} \hlkwb{<-} \hlstd{rmd[}\hlopt{!}\hlkwd{sapply}\hlstd{(rmd, file.exists)]}
+    \hlkwa{if} \hlstd{(update.header)}
+        \hlstd{rmd} \hlkwb{<-} \hlstd{rmd[}\hlkwd{sapply}\hlstd{(rmd, file.exists)]}
+    \hlkwd{stopifnot}\hlstd{(}\hlkwd{length}\hlstd{(rmd)} \hlopt{>} \hlnum{0}\hlstd{)}
+
+    \hlstd{sinkRmd} \hlkwb{<-} \hlkwa{function}\hlstd{(}\hlkwc{x}\hlstd{,} \hlkwc{...}\hlstd{) \{}
+        \hlstd{y1} \hlkwb{<-} \hlstd{header}
+        \hlstd{y2} \hlkwb{<-} \hlstd{kniterSetupChunk}
+        \hlstd{y3} \hlkwb{<-} \hlkwd{list}\hlstd{(...)}\hlopt{$}\hlstd{rmd.template}
+        \hlkwa{if} \hlstd{(}\hlkwd{is.null}\hlstd{(y1))}
+            \hlstd{y1} \hlkwb{<-} \hlstd{rmd.header}
+        \hlkwa{if} \hlstd{(}\hlkwd{is.null}\hlstd{(y2))}
+            \hlstd{y2} \hlkwb{<-} \hlkwd{rmd.knitr.setup}\hlstd{(}\hlkwd{gsub}\hlstd{(}\hlstr{".Rmd"}\hlstd{,} \hlstr{".R"}\hlstd{,} \hlkwd{basename}\hlstd{(x)))}
+        \hlkwa{if} \hlstd{(}\hlkwd{is.null}\hlstd{(y3))}
+            \hlstd{y3} \hlkwb{<-} \hlstd{rmd.template}
+        \hlkwd{sink}\hlstd{(x)}
+        \hlkwd{sapply}\hlstd{(}\hlkwd{c}\hlstd{(y1, y2, y3), cat)}
+        \hlkwd{sink}\hlstd{()}
+    \hlstd{\}}
+
+    \hlstd{swapHeader} \hlkwb{<-} \hlkwa{function}\hlstd{(}\hlkwc{x}\hlstd{) \{}
+        \hlstd{l} \hlkwb{<-} \hlkwd{readLines}\hlstd{(x)}
+        \hlstd{ind} \hlkwb{<-} \hlkwd{which}\hlstd{(l} \hlopt{==} \hlstr{"---"}\hlstd{)}
+        \hlstd{l} \hlkwb{<-} \hlstd{l[(ind[}\hlnum{2}\hlstd{]} \hlopt{+} \hlnum{1}\hlstd{)}\hlopt{:}\hlkwd{length}\hlstd{(l)]}
+        \hlstd{l} \hlkwb{<-} \hlkwd{paste0}\hlstd{(l,} \hlstr{"\textbackslash{}n"}\hlstd{)}
+        \hlkwd{sink}\hlstd{(x)}
+        \hlkwd{sapply}\hlstd{(}\hlkwd{c}\hlstd{(header, l), cat)}
+        \hlkwd{sink}\hlstd{()}
+    \hlstd{\}}
+
+    \hlkwa{if} \hlstd{(update.header) \{}
+        \hlkwd{sapply}\hlstd{(rmd, swapHeader, ...)}
+        \hlkwd{cat}\hlstd{(}\hlstr{"yaml header updated for each .Rmd file.\textbackslash{}n"}\hlstd{)}
+    \hlstd{\}} \hlkwa{else} \hlstd{\{}
+        \hlkwd{sapply}\hlstd{(rmd, sinkRmd, ...)}
+        \hlkwd{cat}\hlstd{(}\hlstr{".Rmd files created for each .R file.\textbackslash{}n"}\hlstd{)}
+    \hlstd{\}}
+\hlstd{\}}
+\end{alltt}
+\end{kframe}
+\end{knitrout}
+
+\subsubsection{chunkNames}
+\texttt{chunkNames} can be used in two ways.
+It can return a list with length equal to the number of \textbf{R} files,
+where each list element is a vector of \textbf{R} code chunk names found in each \textbf{R} script.
+
+Alternatively, with \texttt{append.new=TRUE}, this list has each vector matched element-wise against chunk names found in existing Rmd files.
+If no Rmd files have yet been generated, the function will abort.
+Otherwise, for the Rmd files which do exist (and this may correspond to a subset of the \textbf{R} files),
+these Rmd files are appended with a list of code chunk names found in the current corresponding \textbf{R} files
+which have not yet been integrated into the current state of the Rmd files.
+This fascilitates updating of Rmd documentation when it falls behind scripts which have been updated.
+
+\begin{knitrout}
+\definecolor{shadecolor}{rgb}{0, 0.169, 0.212}\color{fgcolor}\begin{kframe}
+\begin{alltt}
+\hlstd{chunkNames} \hlkwb{<-} \hlkwa{function}\hlstd{(}\hlkwc{path}\hlstd{,} \hlkwc{rChunkID} \hlstd{=} \hlstr{"# @knitr"}\hlstd{,} \hlkwc{rmdChunkID} \hlstd{=} \hlstr{"```\{r"}\hlstd{,} \hlkwc{append.new} \hlstd{=} \hlnum{FALSE}\hlstd{) \{}
+    \hlstd{files} \hlkwb{<-} \hlkwd{list.files}\hlstd{(path,} \hlkwc{pattern} \hlstd{=} \hlstr{".R$"}\hlstd{,} \hlkwc{full} \hlstd{=} \hlnum{TRUE}\hlstd{)}
+    \hlkwd{stopifnot}\hlstd{(}\hlkwd{length}\hlstd{(files)} \hlopt{>} \hlnum{0}\hlstd{)}
+    \hlstd{l1} \hlkwb{<-} \hlkwd{lapply}\hlstd{(files, readLines)}
+    \hlstd{l1} \hlkwb{<-} \hlkwd{rapply}\hlstd{(l1,} \hlkwa{function}\hlstd{(}\hlkwc{x}\hlstd{) x[}\hlkwd{substr}\hlstd{(x,} \hlnum{1}\hlstd{,} \hlkwd{nchar}\hlstd{(rChunkID))} \hlopt{==} \hlstd{rChunkID],}
+        \hlkwc{how} \hlstd{=} \hlstr{"replace"}\hlstd{)}
+    \hlstd{l1} \hlkwb{<-} \hlkwd{rapply}\hlstd{(l1,} \hlkwa{function}\hlstd{(}\hlkwc{x}\hlstd{,} \hlkwc{p}\hlstd{)} \hlkwd{gsub}\hlstd{(}\hlkwd{paste0}\hlstd{(p,} \hlstr{" "}\hlstd{),} \hlstr{""}\hlstd{, x),} \hlkwc{how} \hlstd{=} \hlstr{"replace"}\hlstd{,}
+        \hlkwc{p} \hlstd{= rChunkID)}
+    \hlkwa{if} \hlstd{(}\hlopt{!}\hlstd{append.new)}
+        \hlkwd{return}\hlstd{(l1)}
+
+    \hlstd{appendRmd} \hlkwb{<-} \hlkwa{function}\hlstd{(}\hlkwc{x}\hlstd{,} \hlkwc{rmd.files}\hlstd{,} \hlkwc{rChunks}\hlstd{,} \hlkwc{rmdChunks}\hlstd{,} \hlkwc{ID}\hlstd{) \{}
+        \hlstd{r1} \hlkwb{<-} \hlstd{rmdChunks[[x]]}
+        \hlstd{r2} \hlkwb{<-} \hlstd{rChunks[[x]]}
+        \hlstd{r.new} \hlkwb{<-} \hlstd{r2[}\hlopt{!}\hlstd{(r2} \hlopt{%in%} \hlstd{r1)]}
+        \hlkwa{if} \hlstd{(}\hlkwd{length}\hlstd{(r.new)) \{}
+            \hlstd{r.new} \hlkwb{<-} \hlkwd{paste0}\hlstd{(ID,} \hlstr{" "}\hlstd{, r.new,} \hlstr{"\}\textbackslash{}n```\textbackslash{}n"}\hlstd{,} \hlkwc{collapse} \hlstd{=} \hlstr{""}\hlstd{)}  \hlcom{# Hard coded brace and backticks}
+            \hlkwd{sink}\hlstd{(rmd.files[x],} \hlkwc{append} \hlstd{=} \hlnum{TRUE}\hlstd{)}
+            \hlkwd{cat}\hlstd{(}\hlstr{"\textbackslash{}nNEW_CODE_CHUNKS\textbackslash{}n"}\hlstd{)}
+            \hlkwd{cat}\hlstd{(r.new)}
+            \hlkwd{sink}\hlstd{()}
+            \hlkwd{paste}\hlstd{(}\hlkwd{basename}\hlstd{(rmd.files[x]),} \hlstr{"appended with new chunk names from .R file"}\hlstd{)}
+        \hlstd{\}} \hlkwa{else} \hlkwd{paste}\hlstd{(}\hlstr{"No new chunk names appended to"}\hlstd{,} \hlkwd{basename}\hlstd{(rmd.files[x]))}
+    \hlstd{\}}
+
+    \hlstd{rmd} \hlkwb{<-} \hlkwd{gsub}\hlstd{(}\hlstr{".R"}\hlstd{,} \hlstr{".Rmd"}\hlstd{,} \hlkwd{basename}\hlstd{(files))}
+    \hlstd{rmd} \hlkwb{<-} \hlkwd{file.path}\hlstd{(}\hlkwd{dirname}\hlstd{(path),} \hlstr{"docs/Rmd"}\hlstd{, rmd)}
+    \hlstd{rmd} \hlkwb{<-} \hlstd{rmd[}\hlkwd{sapply}\hlstd{(rmd, file.exists)]}
+    \hlkwd{stopifnot}\hlstd{(}\hlkwd{length}\hlstd{(rmd)} \hlopt{>} \hlnum{0}\hlstd{)}  \hlcom{# Rmd files must exist}
+    \hlstd{files.ind} \hlkwb{<-} \hlkwd{match}\hlstd{(}\hlkwd{gsub}\hlstd{(}\hlstr{".Rmd"}\hlstd{,} \hlstr{""}\hlstd{,} \hlkwd{basename}\hlstd{(rmd)),} \hlkwd{gsub}\hlstd{(}\hlstr{".R"}\hlstd{,} \hlstr{""}\hlstd{,} \hlkwd{basename}\hlstd{(files)))}  \hlcom{# Rmd exist for which R script}
+    \hlstd{l2} \hlkwb{<-} \hlkwd{lapply}\hlstd{(rmd, readLines)}
+    \hlstd{l2} \hlkwb{<-} \hlkwd{rapply}\hlstd{(l2,} \hlkwa{function}\hlstd{(}\hlkwc{x}\hlstd{) x[}\hlkwd{substr}\hlstd{(x,} \hlnum{1}\hlstd{,} \hlkwd{nchar}\hlstd{(rmdChunkID))} \hlopt{==} \hlstd{rmdChunkID],}
+        \hlkwc{how} \hlstd{=} \hlstr{"replace"}\hlstd{)}
+    \hlstd{l2} \hlkwb{<-} \hlkwd{rapply}\hlstd{(l2,} \hlkwa{function}\hlstd{(}\hlkwc{x}\hlstd{,} \hlkwc{p}\hlstd{)} \hlkwd{gsub}\hlstd{(}\hlkwd{paste0}\hlstd{(p,} \hlstr{" "}\hlstd{),} \hlstr{""}\hlstd{, x),} \hlkwc{how} \hlstd{=} \hlstr{"replace"}\hlstd{,}
+        \hlkwc{p} \hlstd{=} \hlkwd{gsub}\hlstd{(}\hlstr{"\textbackslash{}\textbackslash{}\{"}\hlstd{,} \hlstr{"\textbackslash{}\textbackslash{}\textbackslash{}\textbackslash{}\{"}\hlstd{, rmdChunkID))}
+    \hlstd{l2} \hlkwb{<-} \hlkwd{rapply}\hlstd{(l2,} \hlkwa{function}\hlstd{(}\hlkwc{x}\hlstd{)} \hlkwd{gsub}\hlstd{(}\hlstr{"\}"}\hlstd{,} \hlstr{""}\hlstd{,} \hlkwd{sapply}\hlstd{(}\hlkwd{strsplit}\hlstd{(x,} \hlstr{","}\hlstd{),} \hlstr{"[["}\hlstd{,}
+        \hlnum{1}\hlstd{)),} \hlkwc{how} \hlstd{=} \hlstr{"replace"}\hlstd{)}
+    \hlkwd{sapply}\hlstd{(}\hlnum{1}\hlopt{:}\hlkwd{length}\hlstd{(rmd), appendRmd,} \hlkwc{rmd.files} \hlstd{= rmd,} \hlkwc{rChunks} \hlstd{= l1[files.ind],}
+        \hlkwc{rmdChunks} \hlstd{= l2,} \hlkwc{ID} \hlstd{= rmdChunkID)}
+\hlstd{\}}
+\end{alltt}
+\end{kframe}
+\end{knitrout}
+
+Regarding the creation and updating of Rmd files, \texttt{projman} simply assumes that there will be one \textbf{R} Markdown file corresponding to one \textbf{R} script.
+This is not always the case for a given project, but again, the purpose is to generate basic templates.
+Unnecessary files can always be deleted later, or edits made such that one \textbf{R} Markdown file reads multiple \textbf{R} scripts,
+as is the case with the Rmd file used to generate this document.
+
+\subsubsection{convertDocs}
+\texttt{convertDocs} converts between Rmd and Rnw files.
+The project's \texttt{docs/Rmd} or \texttt{docs/Rnw} directory is specified.
+Any files of the same type as the directory are converted to the other type and saved to the other directory.
+The input files are not removed.
+
+This function speeds up the process of duplicating files, e.g., when wanting to make PDFs from Rnw files when only Rmd files exist.
+This is almost exclusively what I use this function for.
+On less frequent occasions I have used it in the other direction when I have Rnw files which were once used to make PDFs but later I decide to put them on the web as a web page and not as a link to a PDF.
+
+The user still makes specific changes by hand, for example, any required changes to \texttt{knitr} code chunk options that must differ for PDF output vs. html output.
+The primary benefit is in not having to fuss with large amounts of standard substitutions which can be automated, such as swapping code chunk enclosure styles and common file metadata.
+
+\begin{knitrout}
+\definecolor{shadecolor}{rgb}{0, 0.169, 0.212}\color{fgcolor}\begin{kframe}
+\begin{alltt}
+\hlstd{convertDocs} \hlkwb{<-} \hlkwa{function}\hlstd{(}\hlkwc{path}\hlstd{,} \hlkwc{rmdChunkID} \hlstd{=} \hlkwd{c}\hlstd{(}\hlstr{"```\{r"}\hlstd{,} \hlstr{"\}"}\hlstd{,} \hlstr{"```"}\hlstd{),} \hlkwc{rnwChunkID} \hlstd{=} \hlkwd{c}\hlstd{(}\hlstr{"<<"}\hlstd{,}
+    \hlstr{">>="}\hlstd{,} \hlstr{"@"}\hlstd{),} \hlkwc{emphasis} \hlstd{=} \hlstr{"replace"}\hlstd{,} \hlkwc{overwrite} \hlstd{=} \hlnum{FALSE}\hlstd{,} \hlkwc{...}\hlstd{) \{}
+    \hlkwd{stopifnot}\hlstd{(}\hlkwd{is.character}\hlstd{(path))}
+    \hlstd{type} \hlkwb{<-} \hlkwd{basename}\hlstd{(path)}
+    \hlstd{rmd.files} \hlkwb{<-} \hlkwd{list.files}\hlstd{(path,} \hlkwc{pattern} \hlstd{=} \hlstr{".Rmd$"}\hlstd{,} \hlkwc{full} \hlstd{=} \hlnum{TRUE}\hlstd{)}
+    \hlstd{rnw.files} \hlkwb{<-} \hlkwd{list.files}\hlstd{(path,} \hlkwc{pattern} \hlstd{=} \hlstr{".Rnw$"}\hlstd{,} \hlkwc{full} \hlstd{=} \hlnum{TRUE}\hlstd{)}
+    \hlstd{dots} \hlkwb{<-} \hlkwd{list}\hlstd{(...)}
+    \hlkwa{if} \hlstd{(rmdChunkID[}\hlnum{1}\hlstd{]} \hlopt{==} \hlstr{"```\{r"}\hlstd{)}
+        \hlstd{rmdChunkID[}\hlnum{1}\hlstd{]} \hlkwb{<-} \hlkwd{paste0}\hlstd{(rmdChunkID[}\hlnum{1}\hlstd{],} \hlstr{" "}\hlstd{)}
+    \hlstd{gsbraces} \hlkwb{<-} \hlkwa{function}\hlstd{(}\hlkwc{txt}\hlstd{)} \hlkwd{gsub}\hlstd{(}\hlstr{"\textbackslash{}\textbackslash{}\{"}\hlstd{,} \hlstr{"\textbackslash{}\textbackslash{}\textbackslash{}\textbackslash{}\{"}\hlstd{, txt)}
+    \hlkwa{if} \hlstd{(type} \hlopt{==} \hlstr{"Rmd"}\hlstd{) \{}
+        \hlkwd{stopifnot}\hlstd{(}\hlkwd{length}\hlstd{(rmd.files)} \hlopt{>} \hlnum{0}\hlstd{)}
+        \hlstd{outDir} \hlkwb{<-} \hlkwd{file.path}\hlstd{(}\hlkwd{dirname}\hlstd{(path),} \hlstr{"Rnw"}\hlstd{)}
+        \hlkwa{if} \hlstd{(}\hlkwd{is.null}\hlstd{(doc.class} \hlkwb{<-} \hlstd{dots}\hlopt{$}\hlstd{doc.class))}
+            \hlstd{doc.class} \hlkwb{<-} \hlstr{"article"}
+        \hlkwa{if} \hlstd{(}\hlkwd{is.null}\hlstd{(doc.packages} \hlkwb{<-} \hlstd{dots}\hlopt{$}\hlstd{doc.packages))}
+            \hlstd{doc.packages} \hlkwb{<-} \hlstr{"geometry"}
+        \hlstd{doc.class.string} \hlkwb{<-} \hlkwd{paste0}\hlstd{(}\hlstr{"\textbackslash{}\textbackslash{}documentclass\{"}\hlstd{, doc.class,} \hlstr{"\}"}\hlstd{)}
+        \hlstd{doc.packages.string} \hlkwb{<-} \hlkwd{paste0}\hlstd{(}\hlkwd{sapply}\hlstd{(doc.packages,} \hlkwa{function}\hlstd{(}\hlkwc{x}\hlstd{)} \hlkwd{paste0}\hlstd{(}\hlstr{"\textbackslash{}\textbackslash{}usepackage\{"}\hlstd{,}
+            \hlstd{x,} \hlstr{"\}"}\hlstd{)),} \hlkwc{collapse} \hlstd{=} \hlstr{"\textbackslash{}n"}\hlstd{)}
+        \hlkwa{if} \hlstd{(}\hlstr{"geometry"} \hlopt{%in%} \hlstd{doc.packages)}
+            \hlstd{doc.packages.string} \hlkwb{<-} \hlkwd{c}\hlstd{(doc.packages.string,} \hlstr{"\textbackslash{}\textbackslash{}geometry\{verbose, tmargin=2.5cm, bmargin=2.5cm, lmargin=2.5cm, rmargin=2.5cm\}"}\hlstd{)}
+        \hlstd{header.rnw} \hlkwb{<-} \hlkwd{c}\hlstd{(doc.class.string, doc.packages.string,} \hlstr{"\textbackslash{}\textbackslash{}begin\{document\}\textbackslash{}n"}\hlstd{)}  \hlcom{#,}
+        \hlcom{# paste0('<<highlight, echo=FALSE>>=\textbackslash{}nknit_theme$set(knit_theme$get('',}
+        \hlcom{# theme, ''))\textbackslash{}n@\textbackslash{}n'))}
+    \hlstd{\}} \hlkwa{else if} \hlstd{(type} \hlopt{==} \hlstr{"Rnw"}\hlstd{) \{}
+        \hlkwd{stopifnot}\hlstd{(}\hlkwd{length}\hlstd{(rnw.files)} \hlopt{>} \hlnum{0}\hlstd{)}
+        \hlstd{outDir} \hlkwb{<-} \hlkwd{file.path}\hlstd{(}\hlkwd{dirname}\hlstd{(path),} \hlstr{"Rmd"}\hlstd{)}
+    \hlstd{\}} \hlkwa{else} \hlkwd{stop}\hlstd{(}\hlstr{"path must end in 'Rmd' or 'Rnw'."}\hlstd{)}
+
+    \hlstd{swapHeadings} \hlkwb{<-} \hlkwa{function}\hlstd{(}\hlkwc{from}\hlstd{,} \hlkwc{to}\hlstd{,} \hlkwc{x}\hlstd{) \{}
+        \hlstd{nc} \hlkwb{<-} \hlkwd{nchar}\hlstd{(x)}
+        \hlstd{ind} \hlkwb{<-} \hlkwd{which}\hlstd{(}\hlkwd{substr}\hlstd{(x,} \hlnum{1}\hlstd{,} \hlnum{8}\hlstd{)} \hlopt{==} \hlstr{"\textbackslash{}\textbackslash{}section"} \hlopt{|} \hlkwd{substr}\hlstd{(x,} \hlnum{1}\hlstd{,} \hlnum{4}\hlstd{)} \hlopt{==} \hlstr{"\textbackslash{}\textbackslash{}sub"}\hlstd{)}
+        \hlkwa{if} \hlstd{(}\hlopt{!}\hlkwd{length}\hlstd{(ind)) \{}
+            \hlcom{# assume Rmd file}
+            \hlstd{ind} \hlkwb{<-} \hlkwd{which}\hlstd{(}\hlkwd{substr}\hlstd{(x,} \hlnum{1}\hlstd{,} \hlnum{1}\hlstd{)} \hlopt{==} \hlstr{"#"}\hlstd{)}
+            \hlstd{ind.n} \hlkwb{<-} \hlkwd{rep}\hlstd{(}\hlnum{1}\hlstd{,} \hlkwd{length}\hlstd{(ind))}
+            \hlkwa{for} \hlstd{(i} \hlkwa{in} \hlnum{2}\hlopt{:}\hlnum{6}\hlstd{) \{}
+                \hlstd{ind.tmp} \hlkwb{<-} \hlkwd{which}\hlstd{(}\hlkwd{substr}\hlstd{(x[ind],} \hlnum{1}\hlstd{, i)} \hlopt{==} \hlkwd{substr}\hlstd{(}\hlstr{"######"}\hlstd{,} \hlnum{1}\hlstd{,}
+                  \hlstd{i))}
+                \hlkwa{if} \hlstd{(}\hlkwd{length}\hlstd{(ind.tmp))}
+                  \hlstd{ind.n[ind.tmp]} \hlkwb{<-} \hlstd{ind.n[ind.tmp]} \hlopt{+} \hlnum{1} \hlkwa{else break}
+            \hlstd{\}}
+            \hlkwa{for} \hlstd{(i} \hlkwa{in} \hlnum{1}\hlopt{:}\hlkwd{length}\hlstd{(ind)) \{}
+                \hlstd{n} \hlkwb{<-} \hlstd{ind.n[i]}
+                \hlstd{input} \hlkwb{<-} \hlkwd{paste0}\hlstd{(}\hlkwd{substr}\hlstd{(}\hlstr{"######"}\hlstd{,} \hlnum{1}\hlstd{, n),} \hlstr{" "}\hlstd{)}
+                \hlstd{h} \hlkwb{<-} \hlstd{x[ind[i]]}
+                \hlstd{h} \hlkwb{<-} \hlkwd{gsub}\hlstd{(}\hlstr{"\textbackslash{}\textbackslash{}*"}\hlstd{,} \hlstr{"_"}\hlstd{, h)}  \hlcom{# Switch any markdown boldface asterisks in headings to double underscores}
+                \hlstd{heading} \hlkwb{<-} \hlkwd{gsub}\hlstd{(}\hlstr{"\textbackslash{}n"}\hlstd{,} \hlstr{""}\hlstd{,} \hlkwd{substr}\hlstd{(h, n} \hlopt{+} \hlnum{2}\hlstd{, nc[ind[i]]))}
+                \hlcom{# h <- gsub(input, '', h)}
+                \hlkwa{if} \hlstd{(n} \hlopt{<=} \hlnum{2}\hlstd{)}
+                  \hlstd{subs} \hlkwb{<-} \hlstr{"\textbackslash{}\textbackslash{}"} \hlkwa{else if} \hlstd{(n} \hlopt{==} \hlnum{3}\hlstd{)}
+                  \hlstd{subs} \hlkwb{<-} \hlstr{"\textbackslash{}\textbackslash{}sub"} \hlkwa{else if} \hlstd{(n} \hlopt{==} \hlnum{4}\hlstd{)}
+                  \hlstd{subs} \hlkwb{<-} \hlstr{"\textbackslash{}\textbackslash{}subsub"} \hlkwa{else if} \hlstd{(n} \hlopt{>=} \hlnum{5}\hlstd{)}
+                  \hlstd{subs} \hlkwb{<-} \hlstr{"\textbackslash{}\textbackslash{}subsubsub"}
+                \hlstd{output} \hlkwb{<-} \hlkwd{paste0}\hlstd{(}\hlstr{"\textbackslash{}\textbackslash{}"}\hlstd{, subs,} \hlstr{"section\{"}\hlstd{, heading,} \hlstr{"\}\textbackslash{}n"}\hlstd{)}
+                \hlstd{x[ind[i]]} \hlkwb{<-} \hlkwd{gsub}\hlstd{(h, output, h)}
+            \hlstd{\}}
+        \hlstd{\}} \hlkwa{else} \hlstd{\{}
+            \hlcom{# assume Rnw file}
+            \hlstd{ind} \hlkwb{<-} \hlkwd{which}\hlstd{(}\hlkwd{substr}\hlstd{(x,} \hlnum{1}\hlstd{,} \hlnum{8}\hlstd{)} \hlopt{==} \hlstr{"\textbackslash{}\textbackslash{}section"}\hlstd{)}
+            \hlkwa{if} \hlstd{(}\hlkwd{length}\hlstd{(ind)) \{}
+                \hlkwa{for} \hlstd{(i} \hlkwa{in} \hlnum{1}\hlopt{:}\hlkwd{length}\hlstd{(ind)) \{}
+                  \hlstd{h} \hlkwb{<-} \hlstd{x[ind[i]]}
+                  \hlstd{heading} \hlkwb{<-} \hlkwd{paste0}\hlstd{(}\hlstr{"## "}\hlstd{,} \hlkwd{substr}\hlstd{(h,} \hlnum{10}\hlstd{,} \hlkwd{nchar}\hlstd{(h)} \hlopt{-} \hlnum{2}\hlstd{))}
+                  \hlstd{x[ind[i]]} \hlkwb{<-} \hlkwd{gsub}\hlstd{(}\hlkwd{gsbraces}\hlstd{(h), heading, h)}
+                \hlstd{\}}
+            \hlstd{\}}
+            \hlstd{ind} \hlkwb{<-} \hlkwd{which}\hlstd{(}\hlkwd{substr}\hlstd{(x,} \hlnum{1}\hlstd{,} \hlnum{4}\hlstd{)} \hlopt{==} \hlstr{"\textbackslash{}\textbackslash{}sub"}\hlstd{)}
+            \hlkwa{if} \hlstd{(}\hlkwd{length}\hlstd{(ind)) \{}
+                \hlkwa{for} \hlstd{(i} \hlkwa{in} \hlnum{1}\hlopt{:}\hlkwd{length}\hlstd{(ind)) \{}
+                  \hlstd{h} \hlkwb{<-} \hlstd{x[ind[i]]}
+                  \hlstd{z} \hlkwb{<-} \hlkwd{substr}\hlstd{(h,} \hlnum{2}\hlstd{,} \hlnum{10}\hlstd{)}
+                  \hlkwa{if} \hlstd{(z} \hlopt{==} \hlstr{"subsubsub"}\hlstd{) \{}
+                    \hlstd{p} \hlkwb{<-} \hlstr{"##### "}
+                    \hlstd{n} \hlkwb{<-} \hlnum{18}
+                  \hlstd{\}} \hlkwa{else if} \hlstd{(}\hlkwd{substr}\hlstd{(z,} \hlnum{1}\hlstd{,} \hlnum{6}\hlstd{)} \hlopt{==} \hlstr{"subsub"}\hlstd{) \{}
+                    \hlstd{p} \hlkwb{<-} \hlstr{"#### "}
+                    \hlstd{n} \hlkwb{<-} \hlnum{15}
+                  \hlstd{\}} \hlkwa{else if} \hlstd{(}\hlkwd{substr}\hlstd{(z,} \hlnum{1}\hlstd{,} \hlnum{3}\hlstd{)} \hlopt{==} \hlstr{"sub"}\hlstd{) \{}
+                    \hlstd{p} \hlkwb{<-} \hlstr{"### "}
+                    \hlstd{n} \hlkwb{<-} \hlnum{12}
+                  \hlstd{\}}
+                  \hlstd{heading} \hlkwb{<-} \hlkwd{paste0}\hlstd{(p,} \hlkwd{substr}\hlstd{(h, n,} \hlkwd{nchar}\hlstd{(h)} \hlopt{-} \hlnum{2}\hlstd{))}
+                  \hlstd{x[ind[i]]} \hlkwb{<-} \hlkwd{gsub}\hlstd{(}\hlkwd{gsbraces}\hlstd{(h), heading, h)}
+                \hlstd{\}}
+            \hlstd{\}}
+        \hlstd{\}}
+        \hlstd{x}
+    \hlstd{\}}
+
+    \hlstd{swapChunks} \hlkwb{<-} \hlkwa{function}\hlstd{(}\hlkwc{from}\hlstd{,} \hlkwc{to}\hlstd{,} \hlkwc{x}\hlstd{) \{}
+        \hlstd{nc} \hlkwb{<-} \hlkwd{nchar}\hlstd{(x)}
+        \hlstd{chunk.start.open} \hlkwb{<-} \hlkwd{substr}\hlstd{(x,} \hlnum{1}\hlstd{,} \hlkwd{nchar}\hlstd{(from[}\hlnum{1}\hlstd{]))} \hlopt{==} \hlstd{from[}\hlnum{1}\hlstd{]}
+        \hlstd{chunk.start.close} \hlkwb{<-} \hlkwd{substr}\hlstd{(x, nc} \hlopt{-} \hlnum{1} \hlopt{-} \hlkwd{nchar}\hlstd{(from[}\hlnum{2}\hlstd{])} \hlopt{+} \hlnum{1}\hlstd{, nc} \hlopt{-} \hlnum{1}\hlstd{)} \hlopt{==}
+            \hlstd{from[}\hlnum{2}\hlstd{]}
+        \hlstd{chunk.start} \hlkwb{<-} \hlkwd{which}\hlstd{(chunk.start.open} \hlopt{&} \hlstd{chunk.start.close)}
+        \hlstd{chunk.end} \hlkwb{<-} \hlkwd{which}\hlstd{(}\hlkwd{substr}\hlstd{(x,} \hlnum{1}\hlstd{,} \hlkwd{nchar}\hlstd{(from[}\hlnum{3}\hlstd{]))} \hlopt{==} \hlstd{from[}\hlnum{3}\hlstd{]} \hlopt{&} \hlstd{nc} \hlopt{==} \hlkwd{nchar}\hlstd{(from[}\hlnum{3}\hlstd{])} \hlopt{+}
+            \hlnum{1}\hlstd{)}
+        \hlstd{x[chunk.start]} \hlkwb{<-} \hlkwd{gsub}\hlstd{(from[}\hlnum{2}\hlstd{], to[}\hlnum{2}\hlstd{],} \hlkwd{gsub}\hlstd{(}\hlkwd{gsbraces}\hlstd{(from[}\hlnum{1}\hlstd{]),} \hlkwd{gsbraces}\hlstd{(to[}\hlnum{1}\hlstd{]),}
+            \hlstd{x[chunk.start]))}
+        \hlstd{x[chunk.end]} \hlkwb{<-} \hlkwd{gsub}\hlstd{(from[}\hlnum{3}\hlstd{], to[}\hlnum{3}\hlstd{], x[chunk.end])}
+        \hlstd{chunklines} \hlkwb{<-} \hlkwd{as.numeric}\hlstd{(}\hlkwd{unlist}\hlstd{(}\hlkwd{mapply}\hlstd{(seq, chunk.start, chunk.end)))}
+        \hlkwd{list}\hlstd{(x, chunklines)}
+    \hlstd{\}}
+
+    \hlcom{# I know I use '**' strictly for bold font in Rmd files.  For now, this}
+    \hlcom{# function assumes: 1. The only emphasis in a doc is boldface or typewriter.}
+    \hlcom{# 2. These instances are always preceded by a space, a carriage return, or}
+    \hlcom{# an open bracket, 3. and followed by a space, period, comma, or closing}
+    \hlcom{# bracket.}
+    \hlstd{swapEmphasis} \hlkwb{<-} \hlkwa{function}\hlstd{(}\hlkwc{x}\hlstd{,} \hlkwc{emphasis} \hlstd{=} \hlstr{"remove"}\hlstd{,} \hlkwc{pat.remove} \hlstd{=} \hlkwd{c}\hlstd{(}\hlstr{"`"}\hlstd{,} \hlstr{"\textbackslash{}\textbackslash{}*\textbackslash{}\textbackslash{}*"}\hlstd{,}
+        \hlstr{"__"}\hlstd{),} \hlkwc{pat.replace} \hlstd{= pat.remove,} \hlkwc{replacement} \hlstd{=} \hlkwd{c}\hlstd{(}\hlstr{"\textbackslash{}\textbackslash{}\textbackslash{}\textbackslash{}texttt\textbackslash{}\textbackslash{}\{"}\hlstd{,} \hlstr{"\textbackslash{}\textbackslash{}\textbackslash{}\textbackslash{}textbf\textbackslash{}\textbackslash{}\{"}\hlstd{,}
+        \hlstr{"\textbackslash{}\textbackslash{}\textbackslash{}\textbackslash{}textbf\textbackslash{}\textbackslash{}\{"}\hlstd{,} \hlstr{"\textbackslash{}\textbackslash{}\}"}\hlstd{,} \hlstr{"\textbackslash{}\textbackslash{}\}"}\hlstd{,} \hlstr{"\textbackslash{}\textbackslash{}\}"}\hlstd{)) \{}
+
+        \hlkwd{stopifnot}\hlstd{(emphasis} \hlopt{%in%} \hlkwd{c}\hlstd{(}\hlstr{"remove"}\hlstd{,} \hlstr{"replace"}\hlstd{))}
+        \hlstd{n} \hlkwb{<-} \hlkwd{length}\hlstd{(pat.replace)}
+        \hlstd{rep1} \hlkwb{<-} \hlstd{replacement[}\hlnum{1}\hlopt{:}\hlstd{n]}
+        \hlstd{rep2} \hlkwb{<-} \hlstd{replacement[(n} \hlopt{+} \hlnum{1}\hlstd{)}\hlopt{:}\hlstd{(}\hlnum{2} \hlopt{*} \hlstd{n)]}
+        \hlstd{prefix} \hlkwb{<-} \hlkwd{c}\hlstd{(}\hlstr{" "}\hlstd{,} \hlstr{"^"}\hlstd{,} \hlstr{"\textbackslash{}\textbackslash{}\{"}\hlstd{,} \hlstr{"\textbackslash{}\textbackslash{}("}\hlstd{)}
+        \hlstd{suffix} \hlkwb{<-} \hlkwd{c}\hlstd{(}\hlstr{" "}\hlstd{,} \hlstr{","}\hlstd{,} \hlstr{"-"}\hlstd{,} \hlstr{"\textbackslash{}n"}\hlstd{,} \hlstr{"\textbackslash{}\textbackslash{}."}\hlstd{,} \hlstr{"\textbackslash{}\textbackslash{}\}"}\hlstd{,} \hlstr{"\textbackslash{}\textbackslash{})"}\hlstd{)}
+        \hlstd{n.p} \hlkwb{<-} \hlkwd{length}\hlstd{(prefix)}
+        \hlstd{n.s} \hlkwb{<-} \hlkwd{length}\hlstd{(suffix)}
+        \hlstd{pat.replace} \hlkwb{<-} \hlkwd{c}\hlstd{(}\hlkwd{paste0}\hlstd{(}\hlkwd{rep}\hlstd{(prefix, n),} \hlkwd{rep}\hlstd{(pat.replace,} \hlkwc{each} \hlstd{= n.p)),}
+            \hlkwd{paste0}\hlstd{(}\hlkwd{rep}\hlstd{(pat.replace,} \hlkwc{each} \hlstd{= n.s),} \hlkwd{rep}\hlstd{(suffix, n)))}
+        \hlstd{replacement} \hlkwb{<-} \hlkwd{c}\hlstd{(}\hlkwd{paste0}\hlstd{(}\hlkwd{rep}\hlstd{(}\hlkwd{gsub}\hlstd{(}\hlstr{"\textbackslash{}\textbackslash{}^"}\hlstd{,} \hlstr{""}\hlstd{, prefix), n),} \hlkwd{rep}\hlstd{(rep1,} \hlkwc{each} \hlstd{= n.p)),}
+            \hlkwd{paste0}\hlstd{(}\hlkwd{rep}\hlstd{(rep2,} \hlkwc{each} \hlstd{= n.s),} \hlkwd{rep}\hlstd{(suffix, n)))}
+        \hlkwa{if} \hlstd{(emphasis} \hlopt{==} \hlstr{"remove"}\hlstd{)}
+            \hlkwa{for} \hlstd{(k} \hlkwa{in} \hlnum{1}\hlopt{:}\hlkwd{length}\hlstd{(pat.remove)) x} \hlkwb{<-} \hlkwd{sapply}\hlstd{(x,} \hlkwa{function}\hlstd{(}\hlkwc{v}\hlstd{,} \hlkwc{p}\hlstd{,} \hlkwc{r}\hlstd{)} \hlkwd{gsub}\hlstd{(p,}
+                \hlstd{r, v),} \hlkwc{p} \hlstd{= pat.remove[k],} \hlkwc{r} \hlstd{=} \hlstr{""}\hlstd{)}
+        \hlkwa{if} \hlstd{(emphasis} \hlopt{==} \hlstr{"replace"}\hlstd{)}
+            \hlkwa{for} \hlstd{(k} \hlkwa{in} \hlnum{1}\hlopt{:}\hlkwd{length}\hlstd{(pat.replace)) x} \hlkwb{<-} \hlkwd{sapply}\hlstd{(x,} \hlkwa{function}\hlstd{(}\hlkwc{v}\hlstd{,} \hlkwc{p}\hlstd{,} \hlkwc{r}\hlstd{)} \hlkwd{gsub}\hlstd{(p,}
+                \hlstd{r, v),} \hlkwc{p} \hlstd{= pat.replace[k],} \hlkwc{r} \hlstd{= replacement[k])}
+        \hlstd{x}
+    \hlstd{\}}
+
+    \hlstd{swap} \hlkwb{<-} \hlkwa{function}\hlstd{(}\hlkwc{file}\hlstd{,} \hlkwc{header} \hlstd{=} \hlkwa{NULL}\hlstd{,} \hlkwc{outDir}\hlstd{,} \hlkwc{...}\hlstd{) \{}
+        \hlstd{title} \hlkwb{<-} \hlkwd{list}\hlstd{(...)}\hlopt{$}\hlstd{title}
+        \hlstd{author} \hlkwb{<-} \hlkwd{list}\hlstd{(...)}\hlopt{$}\hlstd{author}
+        \hlstd{highlight} \hlkwb{<-} \hlkwd{list}\hlstd{(...)}\hlopt{$}\hlstd{highlight}
+        \hlstd{ext} \hlkwb{<-} \hlkwd{tail}\hlstd{(}\hlkwd{strsplit}\hlstd{(file,} \hlstr{"\textbackslash{}\textbackslash{}."}\hlstd{)[[}\hlnum{1}\hlstd{]],} \hlnum{1}\hlstd{)}
+        \hlstd{l} \hlkwb{<-} \hlkwd{readLines}\hlstd{(file)}
+        \hlstd{l} \hlkwb{<-} \hlstd{l[}\hlkwd{substr}\hlstd{(l,} \hlnum{1}\hlstd{,} \hlnum{7}\hlstd{)} \hlopt{!=} \hlstr{"<style>"}\hlstd{]}  \hlcom{# Strip any html style lines}
+        \hlkwa{if} \hlstd{(ext} \hlopt{==} \hlstr{"Rmd"}\hlstd{) \{}
+            \hlstd{hl.default} \hlkwb{<-} \hlstr{"solarized-light"}
+            \hlstd{out.ext} \hlkwb{<-} \hlstr{"Rnw"}
+            \hlstd{h.ind} \hlkwb{<-} \hlnum{1}\hlopt{:}\hlkwd{which}\hlstd{(l} \hlopt{==} \hlstr{"---"}\hlstd{)[}\hlnum{2}\hlstd{]}
+            \hlstd{h} \hlkwb{<-} \hlstd{l[h.ind]}
+            \hlstd{t.ind} \hlkwb{<-} \hlkwd{which}\hlstd{(}\hlkwd{substr}\hlstd{(h,} \hlnum{1}\hlstd{,} \hlnum{7}\hlstd{)} \hlopt{==} \hlstr{"title: "}\hlstd{)}
+            \hlstd{a.ind} \hlkwb{<-} \hlkwd{which}\hlstd{(}\hlkwd{substr}\hlstd{(h,} \hlnum{1}\hlstd{,} \hlnum{8}\hlstd{)} \hlopt{==} \hlstr{"author: "}\hlstd{)}
+            \hlstd{highlight.ind} \hlkwb{<-} \hlkwd{which}\hlstd{(}\hlkwd{substr}\hlstd{(h,} \hlnum{1}\hlstd{,} \hlnum{11}\hlstd{)} \hlopt{==} \hlstr{"highlight: "}\hlstd{)}
+            \hlkwa{if} \hlstd{(}\hlkwd{is.null}\hlstd{(title)} \hlopt{&} \hlkwd{length}\hlstd{(t.ind))}
+                \hlstd{title} \hlkwb{<-} \hlkwd{substr}\hlstd{(h[t.ind],} \hlnum{8}\hlstd{,} \hlkwd{nchar}\hlstd{(h[t.ind]))} \hlkwa{else if} \hlstd{(}\hlkwd{is.null}\hlstd{(title))}
+                \hlstd{title} \hlkwb{<-} \hlstr{""}
+            \hlkwa{if} \hlstd{(}\hlkwd{is.null}\hlstd{(author)} \hlopt{&} \hlkwd{length}\hlstd{(a.ind))}
+                \hlstd{author} \hlkwb{<-} \hlkwd{substr}\hlstd{(h[a.ind],} \hlnum{9}\hlstd{,} \hlkwd{nchar}\hlstd{(h[a.ind]))} \hlkwa{else if} \hlstd{(}\hlkwd{is.null}\hlstd{(author))}
+                \hlstd{author} \hlkwb{<-} \hlstr{""}
+            \hlkwa{if} \hlstd{(}\hlkwd{is.null}\hlstd{(highlight)} \hlopt{&} \hlkwd{length}\hlstd{(highlight.ind))}
+                \hlstd{highlight} \hlkwb{<-} \hlkwd{substr}\hlstd{(h[highlight.ind],} \hlnum{12}\hlstd{,} \hlkwd{nchar}\hlstd{(h[highlight.ind]))} \hlkwa{else if} \hlstd{(}\hlkwd{is.null}\hlstd{(highlight))}
+                \hlstd{highlight} \hlkwb{<-} \hlstd{hl.default} \hlkwa{else if} \hlstd{(}\hlopt{!}\hlstd{(highlight} \hlopt{%in%} \hlstd{knit_theme}\hlopt{$}\hlkwd{get}\hlstd{()))}
+                \hlstd{highlight} \hlkwb{<-} \hlstd{hl.default}
+            \hlkwa{if} \hlstd{(}\hlopt{!}\hlkwd{is.null}\hlstd{(title))}
+                \hlstd{header} \hlkwb{<-} \hlkwd{c}\hlstd{(header,} \hlkwd{paste0}\hlstd{(}\hlstr{"\textbackslash{}\textbackslash{}title\{"}\hlstd{, title,} \hlstr{"\}"}\hlstd{))}
+            \hlkwa{if} \hlstd{(}\hlopt{!}\hlkwd{is.null}\hlstd{(author))}
+                \hlstd{header} \hlkwb{<-} \hlkwd{c}\hlstd{(header,} \hlkwd{paste0}\hlstd{(}\hlstr{"\textbackslash{}\textbackslash{}author\{"}\hlstd{, author,} \hlstr{"\}"}\hlstd{))}
+            \hlkwa{if} \hlstd{(}\hlopt{!}\hlkwd{is.null}\hlstd{(title))}
+                \hlstd{header} \hlkwb{<-} \hlkwd{c}\hlstd{(header,} \hlstr{"\textbackslash{}\textbackslash{}maketitle\textbackslash{}n"}\hlstd{)}
+            \hlstd{header} \hlkwb{<-} \hlkwd{c}\hlstd{(header,} \hlkwd{paste0}\hlstd{(}\hlstr{"<<highlight, echo=FALSE>>=\textbackslash{}nknit_theme$set(knit_theme$get('"}\hlstd{,}
+                \hlstd{highlight,} \hlstr{"'))\textbackslash{}n@\textbackslash{}n"}\hlstd{))}
+        \hlstd{\}} \hlkwa{else if} \hlstd{(ext} \hlopt{==} \hlstr{"Rnw"}\hlstd{) \{}
+            \hlstd{hl.default} \hlkwb{<-} \hlstr{"tango"}
+            \hlstd{out.ext} \hlkwb{<-} \hlstr{"Rmd"}
+            \hlstd{begin.doc} \hlkwb{<-} \hlkwd{which}\hlstd{(l} \hlopt{==} \hlstr{"\textbackslash{}\textbackslash{}begin\{document\}"}\hlstd{)}
+            \hlstd{make.title} \hlkwb{<-} \hlkwd{which}\hlstd{(l} \hlopt{==} \hlstr{"\textbackslash{}\textbackslash{}maketitle"}\hlstd{)}
+            \hlkwa{if} \hlstd{(}\hlkwd{length}\hlstd{(make.title))}
+                \hlstd{h.ind} \hlkwb{<-} \hlnum{1}\hlopt{:}\hlstd{make.title} \hlkwa{else} \hlstd{h.ind} \hlkwb{<-} \hlnum{1}\hlopt{:}\hlstd{begin.doc}
+            \hlstd{h} \hlkwb{<-} \hlstd{l[h.ind]}
+            \hlstd{t.ind} \hlkwb{<-} \hlkwd{which}\hlstd{(}\hlkwd{substr}\hlstd{(h,} \hlnum{1}\hlstd{,} \hlnum{6}\hlstd{)} \hlopt{==} \hlstr{"\textbackslash{}\textbackslash{}title"}\hlstd{)}
+            \hlstd{a.ind} \hlkwb{<-} \hlkwd{which}\hlstd{(}\hlkwd{substr}\hlstd{(h,} \hlnum{1}\hlstd{,} \hlnum{7}\hlstd{)} \hlopt{==} \hlstr{"\textbackslash{}\textbackslash{}author"}\hlstd{)}
+            \hlstd{highlight.ind} \hlkwb{<-} \hlkwd{which}\hlstd{(}\hlkwd{substr}\hlstd{(l,} \hlnum{1}\hlstd{,} \hlnum{11}\hlstd{)} \hlopt{==} \hlstr{"<<highlight"}\hlstd{)}
+            \hlkwa{if} \hlstd{(}\hlkwd{is.null}\hlstd{(title)} \hlopt{&} \hlkwd{length}\hlstd{(t.ind))}
+                \hlstd{title} \hlkwb{<-} \hlkwd{substr}\hlstd{(h[t.ind],} \hlnum{8}\hlstd{,} \hlkwd{nchar}\hlstd{(h[t.ind])} \hlopt{-} \hlnum{1}\hlstd{)}
+            \hlkwa{if} \hlstd{(}\hlkwd{is.null}\hlstd{(author)} \hlopt{&} \hlkwd{length}\hlstd{(a.ind))}
+                \hlstd{author} \hlkwb{<-} \hlkwd{substr}\hlstd{(h[a.ind],} \hlnum{9}\hlstd{,} \hlkwd{nchar}\hlstd{(h[a.ind])} \hlopt{-} \hlnum{1}\hlstd{)}
+            \hlkwa{if} \hlstd{(}\hlkwd{length}\hlstd{(highlight.ind)) \{}
+                \hlstd{l1} \hlkwb{<-} \hlstd{l[highlight.ind} \hlopt{+} \hlnum{1}\hlstd{]}
+                \hlstd{h1} \hlkwb{<-} \hlkwd{substr}\hlstd{(l1,} \hlkwd{nchar}\hlstd{(}\hlstr{"knit_theme$set(knit_theme$get('"}\hlstd{)} \hlopt{+}
+                  \hlnum{1}\hlstd{,} \hlkwd{nchar}\hlstd{(l1)} \hlopt{-} \hlkwd{nchar}\hlstd{(}\hlstr{"'))\textbackslash{}n"}\hlstd{))}
+                \hlkwa{if} \hlstd{(}\hlopt{!}\hlstd{(h1} \hlopt{%in%} \hlstd{knit_theme}\hlopt{$}\hlkwd{get}\hlstd{()))}
+                  \hlstd{h1} \hlkwb{<-} \hlstd{hl.default}
+            \hlstd{\}}
+            \hlkwa{if} \hlstd{(}\hlkwd{is.null}\hlstd{(highlight)} \hlopt{&} \hlkwd{length}\hlstd{(highlight.ind))}
+                \hlstd{highlight} \hlkwb{<-} \hlstd{h1} \hlkwa{else if} \hlstd{(}\hlkwd{is.null}\hlstd{(highlight))}
+                \hlstd{highlight} \hlkwb{<-} \hlstd{hl.default} \hlkwa{else if} \hlstd{(}\hlopt{!}\hlstd{(highlight} \hlopt{%in%} \hlstd{knit_theme}\hlopt{$}\hlkwd{get}\hlstd{()))}
+                \hlstd{highlight} \hlkwb{<-} \hlstd{hl.default}
+            \hlstd{header} \hlkwb{<-} \hlkwd{rmdHeader}\hlstd{(}\hlkwc{title} \hlstd{= title,} \hlkwc{author} \hlstd{= author,} \hlkwc{highlight} \hlstd{= highlight)}
+        \hlstd{\}}
+        \hlstd{header} \hlkwb{<-} \hlkwd{paste0}\hlstd{(header,} \hlkwc{collapse} \hlstd{=} \hlstr{"\textbackslash{}n"}\hlstd{)}
+        \hlstd{l} \hlkwb{<-} \hlkwd{paste0}\hlstd{(l[}\hlopt{-}\hlstd{h.ind],} \hlstr{"\textbackslash{}n"}\hlstd{)}
+        \hlkwa{if} \hlstd{(ext} \hlopt{==} \hlstr{"Rmd"}\hlstd{) \{}
+            \hlstd{from} \hlkwb{<-} \hlstd{rmdChunkID}
+            \hlstd{to} \hlkwb{<-} \hlstd{rnwChunkID}
+        \hlstd{\}}
+        \hlkwa{if} \hlstd{(ext} \hlopt{==} \hlstr{"Rnw"}\hlstd{) \{}
+            \hlstd{from} \hlkwb{<-} \hlstd{rnwChunkID}
+            \hlstd{to} \hlkwb{<-} \hlstd{rmdChunkID}
+        \hlstd{\}}
+        \hlstd{l} \hlkwb{<-} \hlkwd{swapHeadings}\hlstd{(}\hlkwc{from} \hlstd{= from,} \hlkwc{to} \hlstd{= to,} \hlkwc{x} \hlstd{= l)}
+        \hlstd{chunks} \hlkwb{<-} \hlkwd{swapChunks}\hlstd{(}\hlkwc{from} \hlstd{= from,} \hlkwc{to} \hlstd{= to,} \hlkwc{x} \hlstd{= l)}
+        \hlstd{l} \hlkwb{<-} \hlstd{chunks[[}\hlnum{1}\hlstd{]]}
+        \hlkwa{if} \hlstd{(ext} \hlopt{==} \hlstr{"Rmd"}\hlstd{)}
+            \hlstd{l} \hlkwb{<-} \hlkwd{swapEmphasis}\hlstd{(}\hlkwc{x} \hlstd{= l,} \hlkwc{emphasis} \hlstd{= emphasis)}
+        \hlkwa{if} \hlstd{(ext} \hlopt{==} \hlstr{"Rmd"}\hlstd{)}
+            \hlstd{l[}\hlopt{-}\hlstd{chunks[[}\hlnum{2}\hlstd{]]]} \hlkwb{<-} \hlkwd{sapply}\hlstd{(l[}\hlopt{-}\hlstd{chunks[[}\hlnum{2}\hlstd{]]],} \hlkwa{function}\hlstd{(}\hlkwc{v}\hlstd{,} \hlkwc{p}\hlstd{,} \hlkwc{r}\hlstd{)} \hlkwd{gsub}\hlstd{(p,}
+                \hlstd{r, v),} \hlkwc{p} \hlstd{=} \hlstr{"_"}\hlstd{,} \hlkwc{r} \hlstd{=} \hlstr{"\textbackslash{}\textbackslash{}\textbackslash{}\textbackslash{}_"}\hlstd{)}
+        \hlstd{l} \hlkwb{<-} \hlkwd{c}\hlstd{(header, l,} \hlstr{"\textbackslash{}n\textbackslash{}\textbackslash{}end\{document\}\textbackslash{}n"}\hlstd{)}
+        \hlstd{outfile} \hlkwb{<-} \hlkwd{file.path}\hlstd{(outDir,} \hlkwd{gsub}\hlstd{(}\hlkwd{paste0}\hlstd{(}\hlstr{"\textbackslash{}\textbackslash{}."}\hlstd{, ext),} \hlkwd{paste0}\hlstd{(}\hlstr{"\textbackslash{}\textbackslash{}."}\hlstd{,}
+            \hlstd{out.ext),} \hlkwd{basename}\hlstd{(file)))}
+        \hlkwa{if} \hlstd{(overwrite} \hlopt{|| !}\hlkwd{file.exists}\hlstd{(outfile)) \{}
+            \hlkwd{sink}\hlstd{(outfile)}
+            \hlkwd{sapply}\hlstd{(l, cat)}
+            \hlkwd{sink}\hlstd{()}
+            \hlkwd{print}\hlstd{(}\hlkwd{paste}\hlstd{(}\hlstr{"Writing"}\hlstd{, outfile))}
+        \hlstd{\}}
+    \hlstd{\}}
+
+    \hlkwa{if} \hlstd{(type} \hlopt{==} \hlstr{"Rmd"}\hlstd{) \{}
+        \hlkwd{sapply}\hlstd{(rmd.files, swap,} \hlkwc{header} \hlstd{= header.rnw,} \hlkwc{outDir} \hlstd{= outDir, ...)}
+        \hlkwd{cat}\hlstd{(}\hlstr{".Rmd to .Rnw file conversion complete.\textbackslash{}n"}\hlstd{)}
+    \hlstd{\}} \hlkwa{else} \hlstd{\{}
+        \hlkwd{sapply}\hlstd{(rnw.files, swap,} \hlkwc{header} \hlstd{=} \hlkwa{NULL}\hlstd{,} \hlkwc{outDir} \hlstd{= outDir, ...)}
+        \hlkwd{cat}\hlstd{(}\hlstr{".Rnw to .Rmd file conversion complete.\textbackslash{}n"}\hlstd{)}
+    \hlstd{\}}
+\hlstd{\}}
+\end{alltt}
+\end{kframe}
+\end{knitrout}
+
+\subsubsection{moveDocs}
+\texttt{moveDocs} relocates files by renaming with a new file path.
+Specifically, it scans for md and html files in the \texttt{docs/Rmd} directory and/or pdf files in the \texttt{docs/Rnw} directory.
+If such files are found in the respective locations, they are moved to \texttt{docs/md}, \texttt{docs/html}, and \texttt{docs/pdf}, respectively.
+
+The intent is to clean up the Rmd and Rnw directories after \texttt{knitr} has been used to knit documents in place.
+I do this because I have more success knitting documents with the confluence of \texttt{RStudio}, \texttt{rmarkdown}, \texttt{knitr}, \texttt{pandoc}, and \texttt{LaTeX} when the knitting occurs all within the directory of the originating files.
+The process is more prone to throwing errors when trying to specify alternate locations for outputs.
+
+\texttt{moveDocs} makes a nominal effort to replace a possible relative path with a full file path before proceeding, if the former is supplied.
+Default arguments include \texttt{move=TRUE} which will call \texttt{file.rename} and \texttt{copy=FALSE} which, if \texttt{TRUE} (and \texttt{move=FALSE}), will alternatively call \texttt{file.copy}.
+If both are \texttt{TRUE}, any files found are moved.
+
+This function will always overwrite any existing file versions previously moved to the output directories, by way of \texttt{file.rename}.
+To keep the behavior consistent, when \texttt{move=FALSE} and \texttt{copy=TRUE}, \texttt{file.copy} always executes with its argument, \texttt{overwrite=TRUE}.
+This should never cause problems because in the context I intend for this function,
+the types of files being moved or copied from \texttt{docs/Rmd} and \texttt{docs/Rnw} are never used as inputs to other files, functions, or processes,
+nor are they meant to be edited by hand after being generated.
+
+If there are LaTeX-associated files present (.TeX, .aux, and .txt files with the same file names as local pdf files.),
+these files will be removed if \texttt{remove.latex=TRUE} (default).
+If \texttt{FALSE}, the default \texttt{latexDir="LaTeX"} means that these files will be moved to the \texttt{docs/LaTeX} directory rather than deleted.
+If this directory does not exist, it will be created.
+An alternate location can be specified, such as "pdf" if you want to keep these files with the related pdf files after those are moved by \texttt{moveDocs} as well to \texttt{docs/pdf}.
+
+\begin{knitrout}
+\definecolor{shadecolor}{rgb}{0, 0.169, 0.212}\color{fgcolor}\begin{kframe}
+\begin{alltt}
+\hlstd{moveDocs} \hlkwb{<-} \hlkwa{function}\hlstd{(}\hlkwc{path.docs}\hlstd{,} \hlkwc{type} \hlstd{=} \hlkwd{c}\hlstd{(}\hlstr{"md"}\hlstd{,} \hlstr{"html"}\hlstd{,} \hlstr{"pdf"}\hlstd{),} \hlkwc{move} \hlstd{=} \hlnum{TRUE}\hlstd{,}
+    \hlkwc{copy} \hlstd{=} \hlnum{FALSE}\hlstd{,} \hlkwc{remove.latex} \hlstd{=} \hlnum{TRUE}\hlstd{,} \hlkwc{latexDir} \hlstd{=} \hlstr{"latex"}\hlstd{) \{}
+    \hlkwa{if} \hlstd{(}\hlkwd{any}\hlstd{(}\hlopt{!}\hlstd{(type} \hlopt{%in%} \hlkwd{c}\hlstd{(}\hlstr{"md"}\hlstd{,} \hlstr{"html"}\hlstd{,} \hlstr{"pdf"}\hlstd{))))}
+        \hlkwd{stop}\hlstd{(}\hlstr{"type must be among 'md', 'html', and 'pdf'"}\hlstd{)}
+    \hlkwd{stopifnot}\hlstd{(move} \hlopt{|} \hlstd{copy)}
+    \hlkwa{if} \hlstd{(path.docs} \hlopt{==} \hlstr{"."} \hlopt{|} \hlstd{path.docs} \hlopt{==} \hlstr{"./"}\hlstd{)}
+        \hlstd{path.docs} \hlkwb{<-} \hlkwd{getwd}\hlstd{()}
+    \hlkwa{if} \hlstd{(}\hlkwd{strsplit}\hlstd{(path.docs,} \hlstr{"/"}\hlstd{)[[}\hlnum{1}\hlstd{]][}\hlnum{1}\hlstd{]} \hlopt{==} \hlstr{".."}\hlstd{) \{}
+        \hlstd{tmp} \hlkwb{<-} \hlkwd{strsplit}\hlstd{(path.docs,} \hlstr{"/"}\hlstd{)[[}\hlnum{1}\hlstd{]][}\hlopt{-}\hlnum{1}\hlstd{]}
+        \hlkwa{if} \hlstd{(}\hlkwd{length}\hlstd{(tmp))}
+            \hlstd{path.docs} \hlkwb{<-} \hlkwd{file.path}\hlstd{(}\hlkwd{getwd}\hlstd{(),} \hlkwd{paste0}\hlstd{(tmp,} \hlkwc{collapse} \hlstd{=} \hlstr{"/"}\hlstd{))} \hlkwa{else} \hlkwd{stop}\hlstd{(}\hlstr{"Check path.docs argument."}\hlstd{)}
+    \hlstd{\}}
+    \hlkwa{for} \hlstd{(i} \hlkwa{in} \hlnum{1}\hlopt{:}\hlkwd{length}\hlstd{(type)) \{}
+        \hlkwa{if} \hlstd{(type[i]} \hlopt{==} \hlstr{"pdf"}\hlstd{)}
+            \hlstd{origin} \hlkwb{<-} \hlstr{"Rnw"} \hlkwa{else} \hlstd{origin} \hlkwb{<-} \hlstr{"Rmd"}
+        \hlstd{path.i} \hlkwb{<-} \hlkwd{file.path}\hlstd{(path.docs, origin)}
+        \hlstd{infiles} \hlkwb{<-} \hlkwd{list.files}\hlstd{(path.i,} \hlkwc{pattern} \hlstd{=} \hlkwd{paste0}\hlstd{(}\hlstr{"\textbackslash{}\textbackslash{}."}\hlstd{, type[i],} \hlstr{"$"}\hlstd{),}
+            \hlkwc{full} \hlstd{=} \hlnum{TRUE}\hlstd{)}
+        \hlkwa{if} \hlstd{(type[i]} \hlopt{==} \hlstr{"pdf"}\hlstd{) \{}
+            \hlstd{extensions} \hlkwb{<-} \hlkwd{c}\hlstd{(}\hlstr{"tex"}\hlstd{,} \hlstr{"aux"}\hlstd{,} \hlstr{"log"}\hlstd{)}
+            \hlstd{all.pdfs} \hlkwb{<-} \hlkwd{basename}\hlstd{(}\hlkwd{list.files}\hlstd{(path.docs,} \hlkwc{pattern} \hlstd{=} \hlstr{".pdf$"}\hlstd{,} \hlkwc{full} \hlstd{= T,}
+                \hlkwc{recursive} \hlstd{= T))}
+            \hlstd{pat} \hlkwb{<-} \hlkwd{paste0}\hlstd{(}\hlstr{"^"}\hlstd{,} \hlkwd{rep}\hlstd{(}\hlkwd{gsub}\hlstd{(}\hlstr{"pdf"}\hlstd{,} \hlstr{""}\hlstd{, all.pdfs),} \hlkwd{length}\hlstd{(extensions)),}
+                \hlkwd{rep}\hlstd{(extensions,} \hlkwc{each} \hlstd{=} \hlkwd{length}\hlstd{(all.pdfs)),} \hlstr{"$"}\hlstd{)}
+            \hlstd{latex.files} \hlkwb{<-} \hlkwd{sapply}\hlstd{(}\hlnum{1}\hlopt{:}\hlkwd{length}\hlstd{(pat),} \hlkwa{function}\hlstd{(}\hlkwc{p}\hlstd{,} \hlkwc{path}\hlstd{,} \hlkwc{pat}\hlstd{)} \hlkwd{list.files}\hlstd{(path,}
+                \hlkwc{pattern} \hlstd{= pat[p],} \hlkwc{full} \hlstd{=} \hlnum{TRUE}\hlstd{),} \hlkwc{path} \hlstd{= path.i,} \hlkwc{pat} \hlstd{= pat)}
+            \hlkwa{if} \hlstd{(}\hlopt{!}\hlkwd{is.list}\hlstd{(latex.files)) \{}
+                \hlkwa{if} \hlstd{(remove.latex) \{}
+                  \hlkwd{unlink}\hlstd{(latex.files)}
+                \hlstd{\}} \hlkwa{else} \hlstd{\{}
+                  \hlkwd{dir.create}\hlstd{(}\hlkwd{file.path}\hlstd{(path.docs, latexDir),} \hlkwc{showWarnings} \hlstd{=} \hlnum{FALSE}\hlstd{,}
+                    \hlkwc{recursive} \hlstd{=} \hlnum{TRUE}\hlstd{)}
+                  \hlkwd{file.rename}\hlstd{(latex.files,} \hlkwd{file.path}\hlstd{(path.docs, latexDir,} \hlkwd{basename}\hlstd{(latex.files)))}
+                \hlstd{\}}
+            \hlstd{\}}
+        \hlstd{\}}
+        \hlkwa{if} \hlstd{(}\hlkwd{length}\hlstd{(infiles)) \{}
+            \hlstd{infiles} \hlkwb{<-} \hlstd{infiles[}\hlkwd{basename}\hlstd{(}\hlkwd{dirname}\hlstd{(infiles))} \hlopt{==} \hlstd{origin]}
+            \hlkwa{if} \hlstd{(}\hlkwd{length}\hlstd{(infiles)) \{}
+                \hlkwa{if} \hlstd{(type[i]} \hlopt{==} \hlstr{"html"}\hlstd{) \{}
+                  \hlstd{html.dirs} \hlkwb{<-} \hlkwd{gsub}\hlstd{(}\hlstr{"\textbackslash{}\textbackslash{}.html"}\hlstd{,} \hlstr{"_files"}\hlstd{, infiles)}
+                  \hlstd{dirs} \hlkwb{<-} \hlkwd{list.dirs}\hlstd{(path.i,} \hlkwc{recursive} \hlstd{=} \hlnum{FALSE}\hlstd{)}
+                  \hlstd{ind} \hlkwb{<-} \hlkwd{which}\hlstd{(dirs} \hlopt{%in%} \hlstd{html.dirs)}
+                  \hlkwa{if} \hlstd{(}\hlkwd{length}\hlstd{(ind)) \{}
+                    \hlstd{html.dirs} \hlkwb{<-} \hlstd{dirs[ind]}
+                    \hlstd{html.dirs.recur} \hlkwb{<-} \hlkwd{list.dirs}\hlstd{(html.dirs)}
+                    \hlkwa{for} \hlstd{(p} \hlkwa{in} \hlnum{1}\hlopt{:}\hlkwd{length}\hlstd{(html.dirs.recur))} \hlkwd{dir.create}\hlstd{(}\hlkwd{gsub}\hlstd{(}\hlstr{"/Rmd"}\hlstd{,}
+                      \hlstr{"/html"}\hlstd{, html.dirs.recur[p]),} \hlkwc{recursive} \hlstd{=} \hlnum{TRUE}\hlstd{,} \hlkwc{showWarnings} \hlstd{=} \hlnum{FALSE}\hlstd{)}
+                    \hlstd{subfiles} \hlkwb{<-} \hlkwd{unique}\hlstd{(}\hlkwd{unlist}\hlstd{(}\hlkwd{lapply}\hlstd{(}\hlnum{1}\hlopt{:}\hlkwd{length}\hlstd{(html.dirs.recur),}
+                      \hlkwa{function}\hlstd{(}\hlkwc{p}\hlstd{,} \hlkwc{path}\hlstd{)} \hlkwd{list.files}\hlstd{(path[p],} \hlkwc{full} \hlstd{=} \hlnum{TRUE}\hlstd{),} \hlkwc{path} \hlstd{= html.dirs.recur)))}
+                    \hlstd{subfiles} \hlkwb{<-} \hlstd{subfiles[}\hlopt{!}\hlstd{(subfiles} \hlopt{%in%} \hlstd{html.dirs.recur)]}
+                    \hlkwd{file.copy}\hlstd{(subfiles,} \hlkwd{gsub}\hlstd{(}\hlstr{"/Rmd"}\hlstd{,} \hlstr{"/html"}\hlstd{, subfiles),} \hlkwc{overwrite} \hlstd{=} \hlnum{TRUE}\hlstd{)}
+                    \hlkwa{if} \hlstd{(move)}
+                      \hlkwd{unlink}\hlstd{(html.dirs,} \hlkwc{recursive} \hlstd{=} \hlnum{TRUE}\hlstd{)}
+                  \hlstd{\}}
+                \hlstd{\}}
+                \hlstd{outfiles} \hlkwb{<-} \hlkwd{file.path}\hlstd{(path.docs, type[i],} \hlkwd{basename}\hlstd{(infiles))}
+                \hlkwa{if} \hlstd{(move)}
+                  \hlkwd{file.rename}\hlstd{(infiles, outfiles)} \hlkwa{else if} \hlstd{(copy)}
+                  \hlkwd{file.copy}\hlstd{(infiles, outfiles,} \hlkwc{overwrite} \hlstd{=} \hlnum{TRUE}\hlstd{)}
+            \hlstd{\}}
+        \hlstd{\}}
+    \hlstd{\}}
+\hlstd{\}}
+\end{alltt}
+\end{kframe}
+\end{knitrout}
+
+\subsubsection{genNavbar}
+
+\texttt{genNavbar} generates a navigation bar for a web page.
+The html file created should be written to the project's \texttt{docs/Rmd/include} directory.
+The common navigation bar html is included prior to the body of the html for each web page in the project's website.
+\texttt{menu} is a vector of names for each dropdown menu.
+\texttt{submenus} is a list of vectors of menu options corresponding to each menu.
+\texttt{files} is a similar list of vectors.
+Each element is either an html file for a web page to be associated with the submenu link,
+"header" to indicate the corresponding name in \texttt{submenus} is only a group label and not a link to a web page,
+or "divider" to indicate placement of a bar for separating groups in a dropdown menu.
+
+\begin{knitrout}
+\definecolor{shadecolor}{rgb}{0, 0.169, 0.212}\color{fgcolor}\begin{kframe}
+\begin{alltt}
+\hlcom{# Functions for Github project websites}
+\hlstd{genNavbar} \hlkwb{<-} \hlkwa{function}\hlstd{(}\hlkwc{htmlfile} \hlstd{=} \hlstr{"navbar.html"}\hlstd{,} \hlkwc{title}\hlstd{,} \hlkwc{menu}\hlstd{,} \hlkwc{submenus}\hlstd{,} \hlkwc{files}\hlstd{,}
+    \hlkwc{title.url} \hlstd{=} \hlstr{"index.html"}\hlstd{,} \hlkwc{home.url} \hlstd{=} \hlstr{"index.html"}\hlstd{,} \hlkwc{site.url} \hlstd{=} \hlstr{""}\hlstd{,} \hlkwc{site.name} \hlstd{=} \hlstr{"Github"}\hlstd{,}
+    \hlkwc{include.home} \hlstd{=} \hlnum{FALSE}\hlstd{) \{}
+
+    \hlstd{fillSubmenu} \hlkwb{<-} \hlkwa{function}\hlstd{(}\hlkwc{x}\hlstd{,} \hlkwc{name}\hlstd{,} \hlkwc{file}\hlstd{) \{}
+        \hlkwa{if} \hlstd{(file[x]} \hlopt{==} \hlstr{"divider"}\hlstd{)}
+            \hlkwd{return}\hlstd{(}\hlstr{"              <li class=\textbackslash{}"divider\textbackslash{}"></li>\textbackslash{}n"}\hlstd{)}
+        \hlkwa{if} \hlstd{(file[x]} \hlopt{==} \hlstr{"header"}\hlstd{)}
+            \hlkwd{return}\hlstd{(}\hlkwd{paste0}\hlstd{(}\hlstr{"              <li class=\textbackslash{}"nav-header\textbackslash{}">"}\hlstd{, name[x],}
+                \hlstr{"</li>\textbackslash{}n"}\hlstd{))}
+        \hlkwd{paste0}\hlstd{(}\hlstr{"              <li><a href=\textbackslash{}""}\hlstd{, file[x],} \hlstr{"\textbackslash{}">"}\hlstd{, name[x],} \hlstr{"</a></li>\textbackslash{}n"}\hlstd{)}
+    \hlstd{\}}
+
+    \hlstd{fillMenu} \hlkwb{<-} \hlkwa{function}\hlstd{(}\hlkwc{x}\hlstd{,} \hlkwc{menu}\hlstd{,} \hlkwc{submenus}\hlstd{,} \hlkwc{files}\hlstd{) \{}
+        \hlkwd{paste0}\hlstd{(}\hlstr{"<li class=\textbackslash{}"dropdown\textbackslash{}">\textbackslash{}n            <a href=\textbackslash{}""}\hlstd{,} \hlkwd{gsub}\hlstd{(}\hlstr{" "}\hlstd{,}
+            \hlstr{"-"}\hlstd{,} \hlkwd{tolower}\hlstd{(menu[x])),} \hlstr{"\textbackslash{}" class=\textbackslash{}"dropdown-toggle\textbackslash{}" data-toggle=\textbackslash{}"dropdown\textbackslash{}">"}\hlstd{,}
+            \hlstd{menu[x],} \hlstr{" <b class=\textbackslash{}"caret\textbackslash{}"></b></a>\textbackslash{}n            <ul class=\textbackslash{}"dropdown-menu\textbackslash{}">\textbackslash{}n"}\hlstd{,}
+            \hlkwd{paste}\hlstd{(}\hlkwd{sapply}\hlstd{(}\hlnum{1}\hlopt{:}\hlkwd{length}\hlstd{(submenus[[x]]), fillSubmenu,} \hlkwc{name} \hlstd{= submenus[[x]],}
+                \hlkwc{file} \hlstd{= files[[x]]),} \hlkwc{sep} \hlstd{=} \hlstr{""}\hlstd{,} \hlkwc{collapse} \hlstd{=} \hlstr{""}\hlstd{),} \hlstr{"            </ul>\textbackslash{}n"}\hlstd{,}
+            \hlkwc{collapse} \hlstd{=} \hlstr{""}\hlstd{)}
+    \hlstd{\}}
+
+    \hlkwa{if} \hlstd{(include.home)}
+        \hlstd{home} \hlkwb{<-} \hlkwd{paste0}\hlstd{(}\hlstr{"<li><a href=\textbackslash{}""}\hlstd{, home.url,} \hlstr{"\textbackslash{}">Home</a></li>\textbackslash{}n          "}\hlstd{)} \hlkwa{else} \hlstd{home} \hlkwb{<-} \hlstr{""}
+    \hlstd{x} \hlkwb{<-} \hlkwd{paste0}\hlstd{(}\hlstr{"<div class=\textbackslash{}"navbar navbar-default navbar-fixed-top\textbackslash{}">\textbackslash{}n  <div class=\textbackslash{}"navbar-inner\textbackslash{}">\textbackslash{}n    <div class=\textbackslash{}"container\textbackslash{}">\textbackslash{}n      <button type=\textbackslash{}"button\textbackslash{}" class=\textbackslash{}"btn btn-navbar\textbackslash{}" data-toggle=\textbackslash{}"collapse\textbackslash{}" data-target=\textbackslash{}".nav-collapse\textbackslash{}">\textbackslash{}n        <span class=\textbackslash{}"icon-bar\textbackslash{}"></span>\textbackslash{}n        <span class=\textbackslash{}"icon-bar\textbackslash{}"></span>\textbackslash{}n        <span class=\textbackslash{}"icon-bar\textbackslash{}"></span>\textbackslash{}n      </button>\textbackslash{}n      <a class=\textbackslash{}"brand\textbackslash{}" href=\textbackslash{}""}\hlstd{,}
+        \hlstd{title.url,} \hlstr{"\textbackslash{}">"}\hlstd{, title,} \hlstr{"</a>\textbackslash{}n      <div class=\textbackslash{}"nav-collapse collapse\textbackslash{}">\textbackslash{}n        <ul class=\textbackslash{}"nav\textbackslash{}">\textbackslash{}n          "}\hlstd{,}
+        \hlstd{home,} \hlkwd{paste}\hlstd{(}\hlkwd{sapply}\hlstd{(}\hlnum{1}\hlopt{:}\hlkwd{length}\hlstd{(menu), fillMenu,} \hlkwc{menu} \hlstd{= menu,} \hlkwc{submenus} \hlstd{= submenus,}
+            \hlkwc{files} \hlstd{= files),} \hlkwc{sep} \hlstd{=} \hlstr{""}\hlstd{,} \hlkwc{collapse} \hlstd{=} \hlstr{"\textbackslash{}n          "}\hlstd{),} \hlstr{"        </ul>\textbackslash{}n        <ul class=\textbackslash{}"nav pull-right\textbackslash{}">\textbackslash{}n          <a class=\textbackslash{}"btn btn-primary\textbackslash{}" href=\textbackslash{}""}\hlstd{,}
+        \hlstd{site.url,} \hlstr{"\textbackslash{}">\textbackslash{}n            <i class=\textbackslash{}"fa fa-github fa-lg\textbackslash{}"></i>\textbackslash{}n            "}\hlstd{,}
+        \hlstd{site.name,} \hlstr{"\textbackslash{}n          </a>\textbackslash{}n        </ul>\textbackslash{}n      </div><!--/.nav-collapse -->\textbackslash{}n    </div>\textbackslash{}n  </div>\textbackslash{}n</div>\textbackslash{}n"}\hlstd{,}
+        \hlkwc{collpase} \hlstd{=} \hlstr{""}\hlstd{)}
+    \hlkwd{sink}\hlstd{(htmlfile)}
+    \hlkwd{cat}\hlstd{(x)}
+    \hlkwd{sink}\hlstd{()}
+    \hlstd{x}
+\hlstd{\}}
+\end{alltt}
+\end{kframe}
+\end{knitrout}
+
+\subsubsection{genOutyaml}
+
+\texttt{genOutyaml} generates the \texttt{\_out.yaml} file for yaml front-matter common to all html files in the project website.
+The file should be written to the project's \texttt{docs/Rmd} directory.
+\texttt{lib} specifies the library directory for any associated files.
+yaml \texttt{includes} for external html common to all project web pages in the site can also be specified with \texttt{header}, \texttt{before\_body}, and \texttt{after\_body}.
+These can be specified by file basename only (no path) and the function assumes these files are in the \texttt{docs/Rmd/include} directory.
+At this time all external libraries must be provided by the user, for example in \texttt{docs/Rmd/libs}.
+It is recommended. See the project repo [gh-pages](https://github.com/leonawicz/ProjectManagement/tree/gh-pages "gh-pages") branch for an example.
+
+\begin{knitrout}
+\definecolor{shadecolor}{rgb}{0, 0.169, 0.212}\color{fgcolor}\begin{kframe}
+\begin{alltt}
+\hlstd{genOutyaml} \hlkwb{<-} \hlkwa{function}\hlstd{(}\hlkwc{file}\hlstd{,} \hlkwc{theme} \hlstd{=} \hlstr{"cosmo"}\hlstd{,} \hlkwc{highlight} \hlstd{=} \hlstr{"zenburn"}\hlstd{,} \hlkwc{lib} \hlstd{=} \hlkwa{NULL}\hlstd{,}
+    \hlkwc{header} \hlstd{=} \hlkwa{NULL}\hlstd{,} \hlkwc{before_body} \hlstd{=} \hlkwa{NULL}\hlstd{,} \hlkwc{after_body} \hlstd{=} \hlkwa{NULL}\hlstd{) \{}
+    \hlstd{output.yaml} \hlkwb{<-} \hlkwd{paste0}\hlstd{(}\hlstr{"html_document:\textbackslash{}n  self_contained: false\textbackslash{}n  theme: "}\hlstd{,}
+        \hlstd{theme,} \hlstr{"\textbackslash{}n  highlight: "}\hlstd{, highlight,} \hlstr{"\textbackslash{}n  mathjax: null\textbackslash{}n  toc_depth: 2\textbackslash{}n"}\hlstd{)}
+    \hlkwa{if} \hlstd{(}\hlopt{!}\hlkwd{is.null}\hlstd{(lib))}
+        \hlstd{output.yaml} \hlkwb{<-} \hlkwd{paste0}\hlstd{(output.yaml,} \hlstr{"  lib_dir: "}\hlstd{, lib,} \hlstr{"\textbackslash{}n"}\hlstd{)}
+    \hlstd{output.yaml} \hlkwb{<-} \hlkwd{paste0}\hlstd{(output.yaml,} \hlstr{"  includes:\textbackslash{}n"}\hlstd{)}
+    \hlkwa{if} \hlstd{(}\hlopt{!}\hlkwd{is.null}\hlstd{(header))}
+        \hlstd{output.yaml} \hlkwb{<-} \hlkwd{paste0}\hlstd{(output.yaml,} \hlstr{"    in_header: "}\hlstd{, header,} \hlstr{"\textbackslash{}n"}\hlstd{)}
+    \hlkwa{if} \hlstd{(}\hlopt{!}\hlkwd{is.null}\hlstd{(before_body))}
+        \hlstd{output.yaml} \hlkwb{<-} \hlkwd{paste0}\hlstd{(output.yaml,} \hlstr{"    before_body: "}\hlstd{, before_body,}
+            \hlstr{"\textbackslash{}n"}\hlstd{)}
+    \hlkwa{if} \hlstd{(}\hlopt{!}\hlkwd{is.null}\hlstd{(after_body))}
+        \hlstd{output.yaml} \hlkwb{<-} \hlkwd{paste0}\hlstd{(output.yaml,} \hlstr{"    after_body: "}\hlstd{, after_body,} \hlstr{"\textbackslash{}n"}\hlstd{)}
+    \hlkwd{sink}\hlstd{(file)}
+    \hlkwd{cat}\hlstd{(output.yaml)}
+    \hlkwd{sink}\hlstd{()}
+    \hlstd{output.yaml}
+\hlstd{\}}
+\end{alltt}
+\end{kframe}
+\end{knitrout}
+
+\subsubsection{genAppDiv}
+
+\texttt{genAppDiv} generates an html file storing a container div element which organizes Shiny web applications.
+The function scans a directory of Shiny app subdirectories.
+This apps directory should be a local repository.
+
+Specifically, \texttt{genAppDiv} looks for a named directory of image files.
+There should be one image per app, named exactly as the respective app directory is named.
+Only apps with corresponding images are built into the html container.
+If you wish to leave out, say, a developmental app from being linked to on you Github user website, do not include an image file for that app.
+
+The container element includes an image link to each app's url as well as a link to the source code on Github.
+Although the function scans for images in directory inside a local repository, the images referenced in the output html are of course not local.
+They point to the same images stored on Github, hence why it is useful for the local directory of apps to be a Github repository.
+As an example, a repository may contain the directories, \texttt{app1}, \texttt{app2}, \texttt{app3}, and \texttt{images}.
+
+This function will probably be removed in favor of the more general \texttt{genPanelDiv} function.
+
+
+\begin{knitrout}
+\definecolor{shadecolor}{rgb}{0, 0.169, 0.212}\color{fgcolor}\begin{kframe}
+\begin{alltt}
+\hlcom{# Functions for Github user website}
+\hlstd{genAppDiv} \hlkwb{<-} \hlkwa{function}\hlstd{(}\hlkwc{file} \hlstd{=} \hlstr{"C:/github/leonawicz.github.io/assets/apps_container.html"}\hlstd{,}
+    \hlkwc{type} \hlstd{=} \hlstr{"apps"}\hlstd{,} \hlkwc{main} \hlstd{=} \hlstr{"Shiny Apps"}\hlstd{,} \hlkwc{apps.url} \hlstd{=} \hlstr{"http://shiny.snap.uaf.edu"}\hlstd{,}
+    \hlkwc{github.url} \hlstd{=} \hlstr{"https://github.com/ua-snap/shiny-apps/tree/master"}\hlstd{,} \hlkwc{apps.dir} \hlstd{=} \hlstr{"C:/github/shiny-apps"}\hlstd{,}
+    \hlkwc{img.loc} \hlstd{=} \hlstr{"_images/cropped"}\hlstd{,} \hlkwc{...}\hlstd{) \{}
+
+    \hlstd{apps.img} \hlkwb{<-} \hlkwd{list.files}\hlstd{(}\hlkwd{file.path}\hlstd{(apps.dir, img.loc))}
+    \hlstd{apps} \hlkwb{<-} \hlkwd{sapply}\hlstd{(}\hlkwd{strsplit}\hlstd{(apps.img,} \hlstr{"\textbackslash{}\textbackslash{}."}\hlstd{),} \hlstr{"[["}\hlstd{,} \hlnum{1}\hlstd{)}
+    \hlstd{x} \hlkwb{<-} \hlkwd{paste0}\hlstd{(}\hlstr{"<div class=\textbackslash{}"container\textbackslash{}">\textbackslash{}n  <div class=\textbackslash{}"row\textbackslash{}">\textbackslash{}n    <div class=\textbackslash{}"col-lg-12\textbackslash{}">\textbackslash{}n      <div class=\textbackslash{}"page-header\textbackslash{}">\textbackslash{}n        <h3 id=\textbackslash{}""}\hlstd{,}
+        \hlstd{type,} \hlstr{"\textbackslash{}">"}\hlstd{, main,} \hlstr{"</h3>\textbackslash{}n      </div>\textbackslash{}n    </div>\textbackslash{}n  </div>\textbackslash{}n  "}\hlstd{)}
+
+    \hlstd{fillRow} \hlkwb{<-} \hlkwa{function}\hlstd{(}\hlkwc{i}\hlstd{,} \hlkwc{...}\hlstd{) \{}
+        \hlstd{app} \hlkwb{<-} \hlstd{apps[i]}
+        \hlstd{app.url} \hlkwb{<-} \hlkwd{file.path}\hlstd{(apps.url, app)}
+        \hlstd{dots} \hlkwb{<-} \hlkwd{list}\hlstd{(...)}
+        \hlkwa{if} \hlstd{(}\hlkwd{is.null}\hlstd{(dots}\hlopt{$}\hlstd{col))}
+            \hlstd{col} \hlkwb{<-} \hlstr{"warning"} \hlkwa{else} \hlstd{col} \hlkwb{<-} \hlstd{dots}\hlopt{$}\hlstd{col}
+        \hlkwa{if} \hlstd{(}\hlkwd{is.null}\hlstd{(dots}\hlopt{$}\hlstd{panel.main))}
+            \hlstd{panel.main} \hlkwb{<-} \hlkwd{gsub}\hlstd{(}\hlstr{"_"}\hlstd{,} \hlstr{" "}\hlstd{, app)} \hlkwa{else} \hlstd{panel.main} \hlkwb{<-} \hlstd{dots}\hlopt{$}\hlstd{panel.main}
+        \hlkwa{if} \hlstd{(}\hlkwd{length}\hlstd{(panel.main)} \hlopt{>} \hlnum{1}\hlstd{)}
+            \hlstd{panel.main} \hlkwb{<-} \hlstd{panel.main[i]}
+        \hlstd{x} \hlkwb{<-} \hlkwd{paste0}\hlstd{(}\hlstr{"<div class=\textbackslash{}"col-lg-4\textbackslash{}">\textbackslash{}n\textbackslash{}t\textbackslash{}t  <div class=\textbackslash{}"bs-component\textbackslash{}">\textbackslash{}n\textbackslash{}t\textbackslash{}t\textbackslash{}t<div class=\textbackslash{}"panel panel-"}\hlstd{,}
+            \hlstd{col,} \hlstr{"\textbackslash{}">\textbackslash{}n\textbackslash{}t\textbackslash{}t\textbackslash{}t  <div class=\textbackslash{}"panel-heading\textbackslash{}"><h3 class=\textbackslash{}"panel-title\textbackslash{}">"}\hlstd{,}
+            \hlstd{panel.main,} \hlstr{"</h3>\textbackslash{}n\textbackslash{}t\textbackslash{}t\textbackslash{}t  </div>\textbackslash{}n\textbackslash{}t\textbackslash{}t\textbackslash{}t  <div class=\textbackslash{}"panel-body\textbackslash{}"><a href=\textbackslash{}""}\hlstd{,}
+            \hlstd{app.url,} \hlstr{"\textbackslash{}" target=\textbackslash{}"_blank\textbackslash{}"><img src=\textbackslash{}""}\hlstd{,} \hlkwd{file.path}\hlstd{(}\hlkwd{gsub}\hlstd{(}\hlstr{"/tree/"}\hlstd{,}
+                \hlstr{"/raw/"}\hlstd{, github.url), img.loc, apps.img[i]),} \hlstr{"\textbackslash{}" alt=\textbackslash{}""}\hlstd{, apps[i],}
+            \hlstr{"\textbackslash{}" width=100% height=200px></a><p></p>\textbackslash{}n\textbackslash{}t\textbackslash{}t\textbackslash{}t\textbackslash{}t<div class=\textbackslash{}"btn-group btn-group-justified\textbackslash{}">\textbackslash{}n\textbackslash{}t\textbackslash{}t\textbackslash{}t\textbackslash{}t  <a href=\textbackslash{}""}\hlstd{,}
+            \hlstd{app.url,} \hlstr{"\textbackslash{}" target=\textbackslash{}"_blank\textbackslash{}" class=\textbackslash{}"btn btn-success\textbackslash{}">Launch</a>\textbackslash{}n\textbackslash{}t\textbackslash{}t\textbackslash{}t\textbackslash{}t  <a href=\textbackslash{}""}\hlstd{,}
+            \hlkwd{file.path}\hlstd{(github.url, app),} \hlstr{"\textbackslash{}" target=\textbackslash{}"_blank\textbackslash{}" class=\textbackslash{}"btn btn-info\textbackslash{}">Github</a>\textbackslash{}n\textbackslash{}t\textbackslash{}t\textbackslash{}t\textbackslash{}t</div>\textbackslash{}n\textbackslash{}t\textbackslash{}t\textbackslash{}t  </div>\textbackslash{}n\textbackslash{}t\textbackslash{}t\textbackslash{}t</div>\textbackslash{}n\textbackslash{}t\textbackslash{}t  </div>\textbackslash{}n\textbackslash{}t\textbackslash{}t</div>"}\hlstd{)}
+    \hlstd{\}}
+
+    \hlstd{n} \hlkwb{<-} \hlkwd{length}\hlstd{(apps)}
+    \hlstd{seq1} \hlkwb{<-} \hlkwd{seq}\hlstd{(}\hlnum{1}\hlstd{, n,} \hlkwc{by} \hlstd{=} \hlnum{3}\hlstd{)}
+    \hlstd{y} \hlkwb{<-} \hlkwd{c}\hlstd{()}
+    \hlkwa{for} \hlstd{(j} \hlkwa{in} \hlnum{1}\hlopt{:}\hlkwd{length}\hlstd{(seq1)) \{}
+        \hlstd{ind} \hlkwb{<-} \hlstd{seq1[j]}\hlopt{:}\hlstd{(seq1[j]} \hlopt{+} \hlnum{2}\hlstd{)}
+        \hlstd{ind} \hlkwb{<-} \hlstd{ind[ind} \hlopt{%in%} \hlnum{1}\hlopt{:}\hlstd{n]}
+        \hlstd{y} \hlkwb{<-} \hlkwd{c}\hlstd{(y,} \hlkwd{paste0}\hlstd{(}\hlstr{"<div class=\textbackslash{}"row\textbackslash{}">\textbackslash{}n"}\hlstd{,} \hlkwd{paste0}\hlstd{(}\hlkwd{sapply}\hlstd{(ind, fillRow,}
+            \hlstd{...),} \hlkwc{collapse} \hlstd{=} \hlstr{"\textbackslash{}n"}\hlstd{),} \hlstr{"</div>\textbackslash{}n"}\hlstd{))}
+    \hlstd{\}}
+    \hlstd{z} \hlkwb{<-} \hlstr{"</div>\textbackslash{}n"}
+    \hlkwd{sink}\hlstd{(file)}
+    \hlkwd{sapply}\hlstd{(}\hlkwd{c}\hlstd{(x, y, z), cat)}
+    \hlkwd{sink}\hlstd{()}
+    \hlkwd{cat}\hlstd{(}\hlstr{"div container html created for Shiny Apps.\textbackslash{}n"}\hlstd{)}
+\hlstd{\}}
+
+\hlcom{# genAppDiv() genAppDiv(panel.main=rep('Jussanothashinyapp', 18))}
+\end{alltt}
+\end{kframe}
+\end{knitrout}
+
+\subsubsection{genPanelDiv}
+
+\texttt{genPanelDiv} generates an html file storing a container div element which in its current state of development organizes two types of content: \textbf{R} projects and Shiny web applications.
+
+The \texttt{type} argument can be either \texttt{projects} or \texttt{apps} and essentially bifurcates the behavior of \texttt{genPanelDiv}.
+The purpose of the function is to generate an html file defining a container div element to display and reference either my \textbf{R} projects or my Shiny apps.
+
+For projects, the function scans a directory of local repositories and takes any directories found to be the names of projects.
+There is an \texttt{exclude} argument for dropping any known directories that are to be avoided.
+My defaults are \texttt{exclude="leonawicz.github.io", "shiny-apps"} since the first is just a local repository for my Github user account web site and not a "project" in the same sense of my other projects
+and the second is the local repository which is scanned by \texttt{genPanelDiv} when \texttt{type="apps"}.
+
+For apps, the function scans a directory of Shiny app subdirectories.
+Unlike for projects, where \texttt{genPanelDiv} scans a directory of multiple local repositories, this apps directory should be a specific local repository. The apps contained within are not inndividual repositories.
+I have taken this approach for now simply because this is how my apps tend to be stored.
+
+Specifically, the \texttt{genAppDiv} looks for a named directory of image files.
+There should be one image per app, named exactly as the respective app directory is named.
+Only apps with corresponding images are built into the html container.
+If you wish to leave out, say, a developmental app from being linked to on you Github user website, do not include an image file for that app.
+
+The container element includes an image link to each app's url as well as a link to the source code on Github.
+Although the app scans for images in a local repository, the images referenced in the output html are of course not local.
+They point to the same images stored on Github, hence why it is useful for the local directory of apps to be a Github repository.
+
+This function makes the more specific \texttt{genAppDiv} redundant and will likely replace it.
+
+\begin{knitrout}
+\definecolor{shadecolor}{rgb}{0, 0.169, 0.212}\color{fgcolor}\begin{kframe}
+\begin{alltt}
+\hlstd{genPanelDiv} \hlkwb{<-} \hlkwa{function}\hlstd{(}\hlkwc{outDir} \hlstd{=} \hlstr{"C:/github/leonawicz.github.io/assets"}\hlstd{,} \hlkwc{type} \hlstd{=} \hlstr{"projects"}\hlstd{,}
+    \hlkwc{main} \hlstd{=} \hlstr{"Projects"}\hlstd{,} \hlkwc{github.user} \hlstd{=} \hlstr{"leonawicz"}\hlstd{,} \hlkwc{prjs.dir} \hlstd{=} \hlstr{"C:/github"}\hlstd{,} \hlkwc{exclude} \hlstd{=} \hlkwd{c}\hlstd{(}\hlstr{"leonawicz.github.io"}\hlstd{,}
+        \hlstr{"shiny-apps"}\hlstd{),} \hlkwc{img.loc} \hlstd{=} \hlstr{"_images/cropped"}\hlstd{,} \hlkwc{...}\hlstd{) \{}
+    \hlkwd{stopifnot}\hlstd{(github.user} \hlopt{%in%} \hlkwd{c}\hlstd{(}\hlstr{"leonawicz"}\hlstd{,} \hlstr{"ua-snap"}\hlstd{))}
+    \hlkwa{if} \hlstd{(type} \hlopt{==} \hlstr{"apps"}\hlstd{) \{}
+        \hlstd{filename} \hlkwb{<-} \hlstr{"apps_container.html"}
+        \hlstd{web.url} \hlkwb{<-} \hlstr{"http://shiny.snap.uaf.edu"}
+        \hlstd{gh.url.tail} \hlkwb{<-} \hlstr{"shiny-apps/tree/master"}
+        \hlstd{target} \hlkwb{<-} \hlstr{" target=\textbackslash{}"_blank\textbackslash{}""}
+        \hlstd{go.label} \hlkwb{<-} \hlstr{"Launch"}
+        \hlstd{prjs.dir} \hlkwb{<-} \hlkwd{file.path}\hlstd{(prjs.dir,} \hlstr{"shiny-apps"}\hlstd{)}
+        \hlstd{prjs.img} \hlkwb{<-} \hlkwd{list.files}\hlstd{(}\hlkwd{file.path}\hlstd{(prjs.dir, img.loc))}
+        \hlstd{prjs} \hlkwb{<-} \hlkwd{sapply}\hlstd{(}\hlkwd{strsplit}\hlstd{(prjs.img,} \hlstr{"\textbackslash{}\textbackslash{}."}\hlstd{),} \hlstr{"[["}\hlstd{,} \hlnum{1}\hlstd{)}
+    \hlstd{\}}
+    \hlkwa{if} \hlstd{(type} \hlopt{==} \hlstr{"projects"}\hlstd{) \{}
+        \hlstd{filename} \hlkwb{<-} \hlstr{"projects_container.html"}
+        \hlstd{web.url} \hlkwb{<-} \hlkwd{paste0}\hlstd{(}\hlstr{"http://"}\hlstd{, github.user,} \hlstr{".github.io"}\hlstd{)}
+        \hlstd{gh.url.tail} \hlkwb{<-} \hlstr{""}
+        \hlstd{target} \hlkwb{<-} \hlstr{""}
+        \hlstd{go.label} \hlkwb{<-} \hlstr{"Website"}
+        \hlstd{prjs} \hlkwb{<-} \hlkwd{list.dirs}\hlstd{(prjs.dir,} \hlkwc{full} \hlstd{=} \hlnum{TRUE}\hlstd{,} \hlkwc{recursive} \hlstd{=} \hlnum{FALSE}\hlstd{)}
+        \hlstd{prjs} \hlkwb{<-} \hlstd{prjs[}\hlopt{!}\hlstd{(}\hlkwd{basename}\hlstd{(prjs)} \hlopt{%in%} \hlstd{exclude)]}
+        \hlstd{prjs.img} \hlkwb{<-} \hlkwd{sapply}\hlstd{(}\hlnum{1}\hlopt{:}\hlkwd{length}\hlstd{(prjs),} \hlkwa{function}\hlstd{(}\hlkwc{i}\hlstd{,} \hlkwc{a}\hlstd{)} \hlkwd{list.files}\hlstd{(}\hlkwd{file.path}\hlstd{(a[i],}
+            \hlstr{"plots"}\hlstd{),} \hlkwc{pattern} \hlstd{=} \hlkwd{paste0}\hlstd{(}\hlstr{"^_"}\hlstd{,} \hlkwd{basename}\hlstd{(a)[i])),} \hlkwc{a} \hlstd{= prjs)}
+        \hlstd{prjs} \hlkwb{<-} \hlkwd{basename}\hlstd{(prjs)}
+    \hlstd{\}}
+    \hlstd{gh.url} \hlkwb{<-} \hlkwd{file.path}\hlstd{(}\hlstr{"https://github.com"}\hlstd{, github.user, gh.url.tail)}
+    \hlstd{x} \hlkwb{<-} \hlkwd{paste0}\hlstd{(}\hlstr{"<div class=\textbackslash{}"container\textbackslash{}">\textbackslash{}n  <div class=\textbackslash{}"row\textbackslash{}">\textbackslash{}n    <div class=\textbackslash{}"col-lg-12\textbackslash{}">\textbackslash{}n      <div class=\textbackslash{}"page-header\textbackslash{}">\textbackslash{}n        <h3 id=\textbackslash{}""}\hlstd{,}
+        \hlstd{type,} \hlstr{"\textbackslash{}">"}\hlstd{, main,} \hlstr{"</h3>\textbackslash{}n      </div>\textbackslash{}n    </div>\textbackslash{}n  </div>\textbackslash{}n  "}\hlstd{)}
+
+    \hlstd{fillRow} \hlkwb{<-} \hlkwa{function}\hlstd{(}\hlkwc{i}\hlstd{,} \hlkwc{...}\hlstd{) \{}
+        \hlstd{prj} \hlkwb{<-} \hlstd{prjs[i]}
+        \hlkwa{if} \hlstd{(type} \hlopt{==} \hlstr{"apps"}\hlstd{)}
+            \hlstd{img.src} \hlkwb{<-} \hlkwd{file.path}\hlstd{(}\hlkwd{gsub}\hlstd{(}\hlstr{"/tree/"}\hlstd{,} \hlstr{"/raw/"}\hlstd{, gh.url), img.loc, prjs.img[i])}
+        \hlkwa{if} \hlstd{(type} \hlopt{==} \hlstr{"projects"}\hlstd{)}
+            \hlstd{img.src} \hlkwb{<-} \hlkwd{file.path}\hlstd{(gh.url, prj,} \hlstr{"raw/master/plots"}\hlstd{, prjs.img[i])}
+        \hlstd{web.url} \hlkwb{<-} \hlkwd{file.path}\hlstd{(web.url, prj)}
+        \hlstd{dots} \hlkwb{<-} \hlkwd{list}\hlstd{(...)}
+        \hlkwa{if} \hlstd{(}\hlkwd{is.null}\hlstd{(dots}\hlopt{$}\hlstd{col))}
+            \hlstd{col} \hlkwb{<-} \hlstr{"warning"} \hlkwa{else} \hlstd{col} \hlkwb{<-} \hlstd{dots}\hlopt{$}\hlstd{col}
+        \hlkwa{if} \hlstd{(}\hlkwd{is.null}\hlstd{(dots}\hlopt{$}\hlstd{panel.main))}
+            \hlstd{panel.main} \hlkwb{<-} \hlkwd{gsub}\hlstd{(}\hlstr{"_"}\hlstd{,} \hlstr{" "}\hlstd{, prj)} \hlkwa{else} \hlstd{panel.main} \hlkwb{<-} \hlstd{dots}\hlopt{$}\hlstd{panel.main}
+        \hlkwa{if} \hlstd{(}\hlkwd{length}\hlstd{(panel.main)} \hlopt{>} \hlnum{1}\hlstd{)}
+            \hlstd{panel.main} \hlkwb{<-} \hlstd{panel.main[i]}
+        \hlstd{x} \hlkwb{<-} \hlkwd{paste0}\hlstd{(}\hlstr{"<div class=\textbackslash{}"col-lg-4\textbackslash{}">\textbackslash{}n\textbackslash{}t\textbackslash{}t  <div class=\textbackslash{}"bs-component\textbackslash{}">\textbackslash{}n\textbackslash{}t\textbackslash{}t\textbackslash{}t<div class=\textbackslash{}"panel panel-"}\hlstd{,}
+            \hlstd{col,} \hlstr{"\textbackslash{}">\textbackslash{}n\textbackslash{}t\textbackslash{}t\textbackslash{}t  <div class=\textbackslash{}"panel-heading\textbackslash{}"><h3 class=\textbackslash{}"panel-title\textbackslash{}">"}\hlstd{,}
+            \hlstd{panel.main,} \hlstr{"</h3>\textbackslash{}n\textbackslash{}t\textbackslash{}t\textbackslash{}t  </div>\textbackslash{}n\textbackslash{}t\textbackslash{}t\textbackslash{}t  <div class=\textbackslash{}"panel-body\textbackslash{}"><a href=\textbackslash{}""}\hlstd{,}
+            \hlstd{web.url,} \hlstr{"\textbackslash{}""}\hlstd{, target,} \hlstr{"><img src=\textbackslash{}""}\hlstd{, img.src,} \hlstr{"\textbackslash{}" alt=\textbackslash{}""}\hlstd{, prj,}
+            \hlstr{"\textbackslash{}" width=100% height=200px></a><p></p>\textbackslash{}n\textbackslash{}t\textbackslash{}t\textbackslash{}t\textbackslash{}t<div class=\textbackslash{}"btn-group btn-group-justified\textbackslash{}">\textbackslash{}n\textbackslash{}t\textbackslash{}t\textbackslash{}t\textbackslash{}t  <a href=\textbackslash{}""}\hlstd{,}
+            \hlstd{web.url,} \hlstr{"\textbackslash{}""}\hlstd{, target,} \hlstr{" class=\textbackslash{}"btn btn-success\textbackslash{}">"}\hlstd{, go.label,}
+            \hlstr{"</a>\textbackslash{}n\textbackslash{}t\textbackslash{}t\textbackslash{}t\textbackslash{}t  <a href=\textbackslash{}""}\hlstd{,} \hlkwd{file.path}\hlstd{(gh.url, prj),} \hlstr{"\textbackslash{}" class=\textbackslash{}"btn btn-info\textbackslash{}">Github</a>\textbackslash{}n\textbackslash{}t\textbackslash{}t\textbackslash{}t\textbackslash{}t</div>\textbackslash{}n\textbackslash{}t\textbackslash{}t\textbackslash{}t  </div>\textbackslash{}n\textbackslash{}t\textbackslash{}t\textbackslash{}t</div>\textbackslash{}n\textbackslash{}t\textbackslash{}t  </div>\textbackslash{}n\textbackslash{}t\textbackslash{}t</div>"}\hlstd{)}
+    \hlstd{\}}
+
+    \hlstd{n} \hlkwb{<-} \hlkwd{length}\hlstd{(prjs)}
+    \hlstd{seq1} \hlkwb{<-} \hlkwd{seq}\hlstd{(}\hlnum{1}\hlstd{, n,} \hlkwc{by} \hlstd{=} \hlnum{3}\hlstd{)}
+    \hlstd{y} \hlkwb{<-} \hlkwd{c}\hlstd{()}
+    \hlkwa{for} \hlstd{(j} \hlkwa{in} \hlnum{1}\hlopt{:}\hlkwd{length}\hlstd{(seq1)) \{}
+        \hlstd{ind} \hlkwb{<-} \hlstd{seq1[j]}\hlopt{:}\hlstd{(seq1[j]} \hlopt{+} \hlnum{2}\hlstd{)}
+        \hlstd{ind} \hlkwb{<-} \hlstd{ind[ind} \hlopt{%in%} \hlnum{1}\hlopt{:}\hlstd{n]}
+        \hlstd{y} \hlkwb{<-} \hlkwd{c}\hlstd{(y,} \hlkwd{paste0}\hlstd{(}\hlstr{"<div class=\textbackslash{}"row\textbackslash{}">\textbackslash{}n"}\hlstd{,} \hlkwd{paste0}\hlstd{(}\hlkwd{sapply}\hlstd{(ind, fillRow,}
+            \hlstd{...),} \hlkwc{collapse} \hlstd{=} \hlstr{"\textbackslash{}n"}\hlstd{),} \hlstr{"</div>\textbackslash{}n"}\hlstd{))}
+    \hlstd{\}}
+    \hlstd{z} \hlkwb{<-} \hlstr{"</div>\textbackslash{}n"}
+    \hlkwd{sink}\hlstd{(}\hlkwd{file.path}\hlstd{(outDir, filename))}
+    \hlkwd{sapply}\hlstd{(}\hlkwd{c}\hlstd{(x, y, z), cat)}
+    \hlkwd{sink}\hlstd{()}
+    \hlkwd{cat}\hlstd{(}\hlstr{"div container html file created.\textbackslash{}n"}\hlstd{)}
+\hlstd{\}}
+\end{alltt}
+\end{kframe}
+\end{knitrout}
+
+\end{document}
