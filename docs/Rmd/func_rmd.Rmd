@@ -64,14 +64,20 @@ This is not always the case for a given project, but again, the purpose is to ge
 Unnecessary files can always be deleted later, or edits made such that one **R** Markdown file reads multiple **R** scripts,
 as is the case with the Rmd file used to generate this document.
 
-#### rmd2rnw
-`rmd2rnw` converts all Rmd files found in a directory to Rnw files, saving the latter to a specified location.
-The Rmd files are not removed.
-This function speeds up the process of duplicating files when wanting to make PDFs from Rnw files when only Rmd files exist.
-The user still makes specific changes by hand, for example, any required changes to `knitr` code chunk options that must differ for PDF output vs. html output.
-The primary benefit is in not having to fuss with large amounts of standard substitutions which can be automated, such as swapping code chunk enclosure styles.
+#### convertDocs
+`convertDocs` converts between Rmd and Rnw files.
+The project's `docs/Rmd` or `docs/Rnw` directory is specified.
+Any files of the same type as the directory are converted to the other type and saved to the other directory.
+The input files are not removed.
 
-```{r fun_rmd2rnw}
+This function speeds up the process of duplicating files, e.g., when wanting to make PDFs from Rnw files when only Rmd files exist.
+This is almost exclusively what I use this function for.
+On less frequent occasions I have used it in the other direction when I have Rnw files which were once used to make PDFs but later I decide to put them on the web as a web page and not as a link to a PDF.
+
+The user still makes specific changes by hand, for example, any required changes to `knitr` code chunk options that must differ for PDF output vs. html output.
+The primary benefit is in not having to fuss with large amounts of standard substitutions which can be automated, such as swapping code chunk enclosure styles and common file metadata.
+
+```{r fun_convertDocs}
 ```
 
 #### moveDocs
