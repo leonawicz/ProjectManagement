@@ -23,9 +23,6 @@ chunkNames(path=file.path(proj.location, proj.name, "code"))
 # append new knitr code chunk names found in existing R scripts to any Rmd files which are outdated
 chunkNames(path=file.path(proj.location, proj.name, "code"), append.new=TRUE)
 
-# if also making PDFs for a project, speed up the Rmd to Rnw file conversion/duplication
-convertDocs(path=rmd.path, strip.emphasis=TRUE) # function under development
-
 # @knitr ex_website
 # Setup for generating a project website
 index.url <- file.path(rmd.path, "proj_intro.html") # temporary
@@ -78,3 +75,10 @@ files.Rmd <- list.files(pattern=".Rmd$", full=T)
 lapply(files.Rmd, render, output_format="all")
 
 moveDocs(path.docs=docs.path)
+
+# if also making PDFs for a project, speed up the Rmd to Rnw file conversion/duplication
+rnw.path <- file.path(docs.path, "Rnw")
+setwd(rnw.path)
+convertDocs(path=rmd.path, emphasis="replace", overwrite=TRUE) # function under development
+knit2pdf("projman.Rnw")) # example
+moveDocs(path.docs=docs.path, type="pdf")

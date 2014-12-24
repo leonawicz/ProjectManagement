@@ -165,8 +165,8 @@ chunkNames <- function(path, rChunkID="# @knitr", rmdChunkID="```{r", append.new
 	sapply(1:length(rmd), appendRmd, rmd.files=rmd, rChunks=l1[files.ind], rmdChunks=l2, ID=rmdChunkID)
 }
 
-# @knitr fun_rmd2rnw
-convertDocs <- function(path, rmdChunkID=c("```{r", "}", "```"), rnwChunkID=c("<<", ">>=", "@"), doc.title=NULL, doc.author=NULL, strip.emphasis=FALSE, overwrite=FALSE, ...){
+# @knitr fun_convertDocs
+convertDocs <- function(path, rmdChunkID=c("```{r", "}", "```"), rnwChunkID=c("<<", ">>=", "@"), doc.title=NULL, doc.author=NULL, emphasis="replace", overwrite=FALSE, ...){
 	stopifnot(is.character(path))
 	type <- basename(path)
 	rmd.files <- list.files(path, pattern=".Rmd$", full=TRUE)
@@ -180,7 +180,7 @@ convertDocs <- function(path, rmdChunkID=c("```{r", "}", "```"), rnwChunkID=c("<
 		if(is.null(doc.class <- dots$doc.class)) doc.class <- "article"
 		if(is.null(doc.packages <- dots$doc.packages)) doc.packages <- "geometry"
 		doc.class.string <- paste0("\\documentclass{", doc.class, "}")
-		doc.packages.string <- paste0(sapply(doc.packages, function(x) paste0("\\documentclass{", x, "}")), collapse="\n")
+		doc.packages.string <- paste0(sapply(doc.packages, function(x) paste0("\\usepackage{", x, "}")), collapse="\n")
 		if("geometry" %in% doc.packages) doc.packages.string <- c(doc.packages.string, "\\geometry{verbose, tmargin=2.5cm, bmargin=2.5cm, lmargin=2.5cm, rmargin=2.5cm}")
 		header.rnw <- c(doc.class.string, doc.packages.string, "\\begin{document}\n")
 	} else if(type=="Rnw") {
@@ -202,7 +202,7 @@ convertDocs <- function(path, rmdChunkID=c("```{r", "}", "```"), rnwChunkID=c("<
 				n <- ind.n[i]
 				input <- paste0(substr("######", 1, n), " ")
 				h <- x[ind[i]]
-				h <- gsub("\\*", "", h) # Strip markdown boldface asterisks from headings
+				h <- gsub("\\*", "_", h) # Switch any markdown boldface asterisks in headings to double underscores
 				heading <- gsub("\n", "", substr(h, n+2, nc[ind[i]]))
 				#h <- gsub(input, "", h)
 				if(n <= 2) subs <- "\\" else if(n==3) subs <- "\\sub" else if(n==4) subs <- "\\subsub" else if(n >=5) subs <- "\\subsubsub"
@@ -232,7 +232,7 @@ convertDocs <- function(path, rmdChunkID=c("```{r", "}", "```"), rnwChunkID=c("<
 		x
 	}
 	
-	swapChunks <- function(from, to, x){ # works in both directions
+	swapChunks <- function(from, to, x){
 		nc <- nchar(x)
 		chunk.start.open <- substr(x, 1, nchar(from[1]))==from[1]
 		chunk.start.close <- substr(x, nc-1-nchar(from[2])+1, nc-1)==from[2]
@@ -240,13 +240,40 @@ convertDocs <- function(path, rmdChunkID=c("```{r", "}", "```"), rnwChunkID=c("<
 		chunk.end <- which(substr(x, 1, nchar(from[3]))==from[3] & nc==nchar(from[3])+1)
 		x[chunk.start] <- gsub(from[2], to[2], gsub(gsbraces(from[1]), gsbraces(to[1]), x[chunk.start]))
 		x[chunk.end] <- gsub(from[3], to[3], x[chunk.end])
+		chunklines <- as.numeric(unlist(mapply(seq, chunk.start, chunk.end)))
+		list(x, chunklines)
+	}
+	
+	# I know I use '**' strictly for bold font in Rmd files.
+	# For now, this function assumes:
+	# 1. The only emphasis in a doc is boldface or typewriter.
+	# 2. These instances are always preceded by a space, a carriage return, or an open bracket,
+	# 3. and followed by a space, period, comma, or closing bracket.
+	swapEmphasis <- function(x, emphasis="remove",
+		pat.remove=c("`", "\\*\\*", "__"),
+		pat.replace=pat.remove,
+		replacement=c("\\\\texttt\\{", "\\\\textbf\\{", "\\\\textbf\\{", "\\}", "\\}", "\\}")){
+		
+		stopifnot(emphasis %in% c("remove", "replace"))
+		n <- length(pat.replace)
+		rep1 <- replacement[1:n]
+		rep2 <- replacement[(n+1):(2*n)]
+		prefix <- c(" ", "^", "\\{", "\\(")
+		suffix <- c(" ", ",", "-", "\n", "\\.", "\\}", "\\)")
+		n.p <- length(prefix)
+		n.s <- length(suffix)
+		pat.replace <- c(paste0(rep(prefix, n), rep(pat.replace, each=n.p)), paste0(rep(pat.replace, each=n.s), rep(suffix, n)))
+		replacement <- c(paste0(rep(gsub("\\^", "", prefix), n), rep(rep1, each=n.p)), paste0(rep(rep2, each=n.s), rep(suffix, n)))
+		if(emphasis=="remove") for(k in 1:length(pat.remove)) x <- sapply(x, function(v, p, r) gsub(p, r, v), p=pat.remove[k], r="")
+		if(emphasis=="replace") for(k in 1:length(pat.replace)) x <- sapply(x, function(v, p, r) gsub(p, r, v), p=pat.replace[k], r=replacement[k])
 		x
 	}
 	
 	swap <- function(file, header=NULL, outDir, ...){
 		ext <- tail(strsplit(file, "\\.")[[1]], 1)
 		l <- readLines(file)
-		if(ext=="Rmd"){ # Rmd to Rnw completed
+		l <- l[substr(l, 1, 7)!="<style>"] # Strip any html style lines
+		if(ext=="Rmd"){
 			out.ext <- "Rnw"
 			h.ind <- 1:which(l=="---")[2]
 			h <- l[h.ind]
@@ -274,9 +301,11 @@ convertDocs <- function(path, rmdChunkID=c("```{r", "}", "```"), rnwChunkID=c("<
 		if(ext=="Rmd") { from <- rmdChunkID; to <- rnwChunkID}
 		if(ext=="Rnw") { from <- rnwChunkID; to <- rmdChunkID}
 		l <- swapHeadings(from=from, to=to, x=l)
-		l <- swapChunks(from=from, to=to, x=l)
-		if(strip.emphasis & ext=="Rmd") l <- sapply(l, function(x, p, r) gsub(p, r, x), p="`", r="")
-		l <- c(header, l)
+		chunks <- swapChunks(from=from, to=to, x=l)
+		l <- chunks[[1]]
+		if(ext=="Rmd") l[-chunks[[2]]] <- sapply(l[-chunks[[2]]], function(v, p, r) gsub(p, r, v), p="_", r="\\\\_")
+		if(ext=="Rmd") l <- swapEmphasis(x=l, emphasis=emphasis)
+		l <- c(header, l, "\n\\end{document}\n")
 		outfile <- file.path(outDir, gsub(paste0("\\.", ext), paste0("\\.", out.ext), basename(file)))
 		if(overwrite || !file.exists(outfile)){
 			sink(outfile)
@@ -329,18 +358,21 @@ moveDocs <- function(path.docs, type=c("md", "html","pdf"), move=TRUE, copy=FALS
 				}
 				outfiles <- file.path(path.docs, type[i], basename(infiles))
 				if(move) file.rename(infiles, outfiles) else if(copy) file.copy(infiles, outfiles, overwrite=TRUE)
-				if(type[i]=="pdf"){
-					extensions <- c("TeX", "aux", "txt")
-					pat <- paste0("^", rep(gsub("pdf", "", basename(infiles)), length(extensions)), rep(extensions, each=length(infiles)), "$")
-					latex.files <- sapply(1:length(pat), function(p, path, pat) list.files(path, pattern=pat[p], full=TRUE), path=path.i, pat=pat)
-					if(remove.latex){
-						file.remove(latex.files)
-					} else {
-						dir.create()
-						file.rename(latex.files, file.path(path.docs, latexDir, basename(latex.files)))
-					}
-				}
 			}
+		}
+		if(type[i]=="pdf"){
+			extensions <- c("TeX", "aux", "txt")
+			pat <- paste0("^", rep(gsub("pdf", "", basename(infiles)), length(extensions)), rep(extensions, each=length(infiles)), "$")
+			print(path.i)
+			print(pat)
+			latex.files <- sapply(1:length(pat), function(p, path, pat) list.files(path, pattern=pat[p], full=TRUE), path=path.i, pat=pat)
+			print(latex.files)
+			#if(remove.latex){
+			#	file.remove(latex.files)
+			#} else {
+			#	dir.create(file.path(path.docs, latexDir), showWarnings=FALSE, recursive=TRUE)
+			#	file.rename(latex.files, file.path(path.docs, latexDir, basename(latex.files)))
+			#}
 		}
 	}
 }
@@ -509,6 +541,3 @@ genPanelDiv <- function(outDir="C:/github/leonawicz.github.io/assets", type="pro
 	sink()
 	cat("div container html file created.\n")
 }
-
-#genPanelDiv(type="projects", main="Projects", github.user="leonawicz", col="primary")
-#genPanelDiv(type="apps", main="Shiny Apps", github.user="ua-snap")
