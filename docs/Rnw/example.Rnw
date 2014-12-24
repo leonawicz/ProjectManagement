@@ -1,0 +1,39 @@
+\documentclass{article}
+\documentclass{geometry}
+\geometry{verbose, tmargin=2.5cm, bmargin=2.5cm, lmargin=2.5cm, rmargin=2.5cm}
+\begin{document}
+
+\title{Project Management}
+\author{Matthew Leonawicz}
+\maketitle
+
+<<knitr_setup, echo=FALSE>>=
+opts_chunk$set(cache=FALSE, eval=FALSE, tidy=TRUE, message=FALSE, warning=FALSE)
+read_chunk("../../code/example.R")
+@
+
+\section{Example usage}
+This is how projman functions can be used to create and manipulate a project, using the projman project itself as an example.
+The code below is not intended to be run directly, but serves as a guide.
+
+\section{R code}
+
+\subsection{Create a project}
+Note that I use my own default path for storing a project when creating a new project.
+See the projman [default objects](objects.html "default objects") and [creating a new project](func_new.html "new project") for more details.
+
+<<ex_create_project>>=
+@
+
+\subsection{Update a project}
+Functions can be used to create, read, or update. See [Rmd-related functions](func_rmd.html "Rmd-related functions").
+
+<<ex_update_project>>=
+@
+
+\subsection{Prepare a project website}
+With some additional project-specific setup, files can be generated which will assist in creating a project website.
+See [website-related functions](func_website.html "website-related functions").
+
+<<ex_website>>=
+@

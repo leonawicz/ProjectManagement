@@ -1,0 +1,61 @@
+\documentclass{article}
+\documentclass{geometry}
+\geometry{verbose, tmargin=2.5cm, bmargin=2.5cm, lmargin=2.5cm, rmargin=2.5cm}
+\begin{document}
+
+<<knitr_setup, echo=FALSE>>=
+opts_chunk$set(cache=FALSE, eval=FALSE, tidy=TRUE, message=FALSE, warning=FALSE)
+read_chunk("../../code/projman.R")
+@
+
+\subsubsection{genAppDiv}
+
+genAppDiv generates an html file storing a container div element which organizes Shiny web applications.
+The function scans a directory of Shiny app subdirectories.
+This apps directory should be a local repository.
+
+Specifically, genAppDiv looks for a named directory of image files.
+There should be one image per app, named exactly as the respective app directory is named.
+Only apps with corresponding images are built into the html container.
+If you wish to leave out, say, a developmental app from being linked to on you Github user website, do not include an image file for that app.
+
+The container element includes an image link to each app's url as well as a link to the source code on Github.
+Although the function scans for images in directory inside a local repository, the images referenced in the output html are of course not local.
+They point to the same images stored on Github, hence why it is useful for the local directory of apps to be a Github repository.
+As an example, a repository may contain the directories, app1, app2, app3, and images.
+
+This function will probably be removed in favor of the more general genPanelDiv function.
+
+
+<<fun_genAppDiv>>=
+@
+
+\subsubsection{genPanelDiv}
+
+genPanelDiv generates an html file storing a container div element which in its current state of development organizes two types of content: **R** projects and Shiny web applications.
+
+The type argument can be either projects or apps and essentially bifurcates the behavior of genPanelDiv.
+The purpose of the function is to generate an html file defining a container div element to display and reference either my **R** projects or my Shiny apps.
+
+For projects, the function scans a directory of local repositories and takes any directories found to be the names of projects.
+There is an exclude argument for dropping any known directories that are to be avoided.
+My defaults are exclude="leonawicz.github.io", "shiny-apps" since the first is just a local repository for my Github user account web site and not a "project" in the same sense of my other projects
+and the second is the local repository which is scanned by genPanelDiv when type="apps".
+
+For apps, the function scans a directory of Shiny app subdirectories.
+Unlike for projects, where genPanelDiv scans a directory of multiple local repositories, this apps directory should be a specific local repository. The apps contained within are not inndividual repositories.
+I have taken this approach for now simply because this is how my apps tend to be stored.
+
+Specifically, the genAppDiv looks for a named directory of image files.
+There should be one image per app, named exactly as the respective app directory is named.
+Only apps with corresponding images are built into the html container.
+If you wish to leave out, say, a developmental app from being linked to on you Github user website, do not include an image file for that app.
+
+The container element includes an image link to each app's url as well as a link to the source code on Github.
+Although the app scans for images in a local repository, the images referenced in the output html are of course not local.
+They point to the same images stored on Github, hence why it is useful for the local directory of apps to be a Github repository.
+
+This function makes the more specific genAppDiv redundant and will likely replace it.
+
+<<fun_genPanelDiv>>=
+@

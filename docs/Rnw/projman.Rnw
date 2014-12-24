@@ -1,0 +1,269 @@
+\documentclass{article}
+\documentclass{geometry}
+\geometry{verbose, tmargin=2.5cm, bmargin=2.5cm, lmargin=2.5cm, rmargin=2.5cm}
+\begin{document}
+
+\title{Project Management}
+\author{Matthew Leonawicz}
+\maketitle
+
+<<knitr_setup, echo=FALSE>>=
+opts_chunk$set(cache=FALSE, eval=FALSE, tidy=TRUE, message=FALSE, warning=FALSE)
+read_chunk("../../code/proj_sankey.R")
+read_chunk("../../code/projman.R")
+@
+
+
+\section{Introduction}
+This is a project management project.
+While current projects are shown in the chart below, the aim of this project is the development of convenient **R**-related project management tools.
+
+\subsection{Motivation}
+I am working on these tools to enhance my own workflow across multiple **R** projects.
+
+\subsection{Details}
+**R** code for the project will be compiled into an **R** package, projman for easy use.
+This is a personal package and will not be available anywhere but my github repository,
+but you are welcome to explore the package and functions.
+It is unlikely that you would manage your **R** projects in the same manner that I do,
+but if you do, or just want some ideas, feel free to explore.
+
+\subsubsection{Capabilities}
+projman can create a new project. This essentially generates a specific directory structure which I use often to manage project files.
+For an existing project, once **R** scripts have been created, projman can generate template Rmd files for each.
+For existing Rmd files, projman can conveniently append these **R** Markdown files with a list of any new knitr code chunk names
+in project **R** scripts being developed which have not yet been included in the respective Rmd files.
+
+\subsubsection{Limitations}
+While projman assists with project documentation, this mainly takes the form of file generation and appending.
+Documentation is unique to every project of course. Every script is different.
+The most that is possible is to auto-fill commonly used code chunk names and metadata.
+Each document must be written individually by the author, but when a project has many **R** scripts requiring documentation,
+it is nice to not have to create all the corresponding Rmd files by hand and copy and paste generic contents.
+
+The project management code is not yet in package form.
+Many additional features are yet to be incorporated.
+Generic code relating to the further processing of Rmd files into various other output files via rmarkdown and knitr remains at an early development stage.
+
+\section{Related items}
+Currently there is only this unpackaged **R** script, accompanying code for a projects hierarchy diagram
+and a code flow diagram based on the current development of this project, and a simple script for generating documents based on project **R** code.
+
+\subsection{Files and Data}
+This project does not use any data.
+It does make use of supplemental libraries for formatting during html document generation.
+proj_sankey.R and code_sankey.R are used to produce of project hierarchy diagram of my current projects and a code flow diagram for this project, respectively.
+drg.R is used to assist in dynamic report generation.
+
+\subsection{Code flow}
+The Sankey diagram has become part of project management.
+Each project has its own, detailing the relationships among **R** code and data relevant to the project,
+and in some cases, how they relate to code and data files which are more general and span multiple projects.
+In general, for my projects I would only provide the code flow diagram here among the rest of the project documentation,
+but since this is the project management project and I am introducing its use,
+in this case I will also show the [code](code_sankey.html "code") I use to make the diagram.
+
+\subsection{Current projects}
+Here is a project hierarchy diagram showing the relationships among all my current projects.
+
+<<sankey, echo=F, eval=T, tidy=F>>=
+@
+
+<<sankey_embed, echo=F, eval=T, comment=NA, results="asis", tidy=F>>=
+@
+<style>iframe.rChart{ width: 100%; height: 840px;}</style>
+
+\section{R code}
+
+\subsection{Template objects}
+Character string objects are defined which are used to fill templates when generating new files for a project.
+A tentative default path is also included since this code relates to my own work.
+
+<<template_objects>>=
+@
+
+\subsection{Package functions}
+Functions are defined for creating new projects, generating Rmd files for project **R** scripts,
+and appending these **R** Markdown files with updated information from the corresponding **R** scripts as their development continues.
+Additional functions will be incorporated later.
+
+\subsubsection{newProject}
+newProject creates a new named project directory structure at the specified file path.
+If a directory with this project name already exists in this location on the file system and overwrite=FALSE, the function will abort.
+Default project subdirectories are created unless a different vector of folder names is explicitly passed to newProject.
+If one of the subdirectories is docs then the default vector of subdirectories under docs is also created.
+This argument can also be set explicitly.
+The current function only creates directories, not files, so overwrite=TRUE is safe to use on any existing project.
+
+<<fun_newProject>>=
+@
+
+\subsubsection{rmdHeader}
+rmdHeader generates the yaml metadata header for Rmd files as a character string to be inserted at the top of a file.
+It has default arguments specific to my own projects but can be changed.
+The output from this function is passed directly to genRmd below.
+
+<<fun_rmdHeader>>=
+@
+
+\subsubsection{rmdknitrSetup}
+rmdknitrSetup generates the knitr global options setup code cunk for Rmd files as a character string to be inserted at the top of a file following the yaml header.
+The only option at this time is the ability to include or exclude a source reference to a project-related clode flow diagram **R** script via include.sankey.
+The output from this function is passed directly to genRmd below.
+
+<<fun_rmdknitrSetup>>=
+@
+
+\subsubsection{genRmd}
+genRmd works on existing projects. It checks for existing **R** scripts.
+If no **R** files exist in the project's code directory, the function will abort.
+Otherwise it will generate Rmd template files for each of the **R** scripts it finds.
+
+With replace=TRUE any existing Rmd files are regenerated with the provided template - be careful!
+With replace=FALSE (default) Rmd files are generated only for **R** scripts which do not yet have corresponding Rmd files.
+If update.header=TRUE, replace is ignored, and only existing Rmd files are regenerated,
+in this case strictly updating the yaml metadata header at the top of each Rmd file without altering any other Rmd content/documentation. 
+
+The Rmd files are placed in the /docs/Rmd directory.
+This function assumes this project directory exists.
+
+<<fun_genRmd>>=
+@
+
+\subsubsection{chunkNames}
+chunkNames can be used in two ways.
+It can return a list with length equal to the number of **R** files,
+where each list element is a vector of **R** code chunk names found in each **R** script.
+
+Alternatively, with append.new=TRUE, this list has each vector matched element-wise against chunk names found in existing Rmd files.
+If no Rmd files have yet been generated, the function will abort.
+Otherwise, for the Rmd files which do exist (and this may correspond to a subset of the **R** files),
+these Rmd files are appended with a list of code chunk names found in the current corresponding **R** files
+which have not yet been integrated into the current state of the Rmd files.
+This fascilitates updating of Rmd documentation when it falls behind scripts which have been updated.
+
+<<fun_chunkNames>>=
+@
+
+Regarding the creation and updating of Rmd files, projman simply assumes that there will be one **R** Markdown file corresponding to one **R** script.
+This is not always the case for a given project, but again, the purpose is to generate basic templates.
+Unnecessary files can always be deleted later, or edits made such that one **R** Markdown file reads multiple **R** scripts,
+as is the case with the Rmd file used to generate this document.
+
+\subsubsection{rmd2rnw}
+rmd2rnw converts all Rmd files found in a directory to Rnw files, saving the latter to a specified location.
+The Rmd files are not removed.
+This function speeds up the process of duplicating files when wanting to make PDFs from Rnw files when only Rmd files exist.
+The user still makes specific changes by hand, for example, any required changes to knitr code chunk options that must differ for PDF output vs. html output.
+The primary benefit is in not having to fuss with large amounts of standard substitutions which can be automated, such as swapping code chunk enclosure styles.
+
+<<fun_rmd2rnw>>=
+@
+
+\subsubsection{moveDocs}
+moveDocs relocates files by renaming with a new file path.
+Specifically, it scans for md and html files in the docs/Rmd directory and/or pdf files in the docs/Rnw directory.
+If such files are found in the respective locations, they are moved to docs/md, docs/html, and docs/pdf, respectively.
+
+The intent is to clean up the Rmd and Rnw directories after knitr has been used to knit documents in place.
+I do this because I have more success knitting documents with the confluence of RStudio, rmarkdown, knitr, pandoc, and LaTeX when the knitting occurs all within the directory of the originating files.
+The process is more prone to throwing errors when trying to specify alternate locations for outputs.
+
+moveDocs makes a nominal effort to replace a possible relative path with a full file path before proceeding, if the former is supplied.
+Default arguments include move=TRUE which will call file.rename and copy=FALSE which, if TRUE (and move=FALSE), will alternatively call file.copy.
+If both are TRUE, any files found are moved.
+
+This function will always overwrite any existing file versions previously moved to the output directories, by way of file.rename.
+To keep the behavior consistent, when move=FALSE and copy=TRUE, file.copy always executes with its argument, overwrite=TRUE.
+This should never cause problems because in the context I intend for this function,
+the types of files being moved or copied from docs/Rmd and docs/Rnw are never used as inputs to other files, functions, or processes,
+nor are they meant to be edited by hand after being generated.
+
+If there are LaTeX-associated files present (.TeX, .aux, and .txt files with the same file names as local pdf files.),
+these files will be removed if remove.latex=TRUE (default).
+If FALSE, the default latexDir="LaTeX" means that these files will be moved to the docs/LaTeX directory rather than deleted.
+If this directory does not exist, it will be created.
+An alternate location can be specified, such as "pdf" if you want to keep these files with the related pdf files after those are moved by moveDocs as well to docs/pdf.
+
+<<fun_moveDocs>>=
+@
+
+\subsubsection{genNavbar}
+
+genNavbar generates a navigation bar for a web page.
+The html file created should be written to the project's docs/Rmd/include directory.
+The common navigation bar html is included prior to the body of the html for each web page in the project's website.
+menu is a vector of names for each dropdown menu.
+submenus is a list of vectors of menu options corresponding to each menu.
+files is a similar list of vectors.
+Each element is either an html file for a web page to be associated with the submenu link,
+"header" to indicate the corresponding name in submenus is only a group label and not a link to a web page,
+or "divider" to indicate placement of a bar for separating groups in a dropdown menu.
+
+<<fun_genNavbar>>=
+@
+
+\subsubsection{genOutyaml}
+
+genOutyaml generates the _out.yaml file for yaml front-matter common to all html files in the project website.
+The file should be written to the project's docs/Rmd directory.
+lib specifies the library directory for any associated files.
+yaml includes for external html common to all project web pages in the site can also be specified with header, before_body, and after_body.
+These can be specified by file basename only (no path) and the function assumes these files are in the docs/Rmd/include directory.
+At this time all external libraries must be provided by the user, for example in docs/Rmd/libs.
+It is recommended. See the project repo [gh-pages](https://github.com/leonawicz/ProjectManagement/tree/gh-pages "gh-pages") branch for an example.
+
+<<fun_genOutyaml>>=
+@
+
+\subsubsection{genAppDiv}
+
+genAppDiv generates an html file storing a container div element which organizes Shiny web applications.
+The function scans a directory of Shiny app subdirectories.
+This apps directory should be a local repository.
+
+Specifically, genAppDiv looks for a named directory of image files.
+There should be one image per app, named exactly as the respective app directory is named.
+Only apps with corresponding images are built into the html container.
+If you wish to leave out, say, a developmental app from being linked to on you Github user website, do not include an image file for that app.
+
+The container element includes an image link to each app's url as well as a link to the source code on Github.
+Although the function scans for images in directory inside a local repository, the images referenced in the output html are of course not local.
+They point to the same images stored on Github, hence why it is useful for the local directory of apps to be a Github repository.
+As an example, a repository may contain the directories, app1, app2, app3, and images.
+
+This function will probably be removed in favor of the more general genPanelDiv function.
+
+
+<<fun_genAppDiv>>=
+@
+
+\subsubsection{genPanelDiv}
+
+genPanelDiv generates an html file storing a container div element which in its current state of development organizes two types of content: **R** projects and Shiny web applications.
+
+The type argument can be either projects or apps and essentially bifurcates the behavior of genPanelDiv.
+The purpose of the function is to generate an html file defining a container div element to display and reference either my **R** projects or my Shiny apps.
+
+For projects, the function scans a directory of local repositories and takes any directories found to be the names of projects.
+There is an exclude argument for dropping any known directories that are to be avoided.
+My defaults are exclude="leonawicz.github.io", "shiny-apps" since the first is just a local repository for my Github user account web site and not a "project" in the same sense of my other projects
+and the second is the local repository which is scanned by genPanelDiv when type="apps".
+
+For apps, the function scans a directory of Shiny app subdirectories.
+Unlike for projects, where genPanelDiv scans a directory of multiple local repositories, this apps directory should be a specific local repository. The apps contained within are not inndividual repositories.
+I have taken this approach for now simply because this is how my apps tend to be stored.
+
+Specifically, the genAppDiv looks for a named directory of image files.
+There should be one image per app, named exactly as the respective app directory is named.
+Only apps with corresponding images are built into the html container.
+If you wish to leave out, say, a developmental app from being linked to on you Github user website, do not include an image file for that app.
+
+The container element includes an image link to each app's url as well as a link to the source code on Github.
+Although the app scans for images in a local repository, the images referenced in the output html are of course not local.
+They point to the same images stored on Github, hence why it is useful for the local directory of apps to be a Github repository.
+
+This function makes the more specific genAppDiv redundant and will likely replace it.
+
+<<fun_genPanelDiv>>=
+@

@@ -1,0 +1,81 @@
+\documentclass{article}
+\documentclass{geometry}
+\geometry{verbose, tmargin=2.5cm, bmargin=2.5cm, lmargin=2.5cm, rmargin=2.5cm}
+\begin{document}
+
+\title{Project Management}
+\author{Matthew Leonawicz}
+\maketitle
+
+\section{Related items}
+Currently there is only this unpackaged **R** script, accompanying code for a projects hierarchy diagram
+and a code flow diagram based on the current development of this project, and a simple script for generating documents based on project **R** code.
+
+\subsection{Files and Data}
+This project does not use any data.
+It does make use of supplemental libraries for formatting during html document generation.
+proj_sankey.R and code_sankey.R are used to produce of project hierarchy diagram of my current projects and a code flow diagram for this project, respectively.
+drg.R is used to assist in dynamic report generation.
+
+\subsection{Code flow}
+The Sankey diagram has become part of project management.
+Each project has its own, detailing the relationships among **R** code and data relevant to the project,
+and in some cases, how they relate to code and data files which are more general and span multiple projects.
+In general, for my projects I would only provide the code flow diagram here among the rest of the project documentation,
+but since this is the project management project and I am introducing its use,
+in this case I will also show the code I use to make the diagram.
+
+<<knitr_setup, echo=FALSE>>=
+opts_chunk$set(cache=FALSE, eval=TRUE, tidy=TRUE, message=FALSE, warning=FALSE)
+read_chunk("../../code/code_sankey.R")
+@
+
+\section{R code}
+Here is the code used to generate the code flow diagram.
+
+\subsection{Initial setup}
+
+Two packages are required.
+
+<<sankey_packages>>=
+@
+
+Project file names can be loaded using pattern arguments with list.files pointing to both the code and relevant docs directories.
+However, there is a substantial amount of hardcoding involved for any project as shown here.
+For example, the projman.R script contains all the projman functions. 
+Although this script has a complete, corresponding projman.Rmd file, I decided to subsequently break out the functions and other content from projman.Rmd into multiple Rmd files.
+Such ad hoc project-specific decisions require that I take note here and make the related distinctions.
+
+<<files>>=
+@
+
+Directional connections must be made among files.
+The connections are expressed by element-wise comparison of the equal-length to and from vectors.
+
+<<links, tidy=FALSE>>=
+@
+
+\subsection{Create a directional tree graph}
+
+The vectors are combined in a data frame and the igraph package is used to grow the tree diagram.
+
+<<igraph>>=
+@
+
+\subsection{Display with rCharts}
+
+The rcharts package has functionality for turning this into an interactive D3 visualization,
+which is nice, particularly the mouseover interactivity, since there can be so much visual overlap among files for complex projects.
+Additional javascript can be included to alter the colors.
+My strengths are in **R** so I borrowed this code snippet from online,
+but if you have skills with javascript and D3 you could probably do better with color control and opacity I imagine.
+
+<<rcharts>>=
+@
+
+Embed the chart in a document when rendering.
+
+<<sankey_embed, comment=NA, results="asis", tidy=F>>=
+@
+<style>iframe.rChart{ width: 100%; height: 840px;}</style>
+

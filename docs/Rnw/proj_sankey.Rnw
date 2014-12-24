@@ -1,0 +1,69 @@
+\documentclass{article}
+\documentclass{geometry}
+\geometry{verbose, tmargin=2.5cm, bmargin=2.5cm, lmargin=2.5cm, rmargin=2.5cm}
+\begin{document}
+
+\title{Matt's Projects}
+\author{Matthew Leonawicz}
+\maketitle
+
+<<knitr_setup, echo=FALSE>>=
+opts_chunk$set(cache=FALSE, eval=TRUE, tidy=TRUE, message=FALSE, warning=FALSE)
+read_chunk("../../code/proj_sankey.R")
+@
+
+
+\section{Introduction}
+I have begun using a Sankey diagram to illustrate various types of connections among my projects.
+Here the purpose is to show the code used to create the project hierarchy graph shows elsewhere (and below).
+
+\subsection{Motivation}
+I have created this diagram showing project and collaborator relationships that occur in my current work as part of this projman Project Management Project.
+However, this is a special case shown here.
+In general, the reason for folding this type of graph into all of my individual projects as part of project management
+is to show code and data relationships that exist for a specific project.
+For example, projman has its own code flow diagram as do my other projects.
+But here the focus is on the particular project hierarchy diagram that is part of this project.
+
+\section{Project hierarchy R code}
+Here is the code used to generate the current project hierarchy diagram.
+Two packages are required.
+
+<<sankey_packages>>=
+@
+
+Current projects are hardcoded and are updated by hand when my work changes. A necessary evil.
+This is essentially the data, consisting of both projects and collaborators.
+
+<<projects>>=
+@
+
+<<people>>=
+@
+
+Directional connections must be made among project and among people and projects.
+The connections are expressed by element-wise comparison of the equal-length to and from vectors.
+
+<<links, tidy=FALSE>>=
+@
+
+The vectors are combined in a data frame and the igraph package is used to grow the tree diagram.
+
+<<igraph>>=
+@
+
+The rcharts package has functionality for turning this into an interactive D3 visualization,
+which is nice, particularly the mouseover interactivity, since there can be so much visual overlap among projects.
+Additional javascript can be included to alter the colors.
+My strengths are in **R** so I borrowed this code snippet from online,
+but if you have skills with javascript and D3 you could probably do better with color control and opacity I imagine.
+
+<<rcharts>>=
+@
+
+Embed the chart in a document when rendering.
+
+<<sankey_embed, comment=NA, results="asis", tidy=F>>=
+@
+<style>iframe.rChart{ width: 100%; height: 840px;}</style>
+
