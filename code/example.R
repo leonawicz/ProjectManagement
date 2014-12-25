@@ -84,3 +84,8 @@ highlight <- "solarized-dark"
 convertDocs(path=rmd.path, emphasis="replace", overwrite=TRUE, highlight=highlight)
 lapply(list.files(pattern=".Rnw$"), knit2pdf)
 moveDocs(path.docs=docs.path, type="pdf", remove.latex=FALSE)
+
+# @knitr ex_user_website
+# Assuming project and app repos exist and are properly prepared
+genPanelDiv(type="projects", main="Projects", github.user="leonawicz", col="primary")
+genPanelDiv(type="apps", main="Shiny Apps", github.user="ua-snap")
