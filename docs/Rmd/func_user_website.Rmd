@@ -63,3 +63,35 @@ This function makes the more specific `genAppDiv` redundant and will likely repl
 
 ```{r fun_genPanelDiv}
 ```
+
+#### htmlHead
+
+`htmlHead` .
+
+
+```{r fun_htmlHead}
+```
+
+#### htmlBodyTop
+
+`htmlBodyTop` .
+
+
+```{r fun_htmlBodyTop}
+```
+
+#### htmlBottom
+
+`htmlBottom` .
+
+
+```{r fun_htmlBottom}
+```
+
+#### genUserPage
+
+`genUserPage` .
+
+
+```{r fun_genUserPage}
+```
