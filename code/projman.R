@@ -556,3 +556,98 @@ genPanelDiv <- function(outDir="C:/github/leonawicz.github.io/assets", type="pro
 	sink()
 	cat("div container html file created.\n")
 }
+
+# @knitr fun_htmlHead
+htmlHead <- function(author="Matthew Leonawicz", title=author, script.paths=NULL, stylesheet.paths, stylesheet.args=vector("list", length(path.stylesheets))){
+x <- paste0('<!DOCTYPE html>
+
+<html xmlns="http://www.w3.org/1999/xhtml">
+
+<head>
+
+<meta charset="utf-8">
+<meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+
+<meta name="author" content=', author, ' />
+
+<title>', title, '</title>
+')
+
+if(is.character(script.paths)) x <- c(x, paste0('<script src="', script.paths, '"></script>', collapse="\n"))
+
+x <- c(x, '<meta name="viewport" content="width=device-width, initial-scale=1.0" />')
+
+if(is.character(stylesheet.paths)){
+	n <- length(stylesheet.paths)
+	stopifnot(is.list(stylesheet.args))
+	stopifnot(length(stylesheet.args)==n)
+	for(i in 1:n){
+		string <- ""
+		if(is.list(stylesheet.args[i])){
+			v <- stylesheet.args[i]
+			arg <- names(v)
+			if(is.character(arg) && all(arg!="")) string <- paste0(" ", paste(arg, paste0('\"', v, '\"'), sep="=", collapse=" "))
+		}
+		x <- c(x, paste0('<link rel="stylesheet" href="', stylesheet.paths[i], '"', string, '>'))
+	}
+}
+
+x <- c(x, '</head>\n')
+x
+
+}
+
+# @knitr fun_htmlBodyTop
+htmlBodyTop <- function(css.file=NULL, css.string=NULL, background.image="", include.default=TRUE){
+	x <- '<style type = "text/css">\n'
+	
+	default <- paste0('
+	.main-container {
+	  max-width: 940px;
+	  margin-left: auto;
+	  margin-right: auto;
+
+	}
+
+	body {
+	  background-image: url("', background.image, '");
+	  background-attachment: fixed;
+	  background-size: 1920px 1080px;
+	}
+	')
+	
+	if(!is.null(css.file)) y <- readLines(css.file) else y <- ""
+	if(!is.null(css.string)) y <- c(y, css.string)
+	if(include.default) y <- c(default, y)
+	
+	z <- '\n</style>
+	<div class="container-fluid main-container">
+	'
+
+	c(x, y, z)
+}
+
+# example usage
+scripts="libs/jquery-1.11.0/jquery.min.js"
+styles <- c("./cyborg/bootstrap.css", "./assets/css/bootswatch.min.css")
+styles.args <- list("", list(media="screen"))
+
+htmlHead(script.paths=scripts, stylesheet.paths=styles, stylesheet.args=styles.args)
+
+back.img <- "./assets/images/frac23.jpg"
+
+htmlBodyTop(background.image=back.img)
+
+
+
+
+
+
+genUserPage <- function(outDir="C:/github/leonawicz.github.io", ...){
+
+
+	sink(file.path(outDir, filename))
+	sapply(c(x, y, z), cat)
+	sink()
+	cat("div container html file created.\n")
+}
