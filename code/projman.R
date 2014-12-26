@@ -403,13 +403,21 @@ genNavbar <- function(htmlfile="navbar.html", title, menu, submenus, files, titl
 	}
 	
 	fillMenu <- function(x, menu, submenus, files){
-		paste0(
-		'<li class="dropdown">\n            <a href="', 
-			gsub(" ", "-", tolower(menu[x])), 
-			'" class="dropdown-toggle" data-toggle="dropdown">', menu[x], 
-			' <b class="caret"></b></a>\n            <ul class="dropdown-menu">\n',
-			paste(sapply(1:length(submenus[[x]]), fillSubmenu, name=submenus[[x]], file=files[[x]]), sep="", collapse=""),
-			'            </ul>\n', collapse="")
+		m <- menu[x]
+		gs.menu <- gsub(" ", "-", tolower(m))
+		s <- submenus[[x]]
+		f <- files[[x]]
+		if(s[1]=="empty"){
+			y <- paste0('<li><a href="', f,'">', m, '</a></li>\n')
+		} else {
+			y <- paste0(
+			'<li class="dropdown">\n            <a href="', 
+				gs.menu, 
+				'" class="dropdown-toggle" data-toggle="dropdown">', m, 
+				' <b class="caret"></b></a>\n            <ul class="dropdown-menu">\n',
+				paste(sapply(1:length(s), fillSubmenu, name=s, file=f), sep="", collapse=""),
+				'            </ul>\n', collapse="")
+		}
 	}
 	
 	if(include.home) home <- paste0('<li><a href="', home.url, '">Home</a></li>\n          ') else home <- ""
@@ -558,7 +566,7 @@ genPanelDiv <- function(outDir="C:/github/leonawicz.github.io/assets", type="pro
 }
 
 # @knitr fun_htmlHead
-htmlHead <- function(author="Matthew Leonawicz", title=author, script.paths=NULL, stylesheet.paths, stylesheet.args=vector("list", length(path.stylesheets))){
+htmlHead <- function(author="Matthew Leonawicz", title=author, script.paths=NULL, stylesheet.paths, stylesheet.args=vector("list", length(path.stylesheets)), ...){
 x <- paste0('<!DOCTYPE html>
 
 <html xmlns="http://www.w3.org/1999/xhtml">
@@ -598,7 +606,7 @@ x
 }
 
 # @knitr fun_htmlBodyTop
-htmlBodyTop <- function(css.file=NULL, css.string=NULL, background.image="", include.default=TRUE){
+htmlBodyTop <- function(css.file=NULL, css.string=NULL, background.image="", include.default=TRUE, ...){
 	x <- '<style type = "text/css">\n'
 	
 	default <- paste0('
@@ -627,7 +635,120 @@ htmlBodyTop <- function(css.file=NULL, css.string=NULL, background.image="", inc
 	c(x, y, z)
 }
 
+# @knitr fun_htmlBottom
+htmlBottom <- function(...){ # temporary
+	'<div class="container">
+	<div class="row">
+	<div class="col-lg-12">
+	<h2>Alerts</h2>
+	<div class="bs-component">
+	<div class="alert alert-dismissable alert-warning">
+	<button type="button" class="close" data-dismiss="alert">&times;</button>
+	<h4>Warning!</h4>
+	<p>Best check yo self, you\'re not looking too good. Nulla vitae elit libero, a pharetra augue. Praesent commodo cursus magna, <a href="#" class="alert-link">vel scelerisque nisl consectetur et</a>.</p>
+	</div>
+	</div>
+	</div>
+	</div>
+	<div class="row">
+	<div class="col-lg-4">
+	<div class="bs-component">
+	<div class="alert alert-dismissable alert-danger">
+	<button type="button" class="close" data-dismiss="alert">&times;</button>
+	<strong>Oh snap!</strong> <a href="#" class="alert-link">Change a few things up</a> and try submitting again.
+	</div>
+	</div>
+	</div>
+	<div class="col-lg-4">
+	<div class="bs-component">
+	<div class="alert alert-dismissable alert-success">
+	<button type="button" class="close" data-dismiss="alert">&times;</button>
+	<strong>Well done!</strong> You successfully read <a href="#" class="alert-link">this important alert message</a>.
+	</div>
+	</div>
+	</div>
+	<div class="col-lg-4">
+	<div class="bs-component">
+	<div class="alert alert-dismissable alert-info">
+	<button type="button" class="close" data-dismiss="alert">&times;</button>
+	<strong>Heads up!</strong> This <a href="#" class="alert-link">alert needs your attention</a>, but it\'s not super important.
+	</div>
+	</div>
+	</div>
+	</div>
+	</div>
+
+	</body>
+	</html>'
+}
+
+# @knitr fun_htmlNavbar
+htmlNavbar <- function(...){ # temporary
+'<div class="navbar navbar-default navbar-fixed-top">
+<div class="container">
+  <div class="navbar-header">
+    <button type="button" class="navbar-toggle" data-toggle="collapse" data-target=".navbar-responsive-collapse">
+      <span class="icon-bar"></span>
+      <span class="icon-bar"></span>
+      <span class="icon-bar"></span>
+    </button>
+    <a class="navbar-brand" href="#">Home</a>
+  </div>
+  <div class="navbar-collapse collapse navbar-responsive-collapse">
+    <ul class="nav navbar-nav">
+      <li class="active"><a href="#projects">Projects</a></li>
+      <li><a href="#apps">Apps</a></li>
+	  <li><a href="#visualizations">Visualizations</a></li>
+      <li class="dropdown">
+        <a aria-expanded="false" href="#" class="dropdown-toggle" data-toggle="dropdown">Other Stuff <b class="caret"></b></a>
+        <ul class="dropdown-menu">
+          <li><a href="#">Action</a></li>
+          <li><a href="#">Another action</a></li>
+          <li><a href="#">Something else here</a></li>
+          <li class="divider"></li>
+          <li class="dropdown-header">Dropdown header</li>
+          <li><a href="#">Separated link</a></li>
+          <li><a href="#">One more separated link</a></li>
+        </ul>
+      </li>
+    </ul>
+    <form class="navbar-form navbar-left">
+      <input class="form-control col-lg-8" placeholder="Search" type="text">
+    </form>
+    <ul class="nav navbar-nav navbar-right">
+      <li><a href="#">Link</a></li>
+      <li class="dropdown">
+        <a href="#" class="dropdown-toggle" data-toggle="dropdown">Dropdown <b class="caret"></b></a>
+        <ul class="dropdown-menu">
+          <li><a href="#">Action</a></li>
+          <li><a href="#">Another action</a></li>
+          <li><a href="#">Something else here</a></li>
+          <li class="divider"></li>
+          <li><a href="#">Separated link</a></li>
+        </ul>
+      </li>
+    </ul>
+  </div>
+  </div>
+</div>'
+}
+
+# @knitr fun_genUserPage
+genUserPage <- function(file="C:/github/leonawicz.github.io/index.html", containers=NULL, navbar="", ...){
+	x1 <- htmlHead(...)
+	x2 <- htmlBodyTop(...)
+	if(!is.null(containers)) x3 <- sapply(containers, function(x) paste0(readLines(x), collpase="")) else x3 <- ""
+	x4 <- htmlBottom(...)
+	nb <- if(file.exists(navbar) && substr(navbar, nchar(navbar)-4, nchar(navbar))==".html") nb <- readLines(navbar)
+	sink(file)
+	sapply(c(x1, x2, nb, x3, x4), cat)
+	sink()
+	cat("Github User page html file created.\n")
+}
+
 # example usage
+mainDir <- "C:/github/leonawicz.github.io"
+setwd(file.path(mainDir, "assets"))
 scripts="libs/jquery-1.11.0/jquery.min.js"
 styles <- c("./cyborg/bootstrap.css", "./assets/css/bootswatch.min.css")
 styles.args <- list("", list(media="screen"))
@@ -638,16 +759,24 @@ back.img <- "./assets/images/frac23.jpg"
 
 htmlBodyTop(background.image=back.img)
 
+nb.menu <- c("Projects", "Apps", "Visualizations")
 
+sub.menu <- list(
+	c("empty"),
+	c("empty"),
+	c("empty")
+)
 
+files.menu <- as.list( paste0("#", gsub(" ", "-", tolower(nb.menu))) )
 
+github.url <- "https://github.com/leonawicz/leonawicz.github.io"
+genNavbar(htmlfile="navbar.html", title="leonawicz.github.io", menu=nb.menu, submenus=sub.menu, files=files.menu, title.url="index.html", home.url="index.html", site.url=github.url, include.home=FALSE)
 
+htmlBottom()
 
-genUserPage <- function(outDir="C:/github/leonawicz.github.io", ...){
+all.containers <- list.files(pattern="_container")
+keep <- c("about", "updates")
+keep.ind <- match(keep, sapply(strsplit(all.containers, "_"), "[[", 1))
+containers <- all.containers[keep.ind]
 
-
-	sink(file.path(outDir, filename))
-	sapply(c(x, y, z), cat)
-	sink()
-	cat("div container html file created.\n")
-}
+genUserPage(file="C:/github/leonawicz.github.io/indextmp2.html", navbar="navbar.html", containers=containers, script.paths=scripts, stylesheet.paths=styles, stylesheet.args=styles.args, background.image=back.img)
