@@ -394,15 +394,26 @@ moveDocs <- function(path.docs, type=c("md", "html","pdf"), move=TRUE, copy=FALS
 
 # @knitr fun_genNavbar
 # Functions for Github project websites
-genNavbar <- function(htmlfile="navbar.html", title, menu, submenus, files, title.url="index.html", home.url="index.html", site.url="", site.name="Github", include.home=FALSE){
-
-	fillSubmenu <- function(x, name, file){
+genNavbar <- function(htmlfile="navbar.html", title, menu, submenus, files, title.url="index.html", home.url="index.html", site.url="", site.name="Github", theme="united", include.home=FALSE){
+	if(!(theme %in% c("united", "cyborg"))) stop("Only the following themes supported: united, cyborg.")
+	
+	navClassStrings <- function(x){
+		switch(x,
+		united=c("brand", "nav-collapse collapse", "nav", "nav pull-right", "navbar-inner", "container", "", "btn btn-navbar", ".nav-collapse", "</div>\n"),
+		cyborg=c("navbar-brand", "navbar-collapse collapse navbar-responsive-collapse", "nav navbar-nav", "nav navbar-nav navbar-right", "container", "navbar-header", "      </div>\n", "navbar-toggle", ".nav-collapse", "")
+		)
+	}
+	
+	ncs <- navClassStrings(theme)
+	
+	fillSubmenu <- function(x, name, file, theme){
+		if(theme=="united") dd.mennu.header <- "nav-header" else if(theme=="cyborg") dd.menu.header <- "dropdown-header"
 		if(file[x]=="divider") return('              <li class="divider"></li>\n')
-		if(file[x]=="header") return(paste0('              <li class="nav-header">', name[x], '</li>\n'))
+		if(file[x]=="header") return(paste0('              <li class="', dd.menu.header, '">', name[x], '</li>\n'))
 		paste0('              <li><a href="', file[x], '">', name[x], '</a></li>\n')
 	}
 	
-	fillMenu <- function(x, menu, submenus, files){
+	fillMenu <- function(x, menu, submenus, files, theme){
 		m <- menu[x]
 		gs.menu <- gsub(" ", "-", tolower(m))
 		s <- submenus[[x]]
@@ -415,17 +426,17 @@ genNavbar <- function(htmlfile="navbar.html", title, menu, submenus, files, titl
 				gs.menu, 
 				'" class="dropdown-toggle" data-toggle="dropdown">', m, 
 				' <b class="caret"></b></a>\n            <ul class="dropdown-menu">\n',
-				paste(sapply(1:length(s), fillSubmenu, name=s, file=f), sep="", collapse=""),
+				paste(sapply(1:length(s), fillSubmenu, name=s, file=f, theme=theme), sep="", collapse=""),
 				'            </ul>\n', collapse="")
 		}
 	}
 	
 	if(include.home) home <- paste0('<li><a href="', home.url, '">Home</a></li>\n          ') else home <- ""
 	x <- paste0(
-		'<div class="navbar navbar-default navbar-fixed-top">\n  <div class="navbar-inner">\n    <div class="container">\n      <button type="button" class="btn btn-navbar" data-toggle="collapse" data-target=".nav-collapse">\n        <span class="icon-bar"></span>\n        <span class="icon-bar"></span>\n        <span class="icon-bar"></span>\n      </button>\n      <a class="brand" href="', title.url, '">', title, '</a>\n      <div class="nav-collapse collapse">\n        <ul class="nav">\n          ',
+		'<div class="navbar navbar-default navbar-fixed-top">\n  <div class="', ncs[5], '">\n    <div class="', ncs[6], '">\n      <button type="button" class="', ncs[8], '" data-toggle="collapse" data-target="', ncs[9], '">\n        <span class="icon-bar"></span>\n        <span class="icon-bar"></span>\n        <span class="icon-bar"></span>\n      </button>\n      <a class="', ncs[1], '" href="', title.url, '">', title, '</a>\n', ncs[7], '      <div class="', ncs[2], '">\n        <ul class="', ncs[3], '">\n          ',
 		home,
-		paste(sapply(1:length(menu), fillMenu, menu=menu, submenus=submenus, files=files), sep="", collapse="\n          "),
-		'        </ul>\n        <ul class="nav pull-right">\n          <a class="btn btn-primary" href="', site.url, '">\n            <i class="fa fa-github fa-lg"></i>\n            ',site.name,'\n          </a>\n        </ul>\n      </div><!--/.nav-collapse -->\n    </div>\n  </div>\n</div>\n',
+		paste(sapply(1:length(menu), fillMenu, menu=menu, submenus=submenus, files=files, theme=theme), sep="", collapse="\n          "),
+		'        </ul>\n        <ul class="', ncs[4], '">\n          <a class="btn btn-primary" href="', site.url, '">\n            <i class="fa fa-github fa-lg"></i>\n            ',site.name,'\n          </a>\n        </ul>\n      </div><!--/.nav-collapse -->\n    </div>\n  ', ncs[10], '</div>\n',
 		collpase="")
 	sink(htmlfile)
 	cat(x)
@@ -498,7 +509,7 @@ genAppDiv <- function(file="C:/github/leonawicz.github.io/assets/apps_container.
 #genAppDiv(panel.main=rep("Jussanothashinyapp", 18))
 
 # @knitr fun_genPanelDiv
-genPanelDiv <- function(outDir="C:/github/leonawicz.github.io/assets", type="projects", main="Projects",
+genPanelDiv <- function(outDir, type="projects", main="Projects",
 	github.user="leonawicz", prjs.dir="C:/github", exclude=c("leonawicz.github.io", "shiny-apps"), img.loc="_images/cropped", ...){
 	stopifnot(github.user %in% c("leonawicz", "ua-snap"))
 	if(type=="apps"){
@@ -581,9 +592,9 @@ x <- paste0('<!DOCTYPE html>
 <title>', title, '</title>
 ')
 
-if(is.character(script.paths)) x <- c(x, paste0('<script src="', script.paths, '"></script>', collapse="\n"))
+if(is.character(script.paths)) x <- c(x, paste0(paste0('<script src="', script.paths, '"></script>', collapse="\n"), "\n"))
 
-x <- c(x, '<meta name="viewport" content="width=device-width, initial-scale=1.0" />')
+x <- c(x, '<meta name="viewport" content="width=device-width, initial-scale=1.0" />\n')
 
 if(is.character(stylesheet.paths)){
 	n <- length(stylesheet.paths)
@@ -596,7 +607,7 @@ if(is.character(stylesheet.paths)){
 			arg <- names(v)
 			if(is.character(arg) && all(arg!="")) string <- paste0(" ", paste(arg, paste0('\"', v, '\"'), sep="=", collapse=" "))
 		}
-		x <- c(x, paste0('<link rel="stylesheet" href="', stylesheet.paths[i], '"', string, '>'))
+		x <- c(x, paste0('<link rel="stylesheet" href="', stylesheet.paths[i], '"', string, '>\n'))
 	}
 }
 
@@ -621,6 +632,22 @@ htmlBodyTop <- function(css.file=NULL, css.string=NULL, background.image="", inc
 	  background-image: url("', background.image, '");
 	  background-attachment: fixed;
 	  background-size: 1920px 1080px;
+	}
+	
+	/* padding for bootstrap navbar */
+	body {
+	  padding-top: 50px;
+	  padding-bottom: 40px;
+	}
+	@media (max-width: 979px) {
+	  body {
+		padding-top: 0;
+	  }
+	}
+	
+	.nav>.btn {
+	  line-height: 0.75em;
+	  margin-top: 9px;
 	}
 	')
 	
@@ -737,46 +764,11 @@ htmlNavbar <- function(...){ # temporary
 genUserPage <- function(file="C:/github/leonawicz.github.io/index.html", containers=NULL, navbar="", ...){
 	x1 <- htmlHead(...)
 	x2 <- htmlBodyTop(...)
-	if(!is.null(containers)) x3 <- sapply(containers, function(x) paste0(readLines(x), collpase="")) else x3 <- ""
+	if(!is.null(containers)) x3 <- sapply(containers, function(x) paste0(paste0(readLines(x), collapse="\n"), "\n\n")) else x3 <- ""
 	x4 <- htmlBottom(...)
-	nb <- if(file.exists(navbar) && substr(navbar, nchar(navbar)-4, nchar(navbar))==".html") nb <- readLines(navbar)
+	nb <- if(file.exists(navbar) && substr(navbar, nchar(navbar)-4, nchar(navbar))==".html") nb <- paste0(paste0(readLines(navbar), collapse="\n"), "\n\n")
 	sink(file)
 	sapply(c(x1, x2, nb, x3, x4), cat)
 	sink()
 	cat("Github User page html file created.\n")
 }
-
-# example usage
-mainDir <- "C:/github/leonawicz.github.io"
-setwd(file.path(mainDir, "assets"))
-scripts="libs/jquery-1.11.0/jquery.min.js"
-styles <- c("./assets/libs/bootstrap-2.3.2/css/bootstrap.min", "./cyborg/bootstrap.css", "./assets/css/bootswatch.min.css", "libs/font-awesome-4.1.0/css/font-awesome.css")
-styles.args <- list("", "", list(media="screen"), "")
-
-htmlHead(script.paths=scripts, stylesheet.paths=styles, stylesheet.args=styles.args)
-
-back.img <- "./assets/images/frac23.jpg"
-
-htmlBodyTop(background.image=back.img)
-
-nb.menu <- c("Projects", "Apps", "Visualizations")
-
-sub.menu <- list(
-	c("empty"),
-	c("empty"),
-	c("empty")
-)
-
-files.menu <- as.list( paste0("#", gsub(" ", "-", tolower(nb.menu))) )
-
-github.url <- "https://github.com/leonawicz/leonawicz.github.io"
-genNavbar(htmlfile="navbar.html", title="leonawicz.github.io", menu=nb.menu, submenus=sub.menu, files=files.menu, title.url="index.html", home.url="index.html", site.url=github.url, include.home=FALSE)
-
-htmlBottom()
-
-all.containers <- list.files(pattern="_container")
-keep <- c("about", "updates")
-keep.ind <- match(keep, sapply(strsplit(all.containers, "_"), "[[", 1))
-containers <- all.containers[keep.ind]
-
-genUserPage(file="C:/github/leonawicz.github.io/indextmp2.html", navbar="navbar.html", containers=containers, script.paths=scripts, stylesheet.paths=styles, stylesheet.args=styles.args, background.image=back.img)
