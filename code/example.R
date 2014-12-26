@@ -87,5 +87,59 @@ moveDocs(path.docs=docs.path, type="pdf", remove.latex=FALSE)
 
 # @knitr ex_user_website
 # Assuming project and app repos exist and are properly prepared
-genPanelDiv(type="projects", main="Projects", github.user="leonawicz", col="primary")
-genPanelDiv(type="apps", main="Shiny Apps", github.user="ua-snap")
+user <- "leonawicz"
+user.site <- paste0(user, ".github.io")
+mainDir <- file.path(proj.location, user.site)
+setwd(file.path(mainDir, "assets"))
+
+# create projects container html file
+genPanelDiv(outDir=getwd(), type="projects", main="Projects", github.user=user, col="primary")
+# create Shiny apps container html file
+genPanelDiv(outDir=getwd(), type="apps", main="Shiny Apps", github.user="ua-snap")
+
+# Specify libraries for html head
+# 'assets' is first because it resides in the top-level directory where the web site html files reside.
+scripts=c("assets/libs/jquery-1.11.0/jquery.min.js", "assets/js/bootstrap.min.js", "assets/js/bootswatch.js")
+styles <- c("cyborg/bootstrap.css", "assets/css/bootswatch.min.css", "assets/libs/font-awesome-4.1.0/css/font-awesome.css")
+styles.args <- list("", list(media="screen"), "")
+
+# check
+htmlHead(script.paths=scripts, stylesheet.paths=styles, stylesheet.args=styles.args)
+
+# Add a background image
+back.img <- "assets/images/frac23.jpg"
+# check
+htmlBodyTop(background.image=back.img)
+
+# Prepare navbar
+nb.menu <- c("Projects", "Apps", "Data Visualizations", "Test1")
+
+sub.menu <- list(
+	c("empty"),
+	c("empty"),
+	c("empty"),
+	c("A title", "A page", "divider", "Another title", "Page 1", "Page 2")
+)
+
+files.menu <- list(
+	c("#projects"),
+	c("#apps"),
+	c("#data-visualizations"),
+	c("header", "#", "divider", "header", "#", "#")
+)
+
+github.url <- file.path("https://github.com", user, user.site)
+# Create navbar.html
+genNavbar(htmlfile="navbar.html", title=user.site, menu=nb.menu, submenus=sub.menu, files=files.menu, theme="cyborg", title.url="index.html", home.url="index.html", site.url=github.url, include.home=FALSE)
+
+# check
+htmlBottom()
+
+# Specify dic container elements to include in body
+all.containers <- list.files(pattern="_container")
+keep <- c("about", "updates", "projects", "apps", "data-visualizations")
+keep.ind <- match(keep, sapply(strsplit(all.containers, "_"), "[[", 1))
+containers <- all.containers[keep.ind]
+
+# Create web page
+genUserPage(file="C:/github/leonawicz.github.io/indextmp.html", navbar="navbar.html", containers=containers, script.paths=scripts, stylesheet.paths=styles, stylesheet.args=styles.args, background.image=back.img)
