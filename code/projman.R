@@ -750,8 +750,8 @@ genUserPage <- function(file="C:/github/leonawicz.github.io/index.html", contain
 mainDir <- "C:/github/leonawicz.github.io"
 setwd(file.path(mainDir, "assets"))
 scripts="libs/jquery-1.11.0/jquery.min.js"
-styles <- c("./cyborg/bootstrap.css", "./assets/css/bootswatch.min.css")
-styles.args <- list("", list(media="screen"))
+styles <- c("./assets/libs/bootstrap-2.3.2/css/bootstrap.min", "./cyborg/bootstrap.css", "./assets/css/bootswatch.min.css", "libs/font-awesome-4.1.0/css/font-awesome.css")
+styles.args <- list("", "", list(media="screen"), "")
 
 htmlHead(script.paths=scripts, stylesheet.paths=styles, stylesheet.args=styles.args)
 
