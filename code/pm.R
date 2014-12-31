@@ -74,7 +74,6 @@ files.Rmd <- list.files(pattern=".Rmd$", full=T)
 # @knitr save
 # write all yaml front-matter-specified outputs to Rmd directory for all Rmd files
 lapply(files.Rmd, render, output_format="all")
-
 moveDocs(path.docs=docs.path)
 
 # if also making PDFs for a project, speed up the Rmd to Rnw file conversion/duplication
