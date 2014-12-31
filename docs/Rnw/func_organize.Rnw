@@ -1,0 +1,47 @@
+\documentclass{article}
+\usepackage{geometry}
+\geometry{verbose, tmargin=2.5cm, bmargin=2.5cm, lmargin=2.5cm, rmargin=2.5cm}
+\begin{document}
+
+\title{}
+\author{}
+\maketitle
+
+<<highlight, echo=FALSE>>=
+knit_theme$set(knit_theme$get('solarized-dark'))
+@
+
+<<knitr_setup, echo=FALSE>>=
+opts_chunk$set(cache=FALSE, eval=FALSE, tidy=TRUE, message=FALSE, warning=FALSE)
+read_chunk("../../code/rpm.R")
+@
+
+\subsubsection{moveDocs}
+\texttt{moveDocs} relocates files by renaming with a new file path.
+Specifically, it scans for md and html files in the \texttt{docs/Rmd} directory and/or pdf files in the \texttt{docs/Rnw} directory.
+If such files are found in the respective locations, they are moved to \texttt{docs/md}, \texttt{docs/html}, and \texttt{docs/pdf}, respectively.
+
+The intent is to clean up the Rmd and Rnw directories after \texttt{knitr} has been used to knit documents in place.
+I do this because I have more success knitting documents with the confluence of \texttt{RStudio}, \texttt{rmarkdown}, \texttt{knitr}, \texttt{pandoc}, and \texttt{LaTeX} when the knitting occurs all within the directory of the originating files.
+The process is more prone to throwing errors when trying to specify alternate locations for outputs.
+
+\texttt{moveDocs} makes a nominal effort to replace a possible relative path with a full file path before proceeding, if the former is supplied.
+Default arguments include \texttt{move=TRUE} which will call \texttt{file.rename} and \texttt{copy=FALSE} which, if \texttt{TRUE} (and \texttt{move=FALSE}), will alternatively call \texttt{file.copy}.
+If both are \texttt{TRUE}, any files found are moved.
+
+This function will always overwrite any existing file versions previously moved to the output directories, by way of \texttt{file.rename}.
+To keep the behavior consistent, when \texttt{move=FALSE} and \texttt{copy=TRUE}, \texttt{file.copy} always executes with its argument, \texttt{overwrite=TRUE}.
+This should never cause problems because in the context I intend for this function,
+the types of files being moved or copied from \texttt{docs/Rmd} and \texttt{docs/Rnw} are never used as inputs to other files, functions, or processes,
+nor are they meant to be edited by hand after being generated.
+
+If there are LaTeX-associated files present (.TeX, .aux, and .txt files with the same file names as local pdf files.),
+these files will be removed if \texttt{remove.latex=TRUE} (default).
+If \texttt{FALSE}, the default \texttt{latexDir="LaTeX"} means that these files will be moved to the \texttt{docs/LaTeX} directory rather than deleted.
+If this directory does not exist, it will be created.
+An alternate location can be specified, such as "pdf" if you want to keep these files with the related pdf files after those are moved by \texttt{moveDocs} as well to \texttt{docs/pdf}.
+
+<<fun_moveDocs>>=
+@
+
+\end{document}

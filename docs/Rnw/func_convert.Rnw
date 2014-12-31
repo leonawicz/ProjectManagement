@@ -1,0 +1,37 @@
+\documentclass{article}
+\usepackage{geometry}
+\geometry{verbose, tmargin=2.5cm, bmargin=2.5cm, lmargin=2.5cm, rmargin=2.5cm}
+\begin{document}
+
+\title{}
+\author{}
+\maketitle
+
+<<highlight, echo=FALSE>>=
+knit_theme$set(knit_theme$get('solarized-dark'))
+@
+
+<<knitr_setup, echo=FALSE>>=
+opts_chunk$set(cache=FALSE, eval=FALSE, tidy=TRUE, message=FALSE, warning=FALSE)
+read_chunk("../../code/rpm.R")
+@
+
+\subsubsection{convertDocs}
+\texttt{convertDocs} converts between Rmd and Rnw files.
+The project's \texttt{docs/Rmd} or \texttt{docs/Rnw} directory is specified.
+Any files of the same type as the directory are converted to the other type and saved to the other directory.
+The input files are not removed.
+
+This function speeds up the process of duplicating files, e.g., when wanting to make PDFs from Rnw files when only Rmd files exist.
+This is almost exclusively what I use this function for.
+On less frequent occasions I have used it in the other direction when I have Rnw files which were once used to make PDFs but later I decide to put them on the web as a web page and not as a link to a PDF.
+
+The user still makes specific changes by hand, for example, any required changes to \texttt{knitr} code chunk options that must differ for PDF output vs. html output.
+The primary benefit is in not having to fuss with large amounts of standard substitutions which can be automated, such as swapping code chunk enclosure styles and common file metadata.
+Of course, this function is not perfect.
+It amounts to a text-parsing hack that is intended to handle the most common of idiosyncrasies and differences which exist between my own Rmd and Rnw files in the context of my own set of rules and assumptions, outlined below.
+
+<<fun_convertDocs>>=
+@
+
+\end{document}

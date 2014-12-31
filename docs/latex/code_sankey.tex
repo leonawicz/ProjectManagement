@@ -97,8 +97,8 @@ Two packages are required.
 
 Project file names can be loaded using \texttt{pattern} arguments with \texttt{list.files} pointing to both the \texttt{code} and relevant \texttt{docs} directories.
 However, there is a substantial amount of hardcoding involved for any project as shown here.
-For example, the \texttt{projman.R} script contains all the \texttt{projman} functions. 
-Although this script has a complete, corresponding \texttt{projman.Rmd} file, I decided to subsequently break out the functions and other content from \texttt{projman.Rmd} into multiple Rmd files.
+For example, the \texttt{rpm.R} script contains all the \texttt{rpm} functions. 
+Although this script has a complete, corresponding \texttt{rpm.Rmd} file, I decided to subsequently break out the functions and other content from \texttt{rpm.Rmd} into multiple Rmd files.
 Such ad hoc project-specific decisions require that I take note here and make the related distinctions.
 
 \begin{knitrout}
@@ -107,7 +107,7 @@ Such ad hoc project-specific decisions require that I take note here and make th
 \hlkwd{setwd}\hlstd{(}\hlstr{"C:/github/ProjectManagement/docs/Rmd"}\hlstd{)}
 
 \hlstd{c0} \hlkwb{<-} \hlkwd{list.files}\hlstd{(}\hlstr{"../../code"}\hlstd{,} \hlkwc{pattern} \hlstd{=} \hlstr{".R$"}\hlstd{)}
-\hlstd{c1a} \hlkwb{<-} \hlkwd{c}\hlstd{(}\hlstr{"_output.yaml"}\hlstd{,} \hlstr{"navbar.html"}\hlstd{)}
+\hlstd{c1a} \hlkwb{<-} \hlkwd{c}\hlstd{(}\hlstr{"_output.yaml"}\hlstd{,} \hlstr{"navbar.html"}\hlstd{,} \hlstr{"leonawicz.github.io"}\hlstd{)}
 \hlstd{c1b} \hlkwb{<-} \hlstr{"supporting libraries"}
 \hlstd{c1c} \hlkwb{<-} \hlstr{"in_header.html"}
 
@@ -129,11 +129,11 @@ The connections are expressed by element-wise comparison of the equal-length \te
 \definecolor{shadecolor}{rgb}{0, 0.169, 0.212}\color{fgcolor}\begin{kframe}
 \begin{alltt}
 \hlstd{from} \hlkwb{<-} \hlkwd{c}\hlstd{(}
-        \hlstd{c0,}     \hlkwd{rep}\hlstd{(}\hlstr{"projman.Rmd"}\hlstd{,} \hlkwd{length}\hlstd{(c2b)), c2, c2,} \hlkwd{rep}\hlstd{(}\hlstr{"example.R"}\hlstd{,} \hlkwd{length}\hlstd{(c1a)), c1b,} \hlkwd{rep}\hlstd{(}\hlkwd{c}\hlstd{(c1a, c1c),} \hlkwc{each}\hlstd{=}\hlkwd{length}\hlstd{(c4))}
+        \hlstd{c0,}     \hlkwd{rep}\hlstd{(}\hlstr{"rpm.Rmd"}\hlstd{,} \hlkwd{length}\hlstd{(c2b)), c2, c2,} \hlkwd{rep}\hlstd{(}\hlstr{"pm.R"}\hlstd{,} \hlkwd{length}\hlstd{(c1a)), c1b,} \hlkwd{rep}\hlstd{(}\hlkwd{c}\hlstd{(c1a, c1c),} \hlkwc{each}\hlstd{=}\hlkwd{length}\hlstd{(c4))}
 
 \hlstd{)}
 \hlstd{to} \hlkwb{<-} \hlkwd{c}\hlstd{(}
-        \hlstd{c2a, c2b, c3, c4, c1a,} \hlstr{"example.R"}\hlstd{,} \hlkwd{rep}\hlstd{(c4,} \hlkwd{length}\hlstd{(}\hlkwd{c}\hlstd{(c1a, c1c)))}
+        \hlstd{c2a, c2b, c3, c4, c1a,} \hlstr{"pm.R"}\hlstd{,} \hlkwd{rep}\hlstd{(c4,} \hlkwd{length}\hlstd{(}\hlkwd{c}\hlstd{(c1a, c1c)))}
 \hlstd{)}
 \end{alltt}
 \end{kframe}

@@ -4,7 +4,7 @@
 #### newProject
 `newProject` creates a new named project directory structure at the specified file path.
 If a directory with this project name already exists in this location on the file system and `overwrite=FALSE`, the function will abort.
-Default project subdirectories are created unless a different vector of folder names is explicitly passed to ```newProject```.
+Default project subdirectories are created unless a different vector of folder names is explicitly passed to `newProject`.
 If one of the subdirectories is `docs` then the default vector of subdirectories under `docs` is also created.
 This argument can also be set explicitly.
 The current function only creates directories, not files, so `overwrite=TRUE` is safe to use on any existing project.

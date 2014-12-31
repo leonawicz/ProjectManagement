@@ -13,7 +13,7 @@ knit_theme$set(knit_theme$get('solarized-dark'))
 
 <<knitr_setup, echo=FALSE>>=
 opts_chunk$set(cache=FALSE, eval=FALSE, tidy=TRUE, message=FALSE, warning=FALSE)
-read_chunk("../../code/projman.R")
+read_chunk("../../code/rpm.R")
 @
 
 \subsubsection{rmdHeader}
@@ -63,53 +63,9 @@ This fascilitates updating of Rmd documentation when it falls behind scripts whi
 <<fun_chunkNames>>=
 @
 
-Regarding the creation and updating of Rmd files, \texttt{projman} simply assumes that there will be one \textbf{R} Markdown file corresponding to one \textbf{R} script.
+Regarding the creation and updating of Rmd files, \texttt{rpm} simply assumes that there will be one \textbf{R} Markdown file corresponding to one \textbf{R} script.
 This is not always the case for a given project, but again, the purpose is to generate basic templates.
 Unnecessary files can always be deleted later, or edits made such that one \textbf{R} Markdown file reads multiple \textbf{R} scripts,
 as is the case with the Rmd file used to generate this document.
-
-\subsubsection{convertDocs}
-\texttt{convertDocs} converts between Rmd and Rnw files.
-The project's \texttt{docs/Rmd} or \texttt{docs/Rnw} directory is specified.
-Any files of the same type as the directory are converted to the other type and saved to the other directory.
-The input files are not removed.
-
-This function speeds up the process of duplicating files, e.g., when wanting to make PDFs from Rnw files when only Rmd files exist.
-This is almost exclusively what I use this function for.
-On less frequent occasions I have used it in the other direction when I have Rnw files which were once used to make PDFs but later I decide to put them on the web as a web page and not as a link to a PDF.
-
-The user still makes specific changes by hand, for example, any required changes to \texttt{knitr} code chunk options that must differ for PDF output vs. html output.
-The primary benefit is in not having to fuss with large amounts of standard substitutions which can be automated, such as swapping code chunk enclosure styles and common file metadata.
-
-<<fun_convertDocs>>=
-@
-
-\subsubsection{moveDocs}
-\texttt{moveDocs} relocates files by renaming with a new file path.
-Specifically, it scans for md and html files in the \texttt{docs/Rmd} directory and/or pdf files in the \texttt{docs/Rnw} directory.
-If such files are found in the respective locations, they are moved to \texttt{docs/md}, \texttt{docs/html}, and \texttt{docs/pdf}, respectively.
-
-The intent is to clean up the Rmd and Rnw directories after \texttt{knitr} has been used to knit documents in place.
-I do this because I have more success knitting documents with the confluence of \texttt{RStudio}, \texttt{rmarkdown}, \texttt{knitr}, \texttt{pandoc}, and \texttt{LaTeX} when the knitting occurs all within the directory of the originating files.
-The process is more prone to throwing errors when trying to specify alternate locations for outputs.
-
-\texttt{moveDocs} makes a nominal effort to replace a possible relative path with a full file path before proceeding, if the former is supplied.
-Default arguments include \texttt{move=TRUE} which will call \texttt{file.rename} and \texttt{copy=FALSE} which, if \texttt{TRUE} (and \texttt{move=FALSE}), will alternatively call \texttt{file.copy}.
-If both are \texttt{TRUE}, any files found are moved.
-
-This function will always overwrite any existing file versions previously moved to the output directories, by way of \texttt{file.rename}.
-To keep the behavior consistent, when \texttt{move=FALSE} and \texttt{copy=TRUE}, \texttt{file.copy} always executes with its argument, \texttt{overwrite=TRUE}.
-This should never cause problems because in the context I intend for this function,
-the types of files being moved or copied from \texttt{docs/Rmd} and \texttt{docs/Rnw} are never used as inputs to other files, functions, or processes,
-nor are they meant to be edited by hand after being generated.
-
-If there are LaTeX-associated files present (.TeX, .aux, and .txt files with the same file names as local pdf files.),
-these files will be removed if \texttt{remove.latex=TRUE} (default).
-If \texttt{FALSE}, the default \texttt{latexDir="LaTeX"} means that these files will be moved to the \texttt{docs/LaTeX} directory rather than deleted.
-If this directory does not exist, it will be created.
-An alternate location can be specified, such as "pdf" if you want to keep these files with the related pdf files after those are moved by \texttt{moveDocs} as well to \texttt{docs/pdf}.
-
-<<fun_moveDocs>>=
-@
 
 \end{document}

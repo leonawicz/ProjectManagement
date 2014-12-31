@@ -112,12 +112,12 @@ code > span.er { color: #c3bf9f; }
       <div class="nav-collapse collapse">
         <ul class="nav">
           <li class="dropdown">
-            <a href="projman" class="dropdown-toggle" data-toggle="dropdown">projman <b class="caret"></b></a>
+            <a href="rpm" class="dropdown-toggle" data-toggle="dropdown">rpm <b class="caret"></b></a>
             <ul class="dropdown-menu">
-              <li class="nav-header">About projman</li>
+              <li class="nav-header">About rpm</li>
               <li><a href="proj_intro.html">Introduction</a></li>
               <li><a href="code_sankey.html">Related items</a></li>
-              <li><a href="example.html">Example usage</a></li>
+              <li><a href="pm.html">Example usage</a></li>
             </ul>
 
           <li class="dropdown">
@@ -128,6 +128,8 @@ code > span.er { color: #c3bf9f; }
               <li class="nav-header">Functions</li>
               <li><a href="func_new.html">Start a new project</a></li>
               <li><a href="func_rmd.html">Working with Rmd files</a></li>
+              <li><a href="func_convert.html">Document conversion</a></li>
+              <li><a href="func_organize.html">Organize documents</a></li>
               <li><a href="func_website.html">Make a project website</a></li>
               <li><a href="func_user_website.html">Github user website</a></li>
             </ul>
@@ -205,9 +207,7 @@ genAppDiv &lt;-<span class="st"> </span>function(<span class="dt">file =</span> 
     <span class="kw">sapply</span>(<span class="kw">c</span>(x, y, z), cat)
     <span class="kw">sink</span>()
     <span class="kw">cat</span>(<span class="st">&quot;div container html created for Shiny Apps.</span><span class="ch">\n</span><span class="st">&quot;</span>)
-}
-
-<span class="co"># genAppDiv() genAppDiv(panel.main=rep(&#39;Jussanothashinyapp&#39;, 18))</span></code></pre>
+}</code></pre>
 </div>
 <div id="genpaneldiv" class="section level4">
 <h4>genPanelDiv</h4>
@@ -218,9 +218,9 @@ genAppDiv &lt;-<span class="st"> </span>function(<span class="dt">file =</span> 
 <p>Specifically, the <code>genAppDiv</code> looks for a named directory of image files. There should be one image per app, named exactly as the respective app directory is named. Only apps with corresponding images are built into the html container. If you wish to leave out, say, a developmental app from being linked to on you Github user website, do not include an image file for that app.</p>
 <p>The container element includes an image link to each app’s url as well as a link to the source code on Github. Although the app scans for images in a local repository, the images referenced in the output html are of course not local. They point to the same images stored on Github, hence why it is useful for the local directory of apps to be a Github repository.</p>
 <p>This function makes the more specific <code>genAppDiv</code> redundant and will likely replace it.</p>
-<pre class="sourceCode r"><code class="sourceCode r">genPanelDiv &lt;-<span class="st"> </span>function(<span class="dt">outDir =</span> <span class="st">&quot;C:/github/leonawicz.github.io/assets&quot;</span>, <span class="dt">type =</span> <span class="st">&quot;projects&quot;</span>, 
-    <span class="dt">main =</span> <span class="st">&quot;Projects&quot;</span>, <span class="dt">github.user =</span> <span class="st">&quot;leonawicz&quot;</span>, <span class="dt">prjs.dir =</span> <span class="st">&quot;C:/github&quot;</span>, <span class="dt">exclude =</span> <span class="kw">c</span>(<span class="st">&quot;leonawicz.github.io&quot;</span>, 
-        <span class="st">&quot;shiny-apps&quot;</span>), <span class="dt">img.loc =</span> <span class="st">&quot;_images/cropped&quot;</span>, ...) {
+<pre class="sourceCode r"><code class="sourceCode r">genPanelDiv &lt;-<span class="st"> </span>function(outDir, <span class="dt">type =</span> <span class="st">&quot;projects&quot;</span>, <span class="dt">main =</span> <span class="st">&quot;Projects&quot;</span>, <span class="dt">github.user =</span> <span class="st">&quot;leonawicz&quot;</span>, 
+    <span class="dt">prjs.dir =</span> <span class="st">&quot;C:/github&quot;</span>, <span class="dt">exclude =</span> <span class="kw">c</span>(<span class="st">&quot;leonawicz.github.io&quot;</span>, <span class="st">&quot;shiny-apps&quot;</span>), 
+    <span class="dt">img.loc =</span> <span class="st">&quot;_images/cropped&quot;</span>, ...) {
     <span class="kw">stopifnot</span>(github.user %in%<span class="st"> </span><span class="kw">c</span>(<span class="st">&quot;leonawicz&quot;</span>, <span class="st">&quot;ua-snap&quot;</span>))
     if (type ==<span class="st"> &quot;apps&quot;</span>) {
         filename &lt;-<span class="st"> &quot;apps_container.html&quot;</span>
@@ -285,11 +285,137 @@ genAppDiv &lt;-<span class="st"> </span>function(<span class="dt">file =</span> 
     <span class="kw">sapply</span>(<span class="kw">c</span>(x, y, z), cat)
     <span class="kw">sink</span>()
     <span class="kw">cat</span>(<span class="st">&quot;div container html file created.</span><span class="ch">\n</span><span class="st">&quot;</span>)
-}
-
-<span class="co"># genPanelDiv(type=&#39;projects&#39;, main=&#39;Projects&#39;, github.user=&#39;leonawicz&#39;,</span>
-<span class="co"># col=&#39;primary&#39;) genPanelDiv(type=&#39;apps&#39;, main=&#39;Shiny Apps&#39;,</span>
-<span class="co"># github.user=&#39;ua-snap&#39;)</span></code></pre>
+}</code></pre>
+</div>
+<div id="htmlhead" class="section level4">
+<h4>htmlHead</h4>
+<p><code>htmlHead</code> .</p>
+<pre class="sourceCode r"><code class="sourceCode r">htmlHead &lt;-<span class="st"> </span>function(<span class="dt">author =</span> <span class="st">&quot;Matthew Leonawicz&quot;</span>, <span class="dt">title =</span> author, <span class="dt">script.paths =</span> <span class="ot">NULL</span>, 
+    stylesheet.paths, <span class="dt">stylesheet.args =</span> <span class="kw">vector</span>(<span class="st">&quot;list&quot;</span>, <span class="kw">length</span>(path.stylesheets)), 
+    ...) {
+    x &lt;-<span class="st"> </span><span class="kw">paste0</span>(<span class="st">&quot;&lt;!DOCTYPE html&gt;</span><span class="ch">\n\n</span><span class="st">&lt;html xmlns=</span><span class="ch">\&quot;</span><span class="st">http://www.w3.org/1999/xhtml</span><span class="ch">\&quot;</span><span class="st">&gt;</span><span class="ch">\n\n</span><span class="st">&lt;head&gt;</span><span class="ch">\n\n</span><span class="st">&lt;meta charset=</span><span class="ch">\&quot;</span><span class="st">utf-8</span><span class="ch">\&quot;</span><span class="st">&gt;</span><span class="ch">\n</span><span class="st">&lt;meta http-equiv=</span><span class="ch">\&quot;</span><span class="st">Content-Type</span><span class="ch">\&quot;</span><span class="st"> content=</span><span class="ch">\&quot;</span><span class="st">text/html; charset=utf-8</span><span class="ch">\&quot;</span><span class="st"> /&gt;</span><span class="ch">\n\n</span><span class="st">&lt;meta name=</span><span class="ch">\&quot;</span><span class="st">author</span><span class="ch">\&quot;</span><span class="st"> content=&quot;</span>, 
+        author, <span class="st">&quot; /&gt;</span><span class="ch">\n\n</span><span class="st">&lt;title&gt;&quot;</span>, title, <span class="st">&quot;&lt;/title&gt;</span><span class="ch">\n</span><span class="st">&quot;</span>)
+    
+    if (<span class="kw">is.character</span>(script.paths)) 
+        x &lt;-<span class="st"> </span><span class="kw">c</span>(x, <span class="kw">paste0</span>(<span class="kw">paste0</span>(<span class="st">&quot;&lt;script src=</span><span class="ch">\&quot;</span><span class="st">&quot;</span>, script.paths, <span class="st">&quot;</span><span class="ch">\&quot;</span><span class="st">&gt;&lt;/script&gt;&quot;</span>, 
+            <span class="dt">collapse =</span> <span class="st">&quot;</span><span class="ch">\n</span><span class="st">&quot;</span>), <span class="st">&quot;</span><span class="ch">\n</span><span class="st">&quot;</span>))
+    
+    x &lt;-<span class="st"> </span><span class="kw">c</span>(x, <span class="st">&quot;&lt;meta name=</span><span class="ch">\&quot;</span><span class="st">viewport</span><span class="ch">\&quot;</span><span class="st"> content=</span><span class="ch">\&quot;</span><span class="st">width=device-width, initial-scale=1.0</span><span class="ch">\&quot;</span><span class="st"> /&gt;</span><span class="ch">\n</span><span class="st">&quot;</span>)
+    
+    if (<span class="kw">is.character</span>(stylesheet.paths)) {
+        n &lt;-<span class="st"> </span><span class="kw">length</span>(stylesheet.paths)
+        <span class="kw">stopifnot</span>(<span class="kw">is.list</span>(stylesheet.args))
+        <span class="kw">stopifnot</span>(<span class="kw">length</span>(stylesheet.args) ==<span class="st"> </span>n)
+        for (i in <span class="dv">1</span>:n) {
+            string &lt;-<span class="st"> &quot;&quot;</span>
+            if (<span class="kw">is.list</span>(stylesheet.args[i])) {
+                v &lt;-<span class="st"> </span>stylesheet.args[i]
+                arg &lt;-<span class="st"> </span><span class="kw">names</span>(v)
+                if (<span class="kw">is.character</span>(arg) &amp;&amp;<span class="st"> </span><span class="kw">all</span>(arg !=<span class="st"> &quot;&quot;</span>)) 
+                  string &lt;-<span class="st"> </span><span class="kw">paste0</span>(<span class="st">&quot; &quot;</span>, <span class="kw">paste</span>(arg, <span class="kw">paste0</span>(<span class="st">&quot;</span><span class="ch">\&quot;</span><span class="st">&quot;</span>, v, <span class="st">&quot;</span><span class="ch">\&quot;</span><span class="st">&quot;</span>), <span class="dt">sep =</span> <span class="st">&quot;=&quot;</span>, 
+                    <span class="dt">collapse =</span> <span class="st">&quot; &quot;</span>))
+            }
+            x &lt;-<span class="st"> </span><span class="kw">c</span>(x, <span class="kw">paste0</span>(<span class="st">&quot;&lt;link rel=</span><span class="ch">\&quot;</span><span class="st">stylesheet</span><span class="ch">\&quot;</span><span class="st"> href=</span><span class="ch">\&quot;</span><span class="st">&quot;</span>, stylesheet.paths[i], 
+                <span class="st">&quot;</span><span class="ch">\&quot;</span><span class="st">&quot;</span>, string, <span class="st">&quot;&gt;</span><span class="ch">\n</span><span class="st">&quot;</span>))
+        }
+    }
+    
+    x &lt;-<span class="st"> </span><span class="kw">c</span>(x, <span class="st">&quot;&lt;/head&gt;</span><span class="ch">\n</span><span class="st">&quot;</span>)
+    x
+    
+}</code></pre>
+</div>
+<div id="htmlbodytop" class="section level4">
+<h4>htmlBodyTop</h4>
+<p><code>htmlBodyTop</code> .</p>
+<pre class="sourceCode r"><code class="sourceCode r">htmlBodyTop &lt;-<span class="st"> </span>function(<span class="dt">css.file =</span> <span class="ot">NULL</span>, <span class="dt">css.string =</span> <span class="ot">NULL</span>, <span class="dt">background.image =</span> <span class="st">&quot;&quot;</span>, 
+    <span class="dt">include.default =</span> <span class="ot">TRUE</span>, ...) {
+    x &lt;-<span class="st"> &quot;&lt;style type = </span><span class="ch">\&quot;</span><span class="st">text/css</span><span class="ch">\&quot;</span><span class="st">&gt;</span><span class="ch">\n</span><span class="st">&quot;</span>
+    
+    default &lt;-<span class="st"> </span><span class="kw">paste0</span>(<span class="st">&quot;</span><span class="ch">\n\t</span><span class="st">.main-container {</span><span class="ch">\n\t</span><span class="st">  max-width: 940px;</span><span class="ch">\n\t</span><span class="st">  margin-left: auto;</span><span class="ch">\n\t</span><span class="st">  margin-right: auto;</span><span class="ch">\n\n\t</span><span class="st">}</span><span class="ch">\n\n\t</span><span class="st">body {</span><span class="ch">\n\t</span><span class="st">  background-image: url(</span><span class="ch">\&quot;</span><span class="st">&quot;</span>, 
+        background.image, <span class="st">&quot;</span><span class="ch">\&quot;</span><span class="st">);</span><span class="ch">\n\t</span><span class="st">  background-attachment: fixed;</span><span class="ch">\n\t</span><span class="st">  background-size: 1920px 1080px;</span><span class="ch">\n\t</span><span class="st">}</span><span class="ch">\n\t\n\t</span><span class="st">/* padding for bootstrap navbar */</span><span class="ch">\n\t</span><span class="st">body {</span><span class="ch">\n\t</span><span class="st">  padding-top: 50px;</span><span class="ch">\n\t</span><span class="st">  padding-bottom: 40px;</span><span class="ch">\n\t</span><span class="st">}</span><span class="ch">\n\t</span><span class="st">@media (max-width: 979px) {</span><span class="ch">\n\t</span><span class="st">  body {</span><span class="ch">\n\t\t</span><span class="st">padding-top: 0;</span><span class="ch">\n\t</span><span class="st">  }</span><span class="ch">\n\t</span><span class="st">}</span><span class="ch">\n\t\n\t</span><span class="st">.nav&gt;.btn {</span><span class="ch">\n\t</span><span class="st">  line-height: 0.75em;</span><span class="ch">\n\t</span><span class="st">  margin-top: 9px;</span><span class="ch">\n\t</span><span class="st">}</span><span class="ch">\n\t</span><span class="st">&quot;</span>)
+    
+    if (!<span class="kw">is.null</span>(css.file)) 
+        y &lt;-<span class="st"> </span><span class="kw">readLines</span>(css.file) else y &lt;-<span class="st"> &quot;&quot;</span>
+    if (!<span class="kw">is.null</span>(css.string)) 
+        y &lt;-<span class="st"> </span><span class="kw">c</span>(y, css.string)
+    if (include.default) 
+        y &lt;-<span class="st"> </span><span class="kw">c</span>(default, y)
+    
+    z &lt;-<span class="st"> &quot;</span><span class="ch">\n</span><span class="st">&lt;/style&gt;</span><span class="ch">\n\t</span><span class="st">&lt;div class=</span><span class="ch">\&quot;</span><span class="st">container-fluid main-container</span><span class="ch">\&quot;</span><span class="st">&gt;</span><span class="ch">\n\t</span><span class="st">&quot;</span>
+    
+    <span class="kw">c</span>(x, y, z)
+}</code></pre>
+</div>
+<div id="htmlbottom" class="section level4">
+<h4>htmlBottom</h4>
+<p><code>htmlBottom</code> .</p>
+<pre class="sourceCode r"><code class="sourceCode r">htmlBottom &lt;-<span class="st"> </span>function(...) {
+    <span class="co"># temporary</span>
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+}</code></pre>
+</div>
+<div id="genuserpage" class="section level4">
+<h4>genUserPage</h4>
+<p><code>genUserPage</code> .</p>
+<pre class="sourceCode r"><code class="sourceCode r">genUserPage &lt;-<span class="st"> </span>function(<span class="dt">file =</span> <span class="st">&quot;C:/github/leonawicz.github.io/index.html&quot;</span>, <span class="dt">containers =</span> <span class="ot">NULL</span>, 
+    <span class="dt">navbar =</span> <span class="st">&quot;&quot;</span>, ...) {
+    x1 &lt;-<span class="st"> </span><span class="kw">htmlHead</span>(...)
+    x2 &lt;-<span class="st"> </span><span class="kw">htmlBodyTop</span>(...)
+    if (!<span class="kw">is.null</span>(containers)) 
+        x3 &lt;-<span class="st"> </span><span class="kw">sapply</span>(containers, function(x) <span class="kw">paste0</span>(<span class="kw">paste0</span>(<span class="kw">readLines</span>(x), <span class="dt">collapse =</span> <span class="st">&quot;</span><span class="ch">\n</span><span class="st">&quot;</span>), 
+            <span class="st">&quot;</span><span class="ch">\n\n</span><span class="st">&quot;</span>)) else x3 &lt;-<span class="st"> &quot;&quot;</span>
+    x4 &lt;-<span class="st"> </span><span class="kw">htmlBottom</span>(...)
+    nb &lt;-<span class="st"> </span>if (<span class="kw">file.exists</span>(navbar) &amp;&amp;<span class="st"> </span><span class="kw">substr</span>(navbar, <span class="kw">nchar</span>(navbar) -<span class="st"> </span><span class="dv">4</span>, <span class="kw">nchar</span>(navbar)) ==<span class="st"> </span>
+<span class="st">        &quot;.html&quot;</span>) 
+        nb &lt;-<span class="st"> </span><span class="kw">paste0</span>(<span class="kw">paste0</span>(<span class="kw">readLines</span>(navbar), <span class="dt">collapse =</span> <span class="st">&quot;</span><span class="ch">\n</span><span class="st">&quot;</span>), <span class="st">&quot;</span><span class="ch">\n\n</span><span class="st">&quot;</span>)
+    <span class="kw">sink</span>(file)
+    <span class="kw">sapply</span>(<span class="kw">c</span>(x1, x2, nb, x3, x4), cat)
+    <span class="kw">sink</span>()
+    <span class="kw">cat</span>(<span class="st">&quot;Github User page html file created.</span><span class="ch">\n</span><span class="st">&quot;</span>)
+}</code></pre>
 </div>
 
 

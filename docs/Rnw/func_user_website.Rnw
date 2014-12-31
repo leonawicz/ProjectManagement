@@ -13,7 +13,7 @@ knit_theme$set(knit_theme$get('solarized-dark'))
 
 <<knitr_setup, echo=FALSE>>=
 opts_chunk$set(cache=FALSE, eval=FALSE, tidy=TRUE, message=FALSE, warning=FALSE)
-read_chunk("../../code/projman.R")
+read_chunk("../../code/rpm.R")
 @
 
 \subsubsection{genAppDiv}
@@ -66,6 +66,38 @@ They point to the same images stored on Github, hence why it is useful for the l
 This function makes the more specific \texttt{genAppDiv} redundant and will likely replace it.
 
 <<fun_genPanelDiv>>=
+@
+
+\subsubsection{htmlHead}
+
+\texttt{htmlHead} .
+
+
+<<fun_htmlHead>>=
+@
+
+\subsubsection{htmlBodyTop}
+
+\texttt{htmlBodyTop} .
+
+
+<<fun_htmlBodyTop>>=
+@
+
+\subsubsection{htmlBottom}
+
+\texttt{htmlBottom} .
+
+
+<<fun_htmlBottom>>=
+@
+
+\subsubsection{genUserPage}
+
+\texttt{genUserPage} .
+
+
+<<fun_genUserPage>>=
 @
 
 \end{document}

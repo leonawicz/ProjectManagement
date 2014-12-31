@@ -1,0 +1,1231 @@
+<!DOCTYPE html>
+
+<html xmlns="http://www.w3.org/1999/xhtml">
+
+<head>
+
+<meta charset="utf-8">
+<meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+<meta name="generator" content="pandoc" />
+
+<meta name="author" content="Matthew Leonawicz" />
+
+
+<title>Project Management</title>
+
+<script src="libs/jquery-1.11.0/jquery.min.js"></script>
+<meta name="viewport" content="width=device-width, initial-scale=1.0" />
+<link href="libs/bootstrap-2.3.2/css/united.min.css" rel="stylesheet" />
+<link href="libs/bootstrap-2.3.2/css/bootstrap-responsive.min.css" rel="stylesheet" />
+<script src="libs/bootstrap-2.3.2/js/bootstrap.min.js"></script>
+<style type="text/css">
+
+/* padding for bootstrap navbar */
+body {
+  padding-top: 50px;
+  padding-bottom: 40px;
+}
+@media (max-width: 979px) {
+  body {
+    padding-top: 0;
+  }
+}
+
+/* offset scroll position for anchor links (for fixed navbar)  */
+@media (min-width: 980px) {
+  .section h2 {
+    padding-top: 52px;
+    margin-top: -52px;
+  }
+  .section h3 {
+    padding-top: 52px;
+    margin-top: -52px;
+  }
+}
+
+
+/* don't use link color in navbar */
+.dropdown-menu>li>a {
+  color: black;
+}
+
+/* some padding for disqus */
+#disqus_thread {
+  margin-top: 45px;
+}
+
+</style>
+
+<link rel="stylesheet" href="libs/font-awesome-4.1.0/css/font-awesome.min.css"/>
+
+
+<style type="text/css">code{white-space: pre;}</style>
+<style type="text/css">
+table.sourceCode, tr.sourceCode, td.lineNumbers, td.sourceCode {
+  margin: 0; padding: 0; vertical-align: baseline; border: none; }
+table.sourceCode { width: 100%; line-height: 100%; background-color: #303030; color: #cccccc; }
+td.lineNumbers { text-align: right; padding-right: 4px; padding-left: 4px; }
+td.sourceCode { padding-left: 5px; }
+pre, code { color: #cccccc; background-color: #303030; }
+code > span.kw { color: #f0dfaf; }
+code > span.dt { color: #dfdfbf; }
+code > span.dv { color: #dcdccc; }
+code > span.bn { color: #dca3a3; }
+code > span.fl { color: #c0bed1; }
+code > span.ch { color: #dca3a3; }
+code > span.st { color: #cc9393; }
+code > span.co { color: #7f9f7f; }
+code > span.ot { color: #efef8f; }
+code > span.al { color: #ffcfaf; }
+code > span.fu { color: #efef8f; }
+code > span.er { color: #c3bf9f; }
+</style>
+<style type="text/css">
+  pre:not([class]) {
+    background-color: white;
+  }
+</style>
+
+
+
+</head>
+
+<body>
+
+<style type = "text/css">
+.main-container {
+  max-width: 940px;
+  margin-left: auto;
+  margin-right: auto;
+}
+</style>
+<div class="container-fluid main-container">
+
+<div class="navbar navbar-default navbar-fixed-top">
+  <div class="navbar-inner">
+    <div class="container">
+      <button type="button" class="btn btn-navbar" data-toggle="collapse" data-target=".nav-collapse">
+        <span class="icon-bar"></span>
+        <span class="icon-bar"></span>
+        <span class="icon-bar"></span>
+      </button>
+      <a class="brand" href="index.html">Project Management</a>
+      <div class="nav-collapse collapse">
+        <ul class="nav">
+          <li class="dropdown">
+            <a href="rpm" class="dropdown-toggle" data-toggle="dropdown">rpm <b class="caret"></b></a>
+            <ul class="dropdown-menu">
+              <li class="nav-header">About rpm</li>
+              <li><a href="proj_intro.html">Introduction</a></li>
+              <li><a href="code_sankey.html">Related items</a></li>
+              <li><a href="pm.html">Example usage</a></li>
+            </ul>
+
+          <li class="dropdown">
+            <a href="r-code" class="dropdown-toggle" data-toggle="dropdown">R Code <b class="caret"></b></a>
+            <ul class="dropdown-menu">
+              <li><a href="objects.html">Default objects</a></li>
+              <li class="divider"></li>
+              <li class="nav-header">Functions</li>
+              <li><a href="func_new.html">Start a new project</a></li>
+              <li><a href="func_rmd.html">Working with Rmd files</a></li>
+              <li><a href="func_convert.html">Document conversion</a></li>
+              <li><a href="func_organize.html">Organize documents</a></li>
+              <li><a href="func_website.html">Make a project website</a></li>
+              <li><a href="func_user_website.html">Github user website</a></li>
+            </ul>
+
+          <li class="dropdown">
+            <a href="all-projects" class="dropdown-toggle" data-toggle="dropdown">All Projects <b class="caret"></b></a>
+            <ul class="dropdown-menu">
+              <li><a href="proj_sankey.html">Projects diagram</a></li>
+              <li class="divider"></li>
+              <li><a href="proj_intro.html">About</a></li>
+              <li><a href="proj_intro.html">Other</a></li>
+            </ul>
+        </ul>
+        <ul class="nav pull-right">
+          <a class="btn btn-primary" href="https://github.com/leonawicz/ProjectManagement">
+            <i class="fa fa-github fa-lg"></i>
+            Github
+          </a>
+        </ul>
+      </div><!--/.nav-collapse -->
+    </div>
+  </div>
+</div>
+
+<div id="header">
+<h1 class="title">Project Management</h1>
+<h4 class="author"><em>Matthew Leonawicz</em></h4>
+</div>
+
+
+<div id="introduction" class="section level2">
+<h2>Introduction</h2>
+<p>This is a project management project. While current projects are shown in the chart below, the aim of this project is the development of convenient <strong>R</strong>-related project management tools.</p>
+<div id="motivation" class="section level3">
+<h3>Motivation</h3>
+<p>I am working on these tools to enhance my own workflow across multiple <strong>R</strong> projects.</p>
+</div>
+<div id="details" class="section level3">
+<h3>Details</h3>
+<p><strong>R</strong> code for the project will be compiled into an <strong>R</strong> package, <code>rpm</code> for easy use. This is a personal package and will not be available anywhere but my github repository, but you are welcome to explore the package and functions. It is unlikely that you would manage your <strong>R</strong> projects in the same manner that I do, but if you do, or just want some ideas, feel free to explore.</p>
+<div id="capabilities" class="section level4">
+<h4>Capabilities</h4>
+<p><code>rpm</code> can create a new project. This essentially generates a specific directory structure which I use often to manage project files. For an existing project, once <strong>R</strong> scripts have been created, <code>rpm</code> can generate template Rmd files for each. For existing Rmd files, <code>rpm</code> can conveniently append these <strong>R</strong> Markdown files with a list of any new <code>knitr</code> code chunk names in project <strong>R</strong> scripts being developed which have not yet been included in the respective Rmd files.</p>
+</div>
+<div id="limitations" class="section level4">
+<h4>Limitations</h4>
+<p>While <code>rpm</code> assists with project documentation, this mainly takes the form of file generation and appending. Documentation is unique to every project of course. Every script is different. The most that is possible is to auto-fill commonly used code chunk names and metadata. Each document must be written individually by the author, but when a project has many <strong>R</strong> scripts requiring documentation, it is nice to not have to create all the corresponding Rmd files by hand and copy and paste generic contents.</p>
+<p>The project management code is not yet in package form. Many additional features are yet to be incorporated. Generic code relating to the further processing of Rmd files into various other output files via <code>rmarkdown</code> and <code>knitr</code> remains at an early development stage.</p>
+</div>
+</div>
+</div>
+<div id="related-items" class="section level2">
+<h2>Related items</h2>
+<p>Currently there is only this unpackaged <strong>R</strong> script, accompanying code for a projects hierarchy diagram and a code flow diagram based on the current development of this project, and a simple script for generating documents based on project <strong>R</strong> code.</p>
+<div id="files-and-data" class="section level3">
+<h3>Files and Data</h3>
+<p>This project does not use any data. It does make use of supplemental libraries for formatting during html document generation. <code>proj_sankey.R</code> and <code>code_sankey.R</code> are used to produce of project hierarchy diagram of my current projects and a code flow diagram for this project, respectively. <code>drg.R</code> is used to assist in dynamic report generation.</p>
+</div>
+<div id="code-flow" class="section level3">
+<h3>Code flow</h3>
+<p>The Sankey diagram has become part of project management. Each project has its own, detailing the relationships among <strong>R</strong> code and data relevant to the project, and in some cases, how they relate to code and data files which are more general and span multiple projects. In general, for my projects I would only provide the code flow diagram here among the rest of the project documentation, but since this is the project management project and I am introducing its use, in this case I will also show the <a href="code_sankey.html" title="code">code</a> I use to make the diagram.</p>
+</div>
+<div id="current-projects" class="section level3">
+<h3>Current projects</h3>
+<p>Here is a project hierarchy diagram showing the relationships among all my current projects.</p>
+<iframe srcdoc=" &lt;!doctype HTML&gt;
+&lt;meta charset = 'utf-8'&gt;
+&lt;html&gt;
+  &lt;head&gt;
+    &lt;link rel='stylesheet' href='http://timelyportfolio.github.io/rCharts_d3_sankey/css/sankey.css'&gt;
+    
+    &lt;script src='http://d3js.org/d3.v3.min.js' type='text/javascript'&gt;&lt;/script&gt;
+    &lt;script src='http://timelyportfolio.github.io/rCharts_d3_sankey/js/sankey.js' type='text/javascript'&gt;&lt;/script&gt;
+    
+    &lt;style&gt;
+    .rChart {
+      display: block;
+      margin-left: auto; 
+      margin-right: auto;
+      width: 900px;
+      height: 800px;
+    }  
+    &lt;/style&gt;
+    
+  &lt;/head&gt;
+  &lt;body &gt;
+    
+    &lt;div id = 'chart28c6a2e41bc' class = 'rChart d3_sankey'&gt;&lt;/div&gt;    
+    ï»¿&lt;!--Attribution:
+Mike Bostock https://github.com/d3/d3-plugins/tree/master/sankey
+Mike Bostock http://bost.ocks.org/mike/sankey/
+--&gt;
+
+&lt;script&gt;
+(function(){
+var params = {
+ &quot;dom&quot;: &quot;chart28c6a2e41bc&quot;,
+&quot;width&quot;:    900,
+&quot;height&quot;:    800,
+&quot;data&quot;: {
+ &quot;source&quot;: [ &quot;Collaborators&quot;, &quot;Collaborators&quot;, &quot;Collaborators&quot;, &quot;Collaborators&quot;, &quot;Matt&quot;, &quot;Matt&quot;, &quot;Matt&quot;, &quot;Matt&quot;, &quot;Matt&quot;, &quot;Matt&quot;, &quot;Matt&quot;, &quot;Matt&quot;, &quot;Matt&quot;, &quot;Matt&quot;, &quot;Matt&quot;, &quot;Matt&quot;, &quot;Matt&quot;, &quot;Matt&quot;, &quot;Paul&quot;, &quot;Matt&quot;, &quot;Paul&quot;, &quot;Matt&quot;, &quot;Paul&quot;, &quot;Matt&quot;, &quot;Paul&quot;, &quot;Matt&quot;, &quot;Paul&quot;, &quot;Matt&quot;, &quot;Paul&quot;, &quot;Matt&quot;, &quot;Paul&quot;, &quot;Matt&quot;, &quot;Matt&quot;, &quot;Matt&quot;, &quot;Matt&quot;, &quot;Matt&quot;, &quot;Paul&quot;, &quot;Alec&quot;, &quot;Angie&quot;, &quot;Angie&quot;, &quot;Bob&quot;, &quot;Angie&quot;, &quot;Bob&quot;, &quot;Alfresco Outputs&quot;, &quot;Alfresco Outputs&quot;, &quot;Alfresco Outputs&quot;, &quot;SNAP Data QA/QC&quot;, &quot;SNAP Data QA/QC&quot;, &quot;SNAP Data QA/QC&quot;, &quot;SNAP Data QA/QC&quot;, &quot;Spatial Lightning Analysis&quot;, &quot;Spatial Lightning Analysis&quot;, &quot;Spatial Lightning Analysis&quot;, &quot;Sea Ice Edge Maps and Spinoff Projects&quot;, &quot;Sea Ice Edge Maps and Spinoff Projects&quot;, &quot;Training/Supervision&quot;, &quot;Training/Supervision&quot;, &quot;Randscape Development&quot;, &quot;Randscape Development&quot;, &quot;Effective Spatial Scale Analysis&quot;, &quot;Effective Spatial Scale Analysis&quot;, &quot;NWT/Comm. Charts DS&quot;, &quot;Alfresco Noatak&quot;, &quot;Alfresco Statewide&quot;, &quot;Data Extraction and Uncertainty Analysis&quot;, &quot;Data Extraction and Uncertainty Analysis&quot;, &quot;Data Extraction and Uncertainty Analysis&quot;, &quot;Data Extraction and Uncertainty Analysis&quot; ],
+&quot;target&quot;: [ &quot;Paul&quot;, &quot;Alec&quot;, &quot;Angie&quot;, &quot;Bob&quot;, &quot;CMIP3/CMIP5 GCM Comparisons&quot;, &quot;Effective Spatial Scale Analysis&quot;, &quot;Randscape Development&quot;, &quot;Alfresco Outputs&quot;, &quot;rpm&quot;, &quot;SNAP Data QA/QC&quot;, &quot;Training/Supervision&quot;, &quot;R Shiny Apps General Maintenance&quot;, &quot;New App Development&quot;, &quot;SNAP Tech Blog&quot;, &quot;Continuing Education&quot;, &quot;FRP/FRI Scale-Conditional Alfresco Maps&quot;, &quot;Moose Project&quot;, &quot;Alfresco Noatak&quot;, &quot;Alfresco Statewide&quot;, &quot;Spatial Lightning Analysis&quot;, &quot;Data Extraction and Uncertainty Analysis&quot;, &quot;Growing Season&quot;, &quot;Mussel Project&quot;, &quot;Land Carbon&quot;, &quot;Alfresco Noatak&quot;, &quot;Alfresco Statewide&quot;, &quot;Spatial Lightning Analysis&quot;, &quot;Data Extraction and Uncertainty Analysis&quot;, &quot;Growing Season&quot;, &quot;Mussel Project&quot;, &quot;Land Carbon&quot;, &quot;Alfresco CRU/GCM Experimental Design&quot;, &quot;Bird Project&quot;, &quot;NWT/Comm. Charts DS&quot;, &quot;Sea Ice Edge Maps and Spinoff Projects&quot;, &quot;Shiny App Server Migration&quot;, &quot;Alfresco CRU/GCM Experimental Design&quot;, &quot;Alfresco CRU/GCM Experimental Design&quot;, &quot;Bird Project&quot;, &quot;NWT/Comm. Charts DS&quot;, &quot;NWT/Comm. Charts DS&quot;, &quot;Sea Ice Edge Maps and Spinoff Projects&quot;, &quot;Shiny App Server Migration&quot;, &quot;CMIP3/CMIP5 GCM Comparisons&quot;, &quot;Land Carbon&quot;, &quot;Bird Project&quot;, &quot;Alfresco Outputs&quot;, &quot;CMIP3/CMIP5 GCM Comparisons&quot;, &quot;Alfresco CRU/GCM Experimental Design&quot;, &quot;NWT/Comm. Charts DS&quot;, &quot;Alfresco Noatak&quot;, &quot;Alfresco Statewide&quot;, &quot;Randscape Development&quot;, &quot;Randscape Development&quot;, &quot;Alfresco Outputs&quot;, &quot;Bird Project&quot;, &quot;NWT/Comm. Charts DS&quot;, &quot;Alfresco Outputs&quot;, &quot;Effective Spatial Scale Analysis&quot;, &quot;Alfresco Outputs&quot;, &quot;FRP/FRI Scale-Conditional Alfresco Maps&quot;, &quot;CMIP3/CMIP5 GCM Comparisons&quot;, &quot;FRP/FRI Scale-Conditional Alfresco Maps&quot;, &quot;FRP/FRI Scale-Conditional Alfresco Maps&quot;, &quot;CMIP3/CMIP5 GCM Comparisons&quot;, &quot;Effective Spatial Scale Analysis&quot;, &quot;Randscape Development&quot;, &quot;Alfresco Outputs&quot; ],
+&quot;value&quot;: [      1,      1,      1,      1,      1,      1,      1,      1,      1,      1,      1,      1,      1,      1,      1,      1,      1,      1,      1,      1,      1,      1,      1,      1,      1,      1,      1,      1,      1,      1,      1,      1,      1,      1,      1,      1,      1,      1,      1,      1,      1,      1,      1,      1,      1,      1,      1,      1,      1,      1,      1,      1,      1,      1,      1,      1,      1,      1,      1,      1,      1,      1,      1,      1,      1,      1,      1,      1 ] 
+},
+&quot;nodeWidth&quot;:     15,
+&quot;nodePadding&quot;:     10,
+&quot;layout&quot;:     32,
+&quot;margin&quot;: {
+ &quot;right&quot;:     20,
+&quot;left&quot;:     20,
+&quot;bottom&quot;:     20,
+&quot;top&quot;:     20 
+},
+&quot;title&quot;: &quot;Matt's Projects&quot;,
+&quot;id&quot;: &quot;chart28c6a2e41bc&quot; 
+};
+
+params.units ? units = &quot; &quot; + params.units : units = &quot;&quot;;
+
+//hard code these now but eventually make available
+var formatNumber = d3.format(&quot;0,.0f&quot;),    // zero decimal places
+    format = function(d) { return formatNumber(d) + units; },
+    color = d3.scale.category20();
+
+if(params.labelFormat){
+  formatNumber = d3.format(&quot;.2%&quot;);
+}
+
+var svg = d3.select('#' + params.id).append(&quot;svg&quot;)
+    .attr(&quot;width&quot;, params.width)
+    .attr(&quot;height&quot;, params.height);
+    
+var sankey = d3.sankey()
+    .nodeWidth(params.nodeWidth)
+    .nodePadding(params.nodePadding)
+    .layout(params.layout)
+    .size([params.width,params.height]);
+    
+var path = sankey.link();
+    
+var data = params.data,
+    links = [],
+    nodes = [];
+    
+//get all source and target into nodes
+//will reduce to unique in the next step
+//also get links in object form
+data.source.forEach(function (d, i) {
+    nodes.push({ &quot;name&quot;: data.source[i] });
+    nodes.push({ &quot;name&quot;: data.target[i] });
+    links.push({ &quot;source&quot;: data.source[i], &quot;target&quot;: data.target[i], &quot;value&quot;: +data.value[i] });
+}); 
+
+//now get nodes based on links data
+//thanks Mike Bostock https://groups.google.com/d/msg/d3-js/pl297cFtIQk/Eso4q_eBu1IJ
+//this handy little function returns only the distinct / unique nodes
+nodes = d3.keys(d3.nest()
+                .key(function (d) { return d.name; })
+                .map(nodes));
+
+//it appears d3 with force layout wants a numeric source and target
+//so loop through each link replacing the text with its index from node
+links.forEach(function (d, i) {
+    links[i].source = nodes.indexOf(links[i].source);
+    links[i].target = nodes.indexOf(links[i].target);
+});
+
+//now loop through each nodes to make nodes an array of objects rather than an array of strings
+nodes.forEach(function (d, i) {
+    nodes[i] = { &quot;name&quot;: d };
+});
+
+sankey
+  .nodes(nodes)
+  .links(links)
+  .layout(params.layout);
+  
+var link = svg.append(&quot;g&quot;).selectAll(&quot;.link&quot;)
+  .data(links)
+.enter().append(&quot;path&quot;)
+  .attr(&quot;class&quot;, &quot;link&quot;)
+  .attr(&quot;d&quot;, path)
+  .style(&quot;stroke-width&quot;, function (d) { return Math.max(1, d.dy); })
+  .sort(function (a, b) { return b.dy - a.dy; });
+
+link.append(&quot;title&quot;)
+  .text(function (d) { return d.source.name + &quot; â†’ &quot; + d.target.name + &quot;\n&quot; + format(d.value); });
+
+var node = svg.append(&quot;g&quot;).selectAll(&quot;.node&quot;)
+  .data(nodes)
+.enter().append(&quot;g&quot;)
+  .attr(&quot;class&quot;, &quot;node&quot;)
+  .attr(&quot;transform&quot;, function (d) { return &quot;translate(&quot; + d.x + &quot;,&quot; + d.y + &quot;)&quot;; })
+.call(d3.behavior.drag()
+  .origin(function (d) { return d; })
+  .on(&quot;dragstart&quot;, function () { this.parentNode.appendChild(this); })
+  .on(&quot;drag&quot;, dragmove));
+
+node.append(&quot;rect&quot;)
+  .attr(&quot;height&quot;, function (d) { return d.dy; })
+  .attr(&quot;width&quot;, sankey.nodeWidth())
+  .style(&quot;fill&quot;, function (d) { return d.color = color(d.name.replace(/ .*/, &quot;&quot;)); })
+  .style(&quot;stroke&quot;, function (d) { return d3.rgb(d.color).darker(2); })
+.append(&quot;title&quot;)
+  .text(function (d) { return d.name + &quot;\n&quot; + format(d.value); });
+
+node.append(&quot;text&quot;)
+  .attr(&quot;x&quot;, -6)
+  .attr(&quot;y&quot;, function (d) { return d.dy / 2; })
+  .attr(&quot;dy&quot;, &quot;.35em&quot;)
+  .attr(&quot;text-anchor&quot;, &quot;end&quot;)
+  .attr(&quot;transform&quot;, null)
+  .text(function (d) { return d.name; })
+.filter(function (d) { return d.x &lt; params.width / 2; })
+  .attr(&quot;x&quot;, 6 + sankey.nodeWidth())
+  .attr(&quot;text-anchor&quot;, &quot;start&quot;);
+
+// the function for moving the nodes
+  function dragmove(d) {
+    d3.select(this).attr(&quot;transform&quot;, 
+        &quot;translate(&quot; + (
+                   d.x = Math.max(0, Math.min(params.width - d.dx, d3.event.x))
+                ) + &quot;,&quot; + (
+                   d.y = Math.max(0, Math.min(params.height - d.dy, d3.event.y))
+                ) + &quot;)&quot;);
+        sankey.relayout();
+        link.attr(&quot;d&quot;, path);
+  }
+})();
+&lt;/script&gt;
+    
+    
+    &lt;script&gt;
+      var cscale = d3.scale.category20b();
+      d3.selectAll('#chart28c6a2e41bc svg path.link')
+        .style('stroke', function(d){
+          return cscale(d.source.name);
+        })
+      d3.selectAll('#chart28c6a2e41bc svg .node rect')
+        .style('fill', function(d){
+          return cscale(d.name)
+        })
+        .style('stroke', 'none')
+    &lt;/script&gt;
+        
+  &lt;/body&gt;
+&lt;/html&gt; " scrolling="no" frameBorder="0" seamless class="rChart  http://timelyportfolio.github.io/rCharts_d3_sankey/libraries/widgets/d3_sankey  " id="iframe-chart28c6a2e41bc">
+</iframe>
+<style>iframe.rChart{ width: 100%; height: 400px;}</style>
+<style>iframe.rChart{ width: 100%; height: 840px;}</style>
+</div>
+</div>
+<div id="r-code" class="section level2">
+<h2><strong>R</strong> code</h2>
+<div id="template-objects" class="section level3">
+<h3>Template objects</h3>
+<p>Character string objects are defined which are used to fill templates when generating new files for a project. A tentative default path is also included since this code relates to my own work.</p>
+<pre class="sourceCode r"><code class="sourceCode r"><span class="co"># For package &#39;rpm&#39;</span>
+
+<span class="co"># data</span>
+
+rmd.template &lt;-<span class="st"> &quot;</span><span class="ch">\n\n</span><span class="st">## Introduction</span><span class="ch">\n</span><span class="st">ADD_TEXT_HERE</span><span class="ch">\n\n</span><span class="st">### Motivation</span><span class="ch">\n</span><span class="st">ADD_TEXT_HERE</span><span class="ch">\n\n</span><span class="st">### Details</span><span class="ch">\n</span><span class="st">ADD_TEXT_HERE</span><span class="ch">\n\n</span><span class="st">#### Capabilities</span><span class="ch">\n</span><span class="st">ADD_TEXT_HERE</span><span class="ch">\n\n</span><span class="st">#### Limitations</span><span class="ch">\n</span><span class="st">ADD_TEXT_HERE</span><span class="ch">\n\n</span><span class="st">## Related items</span><span class="ch">\n\n</span><span class="st">### Files and Data</span><span class="ch">\n</span><span class="st">ADD_TEXT_HERE</span><span class="ch">\n\n</span><span class="st">### Code flow</span><span class="ch">\n</span><span class="st">ADD_TEXT_HERE</span><span class="ch">\n\n</span><span class="st">```{r code_sankey, echo=F, eval=T}</span><span class="ch">\n</span><span class="st">```</span><span class="ch">\n\n</span><span class="st">```{r code_sankey_embed, echo=F, eval=T, comment=NA, results=</span><span class="ch">\&quot;</span><span class="st">asis</span><span class="ch">\&quot;</span><span class="st">, tidy=F}</span><span class="ch">\n</span><span class="st">```</span><span class="ch">\n\n</span><span class="st">## R code</span><span class="ch">\n\n</span><span class="st">### Setup</span><span class="ch">\n</span><span class="st">ADD_TEXT_HERE: EXAMPLE</span><span class="ch">\n</span><span class="st">Setup consists of loading required **R** packages and additional files, preparing any command line arguments for use, and defining functions and other **R** objects.</span><span class="ch">\n\n</span><span class="st">&quot;</span>
+
+<span class="co"># default path</span>
+matt.proj.path &lt;-<span class="st"> &quot;C:/github&quot;</span></code></pre>
+</div>
+<div id="package-functions" class="section level3">
+<h3>Package functions</h3>
+<p>Functions are defined for creating new projects, generating Rmd files for project <strong>R</strong> scripts, and appending these <strong>R</strong> Markdown files with updated information from the corresponding <strong>R</strong> scripts as their development continues. Additional functions will be incorporated later.</p>
+<div id="newproject" class="section level4">
+<h4>newProject</h4>
+<p><code>newProject</code> creates a new named project directory structure at the specified file path. If a directory with this project name already exists in this location on the file system and <code>overwrite=FALSE</code>, the function will abort. Default project subdirectories are created unless a different vector of folder names is explicitly passed to <code>newProject</code>. If one of the subdirectories is <code>docs</code> then the default vector of subdirectories under <code>docs</code> is also created. This argument can also be set explicitly. The current function only creates directories, not files, so <code>overwrite=TRUE</code> is safe to use on any existing project.</p>
+<pre class="sourceCode r"><code class="sourceCode r">newProject &lt;-<span class="st"> </span>function(name, path, <span class="dt">dirs =</span> <span class="kw">c</span>(<span class="st">&quot;code&quot;</span>, <span class="st">&quot;data&quot;</span>, <span class="st">&quot;docs&quot;</span>, <span class="st">&quot;plots&quot;</span>, 
+    <span class="st">&quot;workspaces&quot;</span>), <span class="dt">docs.dirs =</span> <span class="kw">c</span>(<span class="st">&quot;diagrams&quot;</span>, <span class="st">&quot;ioslides&quot;</span>, <span class="st">&quot;notebook&quot;</span>, <span class="st">&quot;Rmd/include&quot;</span>, 
+    <span class="st">&quot;md&quot;</span>, <span class="st">&quot;html&quot;</span>, <span class="st">&quot;Rnw&quot;</span>, <span class="st">&quot;pdf&quot;</span>, <span class="st">&quot;timeline&quot;</span>, <span class="st">&quot;tufte&quot;</span>), <span class="dt">overwrite =</span> <span class="ot">FALSE</span>) {
+    
+    <span class="kw">stopifnot</span>(<span class="kw">is.character</span>(name))
+    name &lt;-<span class="st"> </span><span class="kw">file.path</span>(path, name)
+    if (<span class="kw">file.exists</span>(name) &amp;&amp;<span class="st"> </span>!overwrite) 
+        <span class="kw">stop</span>(<span class="st">&quot;This project already exists.&quot;</span>)
+    <span class="kw">dir.create</span>(name, <span class="dt">recursive =</span> <span class="ot">TRUE</span>, <span class="dt">showWarnings =</span> <span class="ot">FALSE</span>)
+    if (!<span class="kw">file.exists</span>(name)) 
+        <span class="kw">stop</span>(<span class="st">&quot;Directory appears invalid.&quot;</span>)
+    
+    path.dirs &lt;-<span class="st"> </span><span class="kw">file.path</span>(name, dirs)
+    <span class="kw">sapply</span>(path.dirs, dir.create, <span class="dt">showWarnings =</span> <span class="ot">FALSE</span>)
+    path.docs &lt;-<span class="st"> </span><span class="kw">file.path</span>(name, <span class="st">&quot;docs&quot;</span>, docs.dirs)
+    if (<span class="st">&quot;docs&quot;</span> %in%<span class="st"> </span>dirs) 
+        <span class="kw">sapply</span>(path.docs, dir.create, <span class="dt">recursive =</span> <span class="ot">TRUE</span>, <span class="dt">showWarnings =</span> <span class="ot">FALSE</span>)
+    if (overwrite) 
+        <span class="kw">cat</span>(<span class="st">&quot;Project directories updated.</span><span class="ch">\n</span><span class="st">&quot;</span>) else <span class="kw">cat</span>(<span class="st">&quot;Project directories created.</span><span class="ch">\n</span><span class="st">&quot;</span>)
+}</code></pre>
+</div>
+<div id="rmdheader" class="section level4">
+<h4>rmdHeader</h4>
+<p><code>rmdHeader</code> generates the yaml metadata header for Rmd files as a character string to be inserted at the top of a file. It has default arguments specific to my own projects but can be changed. The output from this function is passed directly to <code>genRmd</code> below.</p>
+<pre class="sourceCode r"><code class="sourceCode r">rmdHeader &lt;-<span class="st"> </span>function(<span class="dt">title =</span> <span class="st">&quot;INSERT_TITLE_HERE&quot;</span>, <span class="dt">author =</span> <span class="st">&quot;Matthew Leonawicz&quot;</span>, 
+    <span class="dt">theme =</span> <span class="st">&quot;united&quot;</span>, <span class="dt">highlight =</span> <span class="st">&quot;zenburn&quot;</span>, <span class="dt">toc =</span> <span class="ot">FALSE</span>, <span class="dt">keep.md =</span> <span class="ot">TRUE</span>, <span class="dt">ioslides =</span> <span class="ot">FALSE</span>, 
+    <span class="dt">include.pdf =</span> <span class="ot">FALSE</span>) {
+    if (toc) 
+        toc &lt;-<span class="st"> &quot;true&quot;</span> else toc &lt;-<span class="st"> &quot;false&quot;</span>
+    if (keep.md) 
+        keep.md &lt;-<span class="st"> &quot;true&quot;</span> else keep.md &lt;-<span class="st"> &quot;false&quot;</span>
+    if (ioslides) 
+        hdoc &lt;-<span class="st"> &quot;ioslides_presentation&quot;</span> else hdoc &lt;-<span class="st"> &quot;html_document&quot;</span>
+    rmd.header &lt;-<span class="st"> &quot;---</span><span class="ch">\n</span><span class="st">&quot;</span>
+    if (!<span class="kw">is.null</span>(title)) 
+        rmd.header &lt;-<span class="st"> </span><span class="kw">paste0</span>(rmd.header, <span class="st">&quot;title: &quot;</span>, title, <span class="st">&quot;</span><span class="ch">\n</span><span class="st">&quot;</span>)
+    if (!<span class="kw">is.null</span>(author)) 
+        rmd.header &lt;-<span class="st"> </span><span class="kw">paste0</span>(rmd.header, <span class="st">&quot;author: &quot;</span>, author, <span class="st">&quot;</span><span class="ch">\n</span><span class="st">&quot;</span>)
+    rmd.header &lt;-<span class="st"> </span><span class="kw">paste0</span>(rmd.header, <span class="st">&quot;output:</span><span class="ch">\n</span><span class="st">  &quot;</span>, hdoc, <span class="st">&quot;:</span><span class="ch">\n</span><span class="st">    toc: &quot;</span>, toc, 
+        <span class="st">&quot;</span><span class="ch">\n</span><span class="st">    theme: &quot;</span>, theme, <span class="st">&quot;</span><span class="ch">\n</span><span class="st">    highlight: &quot;</span>, highlight, <span class="st">&quot;</span><span class="ch">\n</span><span class="st">    keep_md: &quot;</span>, 
+        keep.md, <span class="st">&quot;</span><span class="ch">\n</span><span class="st">&quot;</span>)
+    if (ioslides) 
+        rmd.header &lt;-<span class="st"> </span><span class="kw">paste0</span>(rmd.header, <span class="st">&quot;    widescreen: true</span><span class="ch">\n</span><span class="st">&quot;</span>)
+    if (include.pdf) 
+        rmd.header &lt;-<span class="st"> </span><span class="kw">paste0</span>(rmd.header, <span class="st">&quot;  pdf_document:</span><span class="ch">\n</span><span class="st">    toc: &quot;</span>, toc, 
+            <span class="st">&quot;</span><span class="ch">\n</span><span class="st">    highlight: &quot;</span>, highlight, <span class="st">&quot;</span><span class="ch">\n</span><span class="st">&quot;</span>)
+    rmd.header &lt;-<span class="st"> </span><span class="kw">paste0</span>(rmd.header, <span class="st">&quot;---</span><span class="ch">\n</span><span class="st">&quot;</span>)
+    rmd.header
+}</code></pre>
+</div>
+<div id="rmdknitrsetup" class="section level4">
+<h4>rmdknitrSetup</h4>
+<p><code>rmdknitrSetup</code> generates the <code>knitr</code> global options setup code cunk for Rmd files as a character string to be inserted at the top of a file following the yaml header. The only option at this time is the ability to include or exclude a source reference to a project-related code flow diagram <strong>R</strong> script via <code>include.sankey</code>. The output from this function is passed directly to <code>genRmd</code> below.</p>
+<pre class="sourceCode r"><code class="sourceCode r">rmdknitrSetup &lt;-<span class="st"> </span>function(file, <span class="dt">include.sankey =</span> <span class="ot">TRUE</span>) {
+    x &lt;-<span class="st"> </span><span class="kw">paste0</span>(<span class="st">&quot;</span><span class="ch">\n</span><span class="st">```{r knitr_setup, echo=FALSE}</span><span class="ch">\n</span><span class="st">opts_chunk$set(cache=FALSE, eval=FALSE, tidy=TRUE, message=FALSE, warning=FALSE)</span><span class="ch">\n</span><span class="st">&quot;</span>)
+    if (include.sankey) 
+        x &lt;-<span class="st"> </span><span class="kw">paste0</span>(x, <span class="st">&quot;read_chunk(</span><span class="ch">\&quot;</span><span class="st">../../code/proj_sankey.R</span><span class="ch">\&quot;</span><span class="st">)</span><span class="ch">\n</span><span class="st">&quot;</span>)
+    x &lt;-<span class="st"> </span><span class="kw">paste0</span>(x, <span class="st">&quot;read_chunk(</span><span class="ch">\&quot;</span><span class="st">../../code/&quot;</span>, file, <span class="st">&quot;</span><span class="ch">\&quot;</span><span class="st">)</span><span class="ch">\n</span><span class="st">```</span><span class="ch">\n</span><span class="st">&quot;</span>)
+    x
+}</code></pre>
+</div>
+<div id="genrmd" class="section level4">
+<h4>genRmd</h4>
+<p><code>genRmd</code> works on existing projects. It checks for existing <strong>R</strong> scripts. If no <strong>R</strong> files exist in the project’s <code>code</code> directory, the function will abort. Otherwise it will generate Rmd template files for each of the <strong>R</strong> scripts it finds.</p>
+<p>With <code>replace=TRUE</code> any existing Rmd files are regenerated with the provided template - be careful! With <code>replace=FALSE</code> (default) Rmd files are generated only for <strong>R</strong> scripts which do not yet have corresponding Rmd files. If <code>update.header=TRUE</code>, <code>replace</code> is ignored, and only existing Rmd files are regenerated, in this case strictly updating the yaml metadata header at the top of each Rmd file without altering any other Rmd content/documentation.</p>
+<p>The Rmd files are placed in the <code>/docs/Rmd</code> directory. This function assumes this project directory exists.</p>
+<pre class="sourceCode r"><code class="sourceCode r">genRmd &lt;-<span class="st"> </span>function(path, <span class="dt">replace =</span> <span class="ot">FALSE</span>, <span class="dt">header =</span> <span class="kw">rmdHeader</span>(), <span class="dt">knitrSetupChunk =</span> <span class="kw">rmdknitrSetup</span>(), 
+    <span class="dt">update.header =</span> <span class="ot">FALSE</span>, ...) {
+    <span class="kw">stopifnot</span>(<span class="kw">is.character</span>(path))
+    files &lt;-<span class="st"> </span><span class="kw">list.files</span>(path, <span class="dt">pattern =</span> <span class="st">&quot;.R$&quot;</span>, <span class="dt">full =</span> <span class="ot">TRUE</span>)
+    <span class="kw">stopifnot</span>(<span class="kw">length</span>(files) &gt;<span class="st"> </span><span class="dv">0</span>)
+    rmd &lt;-<span class="st"> </span><span class="kw">gsub</span>(<span class="st">&quot;.R&quot;</span>, <span class="st">&quot;.Rmd&quot;</span>, <span class="kw">basename</span>(files))
+    rmd &lt;-<span class="st"> </span><span class="kw">file.path</span>(<span class="kw">dirname</span>(path), <span class="st">&quot;docs/Rmd&quot;</span>, rmd)
+    if (!(replace |<span class="st"> </span>update.header)) 
+        rmd &lt;-<span class="st"> </span>rmd[!<span class="kw">sapply</span>(rmd, file.exists)]
+    if (update.header) 
+        rmd &lt;-<span class="st"> </span>rmd[<span class="kw">sapply</span>(rmd, file.exists)]
+    <span class="kw">stopifnot</span>(<span class="kw">length</span>(rmd) &gt;<span class="st"> </span><span class="dv">0</span>)
+    
+    sinkRmd &lt;-<span class="st"> </span>function(x, ...) {
+        y1 &lt;-<span class="st"> </span>header
+        y2 &lt;-<span class="st"> </span>kniterSetupChunk
+        y3 &lt;-<span class="st"> </span><span class="kw">list</span>(...)$rmd.template
+        if (<span class="kw">is.null</span>(y1)) 
+            y1 &lt;-<span class="st"> </span>rmd.header
+        if (<span class="kw">is.null</span>(y2)) 
+            y2 &lt;-<span class="st"> </span><span class="kw">rmd.knitr.setup</span>(<span class="kw">gsub</span>(<span class="st">&quot;.Rmd&quot;</span>, <span class="st">&quot;.R&quot;</span>, <span class="kw">basename</span>(x)))
+        if (<span class="kw">is.null</span>(y3)) 
+            y3 &lt;-<span class="st"> </span>rmd.template
+        <span class="kw">sink</span>(x)
+        <span class="kw">sapply</span>(<span class="kw">c</span>(y1, y2, y3), cat)
+        <span class="kw">sink</span>()
+    }
+    
+    swapHeader &lt;-<span class="st"> </span>function(x) {
+        l &lt;-<span class="st"> </span><span class="kw">readLines</span>(x)
+        ind &lt;-<span class="st"> </span><span class="kw">which</span>(l ==<span class="st"> &quot;---&quot;</span>)
+        l &lt;-<span class="st"> </span>l[(ind[<span class="dv">2</span>] +<span class="st"> </span><span class="dv">1</span>):<span class="kw">length</span>(l)]
+        l &lt;-<span class="st"> </span><span class="kw">paste0</span>(l, <span class="st">&quot;</span><span class="ch">\n</span><span class="st">&quot;</span>)
+        <span class="kw">sink</span>(x)
+        <span class="kw">sapply</span>(<span class="kw">c</span>(header, l), cat)
+        <span class="kw">sink</span>()
+    }
+    
+    if (update.header) {
+        <span class="kw">sapply</span>(rmd, swapHeader, ...)
+        <span class="kw">cat</span>(<span class="st">&quot;yaml header updated for each .Rmd file.</span><span class="ch">\n</span><span class="st">&quot;</span>)
+    } else {
+        <span class="kw">sapply</span>(rmd, sinkRmd, ...)
+        <span class="kw">cat</span>(<span class="st">&quot;.Rmd files created for each .R file.</span><span class="ch">\n</span><span class="st">&quot;</span>)
+    }
+}</code></pre>
+</div>
+<div id="chunknames" class="section level4">
+<h4>chunkNames</h4>
+<p><code>chunkNames</code> can be used in two ways. It can return a list with length equal to the number of <strong>R</strong> files, where each list element is a vector of <strong>R</strong> code chunk names found in each <strong>R</strong> script.</p>
+<p>Alternatively, with <code>append.new=TRUE</code>, this list has each vector matched element-wise against chunk names found in existing Rmd files. If no Rmd files have yet been generated, the function will abort. Otherwise, for the Rmd files which do exist (and this may correspond to a subset of the <strong>R</strong> files), these Rmd files are appended with a list of code chunk names found in the current corresponding <strong>R</strong> files which have not yet been integrated into the current state of the Rmd files. This fascilitates updating of Rmd documentation when it falls behind scripts which have been updated.</p>
+<pre class="sourceCode r"><code class="sourceCode r">chunkNames &lt;-<span class="st"> </span>function(path, <span class="dt">rChunkID =</span> <span class="st">&quot;# @knitr&quot;</span>, <span class="dt">rmdChunkID =</span> <span class="st">&quot;```{r&quot;</span>, <span class="dt">append.new =</span> <span class="ot">FALSE</span>) {
+    files &lt;-<span class="st"> </span><span class="kw">list.files</span>(path, <span class="dt">pattern =</span> <span class="st">&quot;.R$&quot;</span>, <span class="dt">full =</span> <span class="ot">TRUE</span>)
+    <span class="kw">stopifnot</span>(<span class="kw">length</span>(files) &gt;<span class="st"> </span><span class="dv">0</span>)
+    l1 &lt;-<span class="st"> </span><span class="kw">lapply</span>(files, readLines)
+    l1 &lt;-<span class="st"> </span><span class="kw">rapply</span>(l1, function(x) x[<span class="kw">substr</span>(x, <span class="dv">1</span>, <span class="kw">nchar</span>(rChunkID)) ==<span class="st"> </span>rChunkID], 
+        <span class="dt">how =</span> <span class="st">&quot;replace&quot;</span>)
+    l1 &lt;-<span class="st"> </span><span class="kw">rapply</span>(l1, function(x, p) <span class="kw">gsub</span>(<span class="kw">paste0</span>(p, <span class="st">&quot; &quot;</span>), <span class="st">&quot;&quot;</span>, x), <span class="dt">how =</span> <span class="st">&quot;replace&quot;</span>, 
+        <span class="dt">p =</span> rChunkID)
+    if (!append.new) 
+        <span class="kw">return</span>(l1)
+    
+    appendRmd &lt;-<span class="st"> </span>function(x, rmd.files, rChunks, rmdChunks, ID) {
+        r1 &lt;-<span class="st"> </span>rmdChunks[[x]]
+        r2 &lt;-<span class="st"> </span>rChunks[[x]]
+        r.new &lt;-<span class="st"> </span>r2[!(r2 %in%<span class="st"> </span>r1)]
+        if (<span class="kw">length</span>(r.new)) {
+            r.new &lt;-<span class="st"> </span><span class="kw">paste0</span>(ID, <span class="st">&quot; &quot;</span>, r.new, <span class="st">&quot;}</span><span class="ch">\n</span><span class="st">```</span><span class="ch">\n</span><span class="st">&quot;</span>, <span class="dt">collapse =</span> <span class="st">&quot;&quot;</span>)  <span class="co"># Hard coded brace and backticks</span>
+            <span class="kw">sink</span>(rmd.files[x], <span class="dt">append =</span> <span class="ot">TRUE</span>)
+            <span class="kw">cat</span>(<span class="st">&quot;</span><span class="ch">\n</span><span class="st">NEW_CODE_CHUNKS</span><span class="ch">\n</span><span class="st">&quot;</span>)
+            <span class="kw">cat</span>(r.new)
+            <span class="kw">sink</span>()
+            <span class="kw">paste</span>(<span class="kw">basename</span>(rmd.files[x]), <span class="st">&quot;appended with new chunk names from .R file&quot;</span>)
+        } else <span class="kw">paste</span>(<span class="st">&quot;No new chunk names appended to&quot;</span>, <span class="kw">basename</span>(rmd.files[x]))
+    }
+    
+    rmd &lt;-<span class="st"> </span><span class="kw">gsub</span>(<span class="st">&quot;.R&quot;</span>, <span class="st">&quot;.Rmd&quot;</span>, <span class="kw">basename</span>(files))
+    rmd &lt;-<span class="st"> </span><span class="kw">file.path</span>(<span class="kw">dirname</span>(path), <span class="st">&quot;docs/Rmd&quot;</span>, rmd)
+    rmd &lt;-<span class="st"> </span>rmd[<span class="kw">sapply</span>(rmd, file.exists)]
+    <span class="kw">stopifnot</span>(<span class="kw">length</span>(rmd) &gt;<span class="st"> </span><span class="dv">0</span>)  <span class="co"># Rmd files must exist</span>
+    files.ind &lt;-<span class="st"> </span><span class="kw">match</span>(<span class="kw">gsub</span>(<span class="st">&quot;.Rmd&quot;</span>, <span class="st">&quot;&quot;</span>, <span class="kw">basename</span>(rmd)), <span class="kw">gsub</span>(<span class="st">&quot;.R&quot;</span>, <span class="st">&quot;&quot;</span>, <span class="kw">basename</span>(files)))  <span class="co"># Rmd exist for which R script</span>
+    l2 &lt;-<span class="st"> </span><span class="kw">lapply</span>(rmd, readLines)
+    l2 &lt;-<span class="st"> </span><span class="kw">rapply</span>(l2, function(x) x[<span class="kw">substr</span>(x, <span class="dv">1</span>, <span class="kw">nchar</span>(rmdChunkID)) ==<span class="st"> </span>rmdChunkID], 
+        <span class="dt">how =</span> <span class="st">&quot;replace&quot;</span>)
+    l2 &lt;-<span class="st"> </span><span class="kw">rapply</span>(l2, function(x, p) <span class="kw">gsub</span>(<span class="kw">paste0</span>(p, <span class="st">&quot; &quot;</span>), <span class="st">&quot;&quot;</span>, x), <span class="dt">how =</span> <span class="st">&quot;replace&quot;</span>, 
+        <span class="dt">p =</span> <span class="kw">gsub</span>(<span class="st">&quot;</span><span class="ch">\\</span><span class="st">{&quot;</span>, <span class="st">&quot;</span><span class="ch">\\\\</span><span class="st">{&quot;</span>, rmdChunkID))
+    l2 &lt;-<span class="st"> </span><span class="kw">rapply</span>(l2, function(x) <span class="kw">gsub</span>(<span class="st">&quot;}&quot;</span>, <span class="st">&quot;&quot;</span>, <span class="kw">sapply</span>(<span class="kw">strsplit</span>(x, <span class="st">&quot;,&quot;</span>), <span class="st">&quot;[[&quot;</span>, 
+        <span class="dv">1</span>)), <span class="dt">how =</span> <span class="st">&quot;replace&quot;</span>)
+    <span class="kw">sapply</span>(<span class="dv">1</span>:<span class="kw">length</span>(rmd), appendRmd, <span class="dt">rmd.files =</span> rmd, <span class="dt">rChunks =</span> l1[files.ind], 
+        <span class="dt">rmdChunks =</span> l2, <span class="dt">ID =</span> rmdChunkID)
+}</code></pre>
+<p>Regarding the creation and updating of Rmd files, <code>rpm</code> simply assumes that there will be one <strong>R</strong> Markdown file corresponding to one <strong>R</strong> script. This is not always the case for a given project, but again, the purpose is to generate basic templates. Unnecessary files can always be deleted later, or edits made such that one <strong>R</strong> Markdown file reads multiple <strong>R</strong> scripts, as is the case with the Rmd file used to generate this document.</p>
+</div>
+<div id="convertdocs" class="section level4">
+<h4>convertDocs</h4>
+<p><code>convertDocs</code> converts between Rmd and Rnw files. The project’s <code>docs/Rmd</code> or <code>docs/Rnw</code> directory is specified. Any files of the same type as the directory are converted to the other type and saved to the other directory. The input files are not removed.</p>
+<p>This function speeds up the process of duplicating files, e.g., when wanting to make PDFs from Rnw files when only Rmd files exist. This is almost exclusively what I use this function for. On less frequent occasions I have used it in the other direction when I have Rnw files which were once used to make PDFs but later I decide to put them on the web as a web page and not as a link to a PDF.</p>
+<p>The user still makes specific changes by hand, for example, any required changes to <code>knitr</code> code chunk options that must differ for PDF output vs. html output. The primary benefit is in not having to fuss with large amounts of standard substitutions which can be automated, such as swapping code chunk enclosure styles and common file metadata. Of course, this function is not perfect. It amounts to a text-parsing hack that is intended to handle the most common of idiosyncrasies and differences which exist between my own Rmd and Rnw files in the context of my own set of rules and assumptions, outlined below.</p>
+<pre class="sourceCode r"><code class="sourceCode r"><span class="co"># Rmd &lt;-&gt; Rnw document conversion Conversion support functions Main</span>
+<span class="co"># conversion function</span>
+convertDocs &lt;-<span class="st"> </span>function(path, <span class="dt">rmdChunkID =</span> <span class="kw">c</span>(<span class="st">&quot;```{r&quot;</span>, <span class="st">&quot;}&quot;</span>, <span class="st">&quot;```&quot;</span>), <span class="dt">rnwChunkID =</span> <span class="kw">c</span>(<span class="st">&quot;&lt;&lt;&quot;</span>, 
+    <span class="st">&quot;&gt;&gt;=&quot;</span>, <span class="st">&quot;@&quot;</span>), <span class="dt">emphasis =</span> <span class="st">&quot;replace&quot;</span>, <span class="dt">overwrite =</span> <span class="ot">FALSE</span>, ...) {
+    <span class="kw">stopifnot</span>(<span class="kw">is.character</span>(path))
+    type &lt;-<span class="st"> </span><span class="kw">basename</span>(path)
+    rmd.files &lt;-<span class="st"> </span><span class="kw">list.files</span>(path, <span class="dt">pattern =</span> <span class="st">&quot;.Rmd$&quot;</span>, <span class="dt">full =</span> <span class="ot">TRUE</span>)
+    rnw.files &lt;-<span class="st"> </span><span class="kw">list.files</span>(path, <span class="dt">pattern =</span> <span class="st">&quot;.Rnw$&quot;</span>, <span class="dt">full =</span> <span class="ot">TRUE</span>)
+    dots &lt;-<span class="st"> </span><span class="kw">list</span>(...)
+    if (rmdChunkID[<span class="dv">1</span>] ==<span class="st"> &quot;```{r&quot;</span>) 
+        rmdChunkID[<span class="dv">1</span>] &lt;-<span class="st"> </span><span class="kw">paste0</span>(rmdChunkID[<span class="dv">1</span>], <span class="st">&quot; &quot;</span>)
+    gsbraces &lt;-<span class="st"> </span>function(txt) <span class="kw">gsub</span>(<span class="st">&quot;</span><span class="ch">\\</span><span class="st">{&quot;</span>, <span class="st">&quot;</span><span class="ch">\\\\</span><span class="st">{&quot;</span>, txt)
+    if (type ==<span class="st"> &quot;Rmd&quot;</span>) {
+        <span class="kw">stopifnot</span>(<span class="kw">length</span>(rmd.files) &gt;<span class="st"> </span><span class="dv">0</span>)
+        outDir &lt;-<span class="st"> </span><span class="kw">file.path</span>(<span class="kw">dirname</span>(path), <span class="st">&quot;Rnw&quot;</span>)
+        if (<span class="kw">is.null</span>(doc.class &lt;-<span class="st"> </span>dots$doc.class)) 
+            doc.class &lt;-<span class="st"> &quot;article&quot;</span>
+        if (<span class="kw">is.null</span>(doc.packages &lt;-<span class="st"> </span>dots$doc.packages)) 
+            doc.packages &lt;-<span class="st"> &quot;geometry&quot;</span>
+        doc.class.string &lt;-<span class="st"> </span><span class="kw">paste0</span>(<span class="st">&quot;</span><span class="ch">\\</span><span class="st">documentclass{&quot;</span>, doc.class, <span class="st">&quot;}&quot;</span>)
+        doc.packages.string &lt;-<span class="st"> </span><span class="kw">paste0</span>(<span class="kw">sapply</span>(doc.packages, function(x) <span class="kw">paste0</span>(<span class="st">&quot;</span><span class="ch">\\</span><span class="st">usepackage{&quot;</span>, 
+            x, <span class="st">&quot;}&quot;</span>)), <span class="dt">collapse =</span> <span class="st">&quot;</span><span class="ch">\n</span><span class="st">&quot;</span>)
+        if (<span class="st">&quot;geometry&quot;</span> %in%<span class="st"> </span>doc.packages) 
+            doc.packages.string &lt;-<span class="st"> </span><span class="kw">c</span>(doc.packages.string, <span class="st">&quot;</span><span class="ch">\\</span><span class="st">geometry{verbose, tmargin=2.5cm, bmargin=2.5cm, lmargin=2.5cm, rmargin=2.5cm}&quot;</span>)
+        header.rnw &lt;-<span class="st"> </span><span class="kw">c</span>(doc.class.string, doc.packages.string, <span class="st">&quot;</span><span class="ch">\\</span><span class="st">begin{document}</span><span class="ch">\n</span><span class="st">&quot;</span>)  <span class="co">#,</span>
+        <span class="co"># paste0(&#39;&lt;&lt;highlight, echo=FALSE&gt;&gt;=\nknit_theme$set(knit_theme$get(&#39;&#39;,</span>
+        <span class="co"># theme, &#39;&#39;))\n@\n&#39;))</span>
+    } else if (type ==<span class="st"> &quot;Rnw&quot;</span>) {
+        <span class="kw">stopifnot</span>(<span class="kw">length</span>(rnw.files) &gt;<span class="st"> </span><span class="dv">0</span>)
+        outDir &lt;-<span class="st"> </span><span class="kw">file.path</span>(<span class="kw">dirname</span>(path), <span class="st">&quot;Rmd&quot;</span>)
+    } else <span class="kw">stop</span>(<span class="st">&quot;path must end in &#39;Rmd&#39; or &#39;Rnw&#39;.&quot;</span>)
+    
+    swapHeadings &lt;-<span class="st"> </span>function(from, to, x) {
+        nc &lt;-<span class="st"> </span><span class="kw">nchar</span>(x)
+        ind &lt;-<span class="st"> </span><span class="kw">which</span>(<span class="kw">substr</span>(x, <span class="dv">1</span>, <span class="dv">8</span>) ==<span class="st"> &quot;</span><span class="ch">\\</span><span class="st">section&quot;</span> |<span class="st"> </span><span class="kw">substr</span>(x, <span class="dv">1</span>, <span class="dv">4</span>) ==<span class="st"> &quot;</span><span class="ch">\\</span><span class="st">sub&quot;</span>)
+        if (!<span class="kw">length</span>(ind)) {
+            <span class="co"># assume Rmd file</span>
+            ind &lt;-<span class="st"> </span><span class="kw">which</span>(<span class="kw">substr</span>(x, <span class="dv">1</span>, <span class="dv">1</span>) ==<span class="st"> &quot;#&quot;</span>)
+            ind.n &lt;-<span class="st"> </span><span class="kw">rep</span>(<span class="dv">1</span>, <span class="kw">length</span>(ind))
+            for (i in <span class="dv">2</span>:<span class="dv">6</span>) {
+                ind.tmp &lt;-<span class="st"> </span><span class="kw">which</span>(<span class="kw">substr</span>(x[ind], <span class="dv">1</span>, i) ==<span class="st"> </span><span class="kw">substr</span>(<span class="st">&quot;######&quot;</span>, <span class="dv">1</span>, 
+                  i))
+                if (<span class="kw">length</span>(ind.tmp)) 
+                  ind.n[ind.tmp] &lt;-<span class="st"> </span>ind.n[ind.tmp] +<span class="st"> </span><span class="dv">1</span> else break
+            }
+            for (i in <span class="dv">1</span>:<span class="kw">length</span>(ind)) {
+                n &lt;-<span class="st"> </span>ind.n[i]
+                input &lt;-<span class="st"> </span><span class="kw">paste0</span>(<span class="kw">substr</span>(<span class="st">&quot;######&quot;</span>, <span class="dv">1</span>, n), <span class="st">&quot; &quot;</span>)
+                h &lt;-<span class="st"> </span>x[ind[i]]
+                h &lt;-<span class="st"> </span><span class="kw">gsub</span>(<span class="st">&quot;</span><span class="ch">\\</span><span class="st">*&quot;</span>, <span class="st">&quot;_&quot;</span>, h)  <span class="co"># Switch any markdown boldface asterisks in headings to double underscores</span>
+                heading &lt;-<span class="st"> </span><span class="kw">gsub</span>(<span class="st">&quot;</span><span class="ch">\n</span><span class="st">&quot;</span>, <span class="st">&quot;&quot;</span>, <span class="kw">substr</span>(h, n +<span class="st"> </span><span class="dv">2</span>, nc[ind[i]]))
+                <span class="co"># h &lt;- gsub(input, &#39;&#39;, h)</span>
+                if (n &lt;=<span class="st"> </span><span class="dv">2</span>) 
+                  subs &lt;-<span class="st"> &quot;</span><span class="ch">\\</span><span class="st">&quot;</span> else if (n ==<span class="st"> </span><span class="dv">3</span>) 
+                  subs &lt;-<span class="st"> &quot;</span><span class="ch">\\</span><span class="st">sub&quot;</span> else if (n ==<span class="st"> </span><span class="dv">4</span>) 
+                  subs &lt;-<span class="st"> &quot;</span><span class="ch">\\</span><span class="st">subsub&quot;</span> else if (n &gt;=<span class="st"> </span><span class="dv">5</span>) 
+                  subs &lt;-<span class="st"> &quot;</span><span class="ch">\\</span><span class="st">subsubsub&quot;</span>
+                output &lt;-<span class="st"> </span><span class="kw">paste0</span>(<span class="st">&quot;</span><span class="ch">\\</span><span class="st">&quot;</span>, subs, <span class="st">&quot;section{&quot;</span>, heading, <span class="st">&quot;}</span><span class="ch">\n</span><span class="st">&quot;</span>)
+                x[ind[i]] &lt;-<span class="st"> </span><span class="kw">gsub</span>(h, output, h)
+            }
+        } else {
+            <span class="co"># assume Rnw file</span>
+            ind &lt;-<span class="st"> </span><span class="kw">which</span>(<span class="kw">substr</span>(x, <span class="dv">1</span>, <span class="dv">8</span>) ==<span class="st"> &quot;</span><span class="ch">\\</span><span class="st">section&quot;</span>)
+            if (<span class="kw">length</span>(ind)) {
+                for (i in <span class="dv">1</span>:<span class="kw">length</span>(ind)) {
+                  h &lt;-<span class="st"> </span>x[ind[i]]
+                  heading &lt;-<span class="st"> </span><span class="kw">paste0</span>(<span class="st">&quot;## &quot;</span>, <span class="kw">substr</span>(h, <span class="dv">10</span>, <span class="kw">nchar</span>(h) -<span class="st"> </span><span class="dv">2</span>))
+                  x[ind[i]] &lt;-<span class="st"> </span><span class="kw">gsub</span>(<span class="kw">gsbraces</span>(h), heading, h)
+                }
+            }
+            ind &lt;-<span class="st"> </span><span class="kw">which</span>(<span class="kw">substr</span>(x, <span class="dv">1</span>, <span class="dv">4</span>) ==<span class="st"> &quot;</span><span class="ch">\\</span><span class="st">sub&quot;</span>)
+            if (<span class="kw">length</span>(ind)) {
+                for (i in <span class="dv">1</span>:<span class="kw">length</span>(ind)) {
+                  h &lt;-<span class="st"> </span>x[ind[i]]
+                  z &lt;-<span class="st"> </span><span class="kw">substr</span>(h, <span class="dv">2</span>, <span class="dv">10</span>)
+                  if (z ==<span class="st"> &quot;subsubsub&quot;</span>) {
+                    p &lt;-<span class="st"> &quot;##### &quot;</span>
+                    n &lt;-<span class="st"> </span><span class="dv">18</span>
+                  } else if (<span class="kw">substr</span>(z, <span class="dv">1</span>, <span class="dv">6</span>) ==<span class="st"> &quot;subsub&quot;</span>) {
+                    p &lt;-<span class="st"> &quot;#### &quot;</span>
+                    n &lt;-<span class="st"> </span><span class="dv">15</span>
+                  } else if (<span class="kw">substr</span>(z, <span class="dv">1</span>, <span class="dv">3</span>) ==<span class="st"> &quot;sub&quot;</span>) {
+                    p &lt;-<span class="st"> &quot;### &quot;</span>
+                    n &lt;-<span class="st"> </span><span class="dv">12</span>
+                  }
+                  heading &lt;-<span class="st"> </span><span class="kw">paste0</span>(p, <span class="kw">substr</span>(h, n, <span class="kw">nchar</span>(h) -<span class="st"> </span><span class="dv">2</span>))
+                  x[ind[i]] &lt;-<span class="st"> </span><span class="kw">gsub</span>(<span class="kw">gsbraces</span>(h), heading, h)
+                }
+            }
+        }
+        x
+    }
+    
+    swapChunks &lt;-<span class="st"> </span>function(from, to, x) {
+        nc &lt;-<span class="st"> </span><span class="kw">nchar</span>(x)
+        chunk.start.open &lt;-<span class="st"> </span><span class="kw">substr</span>(x, <span class="dv">1</span>, <span class="kw">nchar</span>(from[<span class="dv">1</span>])) ==<span class="st"> </span>from[<span class="dv">1</span>]
+        chunk.start.close &lt;-<span class="st"> </span><span class="kw">substr</span>(x, nc -<span class="st"> </span><span class="dv">1</span> -<span class="st"> </span><span class="kw">nchar</span>(from[<span class="dv">2</span>]) +<span class="st"> </span><span class="dv">1</span>, nc -<span class="st"> </span><span class="dv">1</span>) ==<span class="st"> </span>
+<span class="st">            </span>from[<span class="dv">2</span>]
+        chunk.start &lt;-<span class="st"> </span><span class="kw">which</span>(chunk.start.open &amp;<span class="st"> </span>chunk.start.close)
+        chunk.end &lt;-<span class="st"> </span><span class="kw">which</span>(<span class="kw">substr</span>(x, <span class="dv">1</span>, <span class="kw">nchar</span>(from[<span class="dv">3</span>])) ==<span class="st"> </span>from[<span class="dv">3</span>] &amp;<span class="st"> </span>nc ==<span class="st"> </span><span class="kw">nchar</span>(from[<span class="dv">3</span>]) +<span class="st"> </span>
+<span class="st">            </span><span class="dv">1</span>)
+        x[chunk.start] &lt;-<span class="st"> </span><span class="kw">gsub</span>(from[<span class="dv">2</span>], to[<span class="dv">2</span>], <span class="kw">gsub</span>(<span class="kw">gsbraces</span>(from[<span class="dv">1</span>]), <span class="kw">gsbraces</span>(to[<span class="dv">1</span>]), 
+            x[chunk.start]))
+        x[chunk.end] &lt;-<span class="st"> </span><span class="kw">gsub</span>(from[<span class="dv">3</span>], to[<span class="dv">3</span>], x[chunk.end])
+        chunklines &lt;-<span class="st"> </span><span class="kw">as.numeric</span>(<span class="kw">unlist</span>(<span class="kw">mapply</span>(seq, chunk.start, chunk.end)))
+        <span class="kw">list</span>(x, chunklines)
+    }
+    
+    <span class="co"># I know I use &#39;**&#39; strictly for bold font in Rmd files.  For now, this</span>
+    <span class="co"># function assumes: 1. The only emphasis in a doc is boldface or typewriter.</span>
+    <span class="co"># 2. These instances are always preceded by a space, a carriage return, or</span>
+    <span class="co"># an open bracket, 3. and followed by a space, period, comma, or closing</span>
+    <span class="co"># bracket.</span>
+    swapEmphasis &lt;-<span class="st"> </span>function(x, <span class="dt">emphasis =</span> <span class="st">&quot;remove&quot;</span>, <span class="dt">pat.remove =</span> <span class="kw">c</span>(<span class="st">&quot;`&quot;</span>, <span class="st">&quot;</span><span class="ch">\\</span><span class="st">*</span><span class="ch">\\</span><span class="st">*&quot;</span>, 
+        <span class="st">&quot;__&quot;</span>), <span class="dt">pat.replace =</span> pat.remove, <span class="dt">replacement =</span> <span class="kw">c</span>(<span class="st">&quot;</span><span class="ch">\\\\</span><span class="st">texttt</span><span class="ch">\\</span><span class="st">{&quot;</span>, <span class="st">&quot;</span><span class="ch">\\\\</span><span class="st">textbf</span><span class="ch">\\</span><span class="st">{&quot;</span>, 
+        <span class="st">&quot;</span><span class="ch">\\\\</span><span class="st">textbf</span><span class="ch">\\</span><span class="st">{&quot;</span>, <span class="st">&quot;</span><span class="ch">\\</span><span class="st">}&quot;</span>, <span class="st">&quot;</span><span class="ch">\\</span><span class="st">}&quot;</span>, <span class="st">&quot;</span><span class="ch">\\</span><span class="st">}&quot;</span>)) {
+        
+        <span class="kw">stopifnot</span>(emphasis %in%<span class="st"> </span><span class="kw">c</span>(<span class="st">&quot;remove&quot;</span>, <span class="st">&quot;replace&quot;</span>))
+        n &lt;-<span class="st"> </span><span class="kw">length</span>(pat.replace)
+        rep1 &lt;-<span class="st"> </span>replacement[<span class="dv">1</span>:n]
+        rep2 &lt;-<span class="st"> </span>replacement[(n +<span class="st"> </span><span class="dv">1</span>):(<span class="dv">2</span> *<span class="st"> </span>n)]
+        prefix &lt;-<span class="st"> </span><span class="kw">c</span>(<span class="st">&quot; &quot;</span>, <span class="st">&quot;^&quot;</span>, <span class="st">&quot;</span><span class="ch">\\</span><span class="st">{&quot;</span>, <span class="st">&quot;</span><span class="ch">\\</span><span class="st">(&quot;</span>)
+        suffix &lt;-<span class="st"> </span><span class="kw">c</span>(<span class="st">&quot; &quot;</span>, <span class="st">&quot;,&quot;</span>, <span class="st">&quot;-&quot;</span>, <span class="st">&quot;</span><span class="ch">\n</span><span class="st">&quot;</span>, <span class="st">&quot;</span><span class="ch">\\</span><span class="st">.&quot;</span>, <span class="st">&quot;</span><span class="ch">\\</span><span class="st">}&quot;</span>, <span class="st">&quot;</span><span class="ch">\\</span><span class="st">)&quot;</span>)
+        n.p &lt;-<span class="st"> </span><span class="kw">length</span>(prefix)
+        n.s &lt;-<span class="st"> </span><span class="kw">length</span>(suffix)
+        pat.replace &lt;-<span class="st"> </span><span class="kw">c</span>(<span class="kw">paste0</span>(<span class="kw">rep</span>(prefix, n), <span class="kw">rep</span>(pat.replace, <span class="dt">each =</span> n.p)), 
+            <span class="kw">paste0</span>(<span class="kw">rep</span>(pat.replace, <span class="dt">each =</span> n.s), <span class="kw">rep</span>(suffix, n)))
+        replacement &lt;-<span class="st"> </span><span class="kw">c</span>(<span class="kw">paste0</span>(<span class="kw">rep</span>(<span class="kw">gsub</span>(<span class="st">&quot;</span><span class="ch">\\</span><span class="st">^&quot;</span>, <span class="st">&quot;&quot;</span>, prefix), n), <span class="kw">rep</span>(rep1, <span class="dt">each =</span> n.p)), 
+            <span class="kw">paste0</span>(<span class="kw">rep</span>(rep2, <span class="dt">each =</span> n.s), <span class="kw">rep</span>(suffix, n)))
+        if (emphasis ==<span class="st"> &quot;remove&quot;</span>) 
+            for (k in <span class="dv">1</span>:<span class="kw">length</span>(pat.remove)) x &lt;-<span class="st"> </span><span class="kw">sapply</span>(x, function(v, p, r) <span class="kw">gsub</span>(p, 
+                r, v), <span class="dt">p =</span> pat.remove[k], <span class="dt">r =</span> <span class="st">&quot;&quot;</span>)
+        if (emphasis ==<span class="st"> &quot;replace&quot;</span>) 
+            for (k in <span class="dv">1</span>:<span class="kw">length</span>(pat.replace)) x &lt;-<span class="st"> </span><span class="kw">sapply</span>(x, function(v, p, r) <span class="kw">gsub</span>(p, 
+                r, v), <span class="dt">p =</span> pat.replace[k], <span class="dt">r =</span> replacement[k])
+        x
+    }
+    
+    swap &lt;-<span class="st"> </span>function(file, <span class="dt">header =</span> <span class="ot">NULL</span>, outDir, ...) {
+        title &lt;-<span class="st"> </span><span class="kw">list</span>(...)$title
+        author &lt;-<span class="st"> </span><span class="kw">list</span>(...)$author
+        highlight &lt;-<span class="st"> </span><span class="kw">list</span>(...)$highlight
+        ext &lt;-<span class="st"> </span><span class="kw">tail</span>(<span class="kw">strsplit</span>(file, <span class="st">&quot;</span><span class="ch">\\</span><span class="st">.&quot;</span>)[[<span class="dv">1</span>]], <span class="dv">1</span>)
+        l &lt;-<span class="st"> </span><span class="kw">readLines</span>(file)
+        l &lt;-<span class="st"> </span>l[<span class="kw">substr</span>(l, <span class="dv">1</span>, <span class="dv">7</span>) !=<span class="st"> &quot;&lt;style&gt;&quot;</span>]  <span class="co"># Strip any html style lines</span>
+        if (ext ==<span class="st"> &quot;Rmd&quot;</span>) {
+            hl.default &lt;-<span class="st"> &quot;solarized-light&quot;</span>
+            out.ext &lt;-<span class="st"> &quot;Rnw&quot;</span>
+            h.ind &lt;-<span class="st"> </span><span class="dv">1</span>:<span class="kw">which</span>(l ==<span class="st"> &quot;---&quot;</span>)[<span class="dv">2</span>]
+            h &lt;-<span class="st"> </span>l[h.ind]
+            t.ind &lt;-<span class="st"> </span><span class="kw">which</span>(<span class="kw">substr</span>(h, <span class="dv">1</span>, <span class="dv">7</span>) ==<span class="st"> &quot;title: &quot;</span>)
+            a.ind &lt;-<span class="st"> </span><span class="kw">which</span>(<span class="kw">substr</span>(h, <span class="dv">1</span>, <span class="dv">8</span>) ==<span class="st"> &quot;author: &quot;</span>)
+            highlight.ind &lt;-<span class="st"> </span><span class="kw">which</span>(<span class="kw">substr</span>(h, <span class="dv">1</span>, <span class="dv">11</span>) ==<span class="st"> &quot;highlight: &quot;</span>)
+            if (<span class="kw">is.null</span>(title) &amp;<span class="st"> </span><span class="kw">length</span>(t.ind)) 
+                title &lt;-<span class="st"> </span><span class="kw">substr</span>(h[t.ind], <span class="dv">8</span>, <span class="kw">nchar</span>(h[t.ind])) else if (<span class="kw">is.null</span>(title)) 
+                title &lt;-<span class="st"> &quot;&quot;</span>
+            if (<span class="kw">is.null</span>(author) &amp;<span class="st"> </span><span class="kw">length</span>(a.ind)) 
+                author &lt;-<span class="st"> </span><span class="kw">substr</span>(h[a.ind], <span class="dv">9</span>, <span class="kw">nchar</span>(h[a.ind])) else if (<span class="kw">is.null</span>(author)) 
+                author &lt;-<span class="st"> &quot;&quot;</span>
+            if (<span class="kw">is.null</span>(highlight) &amp;<span class="st"> </span><span class="kw">length</span>(highlight.ind)) 
+                highlight &lt;-<span class="st"> </span><span class="kw">substr</span>(h[highlight.ind], <span class="dv">12</span>, <span class="kw">nchar</span>(h[highlight.ind])) else if (<span class="kw">is.null</span>(highlight)) 
+                highlight &lt;-<span class="st"> </span>hl.default else if (!(highlight %in%<span class="st"> </span>knit_theme$<span class="kw">get</span>())) 
+                highlight &lt;-<span class="st"> </span>hl.default
+            if (!<span class="kw">is.null</span>(title)) 
+                header &lt;-<span class="st"> </span><span class="kw">c</span>(header, <span class="kw">paste0</span>(<span class="st">&quot;</span><span class="ch">\\</span><span class="st">title{&quot;</span>, title, <span class="st">&quot;}&quot;</span>))
+            if (!<span class="kw">is.null</span>(author)) 
+                header &lt;-<span class="st"> </span><span class="kw">c</span>(header, <span class="kw">paste0</span>(<span class="st">&quot;</span><span class="ch">\\</span><span class="st">author{&quot;</span>, author, <span class="st">&quot;}&quot;</span>))
+            if (!<span class="kw">is.null</span>(title)) 
+                header &lt;-<span class="st"> </span><span class="kw">c</span>(header, <span class="st">&quot;</span><span class="ch">\\</span><span class="st">maketitle</span><span class="ch">\n</span><span class="st">&quot;</span>)
+            header &lt;-<span class="st"> </span><span class="kw">c</span>(header, <span class="kw">paste0</span>(<span class="st">&quot;&lt;&lt;highlight, echo=FALSE&gt;&gt;=</span><span class="ch">\n</span><span class="st">knit_theme$set(knit_theme$get(&#39;&quot;</span>, 
+                highlight, <span class="st">&quot;&#39;))</span><span class="ch">\n</span><span class="st">@</span><span class="ch">\n</span><span class="st">&quot;</span>))
+        } else if (ext ==<span class="st"> &quot;Rnw&quot;</span>) {
+            hl.default &lt;-<span class="st"> &quot;tango&quot;</span>
+            out.ext &lt;-<span class="st"> &quot;Rmd&quot;</span>
+            begin.doc &lt;-<span class="st"> </span><span class="kw">which</span>(l ==<span class="st"> &quot;</span><span class="ch">\\</span><span class="st">begin{document}&quot;</span>)
+            make.title &lt;-<span class="st"> </span><span class="kw">which</span>(l ==<span class="st"> &quot;</span><span class="ch">\\</span><span class="st">maketitle&quot;</span>)
+            if (<span class="kw">length</span>(make.title)) 
+                h.ind &lt;-<span class="st"> </span><span class="dv">1</span>:make.title else h.ind &lt;-<span class="st"> </span><span class="dv">1</span>:begin.doc
+            h &lt;-<span class="st"> </span>l[h.ind]
+            t.ind &lt;-<span class="st"> </span><span class="kw">which</span>(<span class="kw">substr</span>(h, <span class="dv">1</span>, <span class="dv">6</span>) ==<span class="st"> &quot;</span><span class="ch">\\</span><span class="st">title&quot;</span>)
+            a.ind &lt;-<span class="st"> </span><span class="kw">which</span>(<span class="kw">substr</span>(h, <span class="dv">1</span>, <span class="dv">7</span>) ==<span class="st"> &quot;</span><span class="ch">\\</span><span class="st">author&quot;</span>)
+            highlight.ind &lt;-<span class="st"> </span><span class="kw">which</span>(<span class="kw">substr</span>(l, <span class="dv">1</span>, <span class="dv">11</span>) ==<span class="st"> &quot;&lt;&lt;highlight&quot;</span>)
+            if (<span class="kw">is.null</span>(title) &amp;<span class="st"> </span><span class="kw">length</span>(t.ind)) 
+                title &lt;-<span class="st"> </span><span class="kw">substr</span>(h[t.ind], <span class="dv">8</span>, <span class="kw">nchar</span>(h[t.ind]) -<span class="st"> </span><span class="dv">1</span>)
+            if (<span class="kw">is.null</span>(author) &amp;<span class="st"> </span><span class="kw">length</span>(a.ind)) 
+                author &lt;-<span class="st"> </span><span class="kw">substr</span>(h[a.ind], <span class="dv">9</span>, <span class="kw">nchar</span>(h[a.ind]) -<span class="st"> </span><span class="dv">1</span>)
+            if (<span class="kw">length</span>(highlight.ind)) {
+                l1 &lt;-<span class="st"> </span>l[highlight.ind +<span class="st"> </span><span class="dv">1</span>]
+                h1 &lt;-<span class="st"> </span><span class="kw">substr</span>(l1, <span class="kw">nchar</span>(<span class="st">&quot;knit_theme$set(knit_theme$get(&#39;&quot;</span>) +<span class="st"> </span>
+<span class="st">                  </span><span class="dv">1</span>, <span class="kw">nchar</span>(l1) -<span class="st"> </span><span class="kw">nchar</span>(<span class="st">&quot;&#39;))</span><span class="ch">\n</span><span class="st">&quot;</span>))
+                if (!(h1 %in%<span class="st"> </span>knit_theme$<span class="kw">get</span>())) 
+                  h1 &lt;-<span class="st"> </span>hl.default
+            }
+            if (<span class="kw">is.null</span>(highlight) &amp;<span class="st"> </span><span class="kw">length</span>(highlight.ind)) 
+                highlight &lt;-<span class="st"> </span>h1 else if (<span class="kw">is.null</span>(highlight)) 
+                highlight &lt;-<span class="st"> </span>hl.default else if (!(highlight %in%<span class="st"> </span>knit_theme$<span class="kw">get</span>())) 
+                highlight &lt;-<span class="st"> </span>hl.default
+            header &lt;-<span class="st"> </span><span class="kw">rmdHeader</span>(<span class="dt">title =</span> title, <span class="dt">author =</span> author, <span class="dt">highlight =</span> highlight)
+        }
+        header &lt;-<span class="st"> </span><span class="kw">paste0</span>(header, <span class="dt">collapse =</span> <span class="st">&quot;</span><span class="ch">\n</span><span class="st">&quot;</span>)
+        l &lt;-<span class="st"> </span><span class="kw">paste0</span>(l[-h.ind], <span class="st">&quot;</span><span class="ch">\n</span><span class="st">&quot;</span>)
+        if (ext ==<span class="st"> &quot;Rmd&quot;</span>) {
+            from &lt;-<span class="st"> </span>rmdChunkID
+            to &lt;-<span class="st"> </span>rnwChunkID
+        }
+        if (ext ==<span class="st"> &quot;Rnw&quot;</span>) {
+            from &lt;-<span class="st"> </span>rnwChunkID
+            to &lt;-<span class="st"> </span>rmdChunkID
+        }
+        l &lt;-<span class="st"> </span><span class="kw">swapHeadings</span>(<span class="dt">from =</span> from, <span class="dt">to =</span> to, <span class="dt">x =</span> l)
+        chunks &lt;-<span class="st"> </span><span class="kw">swapChunks</span>(<span class="dt">from =</span> from, <span class="dt">to =</span> to, <span class="dt">x =</span> l)
+        l &lt;-<span class="st"> </span>chunks[[<span class="dv">1</span>]]
+        if (ext ==<span class="st"> &quot;Rmd&quot;</span>) 
+            l &lt;-<span class="st"> </span><span class="kw">swapEmphasis</span>(<span class="dt">x =</span> l, <span class="dt">emphasis =</span> emphasis)
+        if (ext ==<span class="st"> &quot;Rmd&quot;</span>) 
+            l[-chunks[[<span class="dv">2</span>]]] &lt;-<span class="st"> </span><span class="kw">sapply</span>(l[-chunks[[<span class="dv">2</span>]]], function(v, p, r) <span class="kw">gsub</span>(p, 
+                r, v), <span class="dt">p =</span> <span class="st">&quot;_&quot;</span>, <span class="dt">r =</span> <span class="st">&quot;</span><span class="ch">\\\\</span><span class="st">_&quot;</span>)
+        l &lt;-<span class="st"> </span><span class="kw">c</span>(header, l, <span class="st">&quot;</span><span class="ch">\n\\</span><span class="st">end{document}</span><span class="ch">\n</span><span class="st">&quot;</span>)
+        outfile &lt;-<span class="st"> </span><span class="kw">file.path</span>(outDir, <span class="kw">gsub</span>(<span class="kw">paste0</span>(<span class="st">&quot;</span><span class="ch">\\</span><span class="st">.&quot;</span>, ext), <span class="kw">paste0</span>(<span class="st">&quot;</span><span class="ch">\\</span><span class="st">.&quot;</span>, 
+            out.ext), <span class="kw">basename</span>(file)))
+        if (overwrite ||<span class="st"> </span>!<span class="kw">file.exists</span>(outfile)) {
+            <span class="kw">sink</span>(outfile)
+            <span class="kw">sapply</span>(l, cat)
+            <span class="kw">sink</span>()
+            <span class="kw">print</span>(<span class="kw">paste</span>(<span class="st">&quot;Writing&quot;</span>, outfile))
+        }
+    }
+    
+    if (type ==<span class="st"> &quot;Rmd&quot;</span>) {
+        <span class="kw">sapply</span>(rmd.files, swap, <span class="dt">header =</span> header.rnw, <span class="dt">outDir =</span> outDir, ...)
+        <span class="kw">cat</span>(<span class="st">&quot;.Rmd to .Rnw file conversion complete.</span><span class="ch">\n</span><span class="st">&quot;</span>)
+    } else {
+        <span class="kw">sapply</span>(rnw.files, swap, <span class="dt">header =</span> <span class="ot">NULL</span>, <span class="dt">outDir =</span> outDir, ...)
+        <span class="kw">cat</span>(<span class="st">&quot;.Rnw to .Rmd file conversion complete.</span><span class="ch">\n</span><span class="st">&quot;</span>)
+    }
+}</code></pre>
+</div>
+<div id="movedocs" class="section level4">
+<h4>moveDocs</h4>
+<p><code>moveDocs</code> relocates files by renaming with a new file path. Specifically, it scans for md and html files in the <code>docs/Rmd</code> directory and/or pdf files in the <code>docs/Rnw</code> directory. If such files are found in the respective locations, they are moved to <code>docs/md</code>, <code>docs/html</code>, and <code>docs/pdf</code>, respectively.</p>
+<p>The intent is to clean up the Rmd and Rnw directories after <code>knitr</code> has been used to knit documents in place. I do this because I have more success knitting documents with the confluence of <code>RStudio</code>, <code>rmarkdown</code>, <code>knitr</code>, <code>pandoc</code>, and <code>LaTeX</code> when the knitting occurs all within the directory of the originating files. The process is more prone to throwing errors when trying to specify alternate locations for outputs.</p>
+<p><code>moveDocs</code> makes a nominal effort to replace a possible relative path with a full file path before proceeding, if the former is supplied. Default arguments include <code>move=TRUE</code> which will call <code>file.rename</code> and <code>copy=FALSE</code> which, if <code>TRUE</code> (and <code>move=FALSE</code>), will alternatively call <code>file.copy</code>. If both are <code>TRUE</code>, any files found are moved.</p>
+<p>This function will always overwrite any existing file versions previously moved to the output directories, by way of <code>file.rename</code>. To keep the behavior consistent, when <code>move=FALSE</code> and <code>copy=TRUE</code>, <code>file.copy</code> always executes with its argument, <code>overwrite=TRUE</code>. This should never cause problems because in the context I intend for this function, the types of files being moved or copied from <code>docs/Rmd</code> and <code>docs/Rnw</code> are never used as inputs to other files, functions, or processes, nor are they meant to be edited by hand after being generated.</p>
+<p>If there are LaTeX-associated files present (.TeX, .aux, and .txt files with the same file names as local pdf files.), these files will be removed if <code>remove.latex=TRUE</code> (default). If <code>FALSE</code>, the default <code>latexDir=&quot;LaTeX&quot;</code> means that these files will be moved to the <code>docs/LaTeX</code> directory rather than deleted. If this directory does not exist, it will be created. An alternate location can be specified, such as “pdf” if you want to keep these files with the related pdf files after those are moved by <code>moveDocs</code> as well to <code>docs/pdf</code>.</p>
+<pre class="sourceCode r"><code class="sourceCode r"><span class="co"># Organization documentation</span>
+moveDocs &lt;-<span class="st"> </span>function(path.docs, <span class="dt">type =</span> <span class="kw">c</span>(<span class="st">&quot;md&quot;</span>, <span class="st">&quot;html&quot;</span>, <span class="st">&quot;pdf&quot;</span>), <span class="dt">move =</span> <span class="ot">TRUE</span>, 
+    <span class="dt">copy =</span> <span class="ot">FALSE</span>, <span class="dt">remove.latex =</span> <span class="ot">TRUE</span>, <span class="dt">latexDir =</span> <span class="st">&quot;latex&quot;</span>) {
+    if (<span class="kw">any</span>(!(type %in%<span class="st"> </span><span class="kw">c</span>(<span class="st">&quot;md&quot;</span>, <span class="st">&quot;html&quot;</span>, <span class="st">&quot;pdf&quot;</span>)))) 
+        <span class="kw">stop</span>(<span class="st">&quot;type must be among &#39;md&#39;, &#39;html&#39;, and &#39;pdf&#39;&quot;</span>)
+    <span class="kw">stopifnot</span>(move |<span class="st"> </span>copy)
+    if (path.docs ==<span class="st"> &quot;.&quot;</span> |<span class="st"> </span>path.docs ==<span class="st"> &quot;./&quot;</span>) 
+        path.docs &lt;-<span class="st"> </span><span class="kw">getwd</span>()
+    if (<span class="kw">strsplit</span>(path.docs, <span class="st">&quot;/&quot;</span>)[[<span class="dv">1</span>]][<span class="dv">1</span>] ==<span class="st"> &quot;..&quot;</span>) {
+        tmp &lt;-<span class="st"> </span><span class="kw">strsplit</span>(path.docs, <span class="st">&quot;/&quot;</span>)[[<span class="dv">1</span>]][-<span class="dv">1</span>]
+        if (<span class="kw">length</span>(tmp)) 
+            path.docs &lt;-<span class="st"> </span><span class="kw">file.path</span>(<span class="kw">getwd</span>(), <span class="kw">paste0</span>(tmp, <span class="dt">collapse =</span> <span class="st">&quot;/&quot;</span>)) else <span class="kw">stop</span>(<span class="st">&quot;Check path.docs argument.&quot;</span>)
+    }
+    for (i in <span class="dv">1</span>:<span class="kw">length</span>(type)) {
+        if (type[i] ==<span class="st"> &quot;pdf&quot;</span>) 
+            origin &lt;-<span class="st"> &quot;Rnw&quot;</span> else origin &lt;-<span class="st"> &quot;Rmd&quot;</span>
+        path.i &lt;-<span class="st"> </span><span class="kw">file.path</span>(path.docs, origin)
+        infiles &lt;-<span class="st"> </span><span class="kw">list.files</span>(path.i, <span class="dt">pattern =</span> <span class="kw">paste0</span>(<span class="st">&quot;</span><span class="ch">\\</span><span class="st">.&quot;</span>, type[i], <span class="st">&quot;$&quot;</span>), 
+            <span class="dt">full =</span> <span class="ot">TRUE</span>)
+        if (type[i] ==<span class="st"> &quot;pdf&quot;</span>) {
+            extensions &lt;-<span class="st"> </span><span class="kw">c</span>(<span class="st">&quot;tex&quot;</span>, <span class="st">&quot;aux&quot;</span>, <span class="st">&quot;log&quot;</span>)
+            all.pdfs &lt;-<span class="st"> </span><span class="kw">basename</span>(<span class="kw">list.files</span>(path.docs, <span class="dt">pattern =</span> <span class="st">&quot;.pdf$&quot;</span>, <span class="dt">full =</span> T, 
+                <span class="dt">recursive =</span> T))
+            pat &lt;-<span class="st"> </span><span class="kw">paste0</span>(<span class="st">&quot;^&quot;</span>, <span class="kw">rep</span>(<span class="kw">gsub</span>(<span class="st">&quot;pdf&quot;</span>, <span class="st">&quot;&quot;</span>, all.pdfs), <span class="kw">length</span>(extensions)), 
+                <span class="kw">rep</span>(extensions, <span class="dt">each =</span> <span class="kw">length</span>(all.pdfs)), <span class="st">&quot;$&quot;</span>)
+            latex.files &lt;-<span class="st"> </span><span class="kw">unlist</span>(<span class="kw">sapply</span>(<span class="dv">1</span>:<span class="kw">length</span>(pat), function(p, path, pat) <span class="kw">list.files</span>(path, 
+                <span class="dt">pattern =</span> pat[p], <span class="dt">full =</span> <span class="ot">TRUE</span>), <span class="dt">path =</span> path.i, <span class="dt">pat =</span> pat))
+            <span class="kw">print</span>(latex.files)
+            if (<span class="kw">length</span>(latex.files)) {
+                if (remove.latex) {
+                  <span class="kw">unlink</span>(latex.files)
+                } else {
+                  <span class="kw">dir.create</span>(<span class="kw">file.path</span>(path.docs, latexDir), <span class="dt">showWarnings =</span> <span class="ot">FALSE</span>, 
+                    <span class="dt">recursive =</span> <span class="ot">TRUE</span>)
+                  <span class="kw">file.rename</span>(latex.files, <span class="kw">file.path</span>(path.docs, latexDir, <span class="kw">basename</span>(latex.files)))
+                }
+            }
+        }
+        if (<span class="kw">length</span>(infiles)) {
+            infiles &lt;-<span class="st"> </span>infiles[<span class="kw">basename</span>(<span class="kw">dirname</span>(infiles)) ==<span class="st"> </span>origin]
+            if (<span class="kw">length</span>(infiles)) {
+                if (type[i] ==<span class="st"> &quot;html&quot;</span>) {
+                  html.dirs &lt;-<span class="st"> </span><span class="kw">gsub</span>(<span class="st">&quot;</span><span class="ch">\\</span><span class="st">.html&quot;</span>, <span class="st">&quot;_files&quot;</span>, infiles)
+                  dirs &lt;-<span class="st"> </span><span class="kw">list.dirs</span>(path.i, <span class="dt">recursive =</span> <span class="ot">FALSE</span>)
+                  ind &lt;-<span class="st"> </span><span class="kw">which</span>(dirs %in%<span class="st"> </span>html.dirs)
+                  if (<span class="kw">length</span>(ind)) {
+                    html.dirs &lt;-<span class="st"> </span>dirs[ind]
+                    html.dirs.recur &lt;-<span class="st"> </span><span class="kw">list.dirs</span>(html.dirs)
+                    for (p in <span class="dv">1</span>:<span class="kw">length</span>(html.dirs.recur)) <span class="kw">dir.create</span>(<span class="kw">gsub</span>(<span class="st">&quot;/Rmd&quot;</span>, 
+                      <span class="st">&quot;/html&quot;</span>, html.dirs.recur[p]), <span class="dt">recursive =</span> <span class="ot">TRUE</span>, <span class="dt">showWarnings =</span> <span class="ot">FALSE</span>)
+                    subfiles &lt;-<span class="st"> </span><span class="kw">unique</span>(<span class="kw">unlist</span>(<span class="kw">lapply</span>(<span class="dv">1</span>:<span class="kw">length</span>(html.dirs.recur), 
+                      function(p, path) <span class="kw">list.files</span>(path[p], <span class="dt">full =</span> <span class="ot">TRUE</span>), <span class="dt">path =</span> html.dirs.recur)))
+                    subfiles &lt;-<span class="st"> </span>subfiles[!(subfiles %in%<span class="st"> </span>html.dirs.recur)]
+                    <span class="kw">file.copy</span>(subfiles, <span class="kw">gsub</span>(<span class="st">&quot;/Rmd&quot;</span>, <span class="st">&quot;/html&quot;</span>, subfiles), <span class="dt">overwrite =</span> <span class="ot">TRUE</span>)
+                    if (move) 
+                      <span class="kw">unlink</span>(html.dirs, <span class="dt">recursive =</span> <span class="ot">TRUE</span>)
+                  }
+                }
+                outfiles &lt;-<span class="st"> </span><span class="kw">file.path</span>(path.docs, type[i], <span class="kw">basename</span>(infiles))
+                if (move) 
+                  <span class="kw">file.rename</span>(infiles, outfiles) else if (copy) 
+                  <span class="kw">file.copy</span>(infiles, outfiles, <span class="dt">overwrite =</span> <span class="ot">TRUE</span>)
+            }
+        }
+    }
+}</code></pre>
+</div>
+<div id="gennavbar" class="section level4">
+<h4>genNavbar</h4>
+<p><code>genNavbar</code> generates a navigation bar for a web page. The html file created is generally written to the project’s <code>docs/Rmd/include</code> directory. However, if this function is used to create a navbar for a Github user web page, the html file should be stored in a sensible location inside the user pages repository, e.g., <code>leonawicz.github.io/assets</code>.</p>
+<p>The common navigation bar html is included at the beginning of the body of the html for each web page in the project’s website. <code>menu</code> is a vector of names for each dropdown menu. <code>submenus</code> is a list of vectors of menu options corresponding to each menu. <code>files</code> is a similar list of vectors. Each element is either an html file for a web page to be associated with the submenu link, “header” to indicate the corresponding name in <code>submenus</code> is only a group label and not a link to a web page, or “divider” to indicate placement of a bar for separating groups in a dropdown menu.</p>
+<p><code>theme</code> can be either <code>united</code> (default) or <code>cyborg</code>. Both are from Bootswatch. The function must apply some internal differentiation in the construction of the html navigation bar between themes. This is currently the only <code>rpm</code> function which attempts to handle multiple Bootswatch themes with different CSS tags.</p>
+<pre class="sourceCode r"><code class="sourceCode r"><span class="co"># Functions for Github project websites</span>
+genNavbar &lt;-<span class="st"> </span>function(<span class="dt">htmlfile =</span> <span class="st">&quot;navbar.html&quot;</span>, title, menu, submenus, files, 
+    <span class="dt">title.url =</span> <span class="st">&quot;index.html&quot;</span>, <span class="dt">home.url =</span> <span class="st">&quot;index.html&quot;</span>, <span class="dt">site.url =</span> <span class="st">&quot;&quot;</span>, <span class="dt">site.name =</span> <span class="st">&quot;Github&quot;</span>, 
+    <span class="dt">theme =</span> <span class="st">&quot;united&quot;</span>, <span class="dt">include.home =</span> <span class="ot">FALSE</span>) {
+    if (!(theme %in%<span class="st"> </span><span class="kw">c</span>(<span class="st">&quot;united&quot;</span>, <span class="st">&quot;cyborg&quot;</span>))) 
+        <span class="kw">stop</span>(<span class="st">&quot;Only the following themes supported: united, cyborg.&quot;</span>)
+    
+    navClassStrings &lt;-<span class="st"> </span>function(x) {
+        switch(x, <span class="dt">united =</span> <span class="kw">c</span>(<span class="st">&quot;brand&quot;</span>, <span class="st">&quot;nav-collapse collapse&quot;</span>, <span class="st">&quot;nav&quot;</span>, <span class="st">&quot;nav pull-right&quot;</span>, 
+            <span class="st">&quot;navbar-inner&quot;</span>, <span class="st">&quot;container&quot;</span>, <span class="st">&quot;&quot;</span>, <span class="st">&quot;btn btn-navbar&quot;</span>, <span class="st">&quot;.nav-collapse&quot;</span>, 
+            <span class="st">&quot;&lt;/div&gt;</span><span class="ch">\n</span><span class="st">&quot;</span>), <span class="dt">cyborg =</span> <span class="kw">c</span>(<span class="st">&quot;navbar-brand&quot;</span>, <span class="st">&quot;navbar-collapse collapse navbar-responsive-collapse&quot;</span>, 
+            <span class="st">&quot;nav navbar-nav&quot;</span>, <span class="st">&quot;nav navbar-nav navbar-right&quot;</span>, <span class="st">&quot;container&quot;</span>, <span class="st">&quot;navbar-header&quot;</span>, 
+            <span class="st">&quot;      &lt;/div&gt;</span><span class="ch">\n</span><span class="st">&quot;</span>, <span class="st">&quot;navbar-toggle&quot;</span>, <span class="st">&quot;.nav-collapse&quot;</span>, <span class="st">&quot;&quot;</span>))
+    }
+    
+    ncs &lt;-<span class="st"> </span><span class="kw">navClassStrings</span>(theme)
+    
+    fillSubmenu &lt;-<span class="st"> </span>function(x, name, file, theme) {
+        if (theme ==<span class="st"> &quot;united&quot;</span>) 
+            dd.menu.header &lt;-<span class="st"> &quot;nav-header&quot;</span> else if (theme ==<span class="st"> &quot;cyborg&quot;</span>) 
+            dd.menu.header &lt;-<span class="st"> &quot;dropdown-header&quot;</span>
+        if (file[x] ==<span class="st"> &quot;divider&quot;</span>) 
+            <span class="kw">return</span>(<span class="st">&quot;              &lt;li class=</span><span class="ch">\&quot;</span><span class="st">divider</span><span class="ch">\&quot;</span><span class="st">&gt;&lt;/li&gt;</span><span class="ch">\n</span><span class="st">&quot;</span>)
+        if (file[x] ==<span class="st"> &quot;header&quot;</span>) 
+            <span class="kw">return</span>(<span class="kw">paste0</span>(<span class="st">&quot;              &lt;li class=</span><span class="ch">\&quot;</span><span class="st">&quot;</span>, dd.menu.header, <span class="st">&quot;</span><span class="ch">\&quot;</span><span class="st">&gt;&quot;</span>, 
+                name[x], <span class="st">&quot;&lt;/li&gt;</span><span class="ch">\n</span><span class="st">&quot;</span>))
+        <span class="kw">paste0</span>(<span class="st">&quot;              &lt;li&gt;&lt;a href=</span><span class="ch">\&quot;</span><span class="st">&quot;</span>, file[x], <span class="st">&quot;</span><span class="ch">\&quot;</span><span class="st">&gt;&quot;</span>, name[x], <span class="st">&quot;&lt;/a&gt;&lt;/li&gt;</span><span class="ch">\n</span><span class="st">&quot;</span>)
+    }
+    
+    fillMenu &lt;-<span class="st"> </span>function(x, menu, submenus, files, theme) {
+        m &lt;-<span class="st"> </span>menu[x]
+        gs.menu &lt;-<span class="st"> </span><span class="kw">gsub</span>(<span class="st">&quot; &quot;</span>, <span class="st">&quot;-&quot;</span>, <span class="kw">tolower</span>(m))
+        s &lt;-<span class="st"> </span>submenus[[x]]
+        f &lt;-<span class="st"> </span>files[[x]]
+        if (s[<span class="dv">1</span>] ==<span class="st"> &quot;empty&quot;</span>) {
+            y &lt;-<span class="st"> </span><span class="kw">paste0</span>(<span class="st">&quot;&lt;li&gt;&lt;a href=</span><span class="ch">\&quot;</span><span class="st">&quot;</span>, f, <span class="st">&quot;</span><span class="ch">\&quot;</span><span class="st">&gt;&quot;</span>, m, <span class="st">&quot;&lt;/a&gt;&lt;/li&gt;</span><span class="ch">\n</span><span class="st">&quot;</span>)
+        } else {
+            y &lt;-<span class="st"> </span><span class="kw">paste0</span>(<span class="st">&quot;&lt;li class=</span><span class="ch">\&quot;</span><span class="st">dropdown</span><span class="ch">\&quot;</span><span class="st">&gt;</span><span class="ch">\n</span><span class="st">            &lt;a href=</span><span class="ch">\&quot;</span><span class="st">&quot;</span>, gs.menu, 
+                <span class="st">&quot;</span><span class="ch">\&quot;</span><span class="st"> class=</span><span class="ch">\&quot;</span><span class="st">dropdown-toggle</span><span class="ch">\&quot;</span><span class="st"> data-toggle=</span><span class="ch">\&quot;</span><span class="st">dropdown</span><span class="ch">\&quot;</span><span class="st">&gt;&quot;</span>, m, 
+                <span class="st">&quot; &lt;b class=</span><span class="ch">\&quot;</span><span class="st">caret</span><span class="ch">\&quot;</span><span class="st">&gt;&lt;/b&gt;&lt;/a&gt;</span><span class="ch">\n</span><span class="st">            &lt;ul class=</span><span class="ch">\&quot;</span><span class="st">dropdown-menu</span><span class="ch">\&quot;</span><span class="st">&gt;</span><span class="ch">\n</span><span class="st">&quot;</span>, 
+                <span class="kw">paste</span>(<span class="kw">sapply</span>(<span class="dv">1</span>:<span class="kw">length</span>(s), fillSubmenu, <span class="dt">name =</span> s, <span class="dt">file =</span> f, <span class="dt">theme =</span> theme), 
+                  <span class="dt">sep =</span> <span class="st">&quot;&quot;</span>, <span class="dt">collapse =</span> <span class="st">&quot;&quot;</span>), <span class="st">&quot;            &lt;/ul&gt;</span><span class="ch">\n</span><span class="st">&quot;</span>, <span class="dt">collapse =</span> <span class="st">&quot;&quot;</span>)
+        }
+    }
+    
+    if (include.home) 
+        home &lt;-<span class="st"> </span><span class="kw">paste0</span>(<span class="st">&quot;&lt;li&gt;&lt;a href=</span><span class="ch">\&quot;</span><span class="st">&quot;</span>, home.url, <span class="st">&quot;</span><span class="ch">\&quot;</span><span class="st">&gt;Home&lt;/a&gt;&lt;/li&gt;</span><span class="ch">\n</span><span class="st">          &quot;</span>) else home &lt;-<span class="st"> &quot;&quot;</span>
+    x &lt;-<span class="st"> </span><span class="kw">paste0</span>(<span class="st">&quot;&lt;div class=</span><span class="ch">\&quot;</span><span class="st">navbar navbar-default navbar-fixed-top</span><span class="ch">\&quot;</span><span class="st">&gt;</span><span class="ch">\n</span><span class="st">  &lt;div class=</span><span class="ch">\&quot;</span><span class="st">&quot;</span>, 
+        ncs[<span class="dv">5</span>], <span class="st">&quot;</span><span class="ch">\&quot;</span><span class="st">&gt;</span><span class="ch">\n</span><span class="st">    &lt;div class=</span><span class="ch">\&quot;</span><span class="st">&quot;</span>, ncs[<span class="dv">6</span>], <span class="st">&quot;</span><span class="ch">\&quot;</span><span class="st">&gt;</span><span class="ch">\n</span><span class="st">      &lt;button type=</span><span class="ch">\&quot;</span><span class="st">button</span><span class="ch">\&quot;</span><span class="st"> class=</span><span class="ch">\&quot;</span><span class="st">&quot;</span>, 
+        ncs[<span class="dv">8</span>], <span class="st">&quot;</span><span class="ch">\&quot;</span><span class="st"> data-toggle=</span><span class="ch">\&quot;</span><span class="st">collapse</span><span class="ch">\&quot;</span><span class="st"> data-target=</span><span class="ch">\&quot;</span><span class="st">&quot;</span>, ncs[<span class="dv">9</span>], <span class="st">&quot;</span><span class="ch">\&quot;</span><span class="st">&gt;</span><span class="ch">\n</span><span class="st">        &lt;span class=</span><span class="ch">\&quot;</span><span class="st">icon-bar</span><span class="ch">\&quot;</span><span class="st">&gt;&lt;/span&gt;</span><span class="ch">\n</span><span class="st">        &lt;span class=</span><span class="ch">\&quot;</span><span class="st">icon-bar</span><span class="ch">\&quot;</span><span class="st">&gt;&lt;/span&gt;</span><span class="ch">\n</span><span class="st">        &lt;span class=</span><span class="ch">\&quot;</span><span class="st">icon-bar</span><span class="ch">\&quot;</span><span class="st">&gt;&lt;/span&gt;</span><span class="ch">\n</span><span class="st">      &lt;/button&gt;</span><span class="ch">\n</span><span class="st">      &lt;a class=</span><span class="ch">\&quot;</span><span class="st">&quot;</span>, 
+        ncs[<span class="dv">1</span>], <span class="st">&quot;</span><span class="ch">\&quot;</span><span class="st"> href=</span><span class="ch">\&quot;</span><span class="st">&quot;</span>, title.url, <span class="st">&quot;</span><span class="ch">\&quot;</span><span class="st">&gt;&quot;</span>, title, <span class="st">&quot;&lt;/a&gt;</span><span class="ch">\n</span><span class="st">&quot;</span>, ncs[<span class="dv">7</span>], <span class="st">&quot;      &lt;div class=</span><span class="ch">\&quot;</span><span class="st">&quot;</span>, 
+        ncs[<span class="dv">2</span>], <span class="st">&quot;</span><span class="ch">\&quot;</span><span class="st">&gt;</span><span class="ch">\n</span><span class="st">        &lt;ul class=</span><span class="ch">\&quot;</span><span class="st">&quot;</span>, ncs[<span class="dv">3</span>], <span class="st">&quot;</span><span class="ch">\&quot;</span><span class="st">&gt;</span><span class="ch">\n</span><span class="st">          &quot;</span>, home, 
+        <span class="kw">paste</span>(<span class="kw">sapply</span>(<span class="dv">1</span>:<span class="kw">length</span>(menu), fillMenu, <span class="dt">menu =</span> menu, <span class="dt">submenus =</span> submenus, 
+            <span class="dt">files =</span> files, <span class="dt">theme =</span> theme), <span class="dt">sep =</span> <span class="st">&quot;&quot;</span>, <span class="dt">collapse =</span> <span class="st">&quot;</span><span class="ch">\n</span><span class="st">          &quot;</span>), 
+        <span class="st">&quot;        &lt;/ul&gt;</span><span class="ch">\n</span><span class="st">        &lt;ul class=</span><span class="ch">\&quot;</span><span class="st">&quot;</span>, ncs[<span class="dv">4</span>], <span class="st">&quot;</span><span class="ch">\&quot;</span><span class="st">&gt;</span><span class="ch">\n</span><span class="st">          &lt;a class=</span><span class="ch">\&quot;</span><span class="st">btn btn-primary</span><span class="ch">\&quot;</span><span class="st"> href=</span><span class="ch">\&quot;</span><span class="st">&quot;</span>, 
+        site.url, <span class="st">&quot;</span><span class="ch">\&quot;</span><span class="st">&gt;</span><span class="ch">\n</span><span class="st">            &lt;i class=</span><span class="ch">\&quot;</span><span class="st">fa fa-github fa-lg</span><span class="ch">\&quot;</span><span class="st">&gt;&lt;/i&gt;</span><span class="ch">\n</span><span class="st">            &quot;</span>, 
+        site.name, <span class="st">&quot;</span><span class="ch">\n</span><span class="st">          &lt;/a&gt;</span><span class="ch">\n</span><span class="st">        &lt;/ul&gt;</span><span class="ch">\n</span><span class="st">      &lt;/div&gt;&lt;!--/.nav-collapse --&gt;</span><span class="ch">\n</span><span class="st">    &lt;/div&gt;</span><span class="ch">\n</span><span class="st">  &quot;</span>, 
+        ncs[<span class="dv">10</span>], <span class="st">&quot;&lt;/div&gt;</span><span class="ch">\n</span><span class="st">&quot;</span>, <span class="dt">collpase =</span> <span class="st">&quot;&quot;</span>)
+    <span class="kw">sink</span>(htmlfile)
+    <span class="kw">cat</span>(x)
+    <span class="kw">sink</span>()
+    x
+}</code></pre>
+</div>
+<div id="genoutyaml" class="section level4">
+<h4>genOutyaml</h4>
+<p><code>genOutyaml</code> generates the <code>_out.yaml</code> file for yaml front-matter common to all html files in the project website. The file should be written to the project’s <code>docs/Rmd</code> directory. <code>lib</code> specifies the library directory for any associated files. yaml <code>includes</code> for external html common to all project web pages in the site can also be specified with <code>header</code>, <code>before_body</code>, and <code>after_body</code>. These can be specified by file basename only (no path) and the function assumes these files are in the <code>docs/Rmd/include</code> directory. At this time all external libraries must be provided by the user, for example in <code>docs/Rmd/libs</code>. It is recommended. See the project repo <a href="https://github.com/leonawicz/ProjectManagement/tree/gh-pages" title="gh-pages">gh-pages</a> branch for an example.</p>
+<pre class="sourceCode r"><code class="sourceCode r">genOutyaml &lt;-<span class="st"> </span>function(file, <span class="dt">theme =</span> <span class="st">&quot;cosmo&quot;</span>, <span class="dt">highlight =</span> <span class="st">&quot;zenburn&quot;</span>, <span class="dt">lib =</span> <span class="ot">NULL</span>, 
+    <span class="dt">header =</span> <span class="ot">NULL</span>, <span class="dt">before_body =</span> <span class="ot">NULL</span>, <span class="dt">after_body =</span> <span class="ot">NULL</span>) {
+    output.yaml &lt;-<span class="st"> </span><span class="kw">paste0</span>(<span class="st">&quot;html_document:</span><span class="ch">\n</span><span class="st">  self_contained: false</span><span class="ch">\n</span><span class="st">  theme: &quot;</span>, 
+        theme, <span class="st">&quot;</span><span class="ch">\n</span><span class="st">  highlight: &quot;</span>, highlight, <span class="st">&quot;</span><span class="ch">\n</span><span class="st">  mathjax: null</span><span class="ch">\n</span><span class="st">  toc_depth: 2</span><span class="ch">\n</span><span class="st">&quot;</span>)
+    if (!<span class="kw">is.null</span>(lib)) 
+        output.yaml &lt;-<span class="st"> </span><span class="kw">paste0</span>(output.yaml, <span class="st">&quot;  lib_dir: &quot;</span>, lib, <span class="st">&quot;</span><span class="ch">\n</span><span class="st">&quot;</span>)
+    output.yaml &lt;-<span class="st"> </span><span class="kw">paste0</span>(output.yaml, <span class="st">&quot;  includes:</span><span class="ch">\n</span><span class="st">&quot;</span>)
+    if (!<span class="kw">is.null</span>(header)) 
+        output.yaml &lt;-<span class="st"> </span><span class="kw">paste0</span>(output.yaml, <span class="st">&quot;    in_header: &quot;</span>, header, <span class="st">&quot;</span><span class="ch">\n</span><span class="st">&quot;</span>)
+    if (!<span class="kw">is.null</span>(before_body)) 
+        output.yaml &lt;-<span class="st"> </span><span class="kw">paste0</span>(output.yaml, <span class="st">&quot;    before_body: &quot;</span>, before_body, 
+            <span class="st">&quot;</span><span class="ch">\n</span><span class="st">&quot;</span>)
+    if (!<span class="kw">is.null</span>(after_body)) 
+        output.yaml &lt;-<span class="st"> </span><span class="kw">paste0</span>(output.yaml, <span class="st">&quot;    after_body: &quot;</span>, after_body, <span class="st">&quot;</span><span class="ch">\n</span><span class="st">&quot;</span>)
+    <span class="kw">sink</span>(file)
+    <span class="kw">cat</span>(output.yaml)
+    <span class="kw">sink</span>()
+    output.yaml
+}</code></pre>
+</div>
+<div id="genappdiv" class="section level4">
+<h4>genAppDiv</h4>
+<p><code>genAppDiv</code> generates an html file storing a container div element which organizes Shiny web applications. The function scans a directory of Shiny app subdirectories. This apps directory should be a local repository.</p>
+<p>Specifically, <code>genAppDiv</code> looks for a named directory of image files. There should be one image per app, named exactly as the respective app directory is named. Only apps with corresponding images are built into the html container. If you wish to leave out, say, a developmental app from being linked to on you Github user website, do not include an image file for that app.</p>
+<p>The container element includes an image link to each app’s url as well as a link to the source code on Github. Although the function scans for images in directory inside a local repository, the images referenced in the output html are of course not local. They point to the same images stored on Github, hence why it is useful for the local directory of apps to be a Github repository. As an example, a repository may contain the directories, <code>app1</code>, <code>app2</code>, <code>app3</code>, and <code>images</code>.</p>
+<p>This function will probably be removed in favor of the more general <code>genPanelDiv</code> function.</p>
+<pre class="sourceCode r"><code class="sourceCode r"><span class="co"># Functions for Github user website</span>
+genAppDiv &lt;-<span class="st"> </span>function(<span class="dt">file =</span> <span class="st">&quot;C:/github/leonawicz.github.io/assets/apps_container.html&quot;</span>, 
+    <span class="dt">type =</span> <span class="st">&quot;apps&quot;</span>, <span class="dt">main =</span> <span class="st">&quot;Shiny Apps&quot;</span>, <span class="dt">apps.url =</span> <span class="st">&quot;http://shiny.snap.uaf.edu&quot;</span>, 
+    <span class="dt">github.url =</span> <span class="st">&quot;https://github.com/ua-snap/shiny-apps/tree/master&quot;</span>, <span class="dt">apps.dir =</span> <span class="st">&quot;C:/github/shiny-apps&quot;</span>, 
+    <span class="dt">img.loc =</span> <span class="st">&quot;_images/cropped&quot;</span>, ...) {
+    
+    apps.img &lt;-<span class="st"> </span><span class="kw">list.files</span>(<span class="kw">file.path</span>(apps.dir, img.loc))
+    apps &lt;-<span class="st"> </span><span class="kw">sapply</span>(<span class="kw">strsplit</span>(apps.img, <span class="st">&quot;</span><span class="ch">\\</span><span class="st">.&quot;</span>), <span class="st">&quot;[[&quot;</span>, <span class="dv">1</span>)
+    x &lt;-<span class="st"> </span><span class="kw">paste0</span>(<span class="st">&quot;&lt;div class=</span><span class="ch">\&quot;</span><span class="st">container</span><span class="ch">\&quot;</span><span class="st">&gt;</span><span class="ch">\n</span><span class="st">  &lt;div class=</span><span class="ch">\&quot;</span><span class="st">row</span><span class="ch">\&quot;</span><span class="st">&gt;</span><span class="ch">\n</span><span class="st">    &lt;div class=</span><span class="ch">\&quot;</span><span class="st">col-lg-12</span><span class="ch">\&quot;</span><span class="st">&gt;</span><span class="ch">\n</span><span class="st">      &lt;div class=</span><span class="ch">\&quot;</span><span class="st">page-header</span><span class="ch">\&quot;</span><span class="st">&gt;</span><span class="ch">\n</span><span class="st">        &lt;h3 id=</span><span class="ch">\&quot;</span><span class="st">&quot;</span>, 
+        type, <span class="st">&quot;</span><span class="ch">\&quot;</span><span class="st">&gt;&quot;</span>, main, <span class="st">&quot;&lt;/h3&gt;</span><span class="ch">\n</span><span class="st">      &lt;/div&gt;</span><span class="ch">\n</span><span class="st">    &lt;/div&gt;</span><span class="ch">\n</span><span class="st">  &lt;/div&gt;</span><span class="ch">\n</span><span class="st">  &quot;</span>)
+    
+    fillRow &lt;-<span class="st"> </span>function(i, ...) {
+        app &lt;-<span class="st"> </span>apps[i]
+        app.url &lt;-<span class="st"> </span><span class="kw">file.path</span>(apps.url, app)
+        dots &lt;-<span class="st"> </span><span class="kw">list</span>(...)
+        if (<span class="kw">is.null</span>(dots$col)) 
+            col &lt;-<span class="st"> &quot;warning&quot;</span> else col &lt;-<span class="st"> </span>dots$col
+        if (<span class="kw">is.null</span>(dots$panel.main)) 
+            panel.main &lt;-<span class="st"> </span><span class="kw">gsub</span>(<span class="st">&quot;_&quot;</span>, <span class="st">&quot; &quot;</span>, app) else panel.main &lt;-<span class="st"> </span>dots$panel.main
+        if (<span class="kw">length</span>(panel.main) &gt;<span class="st"> </span><span class="dv">1</span>) 
+            panel.main &lt;-<span class="st"> </span>panel.main[i]
+        x &lt;-<span class="st"> </span><span class="kw">paste0</span>(<span class="st">&quot;&lt;div class=</span><span class="ch">\&quot;</span><span class="st">col-lg-4</span><span class="ch">\&quot;</span><span class="st">&gt;</span><span class="ch">\n\t\t</span><span class="st">  &lt;div class=</span><span class="ch">\&quot;</span><span class="st">bs-component</span><span class="ch">\&quot;</span><span class="st">&gt;</span><span class="ch">\n\t\t\t</span><span class="st">&lt;div class=</span><span class="ch">\&quot;</span><span class="st">panel panel-&quot;</span>, 
+            col, <span class="st">&quot;</span><span class="ch">\&quot;</span><span class="st">&gt;</span><span class="ch">\n\t\t\t</span><span class="st">  &lt;div class=</span><span class="ch">\&quot;</span><span class="st">panel-heading</span><span class="ch">\&quot;</span><span class="st">&gt;&lt;h3 class=</span><span class="ch">\&quot;</span><span class="st">panel-title</span><span class="ch">\&quot;</span><span class="st">&gt;&quot;</span>, 
+            panel.main, <span class="st">&quot;&lt;/h3&gt;</span><span class="ch">\n\t\t\t</span><span class="st">  &lt;/div&gt;</span><span class="ch">\n\t\t\t</span><span class="st">  &lt;div class=</span><span class="ch">\&quot;</span><span class="st">panel-body</span><span class="ch">\&quot;</span><span class="st">&gt;&lt;a href=</span><span class="ch">\&quot;</span><span class="st">&quot;</span>, 
+            app.url, <span class="st">&quot;</span><span class="ch">\&quot;</span><span class="st"> target=</span><span class="ch">\&quot;</span><span class="st">_blank</span><span class="ch">\&quot;</span><span class="st">&gt;&lt;img src=</span><span class="ch">\&quot;</span><span class="st">&quot;</span>, <span class="kw">file.path</span>(<span class="kw">gsub</span>(<span class="st">&quot;/tree/&quot;</span>, 
+                <span class="st">&quot;/raw/&quot;</span>, github.url), img.loc, apps.img[i]), <span class="st">&quot;</span><span class="ch">\&quot;</span><span class="st"> alt=</span><span class="ch">\&quot;</span><span class="st">&quot;</span>, apps[i], 
+            <span class="st">&quot;</span><span class="ch">\&quot;</span><span class="st"> width=100% height=200px&gt;&lt;/a&gt;&lt;p&gt;&lt;/p&gt;</span><span class="ch">\n\t\t\t\t</span><span class="st">&lt;div class=</span><span class="ch">\&quot;</span><span class="st">btn-group btn-group-justified</span><span class="ch">\&quot;</span><span class="st">&gt;</span><span class="ch">\n\t\t\t\t</span><span class="st">  &lt;a href=</span><span class="ch">\&quot;</span><span class="st">&quot;</span>, 
+            app.url, <span class="st">&quot;</span><span class="ch">\&quot;</span><span class="st"> target=</span><span class="ch">\&quot;</span><span class="st">_blank</span><span class="ch">\&quot;</span><span class="st"> class=</span><span class="ch">\&quot;</span><span class="st">btn btn-success</span><span class="ch">\&quot;</span><span class="st">&gt;Launch&lt;/a&gt;</span><span class="ch">\n\t\t\t\t</span><span class="st">  &lt;a href=</span><span class="ch">\&quot;</span><span class="st">&quot;</span>, 
+            <span class="kw">file.path</span>(github.url, app), <span class="st">&quot;</span><span class="ch">\&quot;</span><span class="st"> target=</span><span class="ch">\&quot;</span><span class="st">_blank</span><span class="ch">\&quot;</span><span class="st"> class=</span><span class="ch">\&quot;</span><span class="st">btn btn-info</span><span class="ch">\&quot;</span><span class="st">&gt;Github&lt;/a&gt;</span><span class="ch">\n\t\t\t\t</span><span class="st">&lt;/div&gt;</span><span class="ch">\n\t\t\t</span><span class="st">  &lt;/div&gt;</span><span class="ch">\n\t\t\t</span><span class="st">&lt;/div&gt;</span><span class="ch">\n\t\t</span><span class="st">  &lt;/div&gt;</span><span class="ch">\n\t\t</span><span class="st">&lt;/div&gt;&quot;</span>)
+    }
+    
+    n &lt;-<span class="st"> </span><span class="kw">length</span>(apps)
+    seq1 &lt;-<span class="st"> </span><span class="kw">seq</span>(<span class="dv">1</span>, n, <span class="dt">by =</span> <span class="dv">3</span>)
+    y &lt;-<span class="st"> </span><span class="kw">c</span>()
+    for (j in <span class="dv">1</span>:<span class="kw">length</span>(seq1)) {
+        ind &lt;-<span class="st"> </span>seq1[j]:(seq1[j] +<span class="st"> </span><span class="dv">2</span>)
+        ind &lt;-<span class="st"> </span>ind[ind %in%<span class="st"> </span><span class="dv">1</span>:n]
+        y &lt;-<span class="st"> </span><span class="kw">c</span>(y, <span class="kw">paste0</span>(<span class="st">&quot;&lt;div class=</span><span class="ch">\&quot;</span><span class="st">row</span><span class="ch">\&quot;</span><span class="st">&gt;</span><span class="ch">\n</span><span class="st">&quot;</span>, <span class="kw">paste0</span>(<span class="kw">sapply</span>(ind, fillRow, 
+            ...), <span class="dt">collapse =</span> <span class="st">&quot;</span><span class="ch">\n</span><span class="st">&quot;</span>), <span class="st">&quot;&lt;/div&gt;</span><span class="ch">\n</span><span class="st">&quot;</span>))
+    }
+    z &lt;-<span class="st"> &quot;&lt;/div&gt;</span><span class="ch">\n</span><span class="st">&quot;</span>
+    <span class="kw">sink</span>(file)
+    <span class="kw">sapply</span>(<span class="kw">c</span>(x, y, z), cat)
+    <span class="kw">sink</span>()
+    <span class="kw">cat</span>(<span class="st">&quot;div container html created for Shiny Apps.</span><span class="ch">\n</span><span class="st">&quot;</span>)
+}</code></pre>
+</div>
+<div id="genpaneldiv" class="section level4">
+<h4>genPanelDiv</h4>
+<p><code>genPanelDiv</code> generates an html file storing a container div element which in its current state of development organizes two types of content: <strong>R</strong> projects and Shiny web applications.</p>
+<p>The <code>type</code> argument can be either <code>projects</code> or <code>apps</code> and essentially bifurcates the behavior of <code>genPanelDiv</code>. The purpose of the function is to generate an html file defining a container div element to display and reference either my <strong>R</strong> projects or my Shiny apps.</p>
+<p>For projects, the function scans a directory of local repositories and takes any directories found to be the names of projects. There is an <code>exclude</code> argument for dropping any known directories that are to be avoided. My defaults are <code>exclude=&quot;leonawicz.github.io&quot;, &quot;shiny-apps&quot;</code> since the first is just a local repository for my Github user account web site and not a “project” in the same sense of my other projects and the second is the local repository which is scanned by <code>genPanelDiv</code> when <code>type=&quot;apps&quot;</code>.</p>
+<p>For apps, the function scans a directory of Shiny app subdirectories. Unlike for projects, where <code>genPanelDiv</code> scans a directory of multiple local repositories, this apps directory should be a specific local repository. The apps contained within are not inndividual repositories. I have taken this approach for now simply because this is how my apps tend to be stored.</p>
+<p>Specifically, the <code>genAppDiv</code> looks for a named directory of image files. There should be one image per app, named exactly as the respective app directory is named. Only apps with corresponding images are built into the html container. If you wish to leave out, say, a developmental app from being linked to on you Github user website, do not include an image file for that app.</p>
+<p>The container element includes an image link to each app’s url as well as a link to the source code on Github. Although the app scans for images in a local repository, the images referenced in the output html are of course not local. They point to the same images stored on Github, hence why it is useful for the local directory of apps to be a Github repository.</p>
+<p>This function makes the more specific <code>genAppDiv</code> redundant and will likely replace it.</p>
+<pre class="sourceCode r"><code class="sourceCode r">genPanelDiv &lt;-<span class="st"> </span>function(outDir, <span class="dt">type =</span> <span class="st">&quot;projects&quot;</span>, <span class="dt">main =</span> <span class="st">&quot;Projects&quot;</span>, <span class="dt">github.user =</span> <span class="st">&quot;leonawicz&quot;</span>, 
+    <span class="dt">prjs.dir =</span> <span class="st">&quot;C:/github&quot;</span>, <span class="dt">exclude =</span> <span class="kw">c</span>(<span class="st">&quot;leonawicz.github.io&quot;</span>, <span class="st">&quot;shiny-apps&quot;</span>), 
+    <span class="dt">img.loc =</span> <span class="st">&quot;_images/cropped&quot;</span>, ...) {
+    <span class="kw">stopifnot</span>(github.user %in%<span class="st"> </span><span class="kw">c</span>(<span class="st">&quot;leonawicz&quot;</span>, <span class="st">&quot;ua-snap&quot;</span>))
+    if (type ==<span class="st"> &quot;apps&quot;</span>) {
+        filename &lt;-<span class="st"> &quot;apps_container.html&quot;</span>
+        web.url &lt;-<span class="st"> &quot;http://shiny.snap.uaf.edu&quot;</span>
+        gh.url.tail &lt;-<span class="st"> &quot;shiny-apps/tree/master&quot;</span>
+        target &lt;-<span class="st"> &quot; target=</span><span class="ch">\&quot;</span><span class="st">_blank</span><span class="ch">\&quot;</span><span class="st">&quot;</span>
+        go.label &lt;-<span class="st"> &quot;Launch&quot;</span>
+        prjs.dir &lt;-<span class="st"> </span><span class="kw">file.path</span>(prjs.dir, <span class="st">&quot;shiny-apps&quot;</span>)
+        prjs.img &lt;-<span class="st"> </span><span class="kw">list.files</span>(<span class="kw">file.path</span>(prjs.dir, img.loc))
+        prjs &lt;-<span class="st"> </span><span class="kw">sapply</span>(<span class="kw">strsplit</span>(prjs.img, <span class="st">&quot;</span><span class="ch">\\</span><span class="st">.&quot;</span>), <span class="st">&quot;[[&quot;</span>, <span class="dv">1</span>)
+    }
+    if (type ==<span class="st"> &quot;projects&quot;</span>) {
+        filename &lt;-<span class="st"> &quot;projects_container.html&quot;</span>
+        web.url &lt;-<span class="st"> </span><span class="kw">paste0</span>(<span class="st">&quot;http://&quot;</span>, github.user, <span class="st">&quot;.github.io&quot;</span>)
+        gh.url.tail &lt;-<span class="st"> &quot;&quot;</span>
+        target &lt;-<span class="st"> &quot;&quot;</span>
+        go.label &lt;-<span class="st"> &quot;Website&quot;</span>
+        prjs &lt;-<span class="st"> </span><span class="kw">list.dirs</span>(prjs.dir, <span class="dt">full =</span> <span class="ot">TRUE</span>, <span class="dt">recursive =</span> <span class="ot">FALSE</span>)
+        prjs &lt;-<span class="st"> </span>prjs[!(<span class="kw">basename</span>(prjs) %in%<span class="st"> </span>exclude)]
+        prjs.img &lt;-<span class="st"> </span><span class="kw">sapply</span>(<span class="dv">1</span>:<span class="kw">length</span>(prjs), function(i, a) <span class="kw">list.files</span>(<span class="kw">file.path</span>(a[i], 
+            <span class="st">&quot;plots&quot;</span>), <span class="dt">pattern =</span> <span class="kw">paste0</span>(<span class="st">&quot;^_&quot;</span>, <span class="kw">basename</span>(a)[i])), <span class="dt">a =</span> prjs)
+        prjs &lt;-<span class="st"> </span><span class="kw">basename</span>(prjs)
+    }
+    gh.url &lt;-<span class="st"> </span><span class="kw">file.path</span>(<span class="st">&quot;https://github.com&quot;</span>, github.user, gh.url.tail)
+    x &lt;-<span class="st"> </span><span class="kw">paste0</span>(<span class="st">&quot;&lt;div class=</span><span class="ch">\&quot;</span><span class="st">container</span><span class="ch">\&quot;</span><span class="st">&gt;</span><span class="ch">\n</span><span class="st">  &lt;div class=</span><span class="ch">\&quot;</span><span class="st">row</span><span class="ch">\&quot;</span><span class="st">&gt;</span><span class="ch">\n</span><span class="st">    &lt;div class=</span><span class="ch">\&quot;</span><span class="st">col-lg-12</span><span class="ch">\&quot;</span><span class="st">&gt;</span><span class="ch">\n</span><span class="st">      &lt;div class=</span><span class="ch">\&quot;</span><span class="st">page-header</span><span class="ch">\&quot;</span><span class="st">&gt;</span><span class="ch">\n</span><span class="st">        &lt;h3 id=</span><span class="ch">\&quot;</span><span class="st">&quot;</span>, 
+        type, <span class="st">&quot;</span><span class="ch">\&quot;</span><span class="st">&gt;&quot;</span>, main, <span class="st">&quot;&lt;/h3&gt;</span><span class="ch">\n</span><span class="st">      &lt;/div&gt;</span><span class="ch">\n</span><span class="st">    &lt;/div&gt;</span><span class="ch">\n</span><span class="st">  &lt;/div&gt;</span><span class="ch">\n</span><span class="st">  &quot;</span>)
+    
+    fillRow &lt;-<span class="st"> </span>function(i, ...) {
+        prj &lt;-<span class="st"> </span>prjs[i]
+        if (type ==<span class="st"> &quot;apps&quot;</span>) 
+            img.src &lt;-<span class="st"> </span><span class="kw">file.path</span>(<span class="kw">gsub</span>(<span class="st">&quot;/tree/&quot;</span>, <span class="st">&quot;/raw/&quot;</span>, gh.url), img.loc, prjs.img[i])
+        if (type ==<span class="st"> &quot;projects&quot;</span>) 
+            img.src &lt;-<span class="st"> </span><span class="kw">file.path</span>(gh.url, prj, <span class="st">&quot;raw/master/plots&quot;</span>, prjs.img[i])
+        web.url &lt;-<span class="st"> </span><span class="kw">file.path</span>(web.url, prj)
+        dots &lt;-<span class="st"> </span><span class="kw">list</span>(...)
+        if (<span class="kw">is.null</span>(dots$col)) 
+            col &lt;-<span class="st"> &quot;warning&quot;</span> else col &lt;-<span class="st"> </span>dots$col
+        if (<span class="kw">is.null</span>(dots$panel.main)) 
+            panel.main &lt;-<span class="st"> </span><span class="kw">gsub</span>(<span class="st">&quot;_&quot;</span>, <span class="st">&quot; &quot;</span>, prj) else panel.main &lt;-<span class="st"> </span>dots$panel.main
+        if (<span class="kw">length</span>(panel.main) &gt;<span class="st"> </span><span class="dv">1</span>) 
+            panel.main &lt;-<span class="st"> </span>panel.main[i]
+        x &lt;-<span class="st"> </span><span class="kw">paste0</span>(<span class="st">&quot;&lt;div class=</span><span class="ch">\&quot;</span><span class="st">col-lg-4</span><span class="ch">\&quot;</span><span class="st">&gt;</span><span class="ch">\n\t\t</span><span class="st">  &lt;div class=</span><span class="ch">\&quot;</span><span class="st">bs-component</span><span class="ch">\&quot;</span><span class="st">&gt;</span><span class="ch">\n\t\t\t</span><span class="st">&lt;div class=</span><span class="ch">\&quot;</span><span class="st">panel panel-&quot;</span>, 
+            col, <span class="st">&quot;</span><span class="ch">\&quot;</span><span class="st">&gt;</span><span class="ch">\n\t\t\t</span><span class="st">  &lt;div class=</span><span class="ch">\&quot;</span><span class="st">panel-heading</span><span class="ch">\&quot;</span><span class="st">&gt;&lt;h3 class=</span><span class="ch">\&quot;</span><span class="st">panel-title</span><span class="ch">\&quot;</span><span class="st">&gt;&quot;</span>, 
+            panel.main, <span class="st">&quot;&lt;/h3&gt;</span><span class="ch">\n\t\t\t</span><span class="st">  &lt;/div&gt;</span><span class="ch">\n\t\t\t</span><span class="st">  &lt;div class=</span><span class="ch">\&quot;</span><span class="st">panel-body</span><span class="ch">\&quot;</span><span class="st">&gt;&lt;a href=</span><span class="ch">\&quot;</span><span class="st">&quot;</span>, 
+            web.url, <span class="st">&quot;</span><span class="ch">\&quot;</span><span class="st">&quot;</span>, target, <span class="st">&quot;&gt;&lt;img src=</span><span class="ch">\&quot;</span><span class="st">&quot;</span>, img.src, <span class="st">&quot;</span><span class="ch">\&quot;</span><span class="st"> alt=</span><span class="ch">\&quot;</span><span class="st">&quot;</span>, prj, 
+            <span class="st">&quot;</span><span class="ch">\&quot;</span><span class="st"> width=100% height=200px&gt;&lt;/a&gt;&lt;p&gt;&lt;/p&gt;</span><span class="ch">\n\t\t\t\t</span><span class="st">&lt;div class=</span><span class="ch">\&quot;</span><span class="st">btn-group btn-group-justified</span><span class="ch">\&quot;</span><span class="st">&gt;</span><span class="ch">\n\t\t\t\t</span><span class="st">  &lt;a href=</span><span class="ch">\&quot;</span><span class="st">&quot;</span>, 
+            web.url, <span class="st">&quot;</span><span class="ch">\&quot;</span><span class="st">&quot;</span>, target, <span class="st">&quot; class=</span><span class="ch">\&quot;</span><span class="st">btn btn-success</span><span class="ch">\&quot;</span><span class="st">&gt;&quot;</span>, go.label, 
+            <span class="st">&quot;&lt;/a&gt;</span><span class="ch">\n\t\t\t\t</span><span class="st">  &lt;a href=</span><span class="ch">\&quot;</span><span class="st">&quot;</span>, <span class="kw">file.path</span>(gh.url, prj), <span class="st">&quot;</span><span class="ch">\&quot;</span><span class="st"> class=</span><span class="ch">\&quot;</span><span class="st">btn btn-info</span><span class="ch">\&quot;</span><span class="st">&gt;Github&lt;/a&gt;</span><span class="ch">\n\t\t\t\t</span><span class="st">&lt;/div&gt;</span><span class="ch">\n\t\t\t</span><span class="st">  &lt;/div&gt;</span><span class="ch">\n\t\t\t</span><span class="st">&lt;/div&gt;</span><span class="ch">\n\t\t</span><span class="st">  &lt;/div&gt;</span><span class="ch">\n\t\t</span><span class="st">&lt;/div&gt;&quot;</span>)
+    }
+    
+    n &lt;-<span class="st"> </span><span class="kw">length</span>(prjs)
+    seq1 &lt;-<span class="st"> </span><span class="kw">seq</span>(<span class="dv">1</span>, n, <span class="dt">by =</span> <span class="dv">3</span>)
+    y &lt;-<span class="st"> </span><span class="kw">c</span>()
+    for (j in <span class="dv">1</span>:<span class="kw">length</span>(seq1)) {
+        ind &lt;-<span class="st"> </span>seq1[j]:(seq1[j] +<span class="st"> </span><span class="dv">2</span>)
+        ind &lt;-<span class="st"> </span>ind[ind %in%<span class="st"> </span><span class="dv">1</span>:n]
+        y &lt;-<span class="st"> </span><span class="kw">c</span>(y, <span class="kw">paste0</span>(<span class="st">&quot;&lt;div class=</span><span class="ch">\&quot;</span><span class="st">row</span><span class="ch">\&quot;</span><span class="st">&gt;</span><span class="ch">\n</span><span class="st">&quot;</span>, <span class="kw">paste0</span>(<span class="kw">sapply</span>(ind, fillRow, 
+            ...), <span class="dt">collapse =</span> <span class="st">&quot;</span><span class="ch">\n</span><span class="st">&quot;</span>), <span class="st">&quot;&lt;/div&gt;</span><span class="ch">\n</span><span class="st">&quot;</span>))
+    }
+    z &lt;-<span class="st"> &quot;&lt;/div&gt;</span><span class="ch">\n</span><span class="st">&quot;</span>
+    <span class="kw">sink</span>(<span class="kw">file.path</span>(outDir, filename))
+    <span class="kw">sapply</span>(<span class="kw">c</span>(x, y, z), cat)
+    <span class="kw">sink</span>()
+    <span class="kw">cat</span>(<span class="st">&quot;div container html file created.</span><span class="ch">\n</span><span class="st">&quot;</span>)
+}</code></pre>
+</div>
+<div id="htmlhead" class="section level4">
+<h4>htmlHead</h4>
+<p><code>htmlHead</code> .</p>
+<pre class="sourceCode r"><code class="sourceCode r">htmlHead &lt;-<span class="st"> </span>function(<span class="dt">author =</span> <span class="st">&quot;Matthew Leonawicz&quot;</span>, <span class="dt">title =</span> author, <span class="dt">script.paths =</span> <span class="ot">NULL</span>, 
+    stylesheet.paths, <span class="dt">stylesheet.args =</span> <span class="kw">vector</span>(<span class="st">&quot;list&quot;</span>, <span class="kw">length</span>(path.stylesheets)), 
+    ...) {
+    x &lt;-<span class="st"> </span><span class="kw">paste0</span>(<span class="st">&quot;&lt;!DOCTYPE html&gt;</span><span class="ch">\n\n</span><span class="st">&lt;html xmlns=</span><span class="ch">\&quot;</span><span class="st">http://www.w3.org/1999/xhtml</span><span class="ch">\&quot;</span><span class="st">&gt;</span><span class="ch">\n\n</span><span class="st">&lt;head&gt;</span><span class="ch">\n\n</span><span class="st">&lt;meta charset=</span><span class="ch">\&quot;</span><span class="st">utf-8</span><span class="ch">\&quot;</span><span class="st">&gt;</span><span class="ch">\n</span><span class="st">&lt;meta http-equiv=</span><span class="ch">\&quot;</span><span class="st">Content-Type</span><span class="ch">\&quot;</span><span class="st"> content=</span><span class="ch">\&quot;</span><span class="st">text/html; charset=utf-8</span><span class="ch">\&quot;</span><span class="st"> /&gt;</span><span class="ch">\n\n</span><span class="st">&lt;meta name=</span><span class="ch">\&quot;</span><span class="st">author</span><span class="ch">\&quot;</span><span class="st"> content=&quot;</span>, 
+        author, <span class="st">&quot; /&gt;</span><span class="ch">\n\n</span><span class="st">&lt;title&gt;&quot;</span>, title, <span class="st">&quot;&lt;/title&gt;</span><span class="ch">\n</span><span class="st">&quot;</span>)
+    
+    if (<span class="kw">is.character</span>(script.paths)) 
+        x &lt;-<span class="st"> </span><span class="kw">c</span>(x, <span class="kw">paste0</span>(<span class="kw">paste0</span>(<span class="st">&quot;&lt;script src=</span><span class="ch">\&quot;</span><span class="st">&quot;</span>, script.paths, <span class="st">&quot;</span><span class="ch">\&quot;</span><span class="st">&gt;&lt;/script&gt;&quot;</span>, 
+            <span class="dt">collapse =</span> <span class="st">&quot;</span><span class="ch">\n</span><span class="st">&quot;</span>), <span class="st">&quot;</span><span class="ch">\n</span><span class="st">&quot;</span>))
+    
+    x &lt;-<span class="st"> </span><span class="kw">c</span>(x, <span class="st">&quot;&lt;meta name=</span><span class="ch">\&quot;</span><span class="st">viewport</span><span class="ch">\&quot;</span><span class="st"> content=</span><span class="ch">\&quot;</span><span class="st">width=device-width, initial-scale=1.0</span><span class="ch">\&quot;</span><span class="st"> /&gt;</span><span class="ch">\n</span><span class="st">&quot;</span>)
+    
+    if (<span class="kw">is.character</span>(stylesheet.paths)) {
+        n &lt;-<span class="st"> </span><span class="kw">length</span>(stylesheet.paths)
+        <span class="kw">stopifnot</span>(<span class="kw">is.list</span>(stylesheet.args))
+        <span class="kw">stopifnot</span>(<span class="kw">length</span>(stylesheet.args) ==<span class="st"> </span>n)
+        for (i in <span class="dv">1</span>:n) {
+            string &lt;-<span class="st"> &quot;&quot;</span>
+            if (<span class="kw">is.list</span>(stylesheet.args[i])) {
+                v &lt;-<span class="st"> </span>stylesheet.args[i]
+                arg &lt;-<span class="st"> </span><span class="kw">names</span>(v)
+                if (<span class="kw">is.character</span>(arg) &amp;&amp;<span class="st"> </span><span class="kw">all</span>(arg !=<span class="st"> &quot;&quot;</span>)) 
+                  string &lt;-<span class="st"> </span><span class="kw">paste0</span>(<span class="st">&quot; &quot;</span>, <span class="kw">paste</span>(arg, <span class="kw">paste0</span>(<span class="st">&quot;</span><span class="ch">\&quot;</span><span class="st">&quot;</span>, v, <span class="st">&quot;</span><span class="ch">\&quot;</span><span class="st">&quot;</span>), <span class="dt">sep =</span> <span class="st">&quot;=&quot;</span>, 
+                    <span class="dt">collapse =</span> <span class="st">&quot; &quot;</span>))
+            }
+            x &lt;-<span class="st"> </span><span class="kw">c</span>(x, <span class="kw">paste0</span>(<span class="st">&quot;&lt;link rel=</span><span class="ch">\&quot;</span><span class="st">stylesheet</span><span class="ch">\&quot;</span><span class="st"> href=</span><span class="ch">\&quot;</span><span class="st">&quot;</span>, stylesheet.paths[i], 
+                <span class="st">&quot;</span><span class="ch">\&quot;</span><span class="st">&quot;</span>, string, <span class="st">&quot;&gt;</span><span class="ch">\n</span><span class="st">&quot;</span>))
+        }
+    }
+    
+    x &lt;-<span class="st"> </span><span class="kw">c</span>(x, <span class="st">&quot;&lt;/head&gt;</span><span class="ch">\n</span><span class="st">&quot;</span>)
+    x
+    
+}</code></pre>
+</div>
+<div id="htmlbodytop" class="section level4">
+<h4>htmlBodyTop</h4>
+<p><code>htmlBodyTop</code> .</p>
+<pre class="sourceCode r"><code class="sourceCode r">htmlBodyTop &lt;-<span class="st"> </span>function(<span class="dt">css.file =</span> <span class="ot">NULL</span>, <span class="dt">css.string =</span> <span class="ot">NULL</span>, <span class="dt">background.image =</span> <span class="st">&quot;&quot;</span>, 
+    <span class="dt">include.default =</span> <span class="ot">TRUE</span>, ...) {
+    x &lt;-<span class="st"> &quot;&lt;style type = </span><span class="ch">\&quot;</span><span class="st">text/css</span><span class="ch">\&quot;</span><span class="st">&gt;</span><span class="ch">\n</span><span class="st">&quot;</span>
+    
+    default &lt;-<span class="st"> </span><span class="kw">paste0</span>(<span class="st">&quot;</span><span class="ch">\n\t</span><span class="st">.main-container {</span><span class="ch">\n\t</span><span class="st">  max-width: 940px;</span><span class="ch">\n\t</span><span class="st">  margin-left: auto;</span><span class="ch">\n\t</span><span class="st">  margin-right: auto;</span><span class="ch">\n\n\t</span><span class="st">}</span><span class="ch">\n\n\t</span><span class="st">body {</span><span class="ch">\n\t</span><span class="st">  background-image: url(</span><span class="ch">\&quot;</span><span class="st">&quot;</span>, 
+        background.image, <span class="st">&quot;</span><span class="ch">\&quot;</span><span class="st">);</span><span class="ch">\n\t</span><span class="st">  background-attachment: fixed;</span><span class="ch">\n\t</span><span class="st">  background-size: 1920px 1080px;</span><span class="ch">\n\t</span><span class="st">}</span><span class="ch">\n\t\n\t</span><span class="st">/* padding for bootstrap navbar */</span><span class="ch">\n\t</span><span class="st">body {</span><span class="ch">\n\t</span><span class="st">  padding-top: 50px;</span><span class="ch">\n\t</span><span class="st">  padding-bottom: 40px;</span><span class="ch">\n\t</span><span class="st">}</span><span class="ch">\n\t</span><span class="st">@media (max-width: 979px) {</span><span class="ch">\n\t</span><span class="st">  body {</span><span class="ch">\n\t\t</span><span class="st">padding-top: 0;</span><span class="ch">\n\t</span><span class="st">  }</span><span class="ch">\n\t</span><span class="st">}</span><span class="ch">\n\t\n\t</span><span class="st">.nav&gt;.btn {</span><span class="ch">\n\t</span><span class="st">  line-height: 0.75em;</span><span class="ch">\n\t</span><span class="st">  margin-top: 9px;</span><span class="ch">\n\t</span><span class="st">}</span><span class="ch">\n\t</span><span class="st">&quot;</span>)
+    
+    if (!<span class="kw">is.null</span>(css.file)) 
+        y &lt;-<span class="st"> </span><span class="kw">readLines</span>(css.file) else y &lt;-<span class="st"> &quot;&quot;</span>
+    if (!<span class="kw">is.null</span>(css.string)) 
+        y &lt;-<span class="st"> </span><span class="kw">c</span>(y, css.string)
+    if (include.default) 
+        y &lt;-<span class="st"> </span><span class="kw">c</span>(default, y)
+    
+    z &lt;-<span class="st"> &quot;</span><span class="ch">\n</span><span class="st">&lt;/style&gt;</span><span class="ch">\n\t</span><span class="st">&lt;div class=</span><span class="ch">\&quot;</span><span class="st">container-fluid main-container</span><span class="ch">\&quot;</span><span class="st">&gt;</span><span class="ch">\n\t</span><span class="st">&quot;</span>
+    
+    <span class="kw">c</span>(x, y, z)
+}</code></pre>
+</div>
+<div id="htmlbottom" class="section level4">
+<h4>htmlBottom</h4>
+<p><code>htmlBottom</code> .</p>
+<pre class="sourceCode r"><code class="sourceCode r">htmlBottom &lt;-<span class="st"> </span>function(...) {
+    <span class="co"># temporary</span>
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+}</code></pre>
+</div>
+</div>
+</div>
+
+
+</div>
+
+<script>
+
+// add bootstrap table styles to pandoc tables
+$(document).ready(function () {
+  $('tr.header').parent('thead').parent('table').addClass('table table-condensed');
+});
+
+</script>
+
+
+</body>
+</html>

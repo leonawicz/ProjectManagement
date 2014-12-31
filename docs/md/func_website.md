@@ -4,8 +4,10 @@
 #### genNavbar
 
 `genNavbar` generates a navigation bar for a web page.
-The html file created should be written to the project's `docs/Rmd/include` directory.
-The common navigation bar html is included prior to the body of the html for each web page in the project's website.
+The html file created is generally written to the project's `docs/Rmd/include` directory.
+However, if this function is used to create a navbar for a Github user web page, the html file should be stored in a sensible location inside the user pages repository, e.g., `leonawicz.github.io/assets`.
+
+The common navigation bar html is included at the beginning of the body of the html for each web page in the project's website.
 `menu` is a vector of names for each dropdown menu.
 `submenus` is a list of vectors of menu options corresponding to each menu.
 `files` is a similar list of vectors.
@@ -13,40 +15,71 @@ Each element is either an html file for a web page to be associated with the sub
 "header" to indicate the corresponding name in `submenus` is only a group label and not a link to a web page,
 or "divider" to indicate placement of a bar for separating groups in a dropdown menu.
 
+`theme` can be either `united` (default) or `cyborg`.
+Both are from Bootswatch.
+The function must apply some internal differentiation in the construction of the html navigation bar between themes.
+This is currently the only `rpm` function which attempts to handle multiple Bootswatch themes with different CSS tags.
+
 
 ```r
 # Functions for Github project websites
 genNavbar <- function(htmlfile = "navbar.html", title, menu, submenus, files, 
     title.url = "index.html", home.url = "index.html", site.url = "", site.name = "Github", 
-    include.home = FALSE) {
+    theme = "united", include.home = FALSE) {
+    if (!(theme %in% c("united", "cyborg"))) 
+        stop("Only the following themes supported: united, cyborg.")
     
-    fillSubmenu <- function(x, name, file) {
+    navClassStrings <- function(x) {
+        switch(x, united = c("brand", "nav-collapse collapse", "nav", "nav pull-right", 
+            "navbar-inner", "container", "", "btn btn-navbar", ".nav-collapse", 
+            "</div>\n"), cyborg = c("navbar-brand", "navbar-collapse collapse navbar-responsive-collapse", 
+            "nav navbar-nav", "nav navbar-nav navbar-right", "container", "navbar-header", 
+            "      </div>\n", "navbar-toggle", ".nav-collapse", ""))
+    }
+    
+    ncs <- navClassStrings(theme)
+    
+    fillSubmenu <- function(x, name, file, theme) {
+        if (theme == "united") 
+            dd.menu.header <- "nav-header" else if (theme == "cyborg") 
+            dd.menu.header <- "dropdown-header"
         if (file[x] == "divider") 
             return("              <li class=\"divider\"></li>\n")
         if (file[x] == "header") 
-            return(paste0("              <li class=\"nav-header\">", name[x], 
-                "</li>\n"))
+            return(paste0("              <li class=\"", dd.menu.header, "\">", 
+                name[x], "</li>\n"))
         paste0("              <li><a href=\"", file[x], "\">", name[x], "</a></li>\n")
     }
     
-    fillMenu <- function(x, menu, submenus, files) {
-        paste0("<li class=\"dropdown\">\n            <a href=\"", gsub(" ", 
-            "-", tolower(menu[x])), "\" class=\"dropdown-toggle\" data-toggle=\"dropdown\">", 
-            menu[x], " <b class=\"caret\"></b></a>\n            <ul class=\"dropdown-menu\">\n", 
-            paste(sapply(1:length(submenus[[x]]), fillSubmenu, name = submenus[[x]], 
-                file = files[[x]]), sep = "", collapse = ""), "            </ul>\n", 
-            collapse = "")
+    fillMenu <- function(x, menu, submenus, files, theme) {
+        m <- menu[x]
+        gs.menu <- gsub(" ", "-", tolower(m))
+        s <- submenus[[x]]
+        f <- files[[x]]
+        if (s[1] == "empty") {
+            y <- paste0("<li><a href=\"", f, "\">", m, "</a></li>\n")
+        } else {
+            y <- paste0("<li class=\"dropdown\">\n            <a href=\"", gs.menu, 
+                "\" class=\"dropdown-toggle\" data-toggle=\"dropdown\">", m, 
+                " <b class=\"caret\"></b></a>\n            <ul class=\"dropdown-menu\">\n", 
+                paste(sapply(1:length(s), fillSubmenu, name = s, file = f, theme = theme), 
+                  sep = "", collapse = ""), "            </ul>\n", collapse = "")
+        }
     }
     
     if (include.home) 
         home <- paste0("<li><a href=\"", home.url, "\">Home</a></li>\n          ") else home <- ""
-    x <- paste0("<div class=\"navbar navbar-default navbar-fixed-top\">\n  <div class=\"navbar-inner\">\n    <div class=\"container\">\n      <button type=\"button\" class=\"btn btn-navbar\" data-toggle=\"collapse\" data-target=\".nav-collapse\">\n        <span class=\"icon-bar\"></span>\n        <span class=\"icon-bar\"></span>\n        <span class=\"icon-bar\"></span>\n      </button>\n      <a class=\"brand\" href=\"", 
-        title.url, "\">", title, "</a>\n      <div class=\"nav-collapse collapse\">\n        <ul class=\"nav\">\n          ", 
-        home, paste(sapply(1:length(menu), fillMenu, menu = menu, submenus = submenus, 
-            files = files), sep = "", collapse = "\n          "), "        </ul>\n        <ul class=\"nav pull-right\">\n          <a class=\"btn btn-primary\" href=\"", 
+    x <- paste0("<div class=\"navbar navbar-default navbar-fixed-top\">\n  <div class=\"", 
+        ncs[5], "\">\n    <div class=\"", ncs[6], "\">\n      <button type=\"button\" class=\"", 
+        ncs[8], "\" data-toggle=\"collapse\" data-target=\"", ncs[9], "\">\n        <span class=\"icon-bar\"></span>\n        <span class=\"icon-bar\"></span>\n        <span class=\"icon-bar\"></span>\n      </button>\n      <a class=\"", 
+        ncs[1], "\" href=\"", title.url, "\">", title, "</a>\n", ncs[7], "      <div class=\"", 
+        ncs[2], "\">\n        <ul class=\"", ncs[3], "\">\n          ", home, 
+        paste(sapply(1:length(menu), fillMenu, menu = menu, submenus = submenus, 
+            files = files, theme = theme), sep = "", collapse = "\n          "), 
+        "        </ul>\n        <ul class=\"", ncs[4], "\">\n          <a class=\"btn btn-primary\" href=\"", 
         site.url, "\">\n            <i class=\"fa fa-github fa-lg\"></i>\n            ", 
-        site.name, "\n          </a>\n        </ul>\n      </div><!--/.nav-collapse -->\n    </div>\n  </div>\n</div>\n", 
-        collpase = "")
+        site.name, "\n          </a>\n        </ul>\n      </div><!--/.nav-collapse -->\n    </div>\n  ", 
+        ncs[10], "</div>\n", collpase = "")
     sink(htmlfile)
     cat(x)
     sink()

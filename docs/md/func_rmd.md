@@ -9,7 +9,7 @@ The output from this function is passed directly to `genRmd` below.
 
 ```r
 rmdHeader <- function(title = "INSERT_TITLE_HERE", author = "Matthew Leonawicz", 
-    theme = "united", highlight = "zenburn", toc = TRUE, keep.md = TRUE, ioslides = FALSE, 
+    theme = "united", highlight = "zenburn", toc = FALSE, keep.md = TRUE, ioslides = FALSE, 
     include.pdf = FALSE) {
     if (toc) 
         toc <- "true" else toc <- "false"
@@ -17,9 +17,14 @@ rmdHeader <- function(title = "INSERT_TITLE_HERE", author = "Matthew Leonawicz",
         keep.md <- "true" else keep.md <- "false"
     if (ioslides) 
         hdoc <- "ioslides_presentation" else hdoc <- "html_document"
-    rmd.header <- paste0("---\ntitle: ", title, "\nauthor: ", author, "\noutput:\n  ", 
-        hdoc, ":\n    toc: ", toc, "\n    theme: ", theme, "\n    highlight: ", 
-        highlight, "\n    keep_md: ", keep.md, "\n")
+    rmd.header <- "---\n"
+    if (!is.null(title)) 
+        rmd.header <- paste0(rmd.header, "title: ", title, "\n")
+    if (!is.null(author)) 
+        rmd.header <- paste0(rmd.header, "author: ", author, "\n")
+    rmd.header <- paste0(rmd.header, "output:\n  ", hdoc, ":\n    toc: ", toc, 
+        "\n    theme: ", theme, "\n    highlight: ", highlight, "\n    keep_md: ", 
+        keep.md, "\n")
     if (ioslides) 
         rmd.header <- paste0(rmd.header, "    widescreen: true\n")
     if (include.pdf) 
@@ -32,7 +37,7 @@ rmdHeader <- function(title = "INSERT_TITLE_HERE", author = "Matthew Leonawicz",
 
 #### rmdknitrSetup
 `rmdknitrSetup` generates the `knitr` global options setup code cunk for Rmd files as a character string to be inserted at the top of a file following the yaml header.
-The only option at this time is the ability to include or exclude a source reference to a project-related clode flow diagram **R** script via `include.sankey`.
+The only option at this time is the ability to include or exclude a source reference to a project-related code flow diagram **R** script via `include.sankey`.
 The output from this function is passed directly to `genRmd` below.
 
 
@@ -165,111 +170,7 @@ chunkNames <- function(path, rChunkID = "# @knitr", rmdChunkID = "```{r", append
 }
 ```
 
-Regarding the creation and updating of Rmd files, `projman` simply assumes that there will be one **R** Markdown file corresponding to one **R** script.
+Regarding the creation and updating of Rmd files, `rpm` simply assumes that there will be one **R** Markdown file corresponding to one **R** script.
 This is not always the case for a given project, but again, the purpose is to generate basic templates.
 Unnecessary files can always be deleted later, or edits made such that one **R** Markdown file reads multiple **R** scripts,
 as is the case with the Rmd file used to generate this document.
-
-#### rmd2rnw
-`rmd2rnw` converts all Rmd files found in a directory to Rnw files, saving the latter to a specified location.
-The Rmd files are not removed.
-This function speeds up the process of duplicating files when wanting to make PDFs from Rnw files when only Rmd files exist.
-The user still makes specific changes by hand, for example, any required changes to `knitr` code chunk options that must differ for PDF output vs. html output.
-The primary benefit is in not having to fuss with large amounts of standard substitutions which can be automated, such as swapping code chunk enclosure styles.
-
-
-```r
-rmd2rnw <- function(path, outDir = file.path(dirname(path), "Rnw")) {
-    files <- list.files(path, pattern = ".Rmd$", full = TRUE)
-    x <- lapply(files, readLines)
-    # do some conversion here...  parse Rmd author and title 1. insert LaTeX
-    # header info 2. swap knitr code chunk identifiers for Rnw style 3. swap
-    # section and subsection titles based on number of consecutive '#' signs at
-    # the beginning of an Rmd line
-    files <- file.path(outDir, basename(files))
-    files <- gsub(".Rmd", ".Rnw", files)
-    
-    sinkRnw <- function(i, files, txt) {
-        txt <- txt[[i]]
-        file <- files[i]
-        sink(file)
-        cat(txt)
-        sink()
-    }
-    
-    lapply(1:length(files), sinkRnw, files = files, txt = x)
-}
-```
-
-#### moveDocs
-`moveDocs` relocates files by renaming with a new file path.
-Specifically, it scans for md and html files in the `docs/Rmd` directory and/or pdf files in the `docs/Rnw` directory.
-If such files are found in the respective locations, they are moved to `docs/md`, `docs/html`, and `docs/pdf`, respectively.
-
-The intent is to clean up the Rmd and Rnw directories after `knitr` has been used to knit documents in place.
-I do this because I have more success knitting documents with the confluence of `RStudio`, `rmarkdown`, `knitr`, `pandoc`, and `LaTeX` when the knitting occurs all within the directory of the originating files.
-The process is more prone to throwing errors when trying to specify alternate locations for outputs.
-
-`moveDocs` makes a nominal effort to replace a possible relative path with a full file path before proceeding, if the former is supplied.
-Default arguments include `move=TRUE` which will call `file.rename` and `copy=FALSE` which, if `TRUE` (and `move=FALSE`), will alternatively call `file.copy`.
-If both are `TRUE`, any files found are moved.
-
-This function will always overwrite any existing file versions previously moved to the output directories, by way of `file.rename`.
-To keep the behavior consistent, when `move=FALSE` and `copy=TRUE`, `file.copy` always executes with its argument, `overwrite=TRUE`.
-This should never cause problems because in the context I intend for this function,
-the types of files being moved or copied from `docs/Rmd` and `docs/Rnw` are never used as inputs to other files, functions, or processes,
-nor are they meant to be edited by hand after being generated.
-
-If there are LaTeX-associated files present (.TeX, .aux, and .txt files with the same file names as local pdf files.),
-these files will be removed if `remove.latex=TRUE` (default).
-If `FALSE`, the default `latexDir="LaTeX"` means that these files will be moved to the `docs/LaTeX` directory rather than deleted.
-If this directory does not exist, it will be created.
-An alternate location can be specified, such as "pdf" if you want to keep these files with the related pdf files after those are moved by `moveDocs` as well to `docs/pdf`.
-
-
-```r
-moveDocs <- function(path.docs, type = c("md", "html", "pdf"), move = TRUE, 
-    copy = FALSE, remove.latex = TRUE, latexDir = "LaTeX") {
-    if (any(!(type %in% c("md", "html", "pdf")))) 
-        stop("type must be among 'md', 'html', and 'pdf'")
-    stopifnot(move | copy)
-    if (path.docs == "." | path.docs == "./") 
-        path.docs <- getwd()
-    if (strsplit(path.docs, "/")[[1]][1] == "..") {
-        tmp <- strsplit(path.docs, "/")[[1]][-1]
-        if (length(tmp)) 
-            path.docs <- file.path(getwd(), paste0(tmp, collapse = "/")) else stop("Check path.docs argument.")
-    }
-    for (i in 1:length(type)) {
-        if (type[i] == "pdf") 
-            origin <- "Rnw" else origin <- "Rmd"
-        path.i <- file.path(path.docs, origin)
-        infiles <- list.files(path.i, pattern = paste0("\\.", type[i], "$"), 
-            full = TRUE)
-        if (length(infiles)) {
-            infiles <- infiles[basename(dirname(infiles)) == origin]
-            if (length(infiles)) {
-                outfiles <- file.path(path.docs, type[i], basename(infiles))
-                if (move) 
-                  file.rename(infiles, outfiles) else if (copy) 
-                  file.copy(infiles, outfiles, overwrite = TRUE)
-                if (type[i] == "pdf") {
-                  extensions <- c("TeX", "aux", "txt")
-                  pat <- paste0("^", rep(gsub("pdf", "", basename(infiles)), 
-                    length(extensions)), rep(extensions, each = length(infiles)), 
-                    "$")
-                  latex.files <- sapply(1:length(pat), function(p, path, pat) list.files(path, 
-                    pattern = pat[p], full = TRUE), path = path.i, pat = pat)
-                  if (remove.latex) {
-                    file.remove(latex.files)
-                  } else {
-                    dir.create()
-                    file.rename(latex.files, file.path(path.docs, latexDir, 
-                      basename(latex.files)))
-                  }
-                }
-            }
-        }
-    }
-}
-```

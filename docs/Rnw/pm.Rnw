@@ -1,0 +1,55 @@
+\documentclass{article}
+\usepackage{geometry}
+\geometry{verbose, tmargin=2.5cm, bmargin=2.5cm, lmargin=2.5cm, rmargin=2.5cm}
+\begin{document}
+
+\title{Project Management}
+\author{Matthew Leonawicz}
+\maketitle
+
+<<highlight, echo=FALSE>>=
+knit_theme$set(knit_theme$get('solarized-dark'))
+@
+
+<<knitr_setup, echo=FALSE>>=
+opts_chunk$set(cache=FALSE, eval=FALSE, tidy=TRUE, message=FALSE, warning=FALSE)
+read_chunk("../../code/pm.R")
+@
+
+\section{Example usage}
+This is how \texttt{rpm} functions can be used to create and manipulate a project, using the \texttt{rpm} project itself as an example.
+The code below is not intended to be run in full directly, but serves as a guide.
+
+\subsection{Dynamic report generation}
+The script, \texttt{pm.R}, is used to compile web sites and reports in various formats based on project documentation, namely Rmd files.
+Using this project management project as an example, markdown and html files are generated for existing Rmd files.
+There is also optional conversion from Rmd to Rnw and subsequent PDF generation.
+
+\subsection{Github user website}
+Although not a part of the \texttt{pm.R} scripts associated with other \textbf{R} projects,
+this example also includes creation of my Github user website, \texttt{leonawicz.github.io}, as part of overall project management.
+This is in addition to the \texttt{rpm}-specific project website.
+
+\section{R code}
+
+\subsection{Create a project}
+Note that I use my own default path for storing a project when creating a new project.
+See the \texttt{rpm} [default objects](objects.html "default objects") and [creating a new project](func\_new.html "new project") for more details.
+
+<<ex_create_project>>=
+@
+
+\subsection{Update a project}
+Functions can be used to create, read, or update. See [Rmd-related functions](func\_rmd.html "Rmd-related functions").
+
+<<ex_update_project>>=
+@
+
+\subsection{Prepare a project website}
+With some additional project-specific setup, files can be generated which will assist in creating a project website.
+See [website-related functions](func\_website.html "website-related functions").
+
+<<ex_website>>=
+@
+
+\end{document}

@@ -36,8 +36,8 @@ require(rCharts)
 
 Project file names can be loaded using `pattern` arguments with `list.files` pointing to both the `code` and relevant `docs` directories.
 However, there is a substantial amount of hardcoding involved for any project as shown here.
-For example, the `projman.R` script contains all the `projman` functions. 
-Although this script has a complete, corresponding `projman.Rmd` file, I decided to subsequently break out the functions and other content from `projman.Rmd` into multiple Rmd files.
+For example, the `rpm.R` script contains all the `rpm` functions. 
+Although this script has a complete, corresponding `rpm.Rmd` file, I decided to subsequently break out the functions and other content from `rpm.Rmd` into multiple Rmd files.
 Such ad hoc project-specific decisions require that I take note here and make the related distinctions.
 
 
@@ -45,7 +45,7 @@ Such ad hoc project-specific decisions require that I take note here and make th
 setwd("C:/github/ProjectManagement/docs/Rmd")
 
 c0 <- list.files("../../code", pattern = ".R$")
-c1a <- c("_output.yaml", "navbar.html")
+c1a <- c("_output.yaml", "navbar.html", "leonawicz.github.io")
 c1b <- "supporting libraries"
 c1c <- "in_header.html"
 
@@ -64,11 +64,11 @@ The connections are expressed by element-wise comparison of the equal-length `to
 
 ```r
 from <- c(
-	c0,	rep("projman.Rmd", length(c2b)), c2, c2, rep("example.R", length(c1a)), c1b, rep(c(c1a, c1c), each=length(c4))
+	c0,	rep("rpm.Rmd", length(c2b)), c2, c2, rep("pm.R", length(c1a)), c1b, rep(c(c1a, c1c), each=length(c4))
 
 )
 to <- c(
-	c2a, c2b, c3, c4, c1a, "example.R", rep(c4, length(c(c1a, c1c)))
+	c2a, c2b, c3, c4, c1a, "pm.R", rep(c4, length(c(c1a, c1c)))
 )
 ```
 
@@ -138,7 +138,7 @@ p$show("iframesrc", cdn=T)
   &lt;/head&gt;
   &lt;body &gt;
     
-    &lt;div id = &#039;chart1b34672b48e6&#039; class = &#039;rChart d3_sankey&#039;&gt;&lt;/div&gt;    
+    &lt;div id = &#039;chart28c623e753b&#039; class = &#039;rChart d3_sankey&#039;&gt;&lt;/div&gt;    
     ï»¿&lt;!--Attribution:
 Mike Bostock https://github.com/d3/d3-plugins/tree/master/sankey
 Mike Bostock http://bost.ocks.org/mike/sankey/
@@ -147,13 +147,13 @@ Mike Bostock http://bost.ocks.org/mike/sankey/
 &lt;script&gt;
 (function(){
 var params = {
- &quot;dom&quot;: &quot;chart1b34672b48e6&quot;,
+ &quot;dom&quot;: &quot;chart28c623e753b&quot;,
 &quot;width&quot;:    900,
 &quot;height&quot;:    800,
 &quot;data&quot;: {
- &quot;source&quot;: [ &quot;code_sankey.R&quot;, &quot;drg.R&quot;, &quot;example.R&quot;, &quot;proj_sankey.R&quot;, &quot;projman.R&quot;, &quot;projman.Rmd&quot;, &quot;projman.Rmd&quot;, &quot;projman.Rmd&quot;, &quot;projman.Rmd&quot;, &quot;projman.Rmd&quot;, &quot;projman.Rmd&quot;, &quot;code_sankey.Rmd&quot;, &quot;drg.Rmd&quot;, &quot;example.Rmd&quot;, &quot;func_new.Rmd&quot;, &quot;func_rmd.Rmd&quot;, &quot;func_user_website.Rmd&quot;, &quot;func_website.Rmd&quot;, &quot;objects.Rmd&quot;, &quot;proj_intro.Rmd&quot;, &quot;proj_sankey.Rmd&quot;, &quot;projman.Rmd&quot;, &quot;code_sankey.Rmd&quot;, &quot;drg.Rmd&quot;, &quot;example.Rmd&quot;, &quot;func_new.Rmd&quot;, &quot;func_rmd.Rmd&quot;, &quot;func_user_website.Rmd&quot;, &quot;func_website.Rmd&quot;, &quot;objects.Rmd&quot;, &quot;proj_intro.Rmd&quot;, &quot;proj_sankey.Rmd&quot;, &quot;projman.Rmd&quot;, &quot;example.R&quot;, &quot;example.R&quot;, &quot;supporting libraries&quot;, &quot;_output.yaml&quot;, &quot;_output.yaml&quot;, &quot;_output.yaml&quot;, &quot;_output.yaml&quot;, &quot;_output.yaml&quot;, &quot;_output.yaml&quot;, &quot;_output.yaml&quot;, &quot;_output.yaml&quot;, &quot;_output.yaml&quot;, &quot;_output.yaml&quot;, &quot;_output.yaml&quot;, &quot;navbar.html&quot;, &quot;navbar.html&quot;, &quot;navbar.html&quot;, &quot;navbar.html&quot;, &quot;navbar.html&quot;, &quot;navbar.html&quot;, &quot;navbar.html&quot;, &quot;navbar.html&quot;, &quot;navbar.html&quot;, &quot;navbar.html&quot;, &quot;navbar.html&quot;, &quot;in_header.html&quot;, &quot;in_header.html&quot;, &quot;in_header.html&quot;, &quot;in_header.html&quot;, &quot;in_header.html&quot;, &quot;in_header.html&quot;, &quot;in_header.html&quot;, &quot;in_header.html&quot;, &quot;in_header.html&quot;, &quot;in_header.html&quot;, &quot;in_header.html&quot; ],
-&quot;target&quot;: [ &quot;code_sankey.Rmd&quot;, &quot;drg.Rmd&quot;, &quot;example.Rmd&quot;, &quot;proj_sankey.Rmd&quot;, &quot;projman.Rmd&quot;, &quot;func_new.Rmd&quot;, &quot;func_rmd.Rmd&quot;, &quot;func_user_website.Rmd&quot;, &quot;func_website.Rmd&quot;, &quot;objects.Rmd&quot;, &quot;proj_intro.Rmd&quot;, &quot;code_sankey.md&quot;, &quot;drg.md&quot;, &quot;example.md&quot;, &quot;func_new.md&quot;, &quot;func_rmd.md&quot;, &quot;func_user_website.md&quot;, &quot;func_website.md&quot;, &quot;objects.md&quot;, &quot;proj_intro.md&quot;, &quot;proj_sankey.md&quot;, &quot;projman.md&quot;, &quot;code_sankey.html&quot;, &quot;drg.html&quot;, &quot;example.html&quot;, &quot;func_new.html&quot;, &quot;func_rmd.html&quot;, &quot;func_user_website.html&quot;, &quot;func_website.html&quot;, &quot;objects.html&quot;, &quot;proj_intro.html&quot;, &quot;proj_sankey.html&quot;, &quot;projman.html&quot;, &quot;_output.yaml&quot;, &quot;navbar.html&quot;, &quot;example.R&quot;, &quot;code_sankey.html&quot;, &quot;drg.html&quot;, &quot;example.html&quot;, &quot;func_new.html&quot;, &quot;func_rmd.html&quot;, &quot;func_user_website.html&quot;, &quot;func_website.html&quot;, &quot;objects.html&quot;, &quot;proj_intro.html&quot;, &quot;proj_sankey.html&quot;, &quot;projman.html&quot;, &quot;code_sankey.html&quot;, &quot;drg.html&quot;, &quot;example.html&quot;, &quot;func_new.html&quot;, &quot;func_rmd.html&quot;, &quot;func_user_website.html&quot;, &quot;func_website.html&quot;, &quot;objects.html&quot;, &quot;proj_intro.html&quot;, &quot;proj_sankey.html&quot;, &quot;projman.html&quot;, &quot;code_sankey.html&quot;, &quot;drg.html&quot;, &quot;example.html&quot;, &quot;func_new.html&quot;, &quot;func_rmd.html&quot;, &quot;func_user_website.html&quot;, &quot;func_website.html&quot;, &quot;objects.html&quot;, &quot;proj_intro.html&quot;, &quot;proj_sankey.html&quot;, &quot;projman.html&quot; ],
-&quot;value&quot;: [      1,      1,      1,      1,      1,      1,      1,      1,      1,      1,      1,      1,      1,      1,      1,      1,      1,      1,      1,      1,      1,      1,      1,      1,      1,      1,      1,      1,      1,      1,      1,      1,      1,      1,      1,      1,      1,      1,      1,      1,      1,      1,      1,      1,      1,      1,      1,      1,      1,      1,      1,      1,      1,      1,      1,      1,      1,      1,      1,      1,      1,      1,      1,      1,      1,      1,      1,      1,      1 ] 
+ &quot;source&quot;: [ &quot;code_sankey.R&quot;, &quot;pm.R&quot;, &quot;proj_sankey.R&quot;, &quot;rpm.R&quot;, &quot;rpm.Rmd&quot;, &quot;rpm.Rmd&quot;, &quot;rpm.Rmd&quot;, &quot;rpm.Rmd&quot;, &quot;rpm.Rmd&quot;, &quot;rpm.Rmd&quot;, &quot;rpm.Rmd&quot;, &quot;rpm.Rmd&quot;, &quot;code_sankey.Rmd&quot;, &quot;func_convert.Rmd&quot;, &quot;func_new.Rmd&quot;, &quot;func_organize.Rmd&quot;, &quot;func_rmd.Rmd&quot;, &quot;func_user_website.Rmd&quot;, &quot;func_website.Rmd&quot;, &quot;objects.Rmd&quot;, &quot;pm.Rmd&quot;, &quot;proj_intro.Rmd&quot;, &quot;proj_sankey.Rmd&quot;, &quot;rpm.Rmd&quot;, &quot;code_sankey.Rmd&quot;, &quot;func_convert.Rmd&quot;, &quot;func_new.Rmd&quot;, &quot;func_organize.Rmd&quot;, &quot;func_rmd.Rmd&quot;, &quot;func_user_website.Rmd&quot;, &quot;func_website.Rmd&quot;, &quot;objects.Rmd&quot;, &quot;pm.Rmd&quot;, &quot;proj_intro.Rmd&quot;, &quot;proj_sankey.Rmd&quot;, &quot;rpm.Rmd&quot;, &quot;pm.R&quot;, &quot;pm.R&quot;, &quot;pm.R&quot;, &quot;supporting libraries&quot;, &quot;_output.yaml&quot;, &quot;_output.yaml&quot;, &quot;_output.yaml&quot;, &quot;_output.yaml&quot;, &quot;_output.yaml&quot;, &quot;_output.yaml&quot;, &quot;_output.yaml&quot;, &quot;_output.yaml&quot;, &quot;_output.yaml&quot;, &quot;_output.yaml&quot;, &quot;_output.yaml&quot;, &quot;_output.yaml&quot;, &quot;navbar.html&quot;, &quot;navbar.html&quot;, &quot;navbar.html&quot;, &quot;navbar.html&quot;, &quot;navbar.html&quot;, &quot;navbar.html&quot;, &quot;navbar.html&quot;, &quot;navbar.html&quot;, &quot;navbar.html&quot;, &quot;navbar.html&quot;, &quot;navbar.html&quot;, &quot;navbar.html&quot;, &quot;leonawicz.github.io&quot;, &quot;leonawicz.github.io&quot;, &quot;leonawicz.github.io&quot;, &quot;leonawicz.github.io&quot;, &quot;leonawicz.github.io&quot;, &quot;leonawicz.github.io&quot;, &quot;leonawicz.github.io&quot;, &quot;leonawicz.github.io&quot;, &quot;leonawicz.github.io&quot;, &quot;leonawicz.github.io&quot;, &quot;leonawicz.github.io&quot;, &quot;leonawicz.github.io&quot;, &quot;in_header.html&quot;, &quot;in_header.html&quot;, &quot;in_header.html&quot;, &quot;in_header.html&quot;, &quot;in_header.html&quot;, &quot;in_header.html&quot;, &quot;in_header.html&quot;, &quot;in_header.html&quot;, &quot;in_header.html&quot;, &quot;in_header.html&quot;, &quot;in_header.html&quot;, &quot;in_header.html&quot; ],
+&quot;target&quot;: [ &quot;code_sankey.Rmd&quot;, &quot;pm.Rmd&quot;, &quot;proj_sankey.Rmd&quot;, &quot;rpm.Rmd&quot;, &quot;func_convert.Rmd&quot;, &quot;func_new.Rmd&quot;, &quot;func_organize.Rmd&quot;, &quot;func_rmd.Rmd&quot;, &quot;func_user_website.Rmd&quot;, &quot;func_website.Rmd&quot;, &quot;objects.Rmd&quot;, &quot;proj_intro.Rmd&quot;, &quot;code_sankey.md&quot;, &quot;func_convert.md&quot;, &quot;func_new.md&quot;, &quot;func_organize.md&quot;, &quot;func_rmd.md&quot;, &quot;func_user_website.md&quot;, &quot;func_website.md&quot;, &quot;objects.md&quot;, &quot;pm.md&quot;, &quot;proj_intro.md&quot;, &quot;proj_sankey.md&quot;, &quot;rpm.md&quot;, &quot;code_sankey.html&quot;, &quot;func_convert.html&quot;, &quot;func_new.html&quot;, &quot;func_organize.html&quot;, &quot;func_rmd.html&quot;, &quot;func_user_website.html&quot;, &quot;func_website.html&quot;, &quot;objects.html&quot;, &quot;pm.html&quot;, &quot;proj_intro.html&quot;, &quot;proj_sankey.html&quot;, &quot;rpm.html&quot;, &quot;_output.yaml&quot;, &quot;navbar.html&quot;, &quot;leonawicz.github.io&quot;, &quot;pm.R&quot;, &quot;code_sankey.html&quot;, &quot;func_convert.html&quot;, &quot;func_new.html&quot;, &quot;func_organize.html&quot;, &quot;func_rmd.html&quot;, &quot;func_user_website.html&quot;, &quot;func_website.html&quot;, &quot;objects.html&quot;, &quot;pm.html&quot;, &quot;proj_intro.html&quot;, &quot;proj_sankey.html&quot;, &quot;rpm.html&quot;, &quot;code_sankey.html&quot;, &quot;func_convert.html&quot;, &quot;func_new.html&quot;, &quot;func_organize.html&quot;, &quot;func_rmd.html&quot;, &quot;func_user_website.html&quot;, &quot;func_website.html&quot;, &quot;objects.html&quot;, &quot;pm.html&quot;, &quot;proj_intro.html&quot;, &quot;proj_sankey.html&quot;, &quot;rpm.html&quot;, &quot;code_sankey.html&quot;, &quot;func_convert.html&quot;, &quot;func_new.html&quot;, &quot;func_organize.html&quot;, &quot;func_rmd.html&quot;, &quot;func_user_website.html&quot;, &quot;func_website.html&quot;, &quot;objects.html&quot;, &quot;pm.html&quot;, &quot;proj_intro.html&quot;, &quot;proj_sankey.html&quot;, &quot;rpm.html&quot;, &quot;code_sankey.html&quot;, &quot;func_convert.html&quot;, &quot;func_new.html&quot;, &quot;func_organize.html&quot;, &quot;func_rmd.html&quot;, &quot;func_user_website.html&quot;, &quot;func_website.html&quot;, &quot;objects.html&quot;, &quot;pm.html&quot;, &quot;proj_intro.html&quot;, &quot;proj_sankey.html&quot;, &quot;rpm.html&quot; ],
+&quot;value&quot;: [      1,      1,      1,      1,      1,      1,      1,      1,      1,      1,      1,      1,      1,      1,      1,      1,      1,      1,      1,      1,      1,      1,      1,      1,      1,      1,      1,      1,      1,      1,      1,      1,      1,      1,      1,      1,      1,      1,      1,      1,      1,      1,      1,      1,      1,      1,      1,      1,      1,      1,      1,      1,      1,      1,      1,      1,      1,      1,      1,      1,      1,      1,      1,      1,      1,      1,      1,      1,      1,      1,      1,      1,      1,      1,      1,      1,      1,      1,      1,      1,      1,      1,      1,      1,      1,      1,      1,      1 ] 
 },
 &quot;nodeWidth&quot;:     15,
 &quot;nodePadding&quot;:     10,
@@ -165,7 +165,7 @@ var params = {
 &quot;top&quot;:     50 
 },
 &quot;title&quot;: &quot;Code Flow&quot;,
-&quot;id&quot;: &quot;chart1b34672b48e6&quot; 
+&quot;id&quot;: &quot;chart28c623e753b&quot; 
 };
 
 params.units ? units = &quot; &quot; + params.units : units = &quot;&quot;;
@@ -285,11 +285,11 @@ node.append(&quot;text&quot;)
     
     &lt;script&gt;
       var cscale = d3.scale.category20b();
-      d3.selectAll(&#039;#chart1b34672b48e6 svg path.link&#039;)
+      d3.selectAll(&#039;#chart28c623e753b svg path.link&#039;)
         .style(&#039;stroke&#039;, function(d){
           return cscale(d.source.name);
         })
-      d3.selectAll(&#039;#chart1b34672b48e6 svg .node rect&#039;)
+      d3.selectAll(&#039;#chart28c623e753b svg .node rect&#039;)
         .style(&#039;fill&#039;, function(d){
           return cscale(d.name)
         })
@@ -297,7 +297,7 @@ node.append(&quot;text&quot;)
     &lt;/script&gt;
         
   &lt;/body&gt;
-&lt;/html&gt; ' scrolling='no' frameBorder='0' seamless class='rChart  http://timelyportfolio.github.io/rCharts_d3_sankey/libraries/widgets/d3_sankey  ' id='iframe-chart1b34672b48e6'> </iframe>
+&lt;/html&gt; ' scrolling='no' frameBorder='0' seamless class='rChart  http://timelyportfolio.github.io/rCharts_d3_sankey/libraries/widgets/d3_sankey  ' id='iframe-chart28c623e753b'> </iframe>
  <style>iframe.rChart{ width: 100%; height: 400px;}</style>
 <style>iframe.rChart{ width: 100%; height: 840px;}</style>
 

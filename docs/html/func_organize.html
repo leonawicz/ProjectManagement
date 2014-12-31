@@ -1,0 +1,248 @@
+<!DOCTYPE html>
+
+<html xmlns="http://www.w3.org/1999/xhtml">
+
+<head>
+
+<meta charset="utf-8">
+<meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+<meta name="generator" content="pandoc" />
+
+
+
+<title></title>
+
+<script src="libs/jquery-1.11.0/jquery.min.js"></script>
+<meta name="viewport" content="width=device-width, initial-scale=1.0" />
+<link href="libs/bootstrap-2.3.2/css/united.min.css" rel="stylesheet" />
+<link href="libs/bootstrap-2.3.2/css/bootstrap-responsive.min.css" rel="stylesheet" />
+<script src="libs/bootstrap-2.3.2/js/bootstrap.min.js"></script>
+<style type="text/css">
+
+/* padding for bootstrap navbar */
+body {
+  padding-top: 50px;
+  padding-bottom: 40px;
+}
+@media (max-width: 979px) {
+  body {
+    padding-top: 0;
+  }
+}
+
+/* offset scroll position for anchor links (for fixed navbar)  */
+@media (min-width: 980px) {
+  .section h2 {
+    padding-top: 52px;
+    margin-top: -52px;
+  }
+  .section h3 {
+    padding-top: 52px;
+    margin-top: -52px;
+  }
+}
+
+
+/* don't use link color in navbar */
+.dropdown-menu>li>a {
+  color: black;
+}
+
+/* some padding for disqus */
+#disqus_thread {
+  margin-top: 45px;
+}
+
+</style>
+
+<link rel="stylesheet" href="libs/font-awesome-4.1.0/css/font-awesome.min.css"/>
+
+
+<style type="text/css">code{white-space: pre;}</style>
+<style type="text/css">
+table.sourceCode, tr.sourceCode, td.lineNumbers, td.sourceCode {
+  margin: 0; padding: 0; vertical-align: baseline; border: none; }
+table.sourceCode { width: 100%; line-height: 100%; background-color: #303030; color: #cccccc; }
+td.lineNumbers { text-align: right; padding-right: 4px; padding-left: 4px; }
+td.sourceCode { padding-left: 5px; }
+pre, code { color: #cccccc; background-color: #303030; }
+code > span.kw { color: #f0dfaf; }
+code > span.dt { color: #dfdfbf; }
+code > span.dv { color: #dcdccc; }
+code > span.bn { color: #dca3a3; }
+code > span.fl { color: #c0bed1; }
+code > span.ch { color: #dca3a3; }
+code > span.st { color: #cc9393; }
+code > span.co { color: #7f9f7f; }
+code > span.ot { color: #efef8f; }
+code > span.al { color: #ffcfaf; }
+code > span.fu { color: #efef8f; }
+code > span.er { color: #c3bf9f; }
+</style>
+<style type="text/css">
+  pre:not([class]) {
+    background-color: white;
+  }
+</style>
+
+
+
+</head>
+
+<body>
+
+<style type = "text/css">
+.main-container {
+  max-width: 940px;
+  margin-left: auto;
+  margin-right: auto;
+}
+</style>
+<div class="container-fluid main-container">
+
+<div class="navbar navbar-default navbar-fixed-top">
+  <div class="navbar-inner">
+    <div class="container">
+      <button type="button" class="btn btn-navbar" data-toggle="collapse" data-target=".nav-collapse">
+        <span class="icon-bar"></span>
+        <span class="icon-bar"></span>
+        <span class="icon-bar"></span>
+      </button>
+      <a class="brand" href="index.html">Project Management</a>
+      <div class="nav-collapse collapse">
+        <ul class="nav">
+          <li class="dropdown">
+            <a href="rpm" class="dropdown-toggle" data-toggle="dropdown">rpm <b class="caret"></b></a>
+            <ul class="dropdown-menu">
+              <li class="nav-header">About rpm</li>
+              <li><a href="proj_intro.html">Introduction</a></li>
+              <li><a href="code_sankey.html">Related items</a></li>
+              <li><a href="pm.html">Example usage</a></li>
+            </ul>
+
+          <li class="dropdown">
+            <a href="r-code" class="dropdown-toggle" data-toggle="dropdown">R Code <b class="caret"></b></a>
+            <ul class="dropdown-menu">
+              <li><a href="objects.html">Default objects</a></li>
+              <li class="divider"></li>
+              <li class="nav-header">Functions</li>
+              <li><a href="func_new.html">Start a new project</a></li>
+              <li><a href="func_rmd.html">Working with Rmd files</a></li>
+              <li><a href="func_convert.html">Document conversion</a></li>
+              <li><a href="func_organize.html">Organize documents</a></li>
+              <li><a href="func_website.html">Make a project website</a></li>
+              <li><a href="func_user_website.html">Github user website</a></li>
+            </ul>
+
+          <li class="dropdown">
+            <a href="all-projects" class="dropdown-toggle" data-toggle="dropdown">All Projects <b class="caret"></b></a>
+            <ul class="dropdown-menu">
+              <li><a href="proj_sankey.html">Projects diagram</a></li>
+              <li class="divider"></li>
+              <li><a href="proj_intro.html">About</a></li>
+              <li><a href="proj_intro.html">Other</a></li>
+            </ul>
+        </ul>
+        <ul class="nav pull-right">
+          <a class="btn btn-primary" href="https://github.com/leonawicz/ProjectManagement">
+            <i class="fa fa-github fa-lg"></i>
+            Github
+          </a>
+        </ul>
+      </div><!--/.nav-collapse -->
+    </div>
+  </div>
+</div>
+
+
+
+<div id="movedocs" class="section level4">
+<h4>moveDocs</h4>
+<p><code>moveDocs</code> relocates files by renaming with a new file path. Specifically, it scans for md and html files in the <code>docs/Rmd</code> directory and/or pdf files in the <code>docs/Rnw</code> directory. If such files are found in the respective locations, they are moved to <code>docs/md</code>, <code>docs/html</code>, and <code>docs/pdf</code>, respectively.</p>
+<p>The intent is to clean up the Rmd and Rnw directories after <code>knitr</code> has been used to knit documents in place. I do this because I have more success knitting documents with the confluence of <code>RStudio</code>, <code>rmarkdown</code>, <code>knitr</code>, <code>pandoc</code>, and <code>LaTeX</code> when the knitting occurs all within the directory of the originating files. The process is more prone to throwing errors when trying to specify alternate locations for outputs.</p>
+<p><code>moveDocs</code> makes a nominal effort to replace a possible relative path with a full file path before proceeding, if the former is supplied. Default arguments include <code>move=TRUE</code> which will call <code>file.rename</code> and <code>copy=FALSE</code> which, if <code>TRUE</code> (and <code>move=FALSE</code>), will alternatively call <code>file.copy</code>. If both are <code>TRUE</code>, any files found are moved.</p>
+<p>This function will always overwrite any existing file versions previously moved to the output directories, by way of <code>file.rename</code>. To keep the behavior consistent, when <code>move=FALSE</code> and <code>copy=TRUE</code>, <code>file.copy</code> always executes with its argument, <code>overwrite=TRUE</code>. This should never cause problems because in the context I intend for this function, the types of files being moved or copied from <code>docs/Rmd</code> and <code>docs/Rnw</code> are never used as inputs to other files, functions, or processes, nor are they meant to be edited by hand after being generated.</p>
+<p>If there are LaTeX-associated files present (.TeX, .aux, and .txt files with the same file names as local pdf files.), these files will be removed if <code>remove.latex=TRUE</code> (default). If <code>FALSE</code>, the default <code>latexDir=&quot;LaTeX&quot;</code> means that these files will be moved to the <code>docs/LaTeX</code> directory rather than deleted. If this directory does not exist, it will be created. An alternate location can be specified, such as “pdf” if you want to keep these files with the related pdf files after those are moved by <code>moveDocs</code> as well to <code>docs/pdf</code>.</p>
+<pre class="sourceCode r"><code class="sourceCode r"><span class="co"># Organization documentation</span>
+moveDocs &lt;-<span class="st"> </span>function(path.docs, <span class="dt">type =</span> <span class="kw">c</span>(<span class="st">&quot;md&quot;</span>, <span class="st">&quot;html&quot;</span>, <span class="st">&quot;pdf&quot;</span>), <span class="dt">move =</span> <span class="ot">TRUE</span>, 
+    <span class="dt">copy =</span> <span class="ot">FALSE</span>, <span class="dt">remove.latex =</span> <span class="ot">TRUE</span>, <span class="dt">latexDir =</span> <span class="st">&quot;latex&quot;</span>) {
+    if (<span class="kw">any</span>(!(type %in%<span class="st"> </span><span class="kw">c</span>(<span class="st">&quot;md&quot;</span>, <span class="st">&quot;html&quot;</span>, <span class="st">&quot;pdf&quot;</span>)))) 
+        <span class="kw">stop</span>(<span class="st">&quot;type must be among &#39;md&#39;, &#39;html&#39;, and &#39;pdf&#39;&quot;</span>)
+    <span class="kw">stopifnot</span>(move |<span class="st"> </span>copy)
+    if (path.docs ==<span class="st"> &quot;.&quot;</span> |<span class="st"> </span>path.docs ==<span class="st"> &quot;./&quot;</span>) 
+        path.docs &lt;-<span class="st"> </span><span class="kw">getwd</span>()
+    if (<span class="kw">strsplit</span>(path.docs, <span class="st">&quot;/&quot;</span>)[[<span class="dv">1</span>]][<span class="dv">1</span>] ==<span class="st"> &quot;..&quot;</span>) {
+        tmp &lt;-<span class="st"> </span><span class="kw">strsplit</span>(path.docs, <span class="st">&quot;/&quot;</span>)[[<span class="dv">1</span>]][-<span class="dv">1</span>]
+        if (<span class="kw">length</span>(tmp)) 
+            path.docs &lt;-<span class="st"> </span><span class="kw">file.path</span>(<span class="kw">getwd</span>(), <span class="kw">paste0</span>(tmp, <span class="dt">collapse =</span> <span class="st">&quot;/&quot;</span>)) else <span class="kw">stop</span>(<span class="st">&quot;Check path.docs argument.&quot;</span>)
+    }
+    for (i in <span class="dv">1</span>:<span class="kw">length</span>(type)) {
+        if (type[i] ==<span class="st"> &quot;pdf&quot;</span>) 
+            origin &lt;-<span class="st"> &quot;Rnw&quot;</span> else origin &lt;-<span class="st"> &quot;Rmd&quot;</span>
+        path.i &lt;-<span class="st"> </span><span class="kw">file.path</span>(path.docs, origin)
+        infiles &lt;-<span class="st"> </span><span class="kw">list.files</span>(path.i, <span class="dt">pattern =</span> <span class="kw">paste0</span>(<span class="st">&quot;</span><span class="ch">\\</span><span class="st">.&quot;</span>, type[i], <span class="st">&quot;$&quot;</span>), 
+            <span class="dt">full =</span> <span class="ot">TRUE</span>)
+        if (type[i] ==<span class="st"> &quot;pdf&quot;</span>) {
+            extensions &lt;-<span class="st"> </span><span class="kw">c</span>(<span class="st">&quot;tex&quot;</span>, <span class="st">&quot;aux&quot;</span>, <span class="st">&quot;log&quot;</span>)
+            all.pdfs &lt;-<span class="st"> </span><span class="kw">basename</span>(<span class="kw">list.files</span>(path.docs, <span class="dt">pattern =</span> <span class="st">&quot;.pdf$&quot;</span>, <span class="dt">full =</span> T, 
+                <span class="dt">recursive =</span> T))
+            pat &lt;-<span class="st"> </span><span class="kw">paste0</span>(<span class="st">&quot;^&quot;</span>, <span class="kw">rep</span>(<span class="kw">gsub</span>(<span class="st">&quot;pdf&quot;</span>, <span class="st">&quot;&quot;</span>, all.pdfs), <span class="kw">length</span>(extensions)), 
+                <span class="kw">rep</span>(extensions, <span class="dt">each =</span> <span class="kw">length</span>(all.pdfs)), <span class="st">&quot;$&quot;</span>)
+            latex.files &lt;-<span class="st"> </span><span class="kw">unlist</span>(<span class="kw">sapply</span>(<span class="dv">1</span>:<span class="kw">length</span>(pat), function(p, path, pat) <span class="kw">list.files</span>(path, 
+                <span class="dt">pattern =</span> pat[p], <span class="dt">full =</span> <span class="ot">TRUE</span>), <span class="dt">path =</span> path.i, <span class="dt">pat =</span> pat))
+            <span class="kw">print</span>(latex.files)
+            if (<span class="kw">length</span>(latex.files)) {
+                if (remove.latex) {
+                  <span class="kw">unlink</span>(latex.files)
+                } else {
+                  <span class="kw">dir.create</span>(<span class="kw">file.path</span>(path.docs, latexDir), <span class="dt">showWarnings =</span> <span class="ot">FALSE</span>, 
+                    <span class="dt">recursive =</span> <span class="ot">TRUE</span>)
+                  <span class="kw">file.rename</span>(latex.files, <span class="kw">file.path</span>(path.docs, latexDir, <span class="kw">basename</span>(latex.files)))
+                }
+            }
+        }
+        if (<span class="kw">length</span>(infiles)) {
+            infiles &lt;-<span class="st"> </span>infiles[<span class="kw">basename</span>(<span class="kw">dirname</span>(infiles)) ==<span class="st"> </span>origin]
+            if (<span class="kw">length</span>(infiles)) {
+                if (type[i] ==<span class="st"> &quot;html&quot;</span>) {
+                  html.dirs &lt;-<span class="st"> </span><span class="kw">gsub</span>(<span class="st">&quot;</span><span class="ch">\\</span><span class="st">.html&quot;</span>, <span class="st">&quot;_files&quot;</span>, infiles)
+                  dirs &lt;-<span class="st"> </span><span class="kw">list.dirs</span>(path.i, <span class="dt">recursive =</span> <span class="ot">FALSE</span>)
+                  ind &lt;-<span class="st"> </span><span class="kw">which</span>(dirs %in%<span class="st"> </span>html.dirs)
+                  if (<span class="kw">length</span>(ind)) {
+                    html.dirs &lt;-<span class="st"> </span>dirs[ind]
+                    html.dirs.recur &lt;-<span class="st"> </span><span class="kw">list.dirs</span>(html.dirs)
+                    for (p in <span class="dv">1</span>:<span class="kw">length</span>(html.dirs.recur)) <span class="kw">dir.create</span>(<span class="kw">gsub</span>(<span class="st">&quot;/Rmd&quot;</span>, 
+                      <span class="st">&quot;/html&quot;</span>, html.dirs.recur[p]), <span class="dt">recursive =</span> <span class="ot">TRUE</span>, <span class="dt">showWarnings =</span> <span class="ot">FALSE</span>)
+                    subfiles &lt;-<span class="st"> </span><span class="kw">unique</span>(<span class="kw">unlist</span>(<span class="kw">lapply</span>(<span class="dv">1</span>:<span class="kw">length</span>(html.dirs.recur), 
+                      function(p, path) <span class="kw">list.files</span>(path[p], <span class="dt">full =</span> <span class="ot">TRUE</span>), <span class="dt">path =</span> html.dirs.recur)))
+                    subfiles &lt;-<span class="st"> </span>subfiles[!(subfiles %in%<span class="st"> </span>html.dirs.recur)]
+                    <span class="kw">file.copy</span>(subfiles, <span class="kw">gsub</span>(<span class="st">&quot;/Rmd&quot;</span>, <span class="st">&quot;/html&quot;</span>, subfiles), <span class="dt">overwrite =</span> <span class="ot">TRUE</span>)
+                    if (move) 
+                      <span class="kw">unlink</span>(html.dirs, <span class="dt">recursive =</span> <span class="ot">TRUE</span>)
+                  }
+                }
+                outfiles &lt;-<span class="st"> </span><span class="kw">file.path</span>(path.docs, type[i], <span class="kw">basename</span>(infiles))
+                if (move) 
+                  <span class="kw">file.rename</span>(infiles, outfiles) else if (copy) 
+                  <span class="kw">file.copy</span>(infiles, outfiles, <span class="dt">overwrite =</span> <span class="ot">TRUE</span>)
+            }
+        }
+    }
+}</code></pre>
+</div>
+
+
+</div>
+
+<script>
+
+// add bootstrap table styles to pandoc tables
+$(document).ready(function () {
+  $('tr.header').parent('thead').parent('table').addClass('table table-condensed');
+});
+
+</script>
+
+
+</body>
+</html>

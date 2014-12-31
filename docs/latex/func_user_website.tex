@@ -129,8 +129,6 @@ This function will probably be removed in favor of the more general \texttt{genP
     \hlkwd{sink}\hlstd{()}
     \hlkwd{cat}\hlstd{(}\hlstr{"div container html created for Shiny Apps.\textbackslash{}n"}\hlstd{)}
 \hlstd{\}}
-
-\hlcom{# genAppDiv() genAppDiv(panel.main=rep('Jussanothashinyapp', 18))}
 \end{alltt}
 \end{kframe}
 \end{knitrout}
@@ -165,9 +163,9 @@ This function makes the more specific \texttt{genAppDiv} redundant and will like
 \begin{knitrout}
 \definecolor{shadecolor}{rgb}{0, 0.169, 0.212}\color{fgcolor}\begin{kframe}
 \begin{alltt}
-\hlstd{genPanelDiv} \hlkwb{<-} \hlkwa{function}\hlstd{(}\hlkwc{outDir} \hlstd{=} \hlstr{"C:/github/leonawicz.github.io/assets"}\hlstd{,} \hlkwc{type} \hlstd{=} \hlstr{"projects"}\hlstd{,}
-    \hlkwc{main} \hlstd{=} \hlstr{"Projects"}\hlstd{,} \hlkwc{github.user} \hlstd{=} \hlstr{"leonawicz"}\hlstd{,} \hlkwc{prjs.dir} \hlstd{=} \hlstr{"C:/github"}\hlstd{,} \hlkwc{exclude} \hlstd{=} \hlkwd{c}\hlstd{(}\hlstr{"leonawicz.github.io"}\hlstd{,}
-        \hlstr{"shiny-apps"}\hlstd{),} \hlkwc{img.loc} \hlstd{=} \hlstr{"_images/cropped"}\hlstd{,} \hlkwc{...}\hlstd{) \{}
+\hlstd{genPanelDiv} \hlkwb{<-} \hlkwa{function}\hlstd{(}\hlkwc{outDir}\hlstd{,} \hlkwc{type} \hlstd{=} \hlstr{"projects"}\hlstd{,} \hlkwc{main} \hlstd{=} \hlstr{"Projects"}\hlstd{,} \hlkwc{github.user} \hlstd{=} \hlstr{"leonawicz"}\hlstd{,}
+    \hlkwc{prjs.dir} \hlstd{=} \hlstr{"C:/github"}\hlstd{,} \hlkwc{exclude} \hlstd{=} \hlkwd{c}\hlstd{(}\hlstr{"leonawicz.github.io"}\hlstd{,} \hlstr{"shiny-apps"}\hlstd{),}
+    \hlkwc{img.loc} \hlstd{=} \hlstr{"_images/cropped"}\hlstd{,} \hlkwc{...}\hlstd{) \{}
     \hlkwd{stopifnot}\hlstd{(github.user} \hlopt{%in%} \hlkwd{c}\hlstd{(}\hlstr{"leonawicz"}\hlstd{,} \hlstr{"ua-snap"}\hlstd{))}
     \hlkwa{if} \hlstd{(type} \hlopt{==} \hlstr{"apps"}\hlstd{) \{}
         \hlstd{filename} \hlkwb{<-} \hlstr{"apps_container.html"}
@@ -232,6 +230,168 @@ This function makes the more specific \texttt{genAppDiv} redundant and will like
     \hlkwd{sapply}\hlstd{(}\hlkwd{c}\hlstd{(x, y, z), cat)}
     \hlkwd{sink}\hlstd{()}
     \hlkwd{cat}\hlstd{(}\hlstr{"div container html file created.\textbackslash{}n"}\hlstd{)}
+\hlstd{\}}
+\end{alltt}
+\end{kframe}
+\end{knitrout}
+
+\subsubsection{htmlHead}
+
+\texttt{htmlHead} .
+
+
+\begin{knitrout}
+\definecolor{shadecolor}{rgb}{0, 0.169, 0.212}\color{fgcolor}\begin{kframe}
+\begin{alltt}
+\hlstd{htmlHead} \hlkwb{<-} \hlkwa{function}\hlstd{(}\hlkwc{author} \hlstd{=} \hlstr{"Matthew Leonawicz"}\hlstd{,} \hlkwc{title} \hlstd{= author,} \hlkwc{script.paths} \hlstd{=} \hlkwa{NULL}\hlstd{,}
+    \hlkwc{stylesheet.paths}\hlstd{,} \hlkwc{stylesheet.args} \hlstd{=} \hlkwd{vector}\hlstd{(}\hlstr{"list"}\hlstd{,} \hlkwd{length}\hlstd{(path.stylesheets)),}
+    \hlkwc{...}\hlstd{) \{}
+    \hlstd{x} \hlkwb{<-} \hlkwd{paste0}\hlstd{(}\hlstr{"<!DOCTYPE html>\textbackslash{}n\textbackslash{}n<html xmlns=\textbackslash{}"http://www.w3.org/1999/xhtml\textbackslash{}">\textbackslash{}n\textbackslash{}n<head>\textbackslash{}n\textbackslash{}n<meta charset=\textbackslash{}"utf-8\textbackslash{}">\textbackslash{}n<meta http-equiv=\textbackslash{}"Content-Type\textbackslash{}" content=\textbackslash{}"text/html; charset=utf-8\textbackslash{}" />\textbackslash{}n\textbackslash{}n<meta name=\textbackslash{}"author\textbackslash{}" content="}\hlstd{,}
+        \hlstd{author,} \hlstr{" />\textbackslash{}n\textbackslash{}n<title>"}\hlstd{, title,} \hlstr{"</title>\textbackslash{}n"}\hlstd{)}
+
+    \hlkwa{if} \hlstd{(}\hlkwd{is.character}\hlstd{(script.paths))}
+        \hlstd{x} \hlkwb{<-} \hlkwd{c}\hlstd{(x,} \hlkwd{paste0}\hlstd{(}\hlkwd{paste0}\hlstd{(}\hlstr{"<script src=\textbackslash{}""}\hlstd{, script.paths,} \hlstr{"\textbackslash{}"></script>"}\hlstd{,}
+            \hlkwc{collapse} \hlstd{=} \hlstr{"\textbackslash{}n"}\hlstd{),} \hlstr{"\textbackslash{}n"}\hlstd{))}
+
+    \hlstd{x} \hlkwb{<-} \hlkwd{c}\hlstd{(x,} \hlstr{"<meta name=\textbackslash{}"viewport\textbackslash{}" content=\textbackslash{}"width=device-width, initial-scale=1.0\textbackslash{}" />\textbackslash{}n"}\hlstd{)}
+
+    \hlkwa{if} \hlstd{(}\hlkwd{is.character}\hlstd{(stylesheet.paths)) \{}
+        \hlstd{n} \hlkwb{<-} \hlkwd{length}\hlstd{(stylesheet.paths)}
+        \hlkwd{stopifnot}\hlstd{(}\hlkwd{is.list}\hlstd{(stylesheet.args))}
+        \hlkwd{stopifnot}\hlstd{(}\hlkwd{length}\hlstd{(stylesheet.args)} \hlopt{==} \hlstd{n)}
+        \hlkwa{for} \hlstd{(i} \hlkwa{in} \hlnum{1}\hlopt{:}\hlstd{n) \{}
+            \hlstd{string} \hlkwb{<-} \hlstr{""}
+            \hlkwa{if} \hlstd{(}\hlkwd{is.list}\hlstd{(stylesheet.args[i])) \{}
+                \hlstd{v} \hlkwb{<-} \hlstd{stylesheet.args[i]}
+                \hlstd{arg} \hlkwb{<-} \hlkwd{names}\hlstd{(v)}
+                \hlkwa{if} \hlstd{(}\hlkwd{is.character}\hlstd{(arg)} \hlopt{&&} \hlkwd{all}\hlstd{(arg} \hlopt{!=} \hlstr{""}\hlstd{))}
+                  \hlstd{string} \hlkwb{<-} \hlkwd{paste0}\hlstd{(}\hlstr{" "}\hlstd{,} \hlkwd{paste}\hlstd{(arg,} \hlkwd{paste0}\hlstd{(}\hlstr{"\textbackslash{}""}\hlstd{, v,} \hlstr{"\textbackslash{}""}\hlstd{),} \hlkwc{sep} \hlstd{=} \hlstr{"="}\hlstd{,}
+                    \hlkwc{collapse} \hlstd{=} \hlstr{" "}\hlstd{))}
+            \hlstd{\}}
+            \hlstd{x} \hlkwb{<-} \hlkwd{c}\hlstd{(x,} \hlkwd{paste0}\hlstd{(}\hlstr{"<link rel=\textbackslash{}"stylesheet\textbackslash{}" href=\textbackslash{}""}\hlstd{, stylesheet.paths[i],}
+                \hlstr{"\textbackslash{}""}\hlstd{, string,} \hlstr{">\textbackslash{}n"}\hlstd{))}
+        \hlstd{\}}
+    \hlstd{\}}
+
+    \hlstd{x} \hlkwb{<-} \hlkwd{c}\hlstd{(x,} \hlstr{"</head>\textbackslash{}n"}\hlstd{)}
+    \hlstd{x}
+
+\hlstd{\}}
+\end{alltt}
+\end{kframe}
+\end{knitrout}
+
+\subsubsection{htmlBodyTop}
+
+\texttt{htmlBodyTop} .
+
+
+\begin{knitrout}
+\definecolor{shadecolor}{rgb}{0, 0.169, 0.212}\color{fgcolor}\begin{kframe}
+\begin{alltt}
+\hlstd{htmlBodyTop} \hlkwb{<-} \hlkwa{function}\hlstd{(}\hlkwc{css.file} \hlstd{=} \hlkwa{NULL}\hlstd{,} \hlkwc{css.string} \hlstd{=} \hlkwa{NULL}\hlstd{,} \hlkwc{background.image} \hlstd{=} \hlstr{""}\hlstd{,}
+    \hlkwc{include.default} \hlstd{=} \hlnum{TRUE}\hlstd{,} \hlkwc{...}\hlstd{) \{}
+    \hlstd{x} \hlkwb{<-} \hlstr{"<style type = \textbackslash{}"text/css\textbackslash{}">\textbackslash{}n"}
+
+    \hlstd{default} \hlkwb{<-} \hlkwd{paste0}\hlstd{(}\hlstr{"\textbackslash{}n\textbackslash{}t.main-container \{\textbackslash{}n\textbackslash{}t  max-width: 940px;\textbackslash{}n\textbackslash{}t  margin-left: auto;\textbackslash{}n\textbackslash{}t  margin-right: auto;\textbackslash{}n\textbackslash{}n\textbackslash{}t\}\textbackslash{}n\textbackslash{}n\textbackslash{}tbody \{\textbackslash{}n\textbackslash{}t  background-image: url(\textbackslash{}""}\hlstd{,}
+        \hlstd{background.image,} \hlstr{"\textbackslash{}");\textbackslash{}n\textbackslash{}t  background-attachment: fixed;\textbackslash{}n\textbackslash{}t  background-size: 1920px 1080px;\textbackslash{}n\textbackslash{}t\}\textbackslash{}n\textbackslash{}t\textbackslash{}n\textbackslash{}t/* padding for bootstrap navbar */\textbackslash{}n\textbackslash{}tbody \{\textbackslash{}n\textbackslash{}t  padding-top: 50px;\textbackslash{}n\textbackslash{}t  padding-bottom: 40px;\textbackslash{}n\textbackslash{}t\}\textbackslash{}n\textbackslash{}t@media (max-width: 979px) \{\textbackslash{}n\textbackslash{}t  body \{\textbackslash{}n\textbackslash{}t\textbackslash{}tpadding-top: 0;\textbackslash{}n\textbackslash{}t  \}\textbackslash{}n\textbackslash{}t\}\textbackslash{}n\textbackslash{}t\textbackslash{}n\textbackslash{}t.nav>.btn \{\textbackslash{}n\textbackslash{}t  line-height: 0.75em;\textbackslash{}n\textbackslash{}t  margin-top: 9px;\textbackslash{}n\textbackslash{}t\}\textbackslash{}n\textbackslash{}t"}\hlstd{)}
+
+    \hlkwa{if} \hlstd{(}\hlopt{!}\hlkwd{is.null}\hlstd{(css.file))}
+        \hlstd{y} \hlkwb{<-} \hlkwd{readLines}\hlstd{(css.file)} \hlkwa{else} \hlstd{y} \hlkwb{<-} \hlstr{""}
+    \hlkwa{if} \hlstd{(}\hlopt{!}\hlkwd{is.null}\hlstd{(css.string))}
+        \hlstd{y} \hlkwb{<-} \hlkwd{c}\hlstd{(y, css.string)}
+    \hlkwa{if} \hlstd{(include.default)}
+        \hlstd{y} \hlkwb{<-} \hlkwd{c}\hlstd{(default, y)}
+
+    \hlstd{z} \hlkwb{<-} \hlstr{"\textbackslash{}n</style>\textbackslash{}n\textbackslash{}t<div class=\textbackslash{}"container-fluid main-container\textbackslash{}">\textbackslash{}n\textbackslash{}t"}
+
+    \hlkwd{c}\hlstd{(x, y, z)}
+\hlstd{\}}
+\end{alltt}
+\end{kframe}
+\end{knitrout}
+
+\subsubsection{htmlBottom}
+
+\texttt{htmlBottom} .
+
+
+\begin{knitrout}
+\definecolor{shadecolor}{rgb}{0, 0.169, 0.212}\color{fgcolor}\begin{kframe}
+\begin{alltt}
+\hlstd{htmlBottom} \hlkwb{<-} \hlkwa{function}\hlstd{(}\hlkwc{...}\hlstd{) \{}
+    \hlcom{# temporary}
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+\hlstd{\}}
+\end{alltt}
+\end{kframe}
+\end{knitrout}
+
+\subsubsection{genUserPage}
+
+\texttt{genUserPage} .
+
+
+\begin{knitrout}
+\definecolor{shadecolor}{rgb}{0, 0.169, 0.212}\color{fgcolor}\begin{kframe}
+\begin{alltt}
+\hlstd{genUserPage} \hlkwb{<-} \hlkwa{function}\hlstd{(}\hlkwc{file} \hlstd{=} \hlstr{"C:/github/leonawicz.github.io/index.html"}\hlstd{,} \hlkwc{containers} \hlstd{=} \hlkwa{NULL}\hlstd{,}
+    \hlkwc{navbar} \hlstd{=} \hlstr{""}\hlstd{,} \hlkwc{...}\hlstd{) \{}
+    \hlstd{x1} \hlkwb{<-} \hlkwd{htmlHead}\hlstd{(...)}
+    \hlstd{x2} \hlkwb{<-} \hlkwd{htmlBodyTop}\hlstd{(...)}
+    \hlkwa{if} \hlstd{(}\hlopt{!}\hlkwd{is.null}\hlstd{(containers))}
+        \hlstd{x3} \hlkwb{<-} \hlkwd{sapply}\hlstd{(containers,} \hlkwa{function}\hlstd{(}\hlkwc{x}\hlstd{)} \hlkwd{paste0}\hlstd{(}\hlkwd{paste0}\hlstd{(}\hlkwd{readLines}\hlstd{(x),} \hlkwc{collapse} \hlstd{=} \hlstr{"\textbackslash{}n"}\hlstd{),}
+            \hlstr{"\textbackslash{}n\textbackslash{}n"}\hlstd{))} \hlkwa{else} \hlstd{x3} \hlkwb{<-} \hlstr{""}
+    \hlstd{x4} \hlkwb{<-} \hlkwd{htmlBottom}\hlstd{(...)}
+    \hlstd{nb} \hlkwb{<-} \hlkwa{if} \hlstd{(}\hlkwd{file.exists}\hlstd{(navbar)} \hlopt{&&} \hlkwd{substr}\hlstd{(navbar,} \hlkwd{nchar}\hlstd{(navbar)} \hlopt{-} \hlnum{4}\hlstd{,} \hlkwd{nchar}\hlstd{(navbar))} \hlopt{==}
+        \hlstr{".html"}\hlstd{)}
+        \hlstd{nb} \hlkwb{<-} \hlkwd{paste0}\hlstd{(}\hlkwd{paste0}\hlstd{(}\hlkwd{readLines}\hlstd{(navbar),} \hlkwc{collapse} \hlstd{=} \hlstr{"\textbackslash{}n"}\hlstd{),} \hlstr{"\textbackslash{}n\textbackslash{}n"}\hlstd{)}
+    \hlkwd{sink}\hlstd{(file)}
+    \hlkwd{sapply}\hlstd{(}\hlkwd{c}\hlstd{(x1, x2, nb, x3, x4), cat)}
+    \hlkwd{sink}\hlstd{()}
+    \hlkwd{cat}\hlstd{(}\hlstr{"Github User page html file created.\textbackslash{}n"}\hlstd{)}
 \hlstd{\}}
 \end{alltt}
 \end{kframe}

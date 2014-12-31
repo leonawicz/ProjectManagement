@@ -7,7 +7,7 @@ A tentative default path is also included since this code relates to my own work
 
 
 ```r
-# For package 'projman'
+# For package 'rpm'
 
 # data
 

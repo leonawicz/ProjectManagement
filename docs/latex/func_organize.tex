@@ -1,0 +1,162 @@
+\documentclass{article}\usepackage[]{graphicx}\usepackage[]{color}
+%% maxwidth is the original width if it is less than linewidth
+%% otherwise use linewidth (to make sure the graphics do not exceed the margin)
+\makeatletter
+\def\maxwidth{ %
+  \ifdim\Gin@nat@width>\linewidth
+    \linewidth
+  \else
+    \Gin@nat@width
+  \fi
+}
+\makeatother
+
+\definecolor{fgcolor}{rgb}{0.514, 0.58, 0.588}
+\newcommand{\hlnum}[1]{\textcolor[rgb]{0.863,0.196,0.184}{#1}}%
+\newcommand{\hlstr}[1]{\textcolor[rgb]{0.863,0.196,0.184}{#1}}%
+\newcommand{\hlcom}[1]{\textcolor[rgb]{0.345,0.431,0.459}{#1}}%
+\newcommand{\hlopt}[1]{\textcolor[rgb]{0.576,0.631,0.631}{#1}}%
+\newcommand{\hlstd}[1]{\textcolor[rgb]{0.514,0.58,0.588}{#1}}%
+\newcommand{\hlkwa}[1]{\textcolor[rgb]{0.796,0.294,0.086}{#1}}%
+\newcommand{\hlkwb}[1]{\textcolor[rgb]{0.522,0.6,0}{#1}}%
+\newcommand{\hlkwc}[1]{\textcolor[rgb]{0.796,0.294,0.086}{#1}}%
+\newcommand{\hlkwd}[1]{\textcolor[rgb]{0.576,0.631,0.631}{#1}}%
+
+\usepackage{framed}
+\makeatletter
+\newenvironment{kframe}{%
+ \def\at@end@of@kframe{}%
+ \ifinner\ifhmode%
+  \def\at@end@of@kframe{\end{minipage}}%
+  \begin{minipage}{\columnwidth}%
+ \fi\fi%
+ \def\FrameCommand##1{\hskip\@totalleftmargin \hskip-\fboxsep
+ \colorbox{shadecolor}{##1}\hskip-\fboxsep
+     % There is no \\@totalrightmargin, so:
+     \hskip-\linewidth \hskip-\@totalleftmargin \hskip\columnwidth}%
+ \MakeFramed {\advance\hsize-\width
+   \@totalleftmargin\z@ \linewidth\hsize
+   \@setminipage}}%
+ {\par\unskip\endMakeFramed%
+ \at@end@of@kframe}
+\makeatother
+
+\definecolor{shadecolor}{rgb}{.97, .97, .97}
+\definecolor{messagecolor}{rgb}{0, 0, 0}
+\definecolor{warningcolor}{rgb}{1, 0, 1}
+\definecolor{errorcolor}{rgb}{1, 0, 0}
+\newenvironment{knitrout}{}{} % an empty environment to be redefined in TeX
+
+\usepackage{alltt}
+\usepackage{geometry}
+\geometry{verbose, tmargin=2.5cm, bmargin=2.5cm, lmargin=2.5cm, rmargin=2.5cm}
+\IfFileExists{upquote.sty}{\usepackage{upquote}}{}
+\begin{document}
+
+\title{}
+\author{}
+\maketitle
+
+
+
+
+
+\subsubsection{moveDocs}
+\texttt{moveDocs} relocates files by renaming with a new file path.
+Specifically, it scans for md and html files in the \texttt{docs/Rmd} directory and/or pdf files in the \texttt{docs/Rnw} directory.
+If such files are found in the respective locations, they are moved to \texttt{docs/md}, \texttt{docs/html}, and \texttt{docs/pdf}, respectively.
+
+The intent is to clean up the Rmd and Rnw directories after \texttt{knitr} has been used to knit documents in place.
+I do this because I have more success knitting documents with the confluence of \texttt{RStudio}, \texttt{rmarkdown}, \texttt{knitr}, \texttt{pandoc}, and \texttt{LaTeX} when the knitting occurs all within the directory of the originating files.
+The process is more prone to throwing errors when trying to specify alternate locations for outputs.
+
+\texttt{moveDocs} makes a nominal effort to replace a possible relative path with a full file path before proceeding, if the former is supplied.
+Default arguments include \texttt{move=TRUE} which will call \texttt{file.rename} and \texttt{copy=FALSE} which, if \texttt{TRUE} (and \texttt{move=FALSE}), will alternatively call \texttt{file.copy}.
+If both are \texttt{TRUE}, any files found are moved.
+
+This function will always overwrite any existing file versions previously moved to the output directories, by way of \texttt{file.rename}.
+To keep the behavior consistent, when \texttt{move=FALSE} and \texttt{copy=TRUE}, \texttt{file.copy} always executes with its argument, \texttt{overwrite=TRUE}.
+This should never cause problems because in the context I intend for this function,
+the types of files being moved or copied from \texttt{docs/Rmd} and \texttt{docs/Rnw} are never used as inputs to other files, functions, or processes,
+nor are they meant to be edited by hand after being generated.
+
+If there are LaTeX-associated files present (.TeX, .aux, and .txt files with the same file names as local pdf files.),
+these files will be removed if \texttt{remove.latex=TRUE} (default).
+If \texttt{FALSE}, the default \texttt{latexDir="LaTeX"} means that these files will be moved to the \texttt{docs/LaTeX} directory rather than deleted.
+If this directory does not exist, it will be created.
+An alternate location can be specified, such as "pdf" if you want to keep these files with the related pdf files after those are moved by \texttt{moveDocs} as well to \texttt{docs/pdf}.
+
+\begin{knitrout}
+\definecolor{shadecolor}{rgb}{0, 0.169, 0.212}\color{fgcolor}\begin{kframe}
+\begin{alltt}
+\hlcom{# Organization documentation}
+\hlstd{moveDocs} \hlkwb{<-} \hlkwa{function}\hlstd{(}\hlkwc{path.docs}\hlstd{,} \hlkwc{type} \hlstd{=} \hlkwd{c}\hlstd{(}\hlstr{"md"}\hlstd{,} \hlstr{"html"}\hlstd{,} \hlstr{"pdf"}\hlstd{),} \hlkwc{move} \hlstd{=} \hlnum{TRUE}\hlstd{,}
+    \hlkwc{copy} \hlstd{=} \hlnum{FALSE}\hlstd{,} \hlkwc{remove.latex} \hlstd{=} \hlnum{TRUE}\hlstd{,} \hlkwc{latexDir} \hlstd{=} \hlstr{"latex"}\hlstd{) \{}
+    \hlkwa{if} \hlstd{(}\hlkwd{any}\hlstd{(}\hlopt{!}\hlstd{(type} \hlopt{%in%} \hlkwd{c}\hlstd{(}\hlstr{"md"}\hlstd{,} \hlstr{"html"}\hlstd{,} \hlstr{"pdf"}\hlstd{))))}
+        \hlkwd{stop}\hlstd{(}\hlstr{"type must be among 'md', 'html', and 'pdf'"}\hlstd{)}
+    \hlkwd{stopifnot}\hlstd{(move} \hlopt{|} \hlstd{copy)}
+    \hlkwa{if} \hlstd{(path.docs} \hlopt{==} \hlstr{"."} \hlopt{|} \hlstd{path.docs} \hlopt{==} \hlstr{"./"}\hlstd{)}
+        \hlstd{path.docs} \hlkwb{<-} \hlkwd{getwd}\hlstd{()}
+    \hlkwa{if} \hlstd{(}\hlkwd{strsplit}\hlstd{(path.docs,} \hlstr{"/"}\hlstd{)[[}\hlnum{1}\hlstd{]][}\hlnum{1}\hlstd{]} \hlopt{==} \hlstr{".."}\hlstd{) \{}
+        \hlstd{tmp} \hlkwb{<-} \hlkwd{strsplit}\hlstd{(path.docs,} \hlstr{"/"}\hlstd{)[[}\hlnum{1}\hlstd{]][}\hlopt{-}\hlnum{1}\hlstd{]}
+        \hlkwa{if} \hlstd{(}\hlkwd{length}\hlstd{(tmp))}
+            \hlstd{path.docs} \hlkwb{<-} \hlkwd{file.path}\hlstd{(}\hlkwd{getwd}\hlstd{(),} \hlkwd{paste0}\hlstd{(tmp,} \hlkwc{collapse} \hlstd{=} \hlstr{"/"}\hlstd{))} \hlkwa{else} \hlkwd{stop}\hlstd{(}\hlstr{"Check path.docs argument."}\hlstd{)}
+    \hlstd{\}}
+    \hlkwa{for} \hlstd{(i} \hlkwa{in} \hlnum{1}\hlopt{:}\hlkwd{length}\hlstd{(type)) \{}
+        \hlkwa{if} \hlstd{(type[i]} \hlopt{==} \hlstr{"pdf"}\hlstd{)}
+            \hlstd{origin} \hlkwb{<-} \hlstr{"Rnw"} \hlkwa{else} \hlstd{origin} \hlkwb{<-} \hlstr{"Rmd"}
+        \hlstd{path.i} \hlkwb{<-} \hlkwd{file.path}\hlstd{(path.docs, origin)}
+        \hlstd{infiles} \hlkwb{<-} \hlkwd{list.files}\hlstd{(path.i,} \hlkwc{pattern} \hlstd{=} \hlkwd{paste0}\hlstd{(}\hlstr{"\textbackslash{}\textbackslash{}."}\hlstd{, type[i],} \hlstr{"$"}\hlstd{),}
+            \hlkwc{full} \hlstd{=} \hlnum{TRUE}\hlstd{)}
+        \hlkwa{if} \hlstd{(type[i]} \hlopt{==} \hlstr{"pdf"}\hlstd{) \{}
+            \hlstd{extensions} \hlkwb{<-} \hlkwd{c}\hlstd{(}\hlstr{"tex"}\hlstd{,} \hlstr{"aux"}\hlstd{,} \hlstr{"log"}\hlstd{)}
+            \hlstd{all.pdfs} \hlkwb{<-} \hlkwd{basename}\hlstd{(}\hlkwd{list.files}\hlstd{(path.docs,} \hlkwc{pattern} \hlstd{=} \hlstr{".pdf$"}\hlstd{,} \hlkwc{full} \hlstd{= T,}
+                \hlkwc{recursive} \hlstd{= T))}
+            \hlstd{pat} \hlkwb{<-} \hlkwd{paste0}\hlstd{(}\hlstr{"^"}\hlstd{,} \hlkwd{rep}\hlstd{(}\hlkwd{gsub}\hlstd{(}\hlstr{"pdf"}\hlstd{,} \hlstr{""}\hlstd{, all.pdfs),} \hlkwd{length}\hlstd{(extensions)),}
+                \hlkwd{rep}\hlstd{(extensions,} \hlkwc{each} \hlstd{=} \hlkwd{length}\hlstd{(all.pdfs)),} \hlstr{"$"}\hlstd{)}
+            \hlstd{latex.files} \hlkwb{<-} \hlkwd{unlist}\hlstd{(}\hlkwd{sapply}\hlstd{(}\hlnum{1}\hlopt{:}\hlkwd{length}\hlstd{(pat),} \hlkwa{function}\hlstd{(}\hlkwc{p}\hlstd{,} \hlkwc{path}\hlstd{,} \hlkwc{pat}\hlstd{)} \hlkwd{list.files}\hlstd{(path,}
+                \hlkwc{pattern} \hlstd{= pat[p],} \hlkwc{full} \hlstd{=} \hlnum{TRUE}\hlstd{),} \hlkwc{path} \hlstd{= path.i,} \hlkwc{pat} \hlstd{= pat))}
+            \hlkwd{print}\hlstd{(latex.files)}
+            \hlkwa{if} \hlstd{(}\hlkwd{length}\hlstd{(latex.files)) \{}
+                \hlkwa{if} \hlstd{(remove.latex) \{}
+                  \hlkwd{unlink}\hlstd{(latex.files)}
+                \hlstd{\}} \hlkwa{else} \hlstd{\{}
+                  \hlkwd{dir.create}\hlstd{(}\hlkwd{file.path}\hlstd{(path.docs, latexDir),} \hlkwc{showWarnings} \hlstd{=} \hlnum{FALSE}\hlstd{,}
+                    \hlkwc{recursive} \hlstd{=} \hlnum{TRUE}\hlstd{)}
+                  \hlkwd{file.rename}\hlstd{(latex.files,} \hlkwd{file.path}\hlstd{(path.docs, latexDir,} \hlkwd{basename}\hlstd{(latex.files)))}
+                \hlstd{\}}
+            \hlstd{\}}
+        \hlstd{\}}
+        \hlkwa{if} \hlstd{(}\hlkwd{length}\hlstd{(infiles)) \{}
+            \hlstd{infiles} \hlkwb{<-} \hlstd{infiles[}\hlkwd{basename}\hlstd{(}\hlkwd{dirname}\hlstd{(infiles))} \hlopt{==} \hlstd{origin]}
+            \hlkwa{if} \hlstd{(}\hlkwd{length}\hlstd{(infiles)) \{}
+                \hlkwa{if} \hlstd{(type[i]} \hlopt{==} \hlstr{"html"}\hlstd{) \{}
+                  \hlstd{html.dirs} \hlkwb{<-} \hlkwd{gsub}\hlstd{(}\hlstr{"\textbackslash{}\textbackslash{}.html"}\hlstd{,} \hlstr{"_files"}\hlstd{, infiles)}
+                  \hlstd{dirs} \hlkwb{<-} \hlkwd{list.dirs}\hlstd{(path.i,} \hlkwc{recursive} \hlstd{=} \hlnum{FALSE}\hlstd{)}
+                  \hlstd{ind} \hlkwb{<-} \hlkwd{which}\hlstd{(dirs} \hlopt{%in%} \hlstd{html.dirs)}
+                  \hlkwa{if} \hlstd{(}\hlkwd{length}\hlstd{(ind)) \{}
+                    \hlstd{html.dirs} \hlkwb{<-} \hlstd{dirs[ind]}
+                    \hlstd{html.dirs.recur} \hlkwb{<-} \hlkwd{list.dirs}\hlstd{(html.dirs)}
+                    \hlkwa{for} \hlstd{(p} \hlkwa{in} \hlnum{1}\hlopt{:}\hlkwd{length}\hlstd{(html.dirs.recur))} \hlkwd{dir.create}\hlstd{(}\hlkwd{gsub}\hlstd{(}\hlstr{"/Rmd"}\hlstd{,}
+                      \hlstr{"/html"}\hlstd{, html.dirs.recur[p]),} \hlkwc{recursive} \hlstd{=} \hlnum{TRUE}\hlstd{,} \hlkwc{showWarnings} \hlstd{=} \hlnum{FALSE}\hlstd{)}
+                    \hlstd{subfiles} \hlkwb{<-} \hlkwd{unique}\hlstd{(}\hlkwd{unlist}\hlstd{(}\hlkwd{lapply}\hlstd{(}\hlnum{1}\hlopt{:}\hlkwd{length}\hlstd{(html.dirs.recur),}
+                      \hlkwa{function}\hlstd{(}\hlkwc{p}\hlstd{,} \hlkwc{path}\hlstd{)} \hlkwd{list.files}\hlstd{(path[p],} \hlkwc{full} \hlstd{=} \hlnum{TRUE}\hlstd{),} \hlkwc{path} \hlstd{= html.dirs.recur)))}
+                    \hlstd{subfiles} \hlkwb{<-} \hlstd{subfiles[}\hlopt{!}\hlstd{(subfiles} \hlopt{%in%} \hlstd{html.dirs.recur)]}
+                    \hlkwd{file.copy}\hlstd{(subfiles,} \hlkwd{gsub}\hlstd{(}\hlstr{"/Rmd"}\hlstd{,} \hlstr{"/html"}\hlstd{, subfiles),} \hlkwc{overwrite} \hlstd{=} \hlnum{TRUE}\hlstd{)}
+                    \hlkwa{if} \hlstd{(move)}
+                      \hlkwd{unlink}\hlstd{(html.dirs,} \hlkwc{recursive} \hlstd{=} \hlnum{TRUE}\hlstd{)}
+                  \hlstd{\}}
+                \hlstd{\}}
+                \hlstd{outfiles} \hlkwb{<-} \hlkwd{file.path}\hlstd{(path.docs, type[i],} \hlkwd{basename}\hlstd{(infiles))}
+                \hlkwa{if} \hlstd{(move)}
+                  \hlkwd{file.rename}\hlstd{(infiles, outfiles)} \hlkwa{else if} \hlstd{(copy)}
+                  \hlkwd{file.copy}\hlstd{(infiles, outfiles,} \hlkwc{overwrite} \hlstd{=} \hlnum{TRUE}\hlstd{)}
+            \hlstd{\}}
+        \hlstd{\}}
+    \hlstd{\}}
+\hlstd{\}}
+\end{alltt}
+\end{kframe}
+\end{knitrout}
+
+\end{document}

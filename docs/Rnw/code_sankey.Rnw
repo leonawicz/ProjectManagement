@@ -46,8 +46,8 @@ Two packages are required.
 
 Project file names can be loaded using \texttt{pattern} arguments with \texttt{list.files} pointing to both the \texttt{code} and relevant \texttt{docs} directories.
 However, there is a substantial amount of hardcoding involved for any project as shown here.
-For example, the \texttt{projman.R} script contains all the \texttt{projman} functions. 
-Although this script has a complete, corresponding \texttt{projman.Rmd} file, I decided to subsequently break out the functions and other content from \texttt{projman.Rmd} into multiple Rmd files.
+For example, the \texttt{rpm.R} script contains all the \texttt{rpm} functions. 
+Although this script has a complete, corresponding \texttt{rpm.Rmd} file, I decided to subsequently break out the functions and other content from \texttt{rpm.Rmd} into multiple Rmd files.
 Such ad hoc project-specific decisions require that I take note here and make the related distinctions.
 
 <<files>>=

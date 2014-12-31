@@ -68,8 +68,6 @@ genAppDiv <- function(file = "C:/github/leonawicz.github.io/assets/apps_containe
     sink()
     cat("div container html created for Shiny Apps.\n")
 }
-
-# genAppDiv() genAppDiv(panel.main=rep('Jussanothashinyapp', 18))
 ```
 
 #### genPanelDiv
@@ -101,9 +99,9 @@ This function makes the more specific `genAppDiv` redundant and will likely repl
 
 
 ```r
-genPanelDiv <- function(outDir = "C:/github/leonawicz.github.io/assets", type = "projects", 
-    main = "Projects", github.user = "leonawicz", prjs.dir = "C:/github", exclude = c("leonawicz.github.io", 
-        "shiny-apps"), img.loc = "_images/cropped", ...) {
+genPanelDiv <- function(outDir, type = "projects", main = "Projects", github.user = "leonawicz", 
+    prjs.dir = "C:/github", exclude = c("leonawicz.github.io", "shiny-apps"), 
+    img.loc = "_images/cropped", ...) {
     stopifnot(github.user %in% c("leonawicz", "ua-snap"))
     if (type == "apps") {
         filename <- "apps_container.html"
@@ -169,8 +167,154 @@ genPanelDiv <- function(outDir = "C:/github/leonawicz.github.io/assets", type = 
     sink()
     cat("div container html file created.\n")
 }
+```
 
-# genPanelDiv(type='projects', main='Projects', github.user='leonawicz',
-# col='primary') genPanelDiv(type='apps', main='Shiny Apps',
-# github.user='ua-snap')
+#### htmlHead
+
+`htmlHead` .
+
+
+
+```r
+htmlHead <- function(author = "Matthew Leonawicz", title = author, script.paths = NULL, 
+    stylesheet.paths, stylesheet.args = vector("list", length(path.stylesheets)), 
+    ...) {
+    x <- paste0("<!DOCTYPE html>\n\n<html xmlns=\"http://www.w3.org/1999/xhtml\">\n\n<head>\n\n<meta charset=\"utf-8\">\n<meta http-equiv=\"Content-Type\" content=\"text/html; charset=utf-8\" />\n\n<meta name=\"author\" content=", 
+        author, " />\n\n<title>", title, "</title>\n")
+    
+    if (is.character(script.paths)) 
+        x <- c(x, paste0(paste0("<script src=\"", script.paths, "\"></script>", 
+            collapse = "\n"), "\n"))
+    
+    x <- c(x, "<meta name=\"viewport\" content=\"width=device-width, initial-scale=1.0\" />\n")
+    
+    if (is.character(stylesheet.paths)) {
+        n <- length(stylesheet.paths)
+        stopifnot(is.list(stylesheet.args))
+        stopifnot(length(stylesheet.args) == n)
+        for (i in 1:n) {
+            string <- ""
+            if (is.list(stylesheet.args[i])) {
+                v <- stylesheet.args[i]
+                arg <- names(v)
+                if (is.character(arg) && all(arg != "")) 
+                  string <- paste0(" ", paste(arg, paste0("\"", v, "\""), sep = "=", 
+                    collapse = " "))
+            }
+            x <- c(x, paste0("<link rel=\"stylesheet\" href=\"", stylesheet.paths[i], 
+                "\"", string, ">\n"))
+        }
+    }
+    
+    x <- c(x, "</head>\n")
+    x
+    
+}
+```
+
+#### htmlBodyTop
+
+`htmlBodyTop` .
+
+
+
+```r
+htmlBodyTop <- function(css.file = NULL, css.string = NULL, background.image = "", 
+    include.default = TRUE, ...) {
+    x <- "<style type = \"text/css\">\n"
+    
+    default <- paste0("\n\t.main-container {\n\t  max-width: 940px;\n\t  margin-left: auto;\n\t  margin-right: auto;\n\n\t}\n\n\tbody {\n\t  background-image: url(\"", 
+        background.image, "\");\n\t  background-attachment: fixed;\n\t  background-size: 1920px 1080px;\n\t}\n\t\n\t/* padding for bootstrap navbar */\n\tbody {\n\t  padding-top: 50px;\n\t  padding-bottom: 40px;\n\t}\n\t@media (max-width: 979px) {\n\t  body {\n\t\tpadding-top: 0;\n\t  }\n\t}\n\t\n\t.nav>.btn {\n\t  line-height: 0.75em;\n\t  margin-top: 9px;\n\t}\n\t")
+    
+    if (!is.null(css.file)) 
+        y <- readLines(css.file) else y <- ""
+    if (!is.null(css.string)) 
+        y <- c(y, css.string)
+    if (include.default) 
+        y <- c(default, y)
+    
+    z <- "\n</style>\n\t<div class=\"container-fluid main-container\">\n\t"
+    
+    c(x, y, z)
+}
+```
+
+#### htmlBottom
+
+`htmlBottom` .
+
+
+
+```r
+htmlBottom <- function(...) {
+    # temporary
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+}
+```
+
+#### genUserPage
+
+`genUserPage` .
+
+
+
+```r
+genUserPage <- function(file = "C:/github/leonawicz.github.io/index.html", containers = NULL, 
+    navbar = "", ...) {
+    x1 <- htmlHead(...)
+    x2 <- htmlBodyTop(...)
+    if (!is.null(containers)) 
+        x3 <- sapply(containers, function(x) paste0(paste0(readLines(x), collapse = "\n"), 
+            "\n\n")) else x3 <- ""
+    x4 <- htmlBottom(...)
+    nb <- if (file.exists(navbar) && substr(navbar, nchar(navbar) - 4, nchar(navbar)) == 
+        ".html") 
+        nb <- paste0(paste0(readLines(navbar), collapse = "\n"), "\n\n")
+    sink(file)
+    sapply(c(x1, x2, nb, x3, x4), cat)
+    sink()
+    cat("Github User page html file created.\n")
+}
 ```
