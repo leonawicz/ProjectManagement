@@ -411,7 +411,7 @@ genNavbar <- function(htmlfile="navbar.html", title, menu, submenus, files, titl
 	ncs <- navClassStrings(theme)
 	
 	fillSubmenu <- function(x, name, file, theme){
-		if(theme=="united") dd.mennu.header <- "nav-header" else if(theme=="cyborg") dd.menu.header <- "dropdown-header"
+		if(theme=="united") dd.menu.header <- "nav-header" else if(theme=="cyborg") dd.menu.header <- "dropdown-header"
 		if(file[x]=="divider") return('              <li class="divider"></li>\n')
 		if(file[x]=="header") return(paste0('              <li class="', dd.menu.header, '">', name[x], '</li>\n'))
 		paste0('              <li><a href="', file[x], '">', name[x], '</a></li>\n')
