@@ -113,12 +113,12 @@ code > span.er { color: #c3bf9f; }
       <div class="nav-collapse collapse">
         <ul class="nav">
           <li class="dropdown">
-            <a href="projman" class="dropdown-toggle" data-toggle="dropdown">projman <b class="caret"></b></a>
+            <a href="rpm" class="dropdown-toggle" data-toggle="dropdown">rpm <b class="caret"></b></a>
             <ul class="dropdown-menu">
-              <li class="nav-header">About projman</li>
+              <li class="nav-header">About rpm</li>
               <li><a href="proj_intro.html">Introduction</a></li>
               <li><a href="code_sankey.html">Related items</a></li>
-              <li><a href="example.html">Example usage</a></li>
+              <li><a href="pm.html">Example usage</a></li>
             </ul>
 
           <li class="dropdown">
@@ -129,6 +129,8 @@ code > span.er { color: #c3bf9f; }
               <li class="nav-header">Functions</li>
               <li><a href="func_new.html">Start a new project</a></li>
               <li><a href="func_rmd.html">Working with Rmd files</a></li>
+              <li><a href="func_convert.html">Document conversion</a></li>
+              <li><a href="func_organize.html">Organize documents</a></li>
               <li><a href="func_website.html">Make a project website</a></li>
               <li><a href="func_user_website.html">Github user website</a></li>
             </ul>
@@ -161,14 +163,22 @@ code > span.er { color: #c3bf9f; }
 
 <div id="example-usage" class="section level2">
 <h2>Example usage</h2>
-<p>This is how <code>projman</code> functions can be used to create and manipulate a project, using the <code>projman</code> project itself as an example. The code below is not intended to be run directly, but serves as a guide.</p>
+<p>This is how <code>rpm</code> functions can be used to create and manipulate a project, using the <code>rpm</code> project itself as an example. The code below is not intended to be run in full directly, but serves as a guide.</p>
+<div id="dynamic-report-generation" class="section level3">
+<h3>Dynamic report generation</h3>
+<p>The script, <code>pm.R</code>, is used to compile web sites and reports in various formats based on project documentation, namely Rmd files. Using this project management project as an example, markdown and html files are generated for existing Rmd files. There is also optional conversion from Rmd to Rnw and subsequent PDF generation.</p>
+</div>
+<div id="github-user-website" class="section level3">
+<h3>Github user website</h3>
+<p>Although not a part of the <code>pm.R</code> scripts associated with other <strong>R</strong> projects, this example also includes creation of my Github user website, <code>leonawicz.github.io</code>, as part of overall project management. This is in addition to the <code>rpm</code>-specific project website.</p>
+</div>
 </div>
 <div id="r-code" class="section level2">
 <h2>R code</h2>
 <div id="create-a-project" class="section level3">
 <h3>Create a project</h3>
-<p>Note that I use my own default path for storing a project when creating a new project. See the <code>projman</code> <a href="objects.html" title="default objects">default objects</a> and <a href="func_new.html" title="new project">creating a new project</a> for more details.</p>
-<pre class="sourceCode r"><code class="sourceCode r"><span class="kw">source</span>(<span class="st">&quot;C:/github/ProjectManagement/code/projman.R&quot;</span>)  <span class="co"># Eventually load projman package instead</span>
+<p>Note that I use my own default path for storing a project when creating a new project. See the <code>rpm</code> <a href="objects.html" title="default objects">default objects</a> and <a href="func_new.html" title="new project">creating a new project</a> for more details.</p>
+<pre class="sourceCode r"><code class="sourceCode r"><span class="kw">source</span>(<span class="st">&quot;C:/github/ProjectManagement/code/rpm.R&quot;</span>)  <span class="co"># Eventually load rpm package instead</span>
 proj.name &lt;-<span class="st"> &quot;ProjectManagement&quot;</span>  <span class="co"># Project name</span>
 proj.location &lt;-<span class="st"> </span>matt.proj.path  <span class="co"># Use default file location</span>
 
@@ -194,11 +204,7 @@ rmd.path &lt;-<span class="st"> </span><span class="kw">file.path</span>(docs.pa
 
 <span class="co"># append new knitr code chunk names found in existing R scripts to any Rmd</span>
 <span class="co"># files which are outdated</span>
-<span class="kw">chunkNames</span>(<span class="dt">path =</span> <span class="kw">file.path</span>(proj.location, proj.name, <span class="st">&quot;code&quot;</span>), <span class="dt">append.new =</span> <span class="ot">TRUE</span>)
-
-<span class="co"># if also making PDFs for a project, speed up the Rmd to Rnw file</span>
-<span class="co"># conversion/duplication rmd2rnw(path=file.path(proj.location, proj.name,</span>
-<span class="co"># &#39;Rmd&#39;)) # function under development</span></code></pre>
+<span class="kw">chunkNames</span>(<span class="dt">path =</span> <span class="kw">file.path</span>(proj.location, proj.name, <span class="st">&quot;code&quot;</span>), <span class="dt">append.new =</span> <span class="ot">TRUE</span>)</code></pre>
 </div>
 <div id="prepare-a-project-website" class="section level3">
 <h3>Prepare a project website</h3>
@@ -208,19 +214,20 @@ index.url &lt;-<span class="st"> </span><span class="kw">file.path</span>(rmd.pa
 <span class="kw">file.copy</span>(index.url, <span class="kw">file.path</span>(rmd.path, <span class="st">&quot;index.html&quot;</span>))
 
 proj.title &lt;-<span class="st"> &quot;Project Management&quot;</span>
-proj.menu &lt;-<span class="st"> </span><span class="kw">c</span>(<span class="st">&quot;projman&quot;</span>, <span class="st">&quot;R Code&quot;</span>, <span class="st">&quot;All Projects&quot;</span>)
+proj.menu &lt;-<span class="st"> </span><span class="kw">c</span>(<span class="st">&quot;rpm&quot;</span>, <span class="st">&quot;R Code&quot;</span>, <span class="st">&quot;All Projects&quot;</span>)
 
-proj.submenu &lt;-<span class="st"> </span><span class="kw">list</span>(<span class="kw">c</span>(<span class="st">&quot;About projman&quot;</span>, <span class="st">&quot;Introduction&quot;</span>, <span class="st">&quot;Related items&quot;</span>, <span class="st">&quot;Example usage&quot;</span>), 
+proj.submenu &lt;-<span class="st"> </span><span class="kw">list</span>(<span class="kw">c</span>(<span class="st">&quot;About rpm&quot;</span>, <span class="st">&quot;Introduction&quot;</span>, <span class="st">&quot;Related items&quot;</span>, <span class="st">&quot;Example usage&quot;</span>), 
     <span class="kw">c</span>(<span class="st">&quot;Default objects&quot;</span>, <span class="st">&quot;divider&quot;</span>, <span class="st">&quot;Functions&quot;</span>, <span class="st">&quot;Start a new project&quot;</span>, <span class="st">&quot;Working with Rmd files&quot;</span>, 
-        <span class="st">&quot;Make a project website&quot;</span>, <span class="st">&quot;Github user website&quot;</span>), <span class="kw">c</span>(<span class="st">&quot;Projects diagram&quot;</span>, 
-        <span class="st">&quot;divider&quot;</span>, <span class="st">&quot;About&quot;</span>, <span class="st">&quot;Other&quot;</span>))
+        <span class="st">&quot;Document conversion&quot;</span>, <span class="st">&quot;Organize documents&quot;</span>, <span class="st">&quot;Make a project website&quot;</span>, 
+        <span class="st">&quot;Github user website&quot;</span>), <span class="kw">c</span>(<span class="st">&quot;Projects diagram&quot;</span>, <span class="st">&quot;divider&quot;</span>, <span class="st">&quot;About&quot;</span>, <span class="st">&quot;Other&quot;</span>))
 
-proj.files &lt;-<span class="st"> </span><span class="kw">list</span>(<span class="kw">c</span>(<span class="st">&quot;header&quot;</span>, <span class="st">&quot;proj_intro.html&quot;</span>, <span class="st">&quot;code_sankey.html&quot;</span>, <span class="st">&quot;example.html&quot;</span>), 
+proj.files &lt;-<span class="st"> </span><span class="kw">list</span>(<span class="kw">c</span>(<span class="st">&quot;header&quot;</span>, <span class="st">&quot;proj_intro.html&quot;</span>, <span class="st">&quot;code_sankey.html&quot;</span>, <span class="st">&quot;pm.html&quot;</span>), 
     <span class="kw">c</span>(<span class="st">&quot;objects.html&quot;</span>, <span class="st">&quot;divider&quot;</span>, <span class="st">&quot;header&quot;</span>, <span class="st">&quot;func_new.html&quot;</span>, <span class="st">&quot;func_rmd.html&quot;</span>, 
-        <span class="st">&quot;func_website.html&quot;</span>, <span class="st">&quot;func_user_website.html&quot;</span>), <span class="kw">c</span>(<span class="st">&quot;proj_sankey.html&quot;</span>, 
-        <span class="st">&quot;divider&quot;</span>, <span class="st">&quot;proj_intro.html&quot;</span>, <span class="st">&quot;proj_intro.html&quot;</span>))
+        <span class="st">&quot;func_convert.html&quot;</span>, <span class="st">&quot;func_organize.html&quot;</span>, <span class="st">&quot;func_website.html&quot;</span>, <span class="st">&quot;func_user_website.html&quot;</span>), 
+    <span class="kw">c</span>(<span class="st">&quot;proj_sankey.html&quot;</span>, <span class="st">&quot;divider&quot;</span>, <span class="st">&quot;proj_intro.html&quot;</span>, <span class="st">&quot;proj_intro.html&quot;</span>))
 
-proj.github &lt;-<span class="st"> </span><span class="kw">file.path</span>(<span class="st">&quot;https://github.com/leonawicz&quot;</span>, proj.name)
+user &lt;-<span class="st"> &quot;leonawicz&quot;</span>
+proj.github &lt;-<span class="st"> </span><span class="kw">file.path</span>(<span class="st">&quot;https://github.com&quot;</span>, user, proj.name)
 
 <span class="co"># generate navigation bar html file common to all pages</span>
 <span class="kw">genNavbar</span>(<span class="dt">htmlfile =</span> <span class="kw">file.path</span>(proj.location, proj.name, <span class="st">&quot;docs/Rmd/include/navbar.html&quot;</span>), 

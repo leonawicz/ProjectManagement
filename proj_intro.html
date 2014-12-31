@@ -86,12 +86,12 @@ body {
       <div class="nav-collapse collapse">
         <ul class="nav">
           <li class="dropdown">
-            <a href="projman" class="dropdown-toggle" data-toggle="dropdown">projman <b class="caret"></b></a>
+            <a href="rpm" class="dropdown-toggle" data-toggle="dropdown">rpm <b class="caret"></b></a>
             <ul class="dropdown-menu">
-              <li class="nav-header">About projman</li>
+              <li class="nav-header">About rpm</li>
               <li><a href="proj_intro.html">Introduction</a></li>
               <li><a href="code_sankey.html">Related items</a></li>
-              <li><a href="example.html">Example usage</a></li>
+              <li><a href="pm.html">Example usage</a></li>
             </ul>
 
           <li class="dropdown">
@@ -102,6 +102,8 @@ body {
               <li class="nav-header">Functions</li>
               <li><a href="func_new.html">Start a new project</a></li>
               <li><a href="func_rmd.html">Working with Rmd files</a></li>
+              <li><a href="func_convert.html">Document conversion</a></li>
+              <li><a href="func_organize.html">Organize documents</a></li>
               <li><a href="func_website.html">Make a project website</a></li>
               <li><a href="func_user_website.html">Github user website</a></li>
             </ul>
@@ -141,14 +143,14 @@ body {
 </div>
 <div id="details" class="section level3">
 <h3>Details</h3>
-<p><strong>R</strong> code for the project will be compiled into an <strong>R</strong> package, <code>projman</code> for easy use. This is a personal package and will not be available anywhere but my github repository, but you are welcome to explore the package and functions. It is unlikely that you would manage your <strong>R</strong> projects in the same manner that I do, but if you do, or just want some ideas, feel free to explore.</p>
+<p><strong>R</strong> code for the project will be compiled into an <strong>R</strong> package, <code>rpm</code> for easy use. This is a personal package and will not be available anywhere but my github repository, but you are welcome to explore the package and functions. It is unlikely that you would manage your <strong>R</strong> projects in the same manner that I do, but if you do, or just want some ideas, feel free to explore.</p>
 <div id="capabilities" class="section level4">
 <h4>Capabilities</h4>
-<p><code>projman</code> can create a new project. This essentially generates a specific directory structure which I use often to manage project files. For an existing project, once <strong>R</strong> scripts have been created, <code>projman</code> can generate template Rmd files for each. For existing Rmd files, <code>projman</code> can conveniently append these <strong>R</strong> Markdown files with a list of any new <code>knitr</code> code chunk names in project <strong>R</strong> scripts being developed which have not yet been included in the respective Rmd files.</p>
+<p><code>rpm</code> can create a new project. This essentially generates a specific directory structure which I use often to manage project files. For an existing project, once <strong>R</strong> scripts have been created, <code>rpm</code> can generate template Rmd files for each. For existing Rmd files, <code>rpm</code> can conveniently append these <strong>R</strong> Markdown files with a list of any new <code>knitr</code> code chunk names in project <strong>R</strong> scripts being developed which have not yet been included in the respective Rmd files.</p>
 </div>
 <div id="limitations" class="section level4">
 <h4>Limitations</h4>
-<p>While <code>projman</code> assists with project documentation, this mainly takes the form of file generation and appending. Documentation is unique to every project of course. Every script is different. The most that is possible is to auto-fill commonly used code chunk names and metadata. Each document must be written individually by the author, but when a project has many <strong>R</strong> scripts requiring documentation, it is nice to not have to create all the corresponding Rmd files by hand and copy and paste generic contents.</p>
+<p>While <code>rpm</code> assists with project documentation, this mainly takes the form of file generation and appending. Documentation is unique to every project of course. Every script is different. The most that is possible is to auto-fill commonly used code chunk names and metadata. Each document must be written individually by the author, but when a project has many <strong>R</strong> scripts requiring documentation, it is nice to not have to create all the corresponding Rmd files by hand and copy and paste generic contents.</p>
 <p>The project management code is not yet in package form. Many additional features are yet to be incorporated. Generic code relating to the further processing of Rmd files into various other output files via <code>rmarkdown</code> and <code>knitr</code> remains at an early development stage.</p>
 </div>
 </div>

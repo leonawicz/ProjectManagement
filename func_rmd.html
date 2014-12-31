@@ -112,12 +112,12 @@ code > span.er { color: #c3bf9f; }
       <div class="nav-collapse collapse">
         <ul class="nav">
           <li class="dropdown">
-            <a href="projman" class="dropdown-toggle" data-toggle="dropdown">projman <b class="caret"></b></a>
+            <a href="rpm" class="dropdown-toggle" data-toggle="dropdown">rpm <b class="caret"></b></a>
             <ul class="dropdown-menu">
-              <li class="nav-header">About projman</li>
+              <li class="nav-header">About rpm</li>
               <li><a href="proj_intro.html">Introduction</a></li>
               <li><a href="code_sankey.html">Related items</a></li>
-              <li><a href="example.html">Example usage</a></li>
+              <li><a href="pm.html">Example usage</a></li>
             </ul>
 
           <li class="dropdown">
@@ -128,6 +128,8 @@ code > span.er { color: #c3bf9f; }
               <li class="nav-header">Functions</li>
               <li><a href="func_new.html">Start a new project</a></li>
               <li><a href="func_rmd.html">Working with Rmd files</a></li>
+              <li><a href="func_convert.html">Document conversion</a></li>
+              <li><a href="func_organize.html">Organize documents</a></li>
               <li><a href="func_website.html">Make a project website</a></li>
               <li><a href="func_user_website.html">Github user website</a></li>
             </ul>
@@ -158,7 +160,7 @@ code > span.er { color: #c3bf9f; }
 <h4>rmdHeader</h4>
 <p><code>rmdHeader</code> generates the yaml metadata header for Rmd files as a character string to be inserted at the top of a file. It has default arguments specific to my own projects but can be changed. The output from this function is passed directly to <code>genRmd</code> below.</p>
 <pre class="sourceCode r"><code class="sourceCode r">rmdHeader &lt;-<span class="st"> </span>function(<span class="dt">title =</span> <span class="st">&quot;INSERT_TITLE_HERE&quot;</span>, <span class="dt">author =</span> <span class="st">&quot;Matthew Leonawicz&quot;</span>, 
-    <span class="dt">theme =</span> <span class="st">&quot;united&quot;</span>, <span class="dt">highlight =</span> <span class="st">&quot;zenburn&quot;</span>, <span class="dt">toc =</span> <span class="ot">TRUE</span>, <span class="dt">keep.md =</span> <span class="ot">TRUE</span>, <span class="dt">ioslides =</span> <span class="ot">FALSE</span>, 
+    <span class="dt">theme =</span> <span class="st">&quot;united&quot;</span>, <span class="dt">highlight =</span> <span class="st">&quot;zenburn&quot;</span>, <span class="dt">toc =</span> <span class="ot">FALSE</span>, <span class="dt">keep.md =</span> <span class="ot">TRUE</span>, <span class="dt">ioslides =</span> <span class="ot">FALSE</span>, 
     <span class="dt">include.pdf =</span> <span class="ot">FALSE</span>) {
     if (toc) 
         toc &lt;-<span class="st"> &quot;true&quot;</span> else toc &lt;-<span class="st"> &quot;false&quot;</span>
@@ -166,9 +168,14 @@ code > span.er { color: #c3bf9f; }
         keep.md &lt;-<span class="st"> &quot;true&quot;</span> else keep.md &lt;-<span class="st"> &quot;false&quot;</span>
     if (ioslides) 
         hdoc &lt;-<span class="st"> &quot;ioslides_presentation&quot;</span> else hdoc &lt;-<span class="st"> &quot;html_document&quot;</span>
-    rmd.header &lt;-<span class="st"> </span><span class="kw">paste0</span>(<span class="st">&quot;---</span><span class="ch">\n</span><span class="st">title: &quot;</span>, title, <span class="st">&quot;</span><span class="ch">\n</span><span class="st">author: &quot;</span>, author, <span class="st">&quot;</span><span class="ch">\n</span><span class="st">output:</span><span class="ch">\n</span><span class="st">  &quot;</span>, 
-        hdoc, <span class="st">&quot;:</span><span class="ch">\n</span><span class="st">    toc: &quot;</span>, toc, <span class="st">&quot;</span><span class="ch">\n</span><span class="st">    theme: &quot;</span>, theme, <span class="st">&quot;</span><span class="ch">\n</span><span class="st">    highlight: &quot;</span>, 
-        highlight, <span class="st">&quot;</span><span class="ch">\n</span><span class="st">    keep_md: &quot;</span>, keep.md, <span class="st">&quot;</span><span class="ch">\n</span><span class="st">&quot;</span>)
+    rmd.header &lt;-<span class="st"> &quot;---</span><span class="ch">\n</span><span class="st">&quot;</span>
+    if (!<span class="kw">is.null</span>(title)) 
+        rmd.header &lt;-<span class="st"> </span><span class="kw">paste0</span>(rmd.header, <span class="st">&quot;title: &quot;</span>, title, <span class="st">&quot;</span><span class="ch">\n</span><span class="st">&quot;</span>)
+    if (!<span class="kw">is.null</span>(author)) 
+        rmd.header &lt;-<span class="st"> </span><span class="kw">paste0</span>(rmd.header, <span class="st">&quot;author: &quot;</span>, author, <span class="st">&quot;</span><span class="ch">\n</span><span class="st">&quot;</span>)
+    rmd.header &lt;-<span class="st"> </span><span class="kw">paste0</span>(rmd.header, <span class="st">&quot;output:</span><span class="ch">\n</span><span class="st">  &quot;</span>, hdoc, <span class="st">&quot;:</span><span class="ch">\n</span><span class="st">    toc: &quot;</span>, toc, 
+        <span class="st">&quot;</span><span class="ch">\n</span><span class="st">    theme: &quot;</span>, theme, <span class="st">&quot;</span><span class="ch">\n</span><span class="st">    highlight: &quot;</span>, highlight, <span class="st">&quot;</span><span class="ch">\n</span><span class="st">    keep_md: &quot;</span>, 
+        keep.md, <span class="st">&quot;</span><span class="ch">\n</span><span class="st">&quot;</span>)
     if (ioslides) 
         rmd.header &lt;-<span class="st"> </span><span class="kw">paste0</span>(rmd.header, <span class="st">&quot;    widescreen: true</span><span class="ch">\n</span><span class="st">&quot;</span>)
     if (include.pdf) 
@@ -180,7 +187,7 @@ code > span.er { color: #c3bf9f; }
 </div>
 <div id="rmdknitrsetup" class="section level4">
 <h4>rmdknitrSetup</h4>
-<p><code>rmdknitrSetup</code> generates the <code>knitr</code> global options setup code cunk for Rmd files as a character string to be inserted at the top of a file following the yaml header. The only option at this time is the ability to include or exclude a source reference to a project-related clode flow diagram <strong>R</strong> script via <code>include.sankey</code>. The output from this function is passed directly to <code>genRmd</code> below.</p>
+<p><code>rmdknitrSetup</code> generates the <code>knitr</code> global options setup code cunk for Rmd files as a character string to be inserted at the top of a file following the yaml header. The only option at this time is the ability to include or exclude a source reference to a project-related code flow diagram <strong>R</strong> script via <code>include.sankey</code>. The output from this function is passed directly to <code>genRmd</code> below.</p>
 <pre class="sourceCode r"><code class="sourceCode r">rmdknitrSetup &lt;-<span class="st"> </span>function(file, <span class="dt">include.sankey =</span> <span class="ot">TRUE</span>) {
     x &lt;-<span class="st"> </span><span class="kw">paste0</span>(<span class="st">&quot;</span><span class="ch">\n</span><span class="st">```{r knitr_setup, echo=FALSE}</span><span class="ch">\n</span><span class="st">opts_chunk$set(cache=FALSE, eval=FALSE, tidy=TRUE, message=FALSE, warning=FALSE)</span><span class="ch">\n</span><span class="st">&quot;</span>)
     if (include.sankey) 
@@ -285,83 +292,7 @@ code > span.er { color: #c3bf9f; }
     <span class="kw">sapply</span>(<span class="dv">1</span>:<span class="kw">length</span>(rmd), appendRmd, <span class="dt">rmd.files =</span> rmd, <span class="dt">rChunks =</span> l1[files.ind], 
         <span class="dt">rmdChunks =</span> l2, <span class="dt">ID =</span> rmdChunkID)
 }</code></pre>
-<p>Regarding the creation and updating of Rmd files, <code>projman</code> simply assumes that there will be one <strong>R</strong> Markdown file corresponding to one <strong>R</strong> script. This is not always the case for a given project, but again, the purpose is to generate basic templates. Unnecessary files can always be deleted later, or edits made such that one <strong>R</strong> Markdown file reads multiple <strong>R</strong> scripts, as is the case with the Rmd file used to generate this document.</p>
-</div>
-<div id="rmd2rnw" class="section level4">
-<h4>rmd2rnw</h4>
-<p><code>rmd2rnw</code> converts all Rmd files found in a directory to Rnw files, saving the latter to a specified location. The Rmd files are not removed. This function speeds up the process of duplicating files when wanting to make PDFs from Rnw files when only Rmd files exist. The user still makes specific changes by hand, for example, any required changes to <code>knitr</code> code chunk options that must differ for PDF output vs. html output. The primary benefit is in not having to fuss with large amounts of standard substitutions which can be automated, such as swapping code chunk enclosure styles.</p>
-<pre class="sourceCode r"><code class="sourceCode r">rmd2rnw &lt;-<span class="st"> </span>function(path, <span class="dt">outDir =</span> <span class="kw">file.path</span>(<span class="kw">dirname</span>(path), <span class="st">&quot;Rnw&quot;</span>)) {
-    files &lt;-<span class="st"> </span><span class="kw">list.files</span>(path, <span class="dt">pattern =</span> <span class="st">&quot;.Rmd$&quot;</span>, <span class="dt">full =</span> <span class="ot">TRUE</span>)
-    x &lt;-<span class="st"> </span><span class="kw">lapply</span>(files, readLines)
-    <span class="co"># do some conversion here...  parse Rmd author and title 1. insert LaTeX</span>
-    <span class="co"># header info 2. swap knitr code chunk identifiers for Rnw style 3. swap</span>
-    <span class="co"># section and subsection titles based on number of consecutive &#39;#&#39; signs at</span>
-    <span class="co"># the beginning of an Rmd line</span>
-    files &lt;-<span class="st"> </span><span class="kw">file.path</span>(outDir, <span class="kw">basename</span>(files))
-    files &lt;-<span class="st"> </span><span class="kw">gsub</span>(<span class="st">&quot;.Rmd&quot;</span>, <span class="st">&quot;.Rnw&quot;</span>, files)
-    
-    sinkRnw &lt;-<span class="st"> </span>function(i, files, txt) {
-        txt &lt;-<span class="st"> </span>txt[[i]]
-        file &lt;-<span class="st"> </span>files[i]
-        <span class="kw">sink</span>(file)
-        <span class="kw">cat</span>(txt)
-        <span class="kw">sink</span>()
-    }
-    
-    <span class="kw">lapply</span>(<span class="dv">1</span>:<span class="kw">length</span>(files), sinkRnw, <span class="dt">files =</span> files, <span class="dt">txt =</span> x)
-}</code></pre>
-</div>
-<div id="movedocs" class="section level4">
-<h4>moveDocs</h4>
-<p><code>moveDocs</code> relocates files by renaming with a new file path. Specifically, it scans for md and html files in the <code>docs/Rmd</code> directory and/or pdf files in the <code>docs/Rnw</code> directory. If such files are found in the respective locations, they are moved to <code>docs/md</code>, <code>docs/html</code>, and <code>docs/pdf</code>, respectively.</p>
-<p>The intent is to clean up the Rmd and Rnw directories after <code>knitr</code> has been used to knit documents in place. I do this because I have more success knitting documents with the confluence of <code>RStudio</code>, <code>rmarkdown</code>, <code>knitr</code>, <code>pandoc</code>, and <code>LaTeX</code> when the knitting occurs all within the directory of the originating files. The process is more prone to throwing errors when trying to specify alternate locations for outputs.</p>
-<p><code>moveDocs</code> makes a nominal effort to replace a possible relative path with a full file path before proceeding, if the former is supplied. Default arguments include <code>move=TRUE</code> which will call <code>file.rename</code> and <code>copy=FALSE</code> which, if <code>TRUE</code> (and <code>move=FALSE</code>), will alternatively call <code>file.copy</code>. If both are <code>TRUE</code>, any files found are moved.</p>
-<p>This function will always overwrite any existing file versions previously moved to the output directories, by way of <code>file.rename</code>. To keep the behavior consistent, when <code>move=FALSE</code> and <code>copy=TRUE</code>, <code>file.copy</code> always executes with its argument, <code>overwrite=TRUE</code>. This should never cause problems because in the context I intend for this function, the types of files being moved or copied from <code>docs/Rmd</code> and <code>docs/Rnw</code> are never used as inputs to other files, functions, or processes, nor are they meant to be edited by hand after being generated.</p>
-<p>If there are LaTeX-associated files present (.TeX, .aux, and .txt files with the same file names as local pdf files.), these files will be removed if <code>remove.latex=TRUE</code> (default). If <code>FALSE</code>, the default <code>latexDir=&quot;LaTeX&quot;</code> means that these files will be moved to the <code>docs/LaTeX</code> directory rather than deleted. If this directory does not exist, it will be created. An alternate location can be specified, such as “pdf” if you want to keep these files with the related pdf files after those are moved by <code>moveDocs</code> as well to <code>docs/pdf</code>.</p>
-<pre class="sourceCode r"><code class="sourceCode r">moveDocs &lt;-<span class="st"> </span>function(path.docs, <span class="dt">type =</span> <span class="kw">c</span>(<span class="st">&quot;md&quot;</span>, <span class="st">&quot;html&quot;</span>, <span class="st">&quot;pdf&quot;</span>), <span class="dt">move =</span> <span class="ot">TRUE</span>, 
-    <span class="dt">copy =</span> <span class="ot">FALSE</span>, <span class="dt">remove.latex =</span> <span class="ot">TRUE</span>, <span class="dt">latexDir =</span> <span class="st">&quot;LaTeX&quot;</span>) {
-    if (<span class="kw">any</span>(!(type %in%<span class="st"> </span><span class="kw">c</span>(<span class="st">&quot;md&quot;</span>, <span class="st">&quot;html&quot;</span>, <span class="st">&quot;pdf&quot;</span>)))) 
-        <span class="kw">stop</span>(<span class="st">&quot;type must be among &#39;md&#39;, &#39;html&#39;, and &#39;pdf&#39;&quot;</span>)
-    <span class="kw">stopifnot</span>(move |<span class="st"> </span>copy)
-    if (path.docs ==<span class="st"> &quot;.&quot;</span> |<span class="st"> </span>path.docs ==<span class="st"> &quot;./&quot;</span>) 
-        path.docs &lt;-<span class="st"> </span><span class="kw">getwd</span>()
-    if (<span class="kw">strsplit</span>(path.docs, <span class="st">&quot;/&quot;</span>)[[<span class="dv">1</span>]][<span class="dv">1</span>] ==<span class="st"> &quot;..&quot;</span>) {
-        tmp &lt;-<span class="st"> </span><span class="kw">strsplit</span>(path.docs, <span class="st">&quot;/&quot;</span>)[[<span class="dv">1</span>]][-<span class="dv">1</span>]
-        if (<span class="kw">length</span>(tmp)) 
-            path.docs &lt;-<span class="st"> </span><span class="kw">file.path</span>(<span class="kw">getwd</span>(), <span class="kw">paste0</span>(tmp, <span class="dt">collapse =</span> <span class="st">&quot;/&quot;</span>)) else <span class="kw">stop</span>(<span class="st">&quot;Check path.docs argument.&quot;</span>)
-    }
-    for (i in <span class="dv">1</span>:<span class="kw">length</span>(type)) {
-        if (type[i] ==<span class="st"> &quot;pdf&quot;</span>) 
-            origin &lt;-<span class="st"> &quot;Rnw&quot;</span> else origin &lt;-<span class="st"> &quot;Rmd&quot;</span>
-        path.i &lt;-<span class="st"> </span><span class="kw">file.path</span>(path.docs, origin)
-        infiles &lt;-<span class="st"> </span><span class="kw">list.files</span>(path.i, <span class="dt">pattern =</span> <span class="kw">paste0</span>(<span class="st">&quot;</span><span class="ch">\\</span><span class="st">.&quot;</span>, type[i], <span class="st">&quot;$&quot;</span>), 
-            <span class="dt">full =</span> <span class="ot">TRUE</span>)
-        if (<span class="kw">length</span>(infiles)) {
-            infiles &lt;-<span class="st"> </span>infiles[<span class="kw">basename</span>(<span class="kw">dirname</span>(infiles)) ==<span class="st"> </span>origin]
-            if (<span class="kw">length</span>(infiles)) {
-                outfiles &lt;-<span class="st"> </span><span class="kw">file.path</span>(path.docs, type[i], <span class="kw">basename</span>(infiles))
-                if (move) 
-                  <span class="kw">file.rename</span>(infiles, outfiles) else if (copy) 
-                  <span class="kw">file.copy</span>(infiles, outfiles, <span class="dt">overwrite =</span> <span class="ot">TRUE</span>)
-                if (type[i] ==<span class="st"> &quot;pdf&quot;</span>) {
-                  extensions &lt;-<span class="st"> </span><span class="kw">c</span>(<span class="st">&quot;TeX&quot;</span>, <span class="st">&quot;aux&quot;</span>, <span class="st">&quot;txt&quot;</span>)
-                  pat &lt;-<span class="st"> </span><span class="kw">paste0</span>(<span class="st">&quot;^&quot;</span>, <span class="kw">rep</span>(<span class="kw">gsub</span>(<span class="st">&quot;pdf&quot;</span>, <span class="st">&quot;&quot;</span>, <span class="kw">basename</span>(infiles)), 
-                    <span class="kw">length</span>(extensions)), <span class="kw">rep</span>(extensions, <span class="dt">each =</span> <span class="kw">length</span>(infiles)), 
-                    <span class="st">&quot;$&quot;</span>)
-                  latex.files &lt;-<span class="st"> </span><span class="kw">sapply</span>(<span class="dv">1</span>:<span class="kw">length</span>(pat), function(p, path, pat) <span class="kw">list.files</span>(path, 
-                    <span class="dt">pattern =</span> pat[p], <span class="dt">full =</span> <span class="ot">TRUE</span>), <span class="dt">path =</span> path.i, <span class="dt">pat =</span> pat)
-                  if (remove.latex) {
-                    <span class="kw">file.remove</span>(latex.files)
-                  } else {
-                    <span class="kw">dir.create</span>()
-                    <span class="kw">file.rename</span>(latex.files, <span class="kw">file.path</span>(path.docs, latexDir, 
-                      <span class="kw">basename</span>(latex.files)))
-                  }
-                }
-            }
-        }
-    }
-}</code></pre>
+<p>Regarding the creation and updating of Rmd files, <code>rpm</code> simply assumes that there will be one <strong>R</strong> Markdown file corresponding to one <strong>R</strong> script. This is not always the case for a given project, but again, the purpose is to generate basic templates. Unnecessary files can always be deleted later, or edits made such that one <strong>R</strong> Markdown file reads multiple <strong>R</strong> scripts, as is the case with the Rmd file used to generate this document.</p>
 </div>
 
 
