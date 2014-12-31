@@ -9,7 +9,7 @@ output:
 
 ```{r knitr_setup, echo=FALSE}
 opts_chunk$set(cache=FALSE, eval=FALSE, tidy=TRUE, message=FALSE, warning=FALSE)
-read_chunk("../../code/projman.R")
+read_chunk("../../code/rpm.R")
 ```
 
 #### rmdHeader
@@ -59,51 +59,7 @@ This fascilitates updating of Rmd documentation when it falls behind scripts whi
 ```{r fun_chunkNames}
 ```
 
-Regarding the creation and updating of Rmd files, `projman` simply assumes that there will be one **R** Markdown file corresponding to one **R** script.
+Regarding the creation and updating of Rmd files, `rpm` simply assumes that there will be one **R** Markdown file corresponding to one **R** script.
 This is not always the case for a given project, but again, the purpose is to generate basic templates.
 Unnecessary files can always be deleted later, or edits made such that one **R** Markdown file reads multiple **R** scripts,
 as is the case with the Rmd file used to generate this document.
-
-#### convertDocs
-`convertDocs` converts between Rmd and Rnw files.
-The project's `docs/Rmd` or `docs/Rnw` directory is specified.
-Any files of the same type as the directory are converted to the other type and saved to the other directory.
-The input files are not removed.
-
-This function speeds up the process of duplicating files, e.g., when wanting to make PDFs from Rnw files when only Rmd files exist.
-This is almost exclusively what I use this function for.
-On less frequent occasions I have used it in the other direction when I have Rnw files which were once used to make PDFs but later I decide to put them on the web as a web page and not as a link to a PDF.
-
-The user still makes specific changes by hand, for example, any required changes to `knitr` code chunk options that must differ for PDF output vs. html output.
-The primary benefit is in not having to fuss with large amounts of standard substitutions which can be automated, such as swapping code chunk enclosure styles and common file metadata.
-
-```{r fun_convertDocs}
-```
-
-#### moveDocs
-`moveDocs` relocates files by renaming with a new file path.
-Specifically, it scans for md and html files in the `docs/Rmd` directory and/or pdf files in the `docs/Rnw` directory.
-If such files are found in the respective locations, they are moved to `docs/md`, `docs/html`, and `docs/pdf`, respectively.
-
-The intent is to clean up the Rmd and Rnw directories after `knitr` has been used to knit documents in place.
-I do this because I have more success knitting documents with the confluence of `RStudio`, `rmarkdown`, `knitr`, `pandoc`, and `LaTeX` when the knitting occurs all within the directory of the originating files.
-The process is more prone to throwing errors when trying to specify alternate locations for outputs.
-
-`moveDocs` makes a nominal effort to replace a possible relative path with a full file path before proceeding, if the former is supplied.
-Default arguments include `move=TRUE` which will call `file.rename` and `copy=FALSE` which, if `TRUE` (and `move=FALSE`), will alternatively call `file.copy`.
-If both are `TRUE`, any files found are moved.
-
-This function will always overwrite any existing file versions previously moved to the output directories, by way of `file.rename`.
-To keep the behavior consistent, when `move=FALSE` and `copy=TRUE`, `file.copy` always executes with its argument, `overwrite=TRUE`.
-This should never cause problems because in the context I intend for this function,
-the types of files being moved or copied from `docs/Rmd` and `docs/Rnw` are never used as inputs to other files, functions, or processes,
-nor are they meant to be edited by hand after being generated.
-
-If there are LaTeX-associated files present (.TeX, .aux, and .txt files with the same file names as local pdf files.),
-these files will be removed if `remove.latex=TRUE` (default).
-If `FALSE`, the default `latexDir="LaTeX"` means that these files will be moved to the `docs/LaTeX` directory rather than deleted.
-If this directory does not exist, it will be created.
-An alternate location can be specified, such as "pdf" if you want to keep these files with the related pdf files after those are moved by `moveDocs` as well to `docs/pdf`.
-
-```{r fun_moveDocs}
-```

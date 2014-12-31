@@ -1,6 +1,6 @@
 
 # @knitr template_objects
-# For package 'projman'
+# For package 'rpm'
 
 # data
 
@@ -166,6 +166,9 @@ chunkNames <- function(path, rChunkID="# @knitr", rmdChunkID="```{r", append.new
 }
 
 # @knitr fun_convertDocs
+# Rmd <-> Rnw document conversion
+# Conversion support functions
+# Main conversion function
 convertDocs <- function(path, rmdChunkID=c("```{r", "}", "```"), rnwChunkID=c("<<", ">>=", "@"), emphasis="replace", overwrite=FALSE, ...){
 	stopifnot(is.character(path))
 	type <- basename(path)
@@ -341,6 +344,7 @@ convertDocs <- function(path, rmdChunkID=c("```{r", "}", "```"), rnwChunkID=c("<
 }
 
 # @knitr fun_moveDocs
+# Organization documentation
 moveDocs <- function(path.docs, type=c("md", "html","pdf"), move=TRUE, copy=FALSE, remove.latex=TRUE, latexDir="latex"){
 	if(any(!(type %in% c("md", "html","pdf")))) stop("type must be among 'md', 'html', and 'pdf'")
 	stopifnot(move | copy)

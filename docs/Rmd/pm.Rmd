@@ -1,0 +1,51 @@
+---
+title: Project Management
+author: Matthew Leonawicz
+output:
+  html_document:
+    toc: false
+    theme: united
+    highlight: zenburn
+    keep_md: true
+---
+
+```{r knitr_setup, echo=FALSE}
+opts_chunk$set(cache=FALSE, eval=FALSE, tidy=TRUE, message=FALSE, warning=FALSE)
+read_chunk("../../code/pm.R")
+```
+
+## Example usage
+This is how `rpm` functions can be used to create and manipulate a project, using the `rpm` project itself as an example.
+The code below is not intended to be run in full directly, but serves as a guide.
+
+### Dynamic report generation
+The script, `pm.R`, is used to compile web sites and reports in various formats based on project documentation, namely Rmd files.
+Using this project management project as an example, markdown and html files are generated for existing Rmd files.
+There is also optional conversion from Rmd to Rnw and subsequent PDF generation.
+
+### Github user website
+Although not a part of the `pm.R` scripts associated with other **R** projects,
+this example also includes creation of my Github user website, `leonawicz.github.io`, as part of overall project management.
+This is in addition to the `rpm`-specific project website.
+
+## R code
+
+### Create a project
+Note that I use my own default path for storing a project when creating a new project.
+See the `rpm` [default objects](objects.html "default objects") and [creating a new project](func_new.html "new project") for more details.
+
+```{r ex_create_project}
+```
+
+### Update a project
+Functions can be used to create, read, or update. See [Rmd-related functions](func_rmd.html "Rmd-related functions").
+
+```{r ex_update_project}
+```
+
+### Prepare a project website
+With some additional project-specific setup, files can be generated which will assist in creating a project website.
+See [website-related functions](func_website.html "website-related functions").
+
+```{r ex_website}
+```

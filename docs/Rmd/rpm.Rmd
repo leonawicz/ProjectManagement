@@ -12,7 +12,7 @@ output:
 ```{r knitr_setup, echo=FALSE}
 opts_chunk$set(cache=FALSE, eval=FALSE, tidy=TRUE, message=FALSE, warning=FALSE)
 read_chunk("../../code/proj_sankey.R")
-read_chunk("../../code/projman.R")
+read_chunk("../../code/rpm.R")
 ```
 
 
@@ -24,20 +24,20 @@ While current projects are shown in the chart below, the aim of this project is 
 I am working on these tools to enhance my own workflow across multiple **R** projects.
 
 ### Details
-**R** code for the project will be compiled into an **R** package, `projman` for easy use.
+**R** code for the project will be compiled into an **R** package, `rpm` for easy use.
 This is a personal package and will not be available anywhere but my github repository,
 but you are welcome to explore the package and functions.
 It is unlikely that you would manage your **R** projects in the same manner that I do,
 but if you do, or just want some ideas, feel free to explore.
 
 #### Capabilities
-`projman` can create a new project. This essentially generates a specific directory structure which I use often to manage project files.
-For an existing project, once **R** scripts have been created, `projman` can generate template Rmd files for each.
-For existing Rmd files, `projman` can conveniently append these **R** Markdown files with a list of any new `knitr` code chunk names
+`rpm` can create a new project. This essentially generates a specific directory structure which I use often to manage project files.
+For an existing project, once **R** scripts have been created, `rpm` can generate template Rmd files for each.
+For existing Rmd files, `rpm` can conveniently append these **R** Markdown files with a list of any new `knitr` code chunk names
 in project **R** scripts being developed which have not yet been included in the respective Rmd files.
 
 #### Limitations
-While `projman` assists with project documentation, this mainly takes the form of file generation and appending.
+While `rpm` assists with project documentation, this mainly takes the form of file generation and appending.
 Documentation is unique to every project of course. Every script is different.
 The most that is possible is to auto-fill commonly used code chunk names and metadata.
 Each document must be written individually by the author, but when a project has many **R** scripts requiring documentation,
@@ -147,7 +147,7 @@ This fascilitates updating of Rmd documentation when it falls behind scripts whi
 ```{r fun_chunkNames}
 ```
 
-Regarding the creation and updating of Rmd files, `projman` simply assumes that there will be one **R** Markdown file corresponding to one **R** script.
+Regarding the creation and updating of Rmd files, `rpm` simply assumes that there will be one **R** Markdown file corresponding to one **R** script.
 This is not always the case for a given project, but again, the purpose is to generate basic templates.
 Unnecessary files can always be deleted later, or edits made such that one **R** Markdown file reads multiple **R** scripts,
 as is the case with the Rmd file used to generate this document.
@@ -164,6 +164,8 @@ On less frequent occasions I have used it in the other direction when I have Rnw
 
 The user still makes specific changes by hand, for example, any required changes to `knitr` code chunk options that must differ for PDF output vs. html output.
 The primary benefit is in not having to fuss with large amounts of standard substitutions which can be automated, such as swapping code chunk enclosure styles and common file metadata.
+Of course, this function is not perfect.
+It amounts to a text-parsing hack that is intended to handle the most common of idiosyncrasies and differences which exist between my own Rmd and Rnw files in the context of my own set of rules and assumptions, outlined below.
 
 ```{r fun_convertDocs}
 ```
@@ -213,7 +215,7 @@ or "divider" to indicate placement of a bar for separating groups in a dropdown 
 `theme` can be either `united` (default) or `cyborg`.
 Both are from Bootswatch.
 The function must apply some internal differentiation in the construction of the html navigation bar between themes.
-This is currently the only `projman` function which attempts to handle multiple Bootswatch themes with different CSS tags.
+This is currently the only `rpm` function which attempts to handle multiple Bootswatch themes with different CSS tags.
 
 ```{r fun_genNavbar}
 ```

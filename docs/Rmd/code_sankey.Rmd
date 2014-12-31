@@ -44,8 +44,8 @@ Two packages are required.
 
 Project file names can be loaded using `pattern` arguments with `list.files` pointing to both the `code` and relevant `docs` directories.
 However, there is a substantial amount of hardcoding involved for any project as shown here.
-For example, the `projman.R` script contains all the `projman` functions. 
-Although this script has a complete, corresponding `projman.Rmd` file, I decided to subsequently break out the functions and other content from `projman.Rmd` into multiple Rmd files.
+For example, the `rpm.R` script contains all the `rpm` functions. 
+Although this script has a complete, corresponding `rpm.Rmd` file, I decided to subsequently break out the functions and other content from `rpm.Rmd` into multiple Rmd files.
 Such ad hoc project-specific decisions require that I take note here and make the related distinctions.
 
 ```{r files}

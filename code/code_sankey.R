@@ -6,7 +6,7 @@ require(rCharts)
 setwd("C:/github/ProjectManagement/docs/Rmd")
 
 c0 <- list.files("../../code", pattern=".R$")
-c1a <- c("_output.yaml", "navbar.html")
+c1a <- c("_output.yaml", "navbar.html", "leonawicz.github.io")
 c1b <- "supporting libraries"
 c1c <- "in_header.html"
 
@@ -20,11 +20,11 @@ c4 <- gsub(".Rmd", ".html", c2)
 
 # @knitr links
 from <- c(
-	c0,	rep("projman.Rmd", length(c2b)), c2, c2, rep("example.R", length(c1a)), c1b, rep(c(c1a, c1c), each=length(c4))
+	c0,	rep("rpm.Rmd", length(c2b)), c2, c2, rep("pm.R", length(c1a)), c1b, rep(c(c1a, c1c), each=length(c4))
 
 )
 to <- c(
-	c2a, c2b, c3, c4, c1a, "example.R", rep(c4, length(c(c1a, c1c)))
+	c2a, c2b, c3, c4, c1a, "pm.R", rep(c4, length(c(c1a, c1c)))
 )
 
 # @knitr igraph

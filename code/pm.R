@@ -1,5 +1,5 @@
 # @knitr ex_create_project
-source("C:/github/ProjectManagement/code/projman.R") # Eventually load projman package instead
+source("C:/github/ProjectManagement/code/rpm.R") # Eventually load rpm package instead
 proj.name <- "ProjectManagement" # Project name
 proj.location <- matt.proj.path # Use default file location
 
@@ -29,21 +29,22 @@ index.url <- file.path(rmd.path, "proj_intro.html") # temporary
 file.copy(index.url, file.path(rmd.path, "index.html"))
 
 proj.title <- "Project Management"
-proj.menu <- c("projman", "R Code", "All Projects")
+proj.menu <- c("rpm", "R Code", "All Projects")
 
 proj.submenu <- list(
-	c("About projman", "Introduction", "Related items", "Example usage"),
-	c("Default objects", "divider", "Functions", "Start a new project", "Working with Rmd files", "Make a project website", "Github user website"),
+	c("About rpm", "Introduction", "Related items", "Example usage"),
+	c("Default objects", "divider", "Functions", "Start a new project", "Working with Rmd files", "Document conversion", "Organize documents", "Make a project website", "Github user website"),
 	c("Projects diagram", "divider", "About", "Other")
 )
 
 proj.files <- list(
-	c("header", "proj_intro.html", "code_sankey.html", "example.html"),
-	c("objects.html", "divider", "header", "func_new.html", "func_rmd.html", "func_website.html", "func_user_website.html"),
+	c("header", "proj_intro.html", "code_sankey.html", "pm.html"),
+	c("objects.html", "divider", "header", "func_new.html", "func_rmd.html", "func_convert.html", "func_organize.html", "func_website.html", "func_user_website.html"),
 	c("proj_sankey.html", "divider", "proj_intro.html", "proj_intro.html")
 )
 
-proj.github <- file.path("https://github.com/leonawicz", proj.name)
+user <- "leonawicz"
+proj.github <- file.path("https://github.com", user, proj.name)
 
 # generate navigation bar html file common to all pages
 genNavbar(htmlfile=file.path(proj.location, proj.name, "docs/Rmd/include/navbar.html"), title=proj.title, menu=proj.menu, submenus=proj.submenu, files=proj.files, title.url="index.html", home.url="index.html", site.url=proj.github, include.home=FALSE)
@@ -81,7 +82,7 @@ rnw.path <- file.path(docs.path, "Rnw")
 setwd(rnw.path)
 #themes <- knit_theme$get()
 highlight <- "solarized-dark"
-convertDocs(path=rmd.path, emphasis="replace", overwrite=TRUE, highlight=highlight)
+convertDocs(path=rmd.path, emphasis="replace", overwrite=TRUE, highlight=highlight) # Take care not to reverse write
 lapply(list.files(pattern=".Rnw$"), knit2pdf)
 moveDocs(path.docs=docs.path, type="pdf", remove.latex=FALSE)
 

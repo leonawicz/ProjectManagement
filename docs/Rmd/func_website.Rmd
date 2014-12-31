@@ -9,7 +9,7 @@ output:
 
 ```{r knitr_setup, echo=FALSE}
 opts_chunk$set(cache=FALSE, eval=FALSE, tidy=TRUE, message=FALSE, warning=FALSE)
-read_chunk("../../code/projman.R")
+read_chunk("../../code/rpm.R")
 ```
 
 #### genNavbar
@@ -29,7 +29,7 @@ or "divider" to indicate placement of a bar for separating groups in a dropdown 
 `theme` can be either `united` (default) or `cyborg`.
 Both are from Bootswatch.
 The function must apply some internal differentiation in the construction of the html navigation bar between themes.
-This is currently the only `projman` function which attempts to handle multiple Bootswatch themes with different CSS tags.
+This is currently the only `rpm` function which attempts to handle multiple Bootswatch themes with different CSS tags.
 
 ```{r fun_genNavbar}
 ```
