@@ -194,7 +194,7 @@ convertDocs <- function(path, rmdChunkID=c("```{r", "}", "```"), rnwChunkID=c("<
 	
 	swapHeadings <- function(from, to, x){
 		nc <- nchar(x)
-		ind <- which(substr(x, 1, 8)=="\\section" | substr(x, 1, 4)=="\\sub")
+		ind <- which(substr(x, 1, 1)=="\\")
 		if(!length(ind)){ # assume Rmd file
 			ind <- which(substr(x, 1, 1)=="#")
 			ind.n <- rep(1, length(ind))
@@ -218,8 +218,8 @@ convertDocs <- function(path, rmdChunkID=c("```{r", "}", "```"), rnwChunkID=c("<
 			if(length(ind)){
 				for(i in 1:length(ind)){
 					h <- x[ind[i]]
-					heading <- paste0("## ", substr(h, 10, nchar(h)-2))
-					x[ind[i]] <- gsub(gsbraces(h), heading, h)
+					heading <- paste0("## ", substr(h, 10, nchar(h)-2), "\n")
+					x[ind[i]] <- heading #gsub(gsbraces(h), heading, h)
 				}
 			}
 			ind <- which(substr(x, 1, 4)=="\\sub")
@@ -227,21 +227,21 @@ convertDocs <- function(path, rmdChunkID=c("```{r", "}", "```"), rnwChunkID=c("<
 				for(i in 1:length(ind)){
 					h <- x[ind[i]]
 					z <- substr(h, 2, 10)
-					if(z=="subsubsub") {p <- "##### "; n <- 18 } else if(substr(z, 1, 6)=="subsub") { p <- "#### "; n <- 15 } else if(substr(z, 1, 3)=="sub") { p <- "### "; n <- 12 }
-					heading <- paste0(p, substr(h, n, nchar(h)-2))
-					x[ind[i]] <- gsub(gsbraces(h), heading, h)
+					if(z=="subsubsub") {p <- "##### "; n <- 19 } else if(substr(z, 1, 6)=="subsub") { p <- "#### "; n <- 16 } else if(substr(z, 1, 3)=="sub") { p <- "### "; n <- 13 }
+					heading <- paste0(p, substr(h, n, nchar(h)-2), "\n")
+					x[ind[i]] <- heading #gsub(gsbraces(h), heading, h)
 				}
 			}
 		}
 		x
 	}
 	
-	swapChunks <- function(from, to, x){
+	swapChunks <- function(from, to, x, offset.end=1){
 		nc <- nchar(x)
 		chunk.start.open <- substr(x, 1, nchar(from[1]))==from[1]
-		chunk.start.close <- substr(x, nc-1-nchar(from[2])+1, nc-1)==from[2]
+		chunk.start.close <- substr(x, nc-offset.end-nchar(from[2])+1, nc - offset.end)==from[2]
 		chunk.start <- which(chunk.start.open & chunk.start.close)
-		chunk.end <- which(substr(x, 1, nchar(from[3]))==from[3] & nc==nchar(from[3])+1)
+		chunk.end <- which(substr(x, 1, nchar(from[3]))==from[3] & nc==nchar(from[3]) + offset.end)
 		x[chunk.start] <- gsub(from[2], to[2], gsub(gsbraces(from[1]), gsbraces(to[1]), x[chunk.start]))
 		x[chunk.end] <- gsub(from[3], to[3], x[chunk.end])
 		chunklines <- as.numeric(unlist(mapply(seq, chunk.start, chunk.end)))
@@ -281,6 +281,7 @@ convertDocs <- function(path, rmdChunkID=c("```{r", "}", "```"), rnwChunkID=c("<
 		l <- readLines(file)
 		l <- l[substr(l, 1, 7)!="<style>"] # Strip any html style lines
 		if(ext=="Rmd"){
+			from <- rmdChunkID; to <- rnwChunkID
 			hl.default <- "solarized-light"
 			out.ext <- "Rnw"
 			h.ind <- 1:which(l=="---")[2]
@@ -296,6 +297,7 @@ convertDocs <- function(path, rmdChunkID=c("```{r", "}", "```"), rnwChunkID=c("<
 			if(!is.null(title)) header <- c(header, "\\maketitle\n")
 			header <- c(header, paste0("<<highlight, echo=FALSE>>=\nknit_theme$set(knit_theme$get('", highlight, "'))\n@\n"))
 		} else if(ext=="Rnw") {
+			from <- rnwChunkID; to <- rmdChunkID
 			hl.default <- "tango"
 			out.ext <- "Rmd"
 			begin.doc <- which(l=="\\begin{document}")
@@ -314,17 +316,22 @@ convertDocs <- function(path, rmdChunkID=c("```{r", "}", "```"), rnwChunkID=c("<
 			}
 			if(is.null(highlight) & length(highlight.ind)) highlight <- h1 else if(is.null(highlight)) highlight <- hl.default else if(!(highlight %in% knit_theme$get())) highlight <- hl.default
 			header <- rmdHeader(title=title, author=author, highlight=highlight)
+			h.chunks <- swapChunks(from=from, to=to, x=h, offset.end=0)
+			header <- c(header, h.chunks[[1]][h.chunks[[2]]])
 		}
 		header <- paste0(header, collapse="\n")
 		l <- paste0(l[-h.ind], "\n")
-		if(ext=="Rmd") { from <- rmdChunkID; to <- rnwChunkID}
-		if(ext=="Rnw") { from <- rnwChunkID; to <- rmdChunkID}
 		l <- swapHeadings(from=from, to=to, x=l)
 		chunks <- swapChunks(from=from, to=to, x=l)
 		l <- chunks[[1]]
 		if(ext=="Rmd") l <- swapEmphasis(x=l, emphasis=emphasis)
 		if(ext=="Rmd") l[-chunks[[2]]] <- sapply(l[-chunks[[2]]], function(v, p, r) gsub(p, r, v), p="_", r="\\\\_")
-		l <- c(header, l, "\n\\end{document}\n")
+		l <- c(header, l)
+		if(ext=="Rmd") l <- c(l, "\n\\end{document}\n")
+		if(ext=="Rnw"){
+			ind <- which(substr(l, 1, 1)=="\\") # drop any remaining lines beginning with a backslash
+			l <- l[-ind]
+		}
 		outfile <- file.path(outDir, gsub(paste0("\\.", ext), paste0("\\.", out.ext), basename(file)))
 		if(overwrite || !file.exists(outfile)){
 			sink(outfile)
