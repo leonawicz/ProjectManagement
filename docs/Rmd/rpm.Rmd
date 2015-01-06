@@ -68,7 +68,22 @@ in this case I will also show the [code](code_sankey.html "code") I use to make 
 ### Current projects
 Here is a project hierarchy diagram showing the relationships among all my current projects.
 
-```{r sankey, echo=F, eval=T, tidy=F}
+```{r sankey_packages, echo=F, eval=T}
+```
+
+```{r projects, echo=F, eval=T}
+```
+
+```{r people, echo=F, eval=T}
+```
+
+```{r links, echo=F, eval=T, tidy=F}
+```
+
+```{r igraph, echo=F, eval=T}
+```
+
+```{r rcharts, echo=F, eval=T}
 ```
 
 ```{r sankey_embed, echo=F, eval=T, comment=NA, results="asis", tidy=F}

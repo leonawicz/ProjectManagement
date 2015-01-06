@@ -74,7 +74,6 @@ from <- c(
 	rep("NWT/Comm. Charts DS", 1),
 	c("Alfresco Noatak", "Alfresco Statewide"),
 	rep("Data Extraction and Uncertainty Analysis", 4)
-	
 )
 
 to <- c(
@@ -161,7 +160,7 @@ p$show("iframesrc", cdn=T)
   &lt;/head&gt;
   &lt;body &gt;
     
-    &lt;div id = &#039;chart28c6a2e41bc&#039; class = &#039;rChart d3_sankey&#039;&gt;&lt;/div&gt;    
+    &lt;div id = &#039;chart11f011135ae4&#039; class = &#039;rChart d3_sankey&#039;&gt;&lt;/div&gt;    
     ï»¿&lt;!--Attribution:
 Mike Bostock https://github.com/d3/d3-plugins/tree/master/sankey
 Mike Bostock http://bost.ocks.org/mike/sankey/
@@ -170,7 +169,7 @@ Mike Bostock http://bost.ocks.org/mike/sankey/
 &lt;script&gt;
 (function(){
 var params = {
- &quot;dom&quot;: &quot;chart28c6a2e41bc&quot;,
+ &quot;dom&quot;: &quot;chart11f011135ae4&quot;,
 &quot;width&quot;:    900,
 &quot;height&quot;:    800,
 &quot;data&quot;: {
@@ -188,7 +187,7 @@ var params = {
 &quot;top&quot;:     20 
 },
 &quot;title&quot;: &quot;Matt&#039;s Projects&quot;,
-&quot;id&quot;: &quot;chart28c6a2e41bc&quot; 
+&quot;id&quot;: &quot;chart11f011135ae4&quot; 
 };
 
 params.units ? units = &quot; &quot; + params.units : units = &quot;&quot;;
@@ -308,11 +307,11 @@ node.append(&quot;text&quot;)
     
     &lt;script&gt;
       var cscale = d3.scale.category20b();
-      d3.selectAll(&#039;#chart28c6a2e41bc svg path.link&#039;)
+      d3.selectAll(&#039;#chart11f011135ae4 svg path.link&#039;)
         .style(&#039;stroke&#039;, function(d){
           return cscale(d.source.name);
         })
-      d3.selectAll(&#039;#chart28c6a2e41bc svg .node rect&#039;)
+      d3.selectAll(&#039;#chart11f011135ae4 svg .node rect&#039;)
         .style(&#039;fill&#039;, function(d){
           return cscale(d.name)
         })
@@ -320,7 +319,7 @@ node.append(&quot;text&quot;)
     &lt;/script&gt;
         
   &lt;/body&gt;
-&lt;/html&gt; ' scrolling='no' frameBorder='0' seamless class='rChart  http://timelyportfolio.github.io/rCharts_d3_sankey/libraries/widgets/d3_sankey  ' id='iframe-chart28c6a2e41bc'> </iframe>
+&lt;/html&gt; ' scrolling='no' frameBorder='0' seamless class='rChart  http://timelyportfolio.github.io/rCharts_d3_sankey/libraries/widgets/d3_sankey  ' id='iframe-chart11f011135ae4'> </iframe>
  <style>iframe.rChart{ width: 100%; height: 400px;}</style>
 <style>iframe.rChart{ width: 100%; height: 840px;}</style>
 

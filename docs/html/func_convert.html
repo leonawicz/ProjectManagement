@@ -156,13 +156,231 @@ code > span.er { color: #c3bf9f; }
 
 
 
+<p>The main function for conversion between Rmd and Rnw files is <code>convertDocs</code>. This function contains several internal support functions, each of which is somewhat limited in how much specific conversion it can achieve. The functions below were written with my particular style of Rmd and Rnw documentation in mind. As such they are necessarily a bit idiosyncratic and cannot account for every possible difference found between Rmd and Rnw formatting across any pair of documents. I only strived to speed up the process by which I convert my own documents, most of which follow a set of general rules and expectations most of the time. Anything atypical which doesn’t convert properly can be adjusted by hand afterward. This is still better than rewriting, copy-pasting, and search-and-replacing many sections of many files on a recurring basis. Further improvements in conversion will be added later.</p>
+<div id="swapheadings" class="section level4">
+<h4>.swapHeadings</h4>
+<p><code>.swapHeadings</code> assists in bidirectional conversion between Rmd and Rnw files. It swaps section headings formatting. It is called directly by <code>swap</code>, internal to <code>convertDocs</code>.</p>
+<pre class="sourceCode r"><code class="sourceCode r"><span class="co"># Rmd &lt;-&gt; Rnw document conversion Conversion support functions called by</span>
+<span class="co"># .swap()</span>
+.swapHeadings &lt;-<span class="st"> </span>function(from, to, x) {
+    nc &lt;-<span class="st"> </span><span class="kw">nchar</span>(x)
+    ind &lt;-<span class="st"> </span><span class="kw">which</span>(<span class="kw">substr</span>(x, <span class="dv">1</span>, <span class="dv">1</span>) ==<span class="st"> &quot;</span><span class="ch">\\</span><span class="st">&quot;</span>)
+    if (!<span class="kw">length</span>(ind)) {
+        <span class="co"># assume Rmd file</span>
+        ind &lt;-<span class="st"> </span><span class="kw">which</span>(<span class="kw">substr</span>(x, <span class="dv">1</span>, <span class="dv">1</span>) ==<span class="st"> &quot;#&quot;</span>)
+        ind.n &lt;-<span class="st"> </span><span class="kw">rep</span>(<span class="dv">1</span>, <span class="kw">length</span>(ind))
+        for (i in <span class="dv">2</span>:<span class="dv">6</span>) {
+            ind.tmp &lt;-<span class="st"> </span><span class="kw">which</span>(<span class="kw">substr</span>(x[ind], <span class="dv">1</span>, i) ==<span class="st"> </span><span class="kw">substr</span>(<span class="st">&quot;######&quot;</span>, <span class="dv">1</span>, i))
+            if (<span class="kw">length</span>(ind.tmp)) 
+                ind.n[ind.tmp] &lt;-<span class="st"> </span>ind.n[ind.tmp] +<span class="st"> </span><span class="dv">1</span> else break
+        }
+        for (i in <span class="dv">1</span>:<span class="kw">length</span>(ind)) {
+            n &lt;-<span class="st"> </span>ind.n[i]
+            input &lt;-<span class="st"> </span><span class="kw">paste0</span>(<span class="kw">substr</span>(<span class="st">&quot;######&quot;</span>, <span class="dv">1</span>, n), <span class="st">&quot; &quot;</span>)
+            h &lt;-<span class="st"> </span>x[ind[i]]
+            h &lt;-<span class="st"> </span><span class="kw">gsub</span>(<span class="st">&quot;</span><span class="ch">\\</span><span class="st">*&quot;</span>, <span class="st">&quot;_&quot;</span>, h)  <span class="co"># Switch any markdown boldface asterisks in headings to double underscores</span>
+            heading &lt;-<span class="st"> </span><span class="kw">gsub</span>(<span class="st">&quot;</span><span class="ch">\n</span><span class="st">&quot;</span>, <span class="st">&quot;&quot;</span>, <span class="kw">substr</span>(h, n +<span class="st"> </span><span class="dv">2</span>, nc[ind[i]]))
+            <span class="co"># h &lt;- gsub(input, &#39;&#39;, h)</span>
+            if (n &lt;=<span class="st"> </span><span class="dv">2</span>) 
+                subs &lt;-<span class="st"> &quot;</span><span class="ch">\\</span><span class="st">&quot;</span> else if (n ==<span class="st"> </span><span class="dv">3</span>) 
+                subs &lt;-<span class="st"> &quot;</span><span class="ch">\\</span><span class="st">sub&quot;</span> else if (n ==<span class="st"> </span><span class="dv">4</span>) 
+                subs &lt;-<span class="st"> &quot;</span><span class="ch">\\</span><span class="st">subsub&quot;</span> else if (n &gt;=<span class="st"> </span><span class="dv">5</span>) 
+                subs &lt;-<span class="st"> &quot;</span><span class="ch">\\</span><span class="st">subsubsub&quot;</span>
+            output &lt;-<span class="st"> </span><span class="kw">paste0</span>(<span class="st">&quot;</span><span class="ch">\\</span><span class="st">&quot;</span>, subs, <span class="st">&quot;section{&quot;</span>, heading, <span class="st">&quot;}</span><span class="ch">\n</span><span class="st">&quot;</span>)
+            x[ind[i]] &lt;-<span class="st"> </span><span class="kw">gsub</span>(h, output, h)
+        }
+    } else {
+        <span class="co"># assume Rnw file</span>
+        ind &lt;-<span class="st"> </span><span class="kw">which</span>(<span class="kw">substr</span>(x, <span class="dv">1</span>, <span class="dv">8</span>) ==<span class="st"> &quot;</span><span class="ch">\\</span><span class="st">section&quot;</span>)
+        if (<span class="kw">length</span>(ind)) {
+            for (i in <span class="dv">1</span>:<span class="kw">length</span>(ind)) {
+                h &lt;-<span class="st"> </span>x[ind[i]]
+                heading &lt;-<span class="st"> </span><span class="kw">paste0</span>(<span class="st">&quot;## &quot;</span>, <span class="kw">substr</span>(h, <span class="dv">10</span>, <span class="kw">nchar</span>(h) -<span class="st"> </span><span class="dv">2</span>), <span class="st">&quot;</span><span class="ch">\n</span><span class="st">&quot;</span>)
+                x[ind[i]] &lt;-<span class="st"> </span>heading  <span class="co">#gsub(gsbraces(h), heading, h)</span>
+            }
+        }
+        ind &lt;-<span class="st"> </span><span class="kw">which</span>(<span class="kw">substr</span>(x, <span class="dv">1</span>, <span class="dv">4</span>) ==<span class="st"> &quot;</span><span class="ch">\\</span><span class="st">sub&quot;</span>)
+        if (<span class="kw">length</span>(ind)) {
+            for (i in <span class="dv">1</span>:<span class="kw">length</span>(ind)) {
+                h &lt;-<span class="st"> </span>x[ind[i]]
+                z &lt;-<span class="st"> </span><span class="kw">substr</span>(h, <span class="dv">2</span>, <span class="dv">10</span>)
+                if (z ==<span class="st"> &quot;subsubsub&quot;</span>) {
+                  p &lt;-<span class="st"> &quot;##### &quot;</span>
+                  n &lt;-<span class="st"> </span><span class="dv">19</span>
+                } else if (<span class="kw">substr</span>(z, <span class="dv">1</span>, <span class="dv">6</span>) ==<span class="st"> &quot;subsub&quot;</span>) {
+                  p &lt;-<span class="st"> &quot;#### &quot;</span>
+                  n &lt;-<span class="st"> </span><span class="dv">16</span>
+                } else if (<span class="kw">substr</span>(z, <span class="dv">1</span>, <span class="dv">3</span>) ==<span class="st"> &quot;sub&quot;</span>) {
+                  p &lt;-<span class="st"> &quot;### &quot;</span>
+                  n &lt;-<span class="st"> </span><span class="dv">13</span>
+                }
+                heading &lt;-<span class="st"> </span><span class="kw">paste0</span>(p, <span class="kw">substr</span>(h, n, <span class="kw">nchar</span>(h) -<span class="st"> </span><span class="dv">2</span>), <span class="st">&quot;</span><span class="ch">\n</span><span class="st">&quot;</span>)
+                x[ind[i]] &lt;-<span class="st"> </span>heading  <span class="co">#gsub(gsbraces(h), heading, h)</span>
+            }
+        }
+    }
+    x
+}</code></pre>
+</div>
+<div id="swapchunks" class="section level4">
+<h4>.swapChunks</h4>
+<p><code>.swapChunks</code> assists in bidirectional conversion between Rmd and Rnw files. It swaps code chunk formatting. It is called directly by <code>swap</code>, internal to <code>convertDocs</code>.</p>
+<pre class="sourceCode r"><code class="sourceCode r"><span class="co"># Rmd &lt;-&gt; Rnw document conversion Conversion support functions called by</span>
+<span class="co"># .swap()</span>
+.swapChunks &lt;-<span class="st"> </span>function(from, to, x, <span class="dt">offset.end =</span> <span class="dv">1</span>) {
+    nc &lt;-<span class="st"> </span><span class="kw">nchar</span>(x)
+    chunk.start.open &lt;-<span class="st"> </span><span class="kw">substr</span>(x, <span class="dv">1</span>, <span class="kw">nchar</span>(from[<span class="dv">1</span>])) ==<span class="st"> </span>from[<span class="dv">1</span>]
+    chunk.start.close &lt;-<span class="st"> </span><span class="kw">substr</span>(x, nc -<span class="st"> </span>offset.end -<span class="st"> </span><span class="kw">nchar</span>(from[<span class="dv">2</span>]) +<span class="st"> </span><span class="dv">1</span>, nc -<span class="st"> </span>
+<span class="st">        </span>offset.end) ==<span class="st"> </span>from[<span class="dv">2</span>]
+    chunk.start &lt;-<span class="st"> </span><span class="kw">which</span>(chunk.start.open &amp;<span class="st"> </span>chunk.start.close)
+    chunk.end &lt;-<span class="st"> </span><span class="kw">which</span>(<span class="kw">substr</span>(x, <span class="dv">1</span>, <span class="kw">nchar</span>(from[<span class="dv">3</span>])) ==<span class="st"> </span>from[<span class="dv">3</span>] &amp;<span class="st"> </span>nc ==<span class="st"> </span><span class="kw">nchar</span>(from[<span class="dv">3</span>]) +<span class="st"> </span>
+<span class="st">        </span>offset.end)
+    x[chunk.start] &lt;-<span class="st"> </span><span class="kw">gsub</span>(from[<span class="dv">2</span>], to[<span class="dv">2</span>], <span class="kw">gsub</span>(<span class="kw">gsbraces</span>(from[<span class="dv">1</span>]), <span class="kw">gsbraces</span>(to[<span class="dv">1</span>]), 
+        x[chunk.start]))
+    x[chunk.end] &lt;-<span class="st"> </span><span class="kw">gsub</span>(from[<span class="dv">3</span>], to[<span class="dv">3</span>], x[chunk.end])
+    chunklines &lt;-<span class="st"> </span><span class="kw">as.numeric</span>(<span class="kw">unlist</span>(<span class="kw">mapply</span>(seq, chunk.start, chunk.end)))
+    <span class="kw">list</span>(x, chunklines)
+}</code></pre>
+</div>
+<div id="swapemphasis" class="section level4">
+<h4>.swapEmphasis</h4>
+<p><code>.swapEmphasis</code> assists in bidirectional conversion between Rmd and Rnw files. It swaps text formatting such as boldface and typewriter font. It is called directly by <code>swap</code>, internal to <code>convertDocs</code>.</p>
+<pre class="sourceCode r"><code class="sourceCode r"><span class="co"># Rmd &lt;-&gt; Rnw document conversion Conversion support functions called by</span>
+<span class="co"># .swap() I know I use &#39;**&#39; strictly for bold font in Rmd files.  For now,</span>
+<span class="co"># this function assumes: 1. The only emphasis in a doc is boldface or</span>
+<span class="co"># typewriter.  2. These instances are always preceded by a space, a carriage</span>
+<span class="co"># return, or an open bracket, 3. and followed by a space, period, comma, or</span>
+<span class="co"># closing bracket.</span>
+.swapEmphasis &lt;-<span class="st"> </span>function(x, <span class="dt">emphasis =</span> <span class="st">&quot;remove&quot;</span>, <span class="dt">pat.remove =</span> <span class="kw">c</span>(<span class="st">&quot;`&quot;</span>, <span class="st">&quot;</span><span class="ch">\\</span><span class="st">*</span><span class="ch">\\</span><span class="st">*&quot;</span>, 
+    <span class="st">&quot;__&quot;</span>), <span class="dt">pat.replace =</span> pat.remove, <span class="dt">replacement =</span> <span class="kw">c</span>(<span class="st">&quot;</span><span class="ch">\\\\</span><span class="st">texttt</span><span class="ch">\\</span><span class="st">{&quot;</span>, <span class="st">&quot;</span><span class="ch">\\\\</span><span class="st">textbf</span><span class="ch">\\</span><span class="st">{&quot;</span>, 
+    <span class="st">&quot;</span><span class="ch">\\\\</span><span class="st">textbf</span><span class="ch">\\</span><span class="st">{&quot;</span>, <span class="st">&quot;</span><span class="ch">\\</span><span class="st">}&quot;</span>, <span class="st">&quot;</span><span class="ch">\\</span><span class="st">}&quot;</span>, <span class="st">&quot;</span><span class="ch">\\</span><span class="st">}&quot;</span>)) {
+    
+    <span class="kw">stopifnot</span>(emphasis %in%<span class="st"> </span><span class="kw">c</span>(<span class="st">&quot;remove&quot;</span>, <span class="st">&quot;replace&quot;</span>))
+    n &lt;-<span class="st"> </span><span class="kw">length</span>(pat.replace)
+    rep1 &lt;-<span class="st"> </span>replacement[<span class="dv">1</span>:n]
+    rep2 &lt;-<span class="st"> </span>replacement[(n +<span class="st"> </span><span class="dv">1</span>):(<span class="dv">2</span> *<span class="st"> </span>n)]
+    prefix &lt;-<span class="st"> </span><span class="kw">c</span>(<span class="st">&quot; &quot;</span>, <span class="st">&quot;^&quot;</span>, <span class="st">&quot;</span><span class="ch">\\</span><span class="st">{&quot;</span>, <span class="st">&quot;</span><span class="ch">\\</span><span class="st">(&quot;</span>)
+    suffix &lt;-<span class="st"> </span><span class="kw">c</span>(<span class="st">&quot; &quot;</span>, <span class="st">&quot;,&quot;</span>, <span class="st">&quot;-&quot;</span>, <span class="st">&quot;</span><span class="ch">\n</span><span class="st">&quot;</span>, <span class="st">&quot;</span><span class="ch">\\</span><span class="st">.&quot;</span>, <span class="st">&quot;</span><span class="ch">\\</span><span class="st">}&quot;</span>, <span class="st">&quot;</span><span class="ch">\\</span><span class="st">)&quot;</span>)
+    n.p &lt;-<span class="st"> </span><span class="kw">length</span>(prefix)
+    n.s &lt;-<span class="st"> </span><span class="kw">length</span>(suffix)
+    pat.replace &lt;-<span class="st"> </span><span class="kw">c</span>(<span class="kw">paste0</span>(<span class="kw">rep</span>(prefix, n), <span class="kw">rep</span>(pat.replace, <span class="dt">each =</span> n.p)), <span class="kw">paste0</span>(<span class="kw">rep</span>(pat.replace, 
+        <span class="dt">each =</span> n.s), <span class="kw">rep</span>(suffix, n)))
+    replacement &lt;-<span class="st"> </span><span class="kw">c</span>(<span class="kw">paste0</span>(<span class="kw">rep</span>(<span class="kw">gsub</span>(<span class="st">&quot;</span><span class="ch">\\</span><span class="st">^&quot;</span>, <span class="st">&quot;&quot;</span>, prefix), n), <span class="kw">rep</span>(rep1, <span class="dt">each =</span> n.p)), 
+        <span class="kw">paste0</span>(<span class="kw">rep</span>(rep2, <span class="dt">each =</span> n.s), <span class="kw">rep</span>(suffix, n)))
+    if (emphasis ==<span class="st"> &quot;remove&quot;</span>) 
+        for (k in <span class="dv">1</span>:<span class="kw">length</span>(pat.remove)) x &lt;-<span class="st"> </span><span class="kw">sapply</span>(x, function(v, p, r) <span class="kw">gsub</span>(p, 
+            r, v), <span class="dt">p =</span> pat.remove[k], <span class="dt">r =</span> <span class="st">&quot;&quot;</span>)
+    if (emphasis ==<span class="st"> &quot;replace&quot;</span>) 
+        for (k in <span class="dv">1</span>:<span class="kw">length</span>(pat.replace)) x &lt;-<span class="st"> </span><span class="kw">sapply</span>(x, function(v, p, r) <span class="kw">gsub</span>(p, 
+            r, v), <span class="dt">p =</span> pat.replace[k], <span class="dt">r =</span> replacement[k])
+    x
+}</code></pre>
+</div>
+<div id="swap" class="section level4">
+<h4>.swap</h4>
+<p><code>.swap</code> assists in bidirectional conversion between Rmd and Rnw files. It is called internal to <code>convertDocs</code>.</p>
+<pre class="sourceCode r"><code class="sourceCode r"><span class="co"># Rmd &lt;-&gt; Rnw document conversion Conversion support functions called by</span>
+<span class="co"># .convertDocs()</span>
+.swap &lt;-<span class="st"> </span>function(file, <span class="dt">header =</span> <span class="ot">NULL</span>, outDir, ...) {
+    title &lt;-<span class="st"> </span><span class="kw">list</span>(...)$title
+    author &lt;-<span class="st"> </span><span class="kw">list</span>(...)$author
+    highlight &lt;-<span class="st"> </span><span class="kw">list</span>(...)$highlight
+    ext &lt;-<span class="st"> </span><span class="kw">tail</span>(<span class="kw">strsplit</span>(file, <span class="st">&quot;</span><span class="ch">\\</span><span class="st">.&quot;</span>)[[<span class="dv">1</span>]], <span class="dv">1</span>)
+    l &lt;-<span class="st"> </span><span class="kw">readLines</span>(file)
+    l &lt;-<span class="st"> </span>l[<span class="kw">substr</span>(l, <span class="dv">1</span>, <span class="dv">7</span>) !=<span class="st"> &quot;&lt;style&gt;&quot;</span>]  <span class="co"># Strip any html style lines</span>
+    if (ext ==<span class="st"> &quot;Rmd&quot;</span>) {
+        from &lt;-<span class="st"> </span>rmdChunkID
+        to &lt;-<span class="st"> </span>rnwChunkID
+        hl.default &lt;-<span class="st"> &quot;solarized-light&quot;</span>
+        out.ext &lt;-<span class="st"> &quot;Rnw&quot;</span>
+        h.ind &lt;-<span class="st"> </span><span class="dv">1</span>:<span class="kw">which</span>(l ==<span class="st"> &quot;---&quot;</span>)[<span class="dv">2</span>]
+        h &lt;-<span class="st"> </span>l[h.ind]
+        t.ind &lt;-<span class="st"> </span><span class="kw">which</span>(<span class="kw">substr</span>(h, <span class="dv">1</span>, <span class="dv">7</span>) ==<span class="st"> &quot;title: &quot;</span>)
+        a.ind &lt;-<span class="st"> </span><span class="kw">which</span>(<span class="kw">substr</span>(h, <span class="dv">1</span>, <span class="dv">8</span>) ==<span class="st"> &quot;author: &quot;</span>)
+        highlight.ind &lt;-<span class="st"> </span><span class="kw">which</span>(<span class="kw">substr</span>(h, <span class="dv">1</span>, <span class="dv">11</span>) ==<span class="st"> &quot;highlight: &quot;</span>)
+        if (<span class="kw">is.null</span>(title) &amp;<span class="st"> </span><span class="kw">length</span>(t.ind)) 
+            title &lt;-<span class="st"> </span><span class="kw">substr</span>(h[t.ind], <span class="dv">8</span>, <span class="kw">nchar</span>(h[t.ind])) else if (<span class="kw">is.null</span>(title)) 
+            title &lt;-<span class="st"> &quot;&quot;</span>
+        if (<span class="kw">is.null</span>(author) &amp;<span class="st"> </span><span class="kw">length</span>(a.ind)) 
+            author &lt;-<span class="st"> </span><span class="kw">substr</span>(h[a.ind], <span class="dv">9</span>, <span class="kw">nchar</span>(h[a.ind])) else if (<span class="kw">is.null</span>(author)) 
+            author &lt;-<span class="st"> &quot;&quot;</span>
+        if (<span class="kw">is.null</span>(highlight) &amp;<span class="st"> </span><span class="kw">length</span>(highlight.ind)) 
+            highlight &lt;-<span class="st"> </span><span class="kw">substr</span>(h[highlight.ind], <span class="dv">12</span>, <span class="kw">nchar</span>(h[highlight.ind])) else if (<span class="kw">is.null</span>(highlight)) 
+            highlight &lt;-<span class="st"> </span>hl.default else if (!(highlight %in%<span class="st"> </span>knit_theme$<span class="kw">get</span>())) 
+            highlight &lt;-<span class="st"> </span>hl.default
+        if (!<span class="kw">is.null</span>(title)) 
+            header &lt;-<span class="st"> </span><span class="kw">c</span>(header, <span class="kw">paste0</span>(<span class="st">&quot;</span><span class="ch">\\</span><span class="st">title{&quot;</span>, title, <span class="st">&quot;}&quot;</span>))
+        if (!<span class="kw">is.null</span>(author)) 
+            header &lt;-<span class="st"> </span><span class="kw">c</span>(header, <span class="kw">paste0</span>(<span class="st">&quot;</span><span class="ch">\\</span><span class="st">author{&quot;</span>, author, <span class="st">&quot;}&quot;</span>))
+        if (!<span class="kw">is.null</span>(title)) 
+            header &lt;-<span class="st"> </span><span class="kw">c</span>(header, <span class="st">&quot;</span><span class="ch">\\</span><span class="st">maketitle</span><span class="ch">\n</span><span class="st">&quot;</span>)
+        header &lt;-<span class="st"> </span><span class="kw">c</span>(header, <span class="kw">paste0</span>(<span class="st">&quot;&lt;&lt;highlight, echo=FALSE&gt;&gt;=</span><span class="ch">\n</span><span class="st">knit_theme$set(knit_theme$get(&#39;&quot;</span>, 
+            highlight, <span class="st">&quot;&#39;))</span><span class="ch">\n</span><span class="st">@</span><span class="ch">\n</span><span class="st">&quot;</span>))
+    } else if (ext ==<span class="st"> &quot;Rnw&quot;</span>) {
+        from &lt;-<span class="st"> </span>rnwChunkID
+        to &lt;-<span class="st"> </span>rmdChunkID
+        hl.default &lt;-<span class="st"> &quot;tango&quot;</span>
+        out.ext &lt;-<span class="st"> &quot;Rmd&quot;</span>
+        begin.doc &lt;-<span class="st"> </span><span class="kw">which</span>(l ==<span class="st"> &quot;</span><span class="ch">\\</span><span class="st">begin{document}&quot;</span>)
+        make.title &lt;-<span class="st"> </span><span class="kw">which</span>(l ==<span class="st"> &quot;</span><span class="ch">\\</span><span class="st">maketitle&quot;</span>)
+        if (<span class="kw">length</span>(make.title)) 
+            h.ind &lt;-<span class="st"> </span><span class="dv">1</span>:make.title else h.ind &lt;-<span class="st"> </span><span class="dv">1</span>:begin.doc
+        h &lt;-<span class="st"> </span>l[h.ind]
+        t.ind &lt;-<span class="st"> </span><span class="kw">which</span>(<span class="kw">substr</span>(h, <span class="dv">1</span>, <span class="dv">6</span>) ==<span class="st"> &quot;</span><span class="ch">\\</span><span class="st">title&quot;</span>)
+        a.ind &lt;-<span class="st"> </span><span class="kw">which</span>(<span class="kw">substr</span>(h, <span class="dv">1</span>, <span class="dv">7</span>) ==<span class="st"> &quot;</span><span class="ch">\\</span><span class="st">author&quot;</span>)
+        highlight.ind &lt;-<span class="st"> </span><span class="kw">which</span>(<span class="kw">substr</span>(l, <span class="dv">1</span>, <span class="dv">11</span>) ==<span class="st"> &quot;&lt;&lt;highlight&quot;</span>)
+        if (<span class="kw">is.null</span>(title) &amp;<span class="st"> </span><span class="kw">length</span>(t.ind)) 
+            title &lt;-<span class="st"> </span><span class="kw">substr</span>(h[t.ind], <span class="dv">8</span>, <span class="kw">nchar</span>(h[t.ind]) -<span class="st"> </span><span class="dv">1</span>)
+        if (<span class="kw">is.null</span>(author) &amp;<span class="st"> </span><span class="kw">length</span>(a.ind)) 
+            author &lt;-<span class="st"> </span><span class="kw">substr</span>(h[a.ind], <span class="dv">9</span>, <span class="kw">nchar</span>(h[a.ind]) -<span class="st"> </span><span class="dv">1</span>)
+        if (<span class="kw">length</span>(highlight.ind)) {
+            l1 &lt;-<span class="st"> </span>l[highlight.ind +<span class="st"> </span><span class="dv">1</span>]
+            h1 &lt;-<span class="st"> </span><span class="kw">substr</span>(l1, <span class="kw">nchar</span>(<span class="st">&quot;knit_theme$set(knit_theme$get(&#39;&quot;</span>) +<span class="st"> </span><span class="dv">1</span>, <span class="kw">nchar</span>(l1) -<span class="st"> </span>
+<span class="st">                </span><span class="kw">nchar</span>(<span class="st">&quot;&#39;))</span><span class="ch">\n</span><span class="st">&quot;</span>))
+            if (!(h1 %in%<span class="st"> </span>knit_theme$<span class="kw">get</span>())) 
+                h1 &lt;-<span class="st"> </span>hl.default
+        }
+        if (<span class="kw">is.null</span>(highlight) &amp;<span class="st"> </span><span class="kw">length</span>(highlight.ind)) 
+            highlight &lt;-<span class="st"> </span>h1 else if (<span class="kw">is.null</span>(highlight)) 
+            highlight &lt;-<span class="st"> </span>hl.default else if (!(highlight %in%<span class="st"> </span>knit_theme$<span class="kw">get</span>())) 
+            highlight &lt;-<span class="st"> </span>hl.default
+        header &lt;-<span class="st"> </span><span class="kw">rmdHeader</span>(<span class="dt">title =</span> title, <span class="dt">author =</span> author, <span class="dt">highlight =</span> highlight)
+        h.chunks &lt;-<span class="st"> </span><span class="kw">.swapChunks</span>(<span class="dt">from =</span> from, <span class="dt">to =</span> to, <span class="dt">x =</span> h, <span class="dt">offset.end =</span> <span class="dv">0</span>)
+        header &lt;-<span class="st"> </span><span class="kw">c</span>(header, h.chunks[[<span class="dv">1</span>]][h.chunks[[<span class="dv">2</span>]]])
+    }
+    header &lt;-<span class="st"> </span><span class="kw">paste0</span>(header, <span class="dt">collapse =</span> <span class="st">&quot;</span><span class="ch">\n</span><span class="st">&quot;</span>)
+    l &lt;-<span class="st"> </span><span class="kw">paste0</span>(l[-h.ind], <span class="st">&quot;</span><span class="ch">\n</span><span class="st">&quot;</span>)
+    l &lt;-<span class="st"> </span><span class="kw">.swapHeadings</span>(<span class="dt">from =</span> from, <span class="dt">to =</span> to, <span class="dt">x =</span> l)
+    chunks &lt;-<span class="st"> </span><span class="kw">.swapChunks</span>(<span class="dt">from =</span> from, <span class="dt">to =</span> to, <span class="dt">x =</span> l)
+    l &lt;-<span class="st"> </span>chunks[[<span class="dv">1</span>]]
+    if (ext ==<span class="st"> &quot;Rmd&quot;</span>) 
+        l &lt;-<span class="st"> </span><span class="kw">.swapEmphasis</span>(<span class="dt">x =</span> l, <span class="dt">emphasis =</span> emphasis)
+    if (ext ==<span class="st"> &quot;Rmd&quot;</span>) 
+        l[-chunks[[<span class="dv">2</span>]]] &lt;-<span class="st"> </span><span class="kw">sapply</span>(l[-chunks[[<span class="dv">2</span>]]], function(v, p, r) <span class="kw">gsub</span>(p, 
+            r, v), <span class="dt">p =</span> <span class="st">&quot;_&quot;</span>, <span class="dt">r =</span> <span class="st">&quot;</span><span class="ch">\\\\</span><span class="st">_&quot;</span>)
+    l &lt;-<span class="st"> </span><span class="kw">c</span>(header, l)
+    if (ext ==<span class="st"> &quot;Rmd&quot;</span>) 
+        l &lt;-<span class="st"> </span><span class="kw">c</span>(l, <span class="st">&quot;</span><span class="ch">\n\\</span><span class="st">end{document}</span><span class="ch">\n</span><span class="st">&quot;</span>)
+    if (ext ==<span class="st"> &quot;Rnw&quot;</span>) {
+        ind &lt;-<span class="st"> </span><span class="kw">which</span>(<span class="kw">substr</span>(l, <span class="dv">1</span>, <span class="dv">1</span>) ==<span class="st"> &quot;</span><span class="ch">\\</span><span class="st">&quot;</span>)  <span class="co"># drop any remaining lines beginning with a backslash</span>
+        l &lt;-<span class="st"> </span>l[-ind]
+    }
+    outfile &lt;-<span class="st"> </span><span class="kw">file.path</span>(outDir, <span class="kw">gsub</span>(<span class="kw">paste0</span>(<span class="st">&quot;</span><span class="ch">\\</span><span class="st">.&quot;</span>, ext), <span class="kw">paste0</span>(<span class="st">&quot;</span><span class="ch">\\</span><span class="st">.&quot;</span>, out.ext), 
+        <span class="kw">basename</span>(file)))
+    if (overwrite ||<span class="st"> </span>!<span class="kw">file.exists</span>(outfile)) {
+        <span class="kw">sink</span>(outfile)
+        <span class="kw">sapply</span>(l, cat)
+        <span class="kw">sink</span>()
+        <span class="kw">print</span>(<span class="kw">paste</span>(<span class="st">&quot;Writing&quot;</span>, outfile))
+    }
+}</code></pre>
+</div>
 <div id="convertdocs" class="section level4">
 <h4>convertDocs</h4>
 <p><code>convertDocs</code> converts between Rmd and Rnw files. The project’s <code>docs/Rmd</code> or <code>docs/Rnw</code> directory is specified. Any files of the same type as the directory are converted to the other type and saved to the other directory. The input files are not removed.</p>
 <p>This function speeds up the process of duplicating files, e.g., when wanting to make PDFs from Rnw files when only Rmd files exist. This is almost exclusively what I use this function for. On less frequent occasions I have used it in the other direction when I have Rnw files which were once used to make PDFs but later I decide to put them on the web as a web page and not as a link to a PDF.</p>
 <p>The user still makes specific changes by hand, for example, any required changes to <code>knitr</code> code chunk options that must differ for PDF output vs. html output. The primary benefit is in not having to fuss with large amounts of standard substitutions which can be automated, such as swapping code chunk enclosure styles and common file metadata. Of course, this function is not perfect. It amounts to a text-parsing hack that is intended to handle the most common of idiosyncrasies and differences which exist between my own Rmd and Rnw files in the context of my own set of rules and assumptions, outlined below.</p>
-<pre class="sourceCode r"><code class="sourceCode r"><span class="co"># Rmd &lt;-&gt; Rnw document conversion Conversion support functions Main</span>
-<span class="co"># conversion function</span>
+<pre class="sourceCode r"><code class="sourceCode r"><span class="co"># Rmd &lt;-&gt; Rnw document conversion Main conversion function</span>
 convertDocs &lt;-<span class="st"> </span>function(path, <span class="dt">rmdChunkID =</span> <span class="kw">c</span>(<span class="st">&quot;```{r&quot;</span>, <span class="st">&quot;}&quot;</span>, <span class="st">&quot;```&quot;</span>), <span class="dt">rnwChunkID =</span> <span class="kw">c</span>(<span class="st">&quot;&lt;&lt;&quot;</span>, 
     <span class="st">&quot;&gt;&gt;=&quot;</span>, <span class="st">&quot;@&quot;</span>), <span class="dt">emphasis =</span> <span class="st">&quot;replace&quot;</span>, <span class="dt">overwrite =</span> <span class="ot">FALSE</span>, ...) {
     <span class="kw">stopifnot</span>(<span class="kw">is.character</span>(path))
@@ -192,208 +410,11 @@ convertDocs &lt;-<span class="st"> </span>function(path, <span class="dt">rmdChu
         <span class="kw">stopifnot</span>(<span class="kw">length</span>(rnw.files) &gt;<span class="st"> </span><span class="dv">0</span>)
         outDir &lt;-<span class="st"> </span><span class="kw">file.path</span>(<span class="kw">dirname</span>(path), <span class="st">&quot;Rmd&quot;</span>)
     } else <span class="kw">stop</span>(<span class="st">&quot;path must end in &#39;Rmd&#39; or &#39;Rnw&#39;.&quot;</span>)
-    
-    swapHeadings &lt;-<span class="st"> </span>function(from, to, x) {
-        nc &lt;-<span class="st"> </span><span class="kw">nchar</span>(x)
-        ind &lt;-<span class="st"> </span><span class="kw">which</span>(<span class="kw">substr</span>(x, <span class="dv">1</span>, <span class="dv">8</span>) ==<span class="st"> &quot;</span><span class="ch">\\</span><span class="st">section&quot;</span> |<span class="st"> </span><span class="kw">substr</span>(x, <span class="dv">1</span>, <span class="dv">4</span>) ==<span class="st"> &quot;</span><span class="ch">\\</span><span class="st">sub&quot;</span>)
-        if (!<span class="kw">length</span>(ind)) {
-            <span class="co"># assume Rmd file</span>
-            ind &lt;-<span class="st"> </span><span class="kw">which</span>(<span class="kw">substr</span>(x, <span class="dv">1</span>, <span class="dv">1</span>) ==<span class="st"> &quot;#&quot;</span>)
-            ind.n &lt;-<span class="st"> </span><span class="kw">rep</span>(<span class="dv">1</span>, <span class="kw">length</span>(ind))
-            for (i in <span class="dv">2</span>:<span class="dv">6</span>) {
-                ind.tmp &lt;-<span class="st"> </span><span class="kw">which</span>(<span class="kw">substr</span>(x[ind], <span class="dv">1</span>, i) ==<span class="st"> </span><span class="kw">substr</span>(<span class="st">&quot;######&quot;</span>, <span class="dv">1</span>, 
-                  i))
-                if (<span class="kw">length</span>(ind.tmp)) 
-                  ind.n[ind.tmp] &lt;-<span class="st"> </span>ind.n[ind.tmp] +<span class="st"> </span><span class="dv">1</span> else break
-            }
-            for (i in <span class="dv">1</span>:<span class="kw">length</span>(ind)) {
-                n &lt;-<span class="st"> </span>ind.n[i]
-                input &lt;-<span class="st"> </span><span class="kw">paste0</span>(<span class="kw">substr</span>(<span class="st">&quot;######&quot;</span>, <span class="dv">1</span>, n), <span class="st">&quot; &quot;</span>)
-                h &lt;-<span class="st"> </span>x[ind[i]]
-                h &lt;-<span class="st"> </span><span class="kw">gsub</span>(<span class="st">&quot;</span><span class="ch">\\</span><span class="st">*&quot;</span>, <span class="st">&quot;_&quot;</span>, h)  <span class="co"># Switch any markdown boldface asterisks in headings to double underscores</span>
-                heading &lt;-<span class="st"> </span><span class="kw">gsub</span>(<span class="st">&quot;</span><span class="ch">\n</span><span class="st">&quot;</span>, <span class="st">&quot;&quot;</span>, <span class="kw">substr</span>(h, n +<span class="st"> </span><span class="dv">2</span>, nc[ind[i]]))
-                <span class="co"># h &lt;- gsub(input, &#39;&#39;, h)</span>
-                if (n &lt;=<span class="st"> </span><span class="dv">2</span>) 
-                  subs &lt;-<span class="st"> &quot;</span><span class="ch">\\</span><span class="st">&quot;</span> else if (n ==<span class="st"> </span><span class="dv">3</span>) 
-                  subs &lt;-<span class="st"> &quot;</span><span class="ch">\\</span><span class="st">sub&quot;</span> else if (n ==<span class="st"> </span><span class="dv">4</span>) 
-                  subs &lt;-<span class="st"> &quot;</span><span class="ch">\\</span><span class="st">subsub&quot;</span> else if (n &gt;=<span class="st"> </span><span class="dv">5</span>) 
-                  subs &lt;-<span class="st"> &quot;</span><span class="ch">\\</span><span class="st">subsubsub&quot;</span>
-                output &lt;-<span class="st"> </span><span class="kw">paste0</span>(<span class="st">&quot;</span><span class="ch">\\</span><span class="st">&quot;</span>, subs, <span class="st">&quot;section{&quot;</span>, heading, <span class="st">&quot;}</span><span class="ch">\n</span><span class="st">&quot;</span>)
-                x[ind[i]] &lt;-<span class="st"> </span><span class="kw">gsub</span>(h, output, h)
-            }
-        } else {
-            <span class="co"># assume Rnw file</span>
-            ind &lt;-<span class="st"> </span><span class="kw">which</span>(<span class="kw">substr</span>(x, <span class="dv">1</span>, <span class="dv">8</span>) ==<span class="st"> &quot;</span><span class="ch">\\</span><span class="st">section&quot;</span>)
-            if (<span class="kw">length</span>(ind)) {
-                for (i in <span class="dv">1</span>:<span class="kw">length</span>(ind)) {
-                  h &lt;-<span class="st"> </span>x[ind[i]]
-                  heading &lt;-<span class="st"> </span><span class="kw">paste0</span>(<span class="st">&quot;## &quot;</span>, <span class="kw">substr</span>(h, <span class="dv">10</span>, <span class="kw">nchar</span>(h) -<span class="st"> </span><span class="dv">2</span>))
-                  x[ind[i]] &lt;-<span class="st"> </span><span class="kw">gsub</span>(<span class="kw">gsbraces</span>(h), heading, h)
-                }
-            }
-            ind &lt;-<span class="st"> </span><span class="kw">which</span>(<span class="kw">substr</span>(x, <span class="dv">1</span>, <span class="dv">4</span>) ==<span class="st"> &quot;</span><span class="ch">\\</span><span class="st">sub&quot;</span>)
-            if (<span class="kw">length</span>(ind)) {
-                for (i in <span class="dv">1</span>:<span class="kw">length</span>(ind)) {
-                  h &lt;-<span class="st"> </span>x[ind[i]]
-                  z &lt;-<span class="st"> </span><span class="kw">substr</span>(h, <span class="dv">2</span>, <span class="dv">10</span>)
-                  if (z ==<span class="st"> &quot;subsubsub&quot;</span>) {
-                    p &lt;-<span class="st"> &quot;##### &quot;</span>
-                    n &lt;-<span class="st"> </span><span class="dv">18</span>
-                  } else if (<span class="kw">substr</span>(z, <span class="dv">1</span>, <span class="dv">6</span>) ==<span class="st"> &quot;subsub&quot;</span>) {
-                    p &lt;-<span class="st"> &quot;#### &quot;</span>
-                    n &lt;-<span class="st"> </span><span class="dv">15</span>
-                  } else if (<span class="kw">substr</span>(z, <span class="dv">1</span>, <span class="dv">3</span>) ==<span class="st"> &quot;sub&quot;</span>) {
-                    p &lt;-<span class="st"> &quot;### &quot;</span>
-                    n &lt;-<span class="st"> </span><span class="dv">12</span>
-                  }
-                  heading &lt;-<span class="st"> </span><span class="kw">paste0</span>(p, <span class="kw">substr</span>(h, n, <span class="kw">nchar</span>(h) -<span class="st"> </span><span class="dv">2</span>))
-                  x[ind[i]] &lt;-<span class="st"> </span><span class="kw">gsub</span>(<span class="kw">gsbraces</span>(h), heading, h)
-                }
-            }
-        }
-        x
-    }
-    
-    swapChunks &lt;-<span class="st"> </span>function(from, to, x) {
-        nc &lt;-<span class="st"> </span><span class="kw">nchar</span>(x)
-        chunk.start.open &lt;-<span class="st"> </span><span class="kw">substr</span>(x, <span class="dv">1</span>, <span class="kw">nchar</span>(from[<span class="dv">1</span>])) ==<span class="st"> </span>from[<span class="dv">1</span>]
-        chunk.start.close &lt;-<span class="st"> </span><span class="kw">substr</span>(x, nc -<span class="st"> </span><span class="dv">1</span> -<span class="st"> </span><span class="kw">nchar</span>(from[<span class="dv">2</span>]) +<span class="st"> </span><span class="dv">1</span>, nc -<span class="st"> </span><span class="dv">1</span>) ==<span class="st"> </span>
-<span class="st">            </span>from[<span class="dv">2</span>]
-        chunk.start &lt;-<span class="st"> </span><span class="kw">which</span>(chunk.start.open &amp;<span class="st"> </span>chunk.start.close)
-        chunk.end &lt;-<span class="st"> </span><span class="kw">which</span>(<span class="kw">substr</span>(x, <span class="dv">1</span>, <span class="kw">nchar</span>(from[<span class="dv">3</span>])) ==<span class="st"> </span>from[<span class="dv">3</span>] &amp;<span class="st"> </span>nc ==<span class="st"> </span><span class="kw">nchar</span>(from[<span class="dv">3</span>]) +<span class="st"> </span>
-<span class="st">            </span><span class="dv">1</span>)
-        x[chunk.start] &lt;-<span class="st"> </span><span class="kw">gsub</span>(from[<span class="dv">2</span>], to[<span class="dv">2</span>], <span class="kw">gsub</span>(<span class="kw">gsbraces</span>(from[<span class="dv">1</span>]), <span class="kw">gsbraces</span>(to[<span class="dv">1</span>]), 
-            x[chunk.start]))
-        x[chunk.end] &lt;-<span class="st"> </span><span class="kw">gsub</span>(from[<span class="dv">3</span>], to[<span class="dv">3</span>], x[chunk.end])
-        chunklines &lt;-<span class="st"> </span><span class="kw">as.numeric</span>(<span class="kw">unlist</span>(<span class="kw">mapply</span>(seq, chunk.start, chunk.end)))
-        <span class="kw">list</span>(x, chunklines)
-    }
-    
-    <span class="co"># I know I use &#39;**&#39; strictly for bold font in Rmd files.  For now, this</span>
-    <span class="co"># function assumes: 1. The only emphasis in a doc is boldface or typewriter.</span>
-    <span class="co"># 2. These instances are always preceded by a space, a carriage return, or</span>
-    <span class="co"># an open bracket, 3. and followed by a space, period, comma, or closing</span>
-    <span class="co"># bracket.</span>
-    swapEmphasis &lt;-<span class="st"> </span>function(x, <span class="dt">emphasis =</span> <span class="st">&quot;remove&quot;</span>, <span class="dt">pat.remove =</span> <span class="kw">c</span>(<span class="st">&quot;`&quot;</span>, <span class="st">&quot;</span><span class="ch">\\</span><span class="st">*</span><span class="ch">\\</span><span class="st">*&quot;</span>, 
-        <span class="st">&quot;__&quot;</span>), <span class="dt">pat.replace =</span> pat.remove, <span class="dt">replacement =</span> <span class="kw">c</span>(<span class="st">&quot;</span><span class="ch">\\\\</span><span class="st">texttt</span><span class="ch">\\</span><span class="st">{&quot;</span>, <span class="st">&quot;</span><span class="ch">\\\\</span><span class="st">textbf</span><span class="ch">\\</span><span class="st">{&quot;</span>, 
-        <span class="st">&quot;</span><span class="ch">\\\\</span><span class="st">textbf</span><span class="ch">\\</span><span class="st">{&quot;</span>, <span class="st">&quot;</span><span class="ch">\\</span><span class="st">}&quot;</span>, <span class="st">&quot;</span><span class="ch">\\</span><span class="st">}&quot;</span>, <span class="st">&quot;</span><span class="ch">\\</span><span class="st">}&quot;</span>)) {
-        
-        <span class="kw">stopifnot</span>(emphasis %in%<span class="st"> </span><span class="kw">c</span>(<span class="st">&quot;remove&quot;</span>, <span class="st">&quot;replace&quot;</span>))
-        n &lt;-<span class="st"> </span><span class="kw">length</span>(pat.replace)
-        rep1 &lt;-<span class="st"> </span>replacement[<span class="dv">1</span>:n]
-        rep2 &lt;-<span class="st"> </span>replacement[(n +<span class="st"> </span><span class="dv">1</span>):(<span class="dv">2</span> *<span class="st"> </span>n)]
-        prefix &lt;-<span class="st"> </span><span class="kw">c</span>(<span class="st">&quot; &quot;</span>, <span class="st">&quot;^&quot;</span>, <span class="st">&quot;</span><span class="ch">\\</span><span class="st">{&quot;</span>, <span class="st">&quot;</span><span class="ch">\\</span><span class="st">(&quot;</span>)
-        suffix &lt;-<span class="st"> </span><span class="kw">c</span>(<span class="st">&quot; &quot;</span>, <span class="st">&quot;,&quot;</span>, <span class="st">&quot;-&quot;</span>, <span class="st">&quot;</span><span class="ch">\n</span><span class="st">&quot;</span>, <span class="st">&quot;</span><span class="ch">\\</span><span class="st">.&quot;</span>, <span class="st">&quot;</span><span class="ch">\\</span><span class="st">}&quot;</span>, <span class="st">&quot;</span><span class="ch">\\</span><span class="st">)&quot;</span>)
-        n.p &lt;-<span class="st"> </span><span class="kw">length</span>(prefix)
-        n.s &lt;-<span class="st"> </span><span class="kw">length</span>(suffix)
-        pat.replace &lt;-<span class="st"> </span><span class="kw">c</span>(<span class="kw">paste0</span>(<span class="kw">rep</span>(prefix, n), <span class="kw">rep</span>(pat.replace, <span class="dt">each =</span> n.p)), 
-            <span class="kw">paste0</span>(<span class="kw">rep</span>(pat.replace, <span class="dt">each =</span> n.s), <span class="kw">rep</span>(suffix, n)))
-        replacement &lt;-<span class="st"> </span><span class="kw">c</span>(<span class="kw">paste0</span>(<span class="kw">rep</span>(<span class="kw">gsub</span>(<span class="st">&quot;</span><span class="ch">\\</span><span class="st">^&quot;</span>, <span class="st">&quot;&quot;</span>, prefix), n), <span class="kw">rep</span>(rep1, <span class="dt">each =</span> n.p)), 
-            <span class="kw">paste0</span>(<span class="kw">rep</span>(rep2, <span class="dt">each =</span> n.s), <span class="kw">rep</span>(suffix, n)))
-        if (emphasis ==<span class="st"> &quot;remove&quot;</span>) 
-            for (k in <span class="dv">1</span>:<span class="kw">length</span>(pat.remove)) x &lt;-<span class="st"> </span><span class="kw">sapply</span>(x, function(v, p, r) <span class="kw">gsub</span>(p, 
-                r, v), <span class="dt">p =</span> pat.remove[k], <span class="dt">r =</span> <span class="st">&quot;&quot;</span>)
-        if (emphasis ==<span class="st"> &quot;replace&quot;</span>) 
-            for (k in <span class="dv">1</span>:<span class="kw">length</span>(pat.replace)) x &lt;-<span class="st"> </span><span class="kw">sapply</span>(x, function(v, p, r) <span class="kw">gsub</span>(p, 
-                r, v), <span class="dt">p =</span> pat.replace[k], <span class="dt">r =</span> replacement[k])
-        x
-    }
-    
-    swap &lt;-<span class="st"> </span>function(file, <span class="dt">header =</span> <span class="ot">NULL</span>, outDir, ...) {
-        title &lt;-<span class="st"> </span><span class="kw">list</span>(...)$title
-        author &lt;-<span class="st"> </span><span class="kw">list</span>(...)$author
-        highlight &lt;-<span class="st"> </span><span class="kw">list</span>(...)$highlight
-        ext &lt;-<span class="st"> </span><span class="kw">tail</span>(<span class="kw">strsplit</span>(file, <span class="st">&quot;</span><span class="ch">\\</span><span class="st">.&quot;</span>)[[<span class="dv">1</span>]], <span class="dv">1</span>)
-        l &lt;-<span class="st"> </span><span class="kw">readLines</span>(file)
-        l &lt;-<span class="st"> </span>l[<span class="kw">substr</span>(l, <span class="dv">1</span>, <span class="dv">7</span>) !=<span class="st"> &quot;&lt;style&gt;&quot;</span>]  <span class="co"># Strip any html style lines</span>
-        if (ext ==<span class="st"> &quot;Rmd&quot;</span>) {
-            hl.default &lt;-<span class="st"> &quot;solarized-light&quot;</span>
-            out.ext &lt;-<span class="st"> &quot;Rnw&quot;</span>
-            h.ind &lt;-<span class="st"> </span><span class="dv">1</span>:<span class="kw">which</span>(l ==<span class="st"> &quot;---&quot;</span>)[<span class="dv">2</span>]
-            h &lt;-<span class="st"> </span>l[h.ind]
-            t.ind &lt;-<span class="st"> </span><span class="kw">which</span>(<span class="kw">substr</span>(h, <span class="dv">1</span>, <span class="dv">7</span>) ==<span class="st"> &quot;title: &quot;</span>)
-            a.ind &lt;-<span class="st"> </span><span class="kw">which</span>(<span class="kw">substr</span>(h, <span class="dv">1</span>, <span class="dv">8</span>) ==<span class="st"> &quot;author: &quot;</span>)
-            highlight.ind &lt;-<span class="st"> </span><span class="kw">which</span>(<span class="kw">substr</span>(h, <span class="dv">1</span>, <span class="dv">11</span>) ==<span class="st"> &quot;highlight: &quot;</span>)
-            if (<span class="kw">is.null</span>(title) &amp;<span class="st"> </span><span class="kw">length</span>(t.ind)) 
-                title &lt;-<span class="st"> </span><span class="kw">substr</span>(h[t.ind], <span class="dv">8</span>, <span class="kw">nchar</span>(h[t.ind])) else if (<span class="kw">is.null</span>(title)) 
-                title &lt;-<span class="st"> &quot;&quot;</span>
-            if (<span class="kw">is.null</span>(author) &amp;<span class="st"> </span><span class="kw">length</span>(a.ind)) 
-                author &lt;-<span class="st"> </span><span class="kw">substr</span>(h[a.ind], <span class="dv">9</span>, <span class="kw">nchar</span>(h[a.ind])) else if (<span class="kw">is.null</span>(author)) 
-                author &lt;-<span class="st"> &quot;&quot;</span>
-            if (<span class="kw">is.null</span>(highlight) &amp;<span class="st"> </span><span class="kw">length</span>(highlight.ind)) 
-                highlight &lt;-<span class="st"> </span><span class="kw">substr</span>(h[highlight.ind], <span class="dv">12</span>, <span class="kw">nchar</span>(h[highlight.ind])) else if (<span class="kw">is.null</span>(highlight)) 
-                highlight &lt;-<span class="st"> </span>hl.default else if (!(highlight %in%<span class="st"> </span>knit_theme$<span class="kw">get</span>())) 
-                highlight &lt;-<span class="st"> </span>hl.default
-            if (!<span class="kw">is.null</span>(title)) 
-                header &lt;-<span class="st"> </span><span class="kw">c</span>(header, <span class="kw">paste0</span>(<span class="st">&quot;</span><span class="ch">\\</span><span class="st">title{&quot;</span>, title, <span class="st">&quot;}&quot;</span>))
-            if (!<span class="kw">is.null</span>(author)) 
-                header &lt;-<span class="st"> </span><span class="kw">c</span>(header, <span class="kw">paste0</span>(<span class="st">&quot;</span><span class="ch">\\</span><span class="st">author{&quot;</span>, author, <span class="st">&quot;}&quot;</span>))
-            if (!<span class="kw">is.null</span>(title)) 
-                header &lt;-<span class="st"> </span><span class="kw">c</span>(header, <span class="st">&quot;</span><span class="ch">\\</span><span class="st">maketitle</span><span class="ch">\n</span><span class="st">&quot;</span>)
-            header &lt;-<span class="st"> </span><span class="kw">c</span>(header, <span class="kw">paste0</span>(<span class="st">&quot;&lt;&lt;highlight, echo=FALSE&gt;&gt;=</span><span class="ch">\n</span><span class="st">knit_theme$set(knit_theme$get(&#39;&quot;</span>, 
-                highlight, <span class="st">&quot;&#39;))</span><span class="ch">\n</span><span class="st">@</span><span class="ch">\n</span><span class="st">&quot;</span>))
-        } else if (ext ==<span class="st"> &quot;Rnw&quot;</span>) {
-            hl.default &lt;-<span class="st"> &quot;tango&quot;</span>
-            out.ext &lt;-<span class="st"> &quot;Rmd&quot;</span>
-            begin.doc &lt;-<span class="st"> </span><span class="kw">which</span>(l ==<span class="st"> &quot;</span><span class="ch">\\</span><span class="st">begin{document}&quot;</span>)
-            make.title &lt;-<span class="st"> </span><span class="kw">which</span>(l ==<span class="st"> &quot;</span><span class="ch">\\</span><span class="st">maketitle&quot;</span>)
-            if (<span class="kw">length</span>(make.title)) 
-                h.ind &lt;-<span class="st"> </span><span class="dv">1</span>:make.title else h.ind &lt;-<span class="st"> </span><span class="dv">1</span>:begin.doc
-            h &lt;-<span class="st"> </span>l[h.ind]
-            t.ind &lt;-<span class="st"> </span><span class="kw">which</span>(<span class="kw">substr</span>(h, <span class="dv">1</span>, <span class="dv">6</span>) ==<span class="st"> &quot;</span><span class="ch">\\</span><span class="st">title&quot;</span>)
-            a.ind &lt;-<span class="st"> </span><span class="kw">which</span>(<span class="kw">substr</span>(h, <span class="dv">1</span>, <span class="dv">7</span>) ==<span class="st"> &quot;</span><span class="ch">\\</span><span class="st">author&quot;</span>)
-            highlight.ind &lt;-<span class="st"> </span><span class="kw">which</span>(<span class="kw">substr</span>(l, <span class="dv">1</span>, <span class="dv">11</span>) ==<span class="st"> &quot;&lt;&lt;highlight&quot;</span>)
-            if (<span class="kw">is.null</span>(title) &amp;<span class="st"> </span><span class="kw">length</span>(t.ind)) 
-                title &lt;-<span class="st"> </span><span class="kw">substr</span>(h[t.ind], <span class="dv">8</span>, <span class="kw">nchar</span>(h[t.ind]) -<span class="st"> </span><span class="dv">1</span>)
-            if (<span class="kw">is.null</span>(author) &amp;<span class="st"> </span><span class="kw">length</span>(a.ind)) 
-                author &lt;-<span class="st"> </span><span class="kw">substr</span>(h[a.ind], <span class="dv">9</span>, <span class="kw">nchar</span>(h[a.ind]) -<span class="st"> </span><span class="dv">1</span>)
-            if (<span class="kw">length</span>(highlight.ind)) {
-                l1 &lt;-<span class="st"> </span>l[highlight.ind +<span class="st"> </span><span class="dv">1</span>]
-                h1 &lt;-<span class="st"> </span><span class="kw">substr</span>(l1, <span class="kw">nchar</span>(<span class="st">&quot;knit_theme$set(knit_theme$get(&#39;&quot;</span>) +<span class="st"> </span>
-<span class="st">                  </span><span class="dv">1</span>, <span class="kw">nchar</span>(l1) -<span class="st"> </span><span class="kw">nchar</span>(<span class="st">&quot;&#39;))</span><span class="ch">\n</span><span class="st">&quot;</span>))
-                if (!(h1 %in%<span class="st"> </span>knit_theme$<span class="kw">get</span>())) 
-                  h1 &lt;-<span class="st"> </span>hl.default
-            }
-            if (<span class="kw">is.null</span>(highlight) &amp;<span class="st"> </span><span class="kw">length</span>(highlight.ind)) 
-                highlight &lt;-<span class="st"> </span>h1 else if (<span class="kw">is.null</span>(highlight)) 
-                highlight &lt;-<span class="st"> </span>hl.default else if (!(highlight %in%<span class="st"> </span>knit_theme$<span class="kw">get</span>())) 
-                highlight &lt;-<span class="st"> </span>hl.default
-            header &lt;-<span class="st"> </span><span class="kw">rmdHeader</span>(<span class="dt">title =</span> title, <span class="dt">author =</span> author, <span class="dt">highlight =</span> highlight)
-        }
-        header &lt;-<span class="st"> </span><span class="kw">paste0</span>(header, <span class="dt">collapse =</span> <span class="st">&quot;</span><span class="ch">\n</span><span class="st">&quot;</span>)
-        l &lt;-<span class="st"> </span><span class="kw">paste0</span>(l[-h.ind], <span class="st">&quot;</span><span class="ch">\n</span><span class="st">&quot;</span>)
-        if (ext ==<span class="st"> &quot;Rmd&quot;</span>) {
-            from &lt;-<span class="st"> </span>rmdChunkID
-            to &lt;-<span class="st"> </span>rnwChunkID
-        }
-        if (ext ==<span class="st"> &quot;Rnw&quot;</span>) {
-            from &lt;-<span class="st"> </span>rnwChunkID
-            to &lt;-<span class="st"> </span>rmdChunkID
-        }
-        l &lt;-<span class="st"> </span><span class="kw">swapHeadings</span>(<span class="dt">from =</span> from, <span class="dt">to =</span> to, <span class="dt">x =</span> l)
-        chunks &lt;-<span class="st"> </span><span class="kw">swapChunks</span>(<span class="dt">from =</span> from, <span class="dt">to =</span> to, <span class="dt">x =</span> l)
-        l &lt;-<span class="st"> </span>chunks[[<span class="dv">1</span>]]
-        if (ext ==<span class="st"> &quot;Rmd&quot;</span>) 
-            l &lt;-<span class="st"> </span><span class="kw">swapEmphasis</span>(<span class="dt">x =</span> l, <span class="dt">emphasis =</span> emphasis)
-        if (ext ==<span class="st"> &quot;Rmd&quot;</span>) 
-            l[-chunks[[<span class="dv">2</span>]]] &lt;-<span class="st"> </span><span class="kw">sapply</span>(l[-chunks[[<span class="dv">2</span>]]], function(v, p, r) <span class="kw">gsub</span>(p, 
-                r, v), <span class="dt">p =</span> <span class="st">&quot;_&quot;</span>, <span class="dt">r =</span> <span class="st">&quot;</span><span class="ch">\\\\</span><span class="st">_&quot;</span>)
-        l &lt;-<span class="st"> </span><span class="kw">c</span>(header, l, <span class="st">&quot;</span><span class="ch">\n\\</span><span class="st">end{document}</span><span class="ch">\n</span><span class="st">&quot;</span>)
-        outfile &lt;-<span class="st"> </span><span class="kw">file.path</span>(outDir, <span class="kw">gsub</span>(<span class="kw">paste0</span>(<span class="st">&quot;</span><span class="ch">\\</span><span class="st">.&quot;</span>, ext), <span class="kw">paste0</span>(<span class="st">&quot;</span><span class="ch">\\</span><span class="st">.&quot;</span>, 
-            out.ext), <span class="kw">basename</span>(file)))
-        if (overwrite ||<span class="st"> </span>!<span class="kw">file.exists</span>(outfile)) {
-            <span class="kw">sink</span>(outfile)
-            <span class="kw">sapply</span>(l, cat)
-            <span class="kw">sink</span>()
-            <span class="kw">print</span>(<span class="kw">paste</span>(<span class="st">&quot;Writing&quot;</span>, outfile))
-        }
-    }
-    
     if (type ==<span class="st"> &quot;Rmd&quot;</span>) {
-        <span class="kw">sapply</span>(rmd.files, swap, <span class="dt">header =</span> header.rnw, <span class="dt">outDir =</span> outDir, ...)
+        <span class="kw">sapply</span>(rmd.files, .swap, <span class="dt">header =</span> header.rnw, <span class="dt">outDir =</span> outDir, ...)
         <span class="kw">cat</span>(<span class="st">&quot;.Rmd to .Rnw file conversion complete.</span><span class="ch">\n</span><span class="st">&quot;</span>)
     } else {
-        <span class="kw">sapply</span>(rnw.files, swap, <span class="dt">header =</span> <span class="ot">NULL</span>, <span class="dt">outDir =</span> outDir, ...)
+        <span class="kw">sapply</span>(rnw.files, .swap, <span class="dt">header =</span> <span class="ot">NULL</span>, <span class="dt">outDir =</span> outDir, ...)
         <span class="kw">cat</span>(<span class="st">&quot;.Rnw to .Rmd file conversion complete.</span><span class="ch">\n</span><span class="st">&quot;</span>)
     }
 }</code></pre>
