@@ -12,6 +12,50 @@ opts_chunk$set(cache=FALSE, eval=FALSE, tidy=TRUE, message=FALSE, warning=FALSE)
 read_chunk("../../code/rpm.R")
 ```
 
+The main function for conversion between Rmd and Rnw files is `convertDocs`.
+This function contains several internal support functions, each of which is somewhat limited in how much specific conversion it can achieve.
+The functions below were written with my particular style of Rmd and Rnw documentation in mind.
+As such they are necessarily a bit idiosyncratic and cannot account for every possible difference found between Rmd and Rnw formatting across any pair of documents.
+I only strived to speed up the process by which I convert my own documents, most of which follow a set of general rules and expectations most of the time.
+Anything atypical which doesn't convert properly can be adjusted by hand afterward.
+This is still better than rewriting, copy-pasting, and search-and-replacing many sections of many files on a recurring basis.
+Further improvements in conversion will be added later.
+
+#### .swapHeadings
+`.swapHeadings` assists in bidirectional conversion between Rmd and Rnw files.
+It swaps section headings formatting.
+It is called directly by `swap`, internal to `convertDocs`.
+
+
+```{r fun_swapHeadings}
+```
+
+#### .swapChunks
+`.swapChunks` assists in bidirectional conversion between Rmd and Rnw files.
+It swaps code chunk formatting.
+It is called directly by `swap`, internal to `convertDocs`.
+
+
+```{r fun_swapChunks}
+```
+
+#### .swapEmphasis
+`.swapEmphasis` assists in bidirectional conversion between Rmd and Rnw files.
+It swaps text formatting such as boldface and typewriter font.
+It is called directly by `swap`, internal to `convertDocs`.
+
+
+```{r fun_swapEmphasis}
+```
+
+#### .swap
+`.swap` assists in bidirectional conversion between Rmd and Rnw files.
+It is called internal to `convertDocs`.
+
+
+```{r fun_swap}
+```
+
 #### convertDocs
 `convertDocs` converts between Rmd and Rnw files.
 The project's `docs/Rmd` or `docs/Rnw` directory is specified.
