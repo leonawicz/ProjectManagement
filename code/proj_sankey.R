@@ -33,7 +33,6 @@ from <- c(
 	rep("NWT/Comm. Charts DS", 1),
 	c("Alfresco Noatak", "Alfresco Statewide"),
 	rep("Data Extraction and Uncertainty Analysis", 4)
-	
 )
 
 to <- c(
