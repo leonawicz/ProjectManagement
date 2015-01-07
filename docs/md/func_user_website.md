@@ -74,16 +74,20 @@ genAppDiv <- function(file = "C:/github/leonawicz.github.io/assets/apps_containe
 
 `genPanelDiv` generates an html file storing a container div element which in its current state of development organizes two types of content: **R** projects and Shiny web applications.
 
-The `type` argument can be either `projects` or `apps` and essentially bifurcates the behavior of `genPanelDiv`.
-The purpose of the function is to generate an html file defining a container div element to display and reference either my **R** projects or my Shiny apps.
+The `type` argument can be one of `projects`, `apps`, `datavis`, or `gallery`.
+The purpose of the function is to generate an html file defining a container div element to display and reference either my **R** projects, my Shiny apps, or my example visualization galleries.
+
+##### Projects
 
 For projects, the function scans a directory of local repositories and takes any directories found to be the names of projects.
 There is an `exclude` argument for dropping any known directories that are to be avoided.
 My defaults are `exclude="leonawicz.github.io", "shiny-apps"` since the first is just a local repository for my Github user account web site and not a "project" in the same sense of my other projects
 and the second is the local repository which is scanned by `genPanelDiv` when `type="apps"`.
 
+##### Apps
+
 For apps, the function scans a directory of Shiny app subdirectories.
-Unlike for projects, where `genPanelDiv` scans a directory of multiple local repositories, this apps directory should be a specific local repository. The apps contained within are not inndividual repositories.
+Unlike for projects, where `genPanelDiv` scans a directory of multiple local repositories, this apps directory should be a specific local repository. The apps contained within are not individual repositories.
 I have taken this approach for now simply because this is how my apps tend to be stored.
 
 Specifically, the `genAppDiv` looks for a named directory of image files.
@@ -95,19 +99,35 @@ The container element includes an image link to each app's url as well as a link
 Although the app scans for images in a local repository, the images referenced in the output html are of course not local.
 They point to the same images stored on Github, hence why it is useful for the local directory of apps to be a Github repository.
 
+##### DataVis and Galleries
+
+Whereas the first three types generate containers for the main Github user web page, I use `type="gallery"` to make a separate container html file of graphics for each panel occurring in my `datavis` container.
+These containers tend to be added to unique web pages.
+`datavis` is for highlighting a number of galleries whereas `gallery` is for the galleries' respective contents.
+
+In order to use `type="datavis"` there must be a data visualization local repository.
+Mine is named `DataVisualizationExamples`, evident from the hardcoding currently in place within this function.
+Similar to when `type="apps"`, this repository includes a directory of images, in t his case one image for each gallery.
+Each image in this directory is named such that it identically matches another the name of a gallery images directory containing multiple images.
+As with `type="apps"`, gallery directories are only included if a corresponding thumbnail image in the images directory exists.
+
+When `type="gallery"`, the behavior of `genPanelDiv` is most unique.
+For each gallery which exists, the function will make a unique html file with a gallery container element.
+
 This function makes the more specific `genAppDiv` redundant and will likely replace it.
 
 
 ```r
 genPanelDiv <- function(outDir, type = "projects", main = "Projects", github.user = "leonawicz", 
-    prjs.dir = "C:/github", exclude = c("leonawicz.github.io", "shiny-apps"), 
-    img.loc = "_images/cropped", ...) {
+    prjs.dir = "C:/github", exclude = c("leonawicz.github.io", "shiny-apps", 
+        "DataVisExamples", ".git", "_images"), img.loc = "_images/cropped", 
+    lightbox = FALSE, ...) {
     stopifnot(github.user %in% c("leonawicz", "ua-snap"))
     if (type == "apps") {
         filename <- "apps_container.html"
         web.url <- "http://shiny.snap.uaf.edu"
         gh.url.tail <- "shiny-apps/tree/master"
-        target <- " target=\"_blank\""
+        atts <- " target=\"_blank\""
         go.label <- "Launch"
         prjs.dir <- file.path(prjs.dir, "shiny-apps")
         prjs.img <- list.files(file.path(prjs.dir, img.loc))
@@ -117,7 +137,7 @@ genPanelDiv <- function(outDir, type = "projects", main = "Projects", github.use
         filename <- "projects_container.html"
         web.url <- paste0("http://", github.user, ".github.io")
         gh.url.tail <- ""
-        target <- ""
+        atts <- ""
         go.label <- "Website"
         prjs <- list.dirs(prjs.dir, full = TRUE, recursive = FALSE)
         prjs <- prjs[!(basename(prjs) %in% exclude)]
@@ -125,54 +145,99 @@ genPanelDiv <- function(outDir, type = "projects", main = "Projects", github.use
             "plots"), pattern = paste0("^_", basename(a)[i])), a = prjs)
         prjs <- basename(prjs)
     }
+    if (type == "datavis") {
+        filename <- "data-visualizations_container.html"
+        web.url <- paste0("http://", github.user, ".github.io")
+        gh.url.tail <- "DataVisExamples/tree/master"
+        atts <- ""
+        go.label <- "See More"
+        prjs.dir <- file.path(prjs.dir, "DataVisExamples")
+        prjs.img <- list.files(file.path(prjs.dir, img.loc))
+        prjs <- sapply(strsplit(prjs.img, "\\."), "[[", 1)
+    }
+    if (type == "gallery") {
+        web.url <- paste0("http://", github.user, ".github.io")
+        gh.url.tail <- "DataVisExamples/tree/master"
+        if (lightbox) 
+            atts1 <- " data-lightbox=\"ID\"" else atts1 <- ""
+        go.label <- "Expand"
+        prjs <- list.dirs(file.path(prjs.dir, "DataVisExamples"), full = T, 
+            recursive = F)
+        prjs <- prjs[!(basename(prjs) %in% exclude)]
+        prjs.img <- lapply(1:length(prjs), function(x, files) list.files(path = files[x]), 
+            files = prjs)
+        prjs <- basename(prjs)
+        filename <- paste0("gallery-", gsub(" ", "-", gsub(" - ", " ", prjs)), 
+            ".html")
+    }
     gh.url <- file.path("https://github.com", github.user, gh.url.tail)
-    x <- paste0("<div class=\"container\">\n  <div class=\"row\">\n    <div class=\"col-lg-12\">\n      <div class=\"page-header\">\n        <h3 id=\"", 
-        type, "\">", main, "</h3>\n      </div>\n    </div>\n  </div>\n  ")
     
     fillRow <- function(i, ...) {
-        prj <- prjs[i]
-        if (type == "apps") 
-            img.src <- file.path(gsub("/tree/", "/raw/", gh.url), img.loc, prjs.img[i])
-        if (type == "projects") 
-            img.src <- file.path(gh.url, prj, "raw/master/plots", prjs.img[i])
-        web.url <- file.path(web.url, prj)
+        prj <- panels[i]
         dots <- list(...)
         if (is.null(dots$col)) 
             col <- "warning" else col <- dots$col
         if (is.null(dots$panel.main)) 
-            panel.main <- gsub("_", " ", prj) else panel.main <- dots$panel.main
+            panel.main <- gsub(" - ", ": ", gsub("_", " ", prj)) else panel.main <- dots$panel.main
         if (length(panel.main) > 1) 
             panel.main <- panel.main[i]
+        if (type == "apps") 
+            img.src <- file.path(gsub("/tree/", "/raw/", gh.url), img.loc, prjs.img[i])
+        if (type == "projects") 
+            img.src <- file.path(gh.url, prj, "raw/master/plots", prjs.img[i])
+        if (type == "datavis") 
+            img.src <- file.path(gsub("/tree/", "/raw/", gh.url), img.loc, prjs.img[i])
+        if (type != "gallery") {
+            if (type == "datavis") 
+                pfx <- "gallery-" else pfx <- ""
+            web.url <- file.path(web.url, paste0(pfx, gsub("_", "-", gsub("_-_", 
+                "-", prj)), ".html"))
+        } else {
+            prj <- prjs[p]
+            img.src <- file.path(gsub("/tree/", "/raw/", gh.url), prjs[p], panels[i])
+            web.url <- img.src
+            if (lightbox) 
+                atts <- gsub("ID", gsub(" - ", ": ", gsub("_", " ", prjs[p])), 
+                  atts1) else atts <- atts1
+        }
         x <- paste0("<div class=\"col-lg-4\">\n\t\t  <div class=\"bs-component\">\n\t\t\t<div class=\"panel panel-", 
             col, "\">\n\t\t\t  <div class=\"panel-heading\"><h3 class=\"panel-title\">", 
             panel.main, "</h3>\n\t\t\t  </div>\n\t\t\t  <div class=\"panel-body\"><a href=\"", 
-            web.url, "\"", target, "><img src=\"", img.src, "\" alt=\"", prj, 
+            web.url, "\"", atts, "><img src=\"", img.src, "\" alt=\"", panel.main, 
             "\" width=100% height=200px></a><p></p>\n\t\t\t\t<div class=\"btn-group btn-group-justified\">\n\t\t\t\t  <a href=\"", 
-            web.url, "\"", target, " class=\"btn btn-success\">", go.label, 
-            "</a>\n\t\t\t\t  <a href=\"", file.path(gh.url, prj), "\" class=\"btn btn-info\">Github</a>\n\t\t\t\t</div>\n\t\t\t  </div>\n\t\t\t</div>\n\t\t  </div>\n\t\t</div>")
+            web.url, "\"", atts, " class=\"btn btn-success\">", go.label, "</a>\n\t\t\t\t  <a href=\"", 
+            file.path(gh.url, prj), "\" class=\"btn btn-info\">Github</a>\n\t\t\t\t</div>\n\t\t\t  </div>\n\t\t\t</div>\n\t\t  </div>\n\t\t</div>")
     }
     
-    n <- length(prjs)
-    seq1 <- seq(1, n, by = 3)
-    y <- c()
-    for (j in 1:length(seq1)) {
-        ind <- seq1[j]:(seq1[j] + 2)
-        ind <- ind[ind %in% 1:n]
-        y <- c(y, paste0("<div class=\"row\">\n", paste0(sapply(ind, fillRow, 
-            ...), collapse = "\n"), "</div>\n"))
+    for (p in 1:length(filename)) {
+        if (type == "gallery") {
+            panels <- prjs.img[[p]]
+            main <- gsub(" - ", ": ", gsub("_", " ", prjs[p]))
+        } else panels <- prjs
+        n <- length(panels)
+        seq1 <- seq(1, n, by = 3)
+        x <- paste0("<div class=\"container\">\n  <div class=\"row\">\n    <div class=\"col-lg-12\">\n      <div class=\"page-header\">\n        <h3 id=\"", 
+            type, "\">", main, "</h3>\n      </div>\n    </div>\n  </div>\n  ")
+        y <- c()
+        for (j in 1:length(seq1)) {
+            ind <- seq1[j]:(seq1[j] + 2)
+            ind <- ind[ind %in% 1:n]
+            y <- c(y, paste0("<div class=\"row\">\n", paste0(sapply(ind, fillRow, 
+                ...), collapse = "\n"), "</div>\n"))
+        }
+        z <- "</div>\n"
+        sink(file.path(outDir, filename[p]))
+        sapply(c(x, y, z), cat)
+        sink()
+        cat("div container html file created.\n")
     }
-    z <- "</div>\n"
-    sink(file.path(outDir, filename))
-    sapply(c(x, y, z), cat)
-    sink()
-    cat("div container html file created.\n")
 }
 ```
 
 #### htmlHead
 
-`htmlHead` .
-
+`htmlHead` is useful for including javascript and CSS stylesheets in the head of an html document.
+Stylesheet arguments can be passed along as well in proper order.
 
 
 ```r
@@ -214,7 +279,8 @@ htmlHead <- function(author = "Matthew Leonawicz", title = author, script.paths 
 
 #### htmlBodyTop
 
-`htmlBodyTop` .
+`htmlBodyTop` currently is used for including custom CSS and a background image in the html body.
+CSS can be included as a text string or as a path to a CSS file.
 
 
 
@@ -241,63 +307,22 @@ htmlBodyTop <- function(css.file = NULL, css.string = NULL, background.image = "
 
 #### htmlBottom
 
-`htmlBottom` .
+`htmlBottom` does not do anything else at this time other than close up the html document.
 
 
 
 ```r
 htmlBottom <- function(...) {
     # temporary
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
+    "</body>\n\t</html>"
 }
 ```
 
 #### genUserPage
 
-`genUserPage` .
-
+`genUserPage` generates a Github user account web page by combining precompiled html files of container elements made using `genPanelDiv`
+as well as various lingering hardcoded elements for my own work.
+I use this function to produce my main Github user page, the `index.html`, as well as supplemental gallery pages.
 
 
 ```r
