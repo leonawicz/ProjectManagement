@@ -115,6 +115,8 @@ back.img <- "assets/img/frac23.jpg"
 # check
 htmlBodyTop(background.image=back.img)
 
+github.url <- file.path("https://github.com", user, user.site)
+
 # Prepare navbar
 nb.menu <- c("Projects", "Apps", "Data Visualizations", "Test1")
 
@@ -126,13 +128,13 @@ sub.menu <- list(
 )
 
 files.menu <- list(
-	c("#projects"),
-	c("#apps"),
-	c("#data-visualizations"),
+	c("index.html#projects"),
+	c("index.html#apps"),
+	c("index.html#datavis"),
 	c("header", "#", "divider", "header", "#", "#")
 )
 
-github.url <- file.path("https://github.com", user, user.site)
+
 # Create navbar.html
 genNavbar(htmlfile="navbar.html", title=user.site, menu=nb.menu, submenus=sub.menu, files=files.menu, theme="cyborg", title.url="index.html", home.url="index.html", site.url=github.url, include.home=FALSE)
 
