@@ -38,16 +38,20 @@ This function will probably be removed in favor of the more general `genPanelDiv
 
 `genPanelDiv` generates an html file storing a container div element which in its current state of development organizes two types of content: **R** projects and Shiny web applications.
 
-The `type` argument can be either `projects` or `apps` and essentially bifurcates the behavior of `genPanelDiv`.
-The purpose of the function is to generate an html file defining a container div element to display and reference either my **R** projects or my Shiny apps.
+The `type` argument can be one of `projects`, `apps`, `datavis`, or `gallery`.
+The purpose of the function is to generate an html file defining a container div element to display and reference either my **R** projects, my Shiny apps, or my example visualization galleries.
+
+##### Projects
 
 For projects, the function scans a directory of local repositories and takes any directories found to be the names of projects.
 There is an `exclude` argument for dropping any known directories that are to be avoided.
 My defaults are `exclude="leonawicz.github.io", "shiny-apps"` since the first is just a local repository for my Github user account web site and not a "project" in the same sense of my other projects
 and the second is the local repository which is scanned by `genPanelDiv` when `type="apps"`.
 
+##### Apps
+
 For apps, the function scans a directory of Shiny app subdirectories.
-Unlike for projects, where `genPanelDiv` scans a directory of multiple local repositories, this apps directory should be a specific local repository. The apps contained within are not inndividual repositories.
+Unlike for projects, where `genPanelDiv` scans a directory of multiple local repositories, this apps directory should be a specific local repository. The apps contained within are not individual repositories.
 I have taken this approach for now simply because this is how my apps tend to be stored.
 
 Specifically, the `genAppDiv` looks for a named directory of image files.
@@ -59,6 +63,21 @@ The container element includes an image link to each app's url as well as a link
 Although the app scans for images in a local repository, the images referenced in the output html are of course not local.
 They point to the same images stored on Github, hence why it is useful for the local directory of apps to be a Github repository.
 
+##### DataVis and Galleries
+
+Whereas the first three types generate containers for the main Github user web page, I use `type="gallery"` to make a separate container html file of graphics for each panel occurring in my `datavis` container.
+These containers tend to be added to unique web pages.
+`datavis` is for highlighting a number of galleries whereas `gallery` is for the galleries' respective contents.
+
+In order to use `type="datavis"` there must be a data visualization local repository.
+Mine is named `DataVisualizationExamples`, evident from the hardcoding currently in place within this function.
+Similar to when `type="apps"`, this repository includes a directory of images, in t his case one image for each gallery.
+Each image in this directory is named such that it identically matches another the name of a gallery images directory containing multiple images.
+As with `type="apps"`, gallery directories are only included if a corresponding thumbnail image in the images directory exists.
+
+When `type="gallery"`, the behavior of `genPanelDiv` is most unique.
+For each gallery which exists, the function will make a unique html file with a gallery container element.
+
 This function makes the more specific `genAppDiv` redundant and will likely replace it.
 
 ```{r fun_genPanelDiv}
@@ -66,15 +85,16 @@ This function makes the more specific `genAppDiv` redundant and will likely repl
 
 #### htmlHead
 
-`htmlHead` .
-
+`htmlHead` is useful for including javascript and CSS stylesheets in the head of an html document.
+Stylesheet arguments can be passed along as well in proper order.
 
 ```{r fun_htmlHead}
 ```
 
 #### htmlBodyTop
 
-`htmlBodyTop` .
+`htmlBodyTop` currently is used for including custom CSS and a background image in the html body.
+CSS can be included as a text string or as a path to a CSS file.
 
 
 ```{r fun_htmlBodyTop}
@@ -82,7 +102,7 @@ This function makes the more specific `genAppDiv` redundant and will likely repl
 
 #### htmlBottom
 
-`htmlBottom` .
+`htmlBottom` does not do anything else at this time other than close up the html document.
 
 
 ```{r fun_htmlBottom}
@@ -90,8 +110,9 @@ This function makes the more specific `genAppDiv` redundant and will likely repl
 
 #### genUserPage
 
-`genUserPage` .
-
+`genUserPage` generates a Github user account web page by combining precompiled html files of container elements made using `genPanelDiv`
+as well as various lingering hardcoded elements for my own work.
+I use this function to produce my main Github user page, the `index.html`, as well as supplemental gallery pages.
 
 ```{r fun_genUserPage}
 ```
