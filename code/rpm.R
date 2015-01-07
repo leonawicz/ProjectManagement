@@ -532,13 +532,13 @@ genAppDiv <- function(file="C:/github/leonawicz.github.io/assets/apps_container.
 
 # @knitr fun_genPanelDiv
 genPanelDiv <- function(outDir, type="projects", main="Projects",
-	github.user="leonawicz", prjs.dir="C:/github", exclude=c("leonawicz.github.io", "shiny-apps"), img.loc="_images/cropped", ...){
+	github.user="leonawicz", prjs.dir="C:/github", exclude=c("leonawicz.github.io", "shiny-apps", "DataVisExamples", ".git", "_images"), img.loc="_images/cropped", lightbox=FALSE, ...){
 	stopifnot(github.user %in% c("leonawicz", "ua-snap"))
 	if(type=="apps"){
 		filename <- "apps_container.html"
 		web.url <- "http://shiny.snap.uaf.edu"
 		gh.url.tail <- "shiny-apps/tree/master"
-		target <- ' target="_blank"'
+		atts <- ' target="_blank"'
 		go.label <- "Launch"
 		prjs.dir <- file.path(prjs.dir, "shiny-apps")
 		prjs.img <- list.files(file.path(prjs.dir, img.loc))
@@ -548,33 +548,62 @@ genPanelDiv <- function(outDir, type="projects", main="Projects",
 		filename <- "projects_container.html"
 		web.url <- paste0("http://", github.user, ".github.io")
 		gh.url.tail <- ""
-		target <- ""
+		atts <- ""
 		go.label <- "Website"
 		prjs <- list.dirs(prjs.dir, full=TRUE, recursive=FALSE)
 		prjs <- prjs[!(basename(prjs) %in% exclude)]
 		prjs.img <- sapply(1:length(prjs), function(i, a) list.files(file.path(a[i], "plots"), pattern=paste0("^_", basename(a)[i])), a=prjs)
 		prjs <- basename(prjs)
 	}
+	if(type=="datavis"){
+		filename <- "data-visualizations_container.html"
+		web.url <- paste0("http://", github.user, ".github.io")
+		gh.url.tail <- "DataVisExamples/tree/master"
+		atts <- ""
+		go.label <- "See More"
+		prjs.dir <- file.path(prjs.dir, "DataVisExamples")
+		prjs.img <- list.files(file.path(prjs.dir, img.loc))
+		prjs <- sapply(strsplit(prjs.img, "\\."), "[[", 1)
+	}
+	if(type=="gallery"){
+		web.url <- paste0("http://", github.user, ".github.io")
+		gh.url.tail <- "DataVisExamples/tree/master"
+		if(lightbox) atts1 <- ' data-lightbox="ID"' else atts1 <- ""
+		go.label <- "Expand"
+		prjs <- list.dirs(file.path(prjs.dir, "DataVisExamples"), full=T, recursive=F)
+		prjs <- prjs[!(basename(prjs) %in% exclude)]
+		prjs.img <- lapply(1:length(prjs), function(x, files) list.files(path=files[x]), files=prjs)
+		prjs <- basename(prjs)
+		filename <- paste0("gallery-", gsub(" ", "-", gsub(" - ", " ", prjs)), ".html")
+	}
 	gh.url <- file.path("https://github.com", github.user, gh.url.tail)
-	x <- paste0('<div class="container">\n  <div class="row">\n    <div class="col-lg-12">\n      <div class="page-header">\n        <h3 id="', type, '">', main, '</h3>\n      </div>\n    </div>\n  </div>\n  ')
 	
     fillRow <- function(i, ...){
-		prj <- prjs[i]
+		prj <- panels[i]
+		dots <- list(...)
+	    if(is.null(dots$col)) col <- "warning" else col <- dots$col
+	    if(is.null(dots$panel.main)) panel.main <- gsub(" - ", ": ", gsub("_", " ", prj)) else panel.main <- dots$panel.main
+	    if(length(panel.main) > 1) panel.main <- panel.main[i]
 		if(type=="apps") img.src <- file.path(gsub("/tree/", "/raw/", gh.url), img.loc, prjs.img[i])
 		if(type=="projects") img.src <- file.path(gh.url, prj, "raw/master/plots", prjs.img[i])
-	    web.url <- file.path(web.url, prj)
-	    dots <- list(...)
-	    if(is.null(dots$col)) col <- "warning" else col <- dots$col
-	    if(is.null(dots$panel.main)) panel.main <- gsub("_", " ", prj) else panel.main <- dots$panel.main
-	    if(length(panel.main) > 1) panel.main <- panel.main[i]
+		if(type=="datavis") img.src <- file.path(gsub("/tree/", "/raw/", gh.url), img.loc, prjs.img[i])
+	    if(type!="gallery"){
+			if(type=="datavis") pfx <- "gallery-" else pfx <- ""
+			web.url <- file.path(web.url, paste0(pfx, gsub("_", "-", gsub("_-_", "-", prj)), ".html"))
+		} else {
+			prj <- prjs[p]
+			img.src <- file.path(gsub("/tree/", "/raw/", gh.url), prjs[p], panels[i])
+			web.url <- img.src
+			if(lightbox) atts <- gsub("ID", gsub(" - ", ": ", gsub("_", " ", prjs[p])), atts1) else atts <- atts1
+		}
 	    x <- paste0('<div class="col-lg-4">
 		  <div class="bs-component">
 			<div class="panel panel-', col, '">
 			  <div class="panel-heading"><h3 class="panel-title">', panel.main, '</h3>
 			  </div>
-			  <div class="panel-body"><a href="', web.url, '"', target, '><img src="', img.src, '" alt="', prj, '" width=100% height=200px></a><p></p>
+			  <div class="panel-body"><a href="', web.url, '"', atts, '><img src="', img.src, '" alt="', panel.main, '" width=100% height=200px></a><p></p>
 				<div class="btn-group btn-group-justified">
-				  <a href="', web.url, '"', target, ' class="btn btn-success">', go.label, '</a>
+				  <a href="', web.url, '"', atts, ' class="btn btn-success">', go.label, '</a>
 				  <a href="', file.path(gh.url, prj), '" class="btn btn-info">Github</a>
 				</div>
 			  </div>
@@ -583,19 +612,26 @@ genPanelDiv <- function(outDir, type="projects", main="Projects",
 		</div>')
 	}
 	
-	n <- length(prjs)
-	seq1 <- seq(1, n, by=3)
-	y <- c()
-	for(j in 1:length(seq1)){
-		ind <- seq1[j]:(seq1[j] + 2)
-		ind <- ind[ind %in% 1:n]
-		y <- c(y, paste0('<div class="row">\n', paste0(sapply(ind, fillRow, ...), collapse="\n"), '</div>\n'))
+	for(p in 1:length(filename)){
+		if(type=="gallery"){
+			panels <- prjs.img[[p]]
+			main <- gsub(" - ", ": ", gsub("_", " ", prjs[p]))
+		} else panels <- prjs
+		n <- length(panels)
+		seq1 <- seq(1, n, by=3)
+		x <- paste0('<div class="container">\n  <div class="row">\n    <div class="col-lg-12">\n      <div class="page-header">\n        <h3 id="', type, '">', main, '</h3>\n      </div>\n    </div>\n  </div>\n  ')
+		y <- c()
+		for(j in 1:length(seq1)){
+			ind <- seq1[j]:(seq1[j] + 2)
+			ind <- ind[ind %in% 1:n]
+			y <- c(y, paste0('<div class="row">\n', paste0(sapply(ind, fillRow, ...), collapse="\n"), '</div>\n'))
+		}
+		z <- '</div>\n'
+		sink(file.path(outDir, filename[p]))
+		sapply(c(x, y, z), cat)
+		sink()
+		cat("div container html file created.\n")
 	}
-	z <- '</div>\n'
-	sink(file.path(outDir, filename))
-	sapply(c(x, y, z), cat)
-	sink()
-	cat("div container html file created.\n")
 }
 
 # @knitr fun_htmlHead
@@ -686,48 +722,7 @@ htmlBodyTop <- function(css.file=NULL, css.string=NULL, background.image="", inc
 
 # @knitr fun_htmlBottom
 htmlBottom <- function(...){ # temporary
-	'<div class="container">
-	<div class="row">
-	<div class="col-lg-12">
-	<h2>Alerts</h2>
-	<div class="bs-component">
-	<div class="alert alert-dismissable alert-warning">
-	<button type="button" class="close" data-dismiss="alert">&times;</button>
-	<h4>Warning!</h4>
-	<p>Best check yo self, you\'re not looking too good. Nulla vitae elit libero, a pharetra augue. Praesent commodo cursus magna, <a href="#" class="alert-link">vel scelerisque nisl consectetur et</a>.</p>
-	</div>
-	</div>
-	</div>
-	</div>
-	<div class="row">
-	<div class="col-lg-4">
-	<div class="bs-component">
-	<div class="alert alert-dismissable alert-danger">
-	<button type="button" class="close" data-dismiss="alert">&times;</button>
-	<strong>Oh snap!</strong> <a href="#" class="alert-link">Change a few things up</a> and try submitting again.
-	</div>
-	</div>
-	</div>
-	<div class="col-lg-4">
-	<div class="bs-component">
-	<div class="alert alert-dismissable alert-success">
-	<button type="button" class="close" data-dismiss="alert">&times;</button>
-	<strong>Well done!</strong> You successfully read <a href="#" class="alert-link">this important alert message</a>.
-	</div>
-	</div>
-	</div>
-	<div class="col-lg-4">
-	<div class="bs-component">
-	<div class="alert alert-dismissable alert-info">
-	<button type="button" class="close" data-dismiss="alert">&times;</button>
-	<strong>Heads up!</strong> This <a href="#" class="alert-link">alert needs your attention</a>, but it\'s not super important.
-	</div>
-	</div>
-	</div>
-	</div>
-	</div>
-
-	</body>
+	'</body>
 	</html>'
 }
 

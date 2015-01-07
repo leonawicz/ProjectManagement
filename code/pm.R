@@ -96,18 +96,22 @@ setwd(file.path(mainDir, "assets"))
 genPanelDiv(outDir=getwd(), type="projects", main="Projects", github.user=user, col="primary")
 # create Shiny apps container html file
 genPanelDiv(outDir=getwd(), type="apps", main="Shiny Apps", github.user="ua-snap")
+# create Data Visualizations master container html file
+genPanelDiv(outDir=getwd(), type="datavis", main="Data Visualizations", github.user=user, col="default")
+# create all Gallery container html files
+genPanelDiv(outDir=getwd(), type="gallery", main="Gallery", github.user=user, col="default", lightbox=TRUE)
 
 # Specify libraries for html head
 # 'assets' is first because it resides in the top-level directory where the web site html files reside.
-scripts=c("assets/libs/jquery-1.11.0/jquery.min.js", "assets/js/bootstrap.min.js", "assets/js/bootswatch.js")
-styles <- c("cyborg/bootstrap.css", "assets/css/bootswatch.min.css", "assets/libs/font-awesome-4.1.0/css/font-awesome.css")
-styles.args <- list("", list(media="screen"), "")
+scripts=c("assets/libs/jquery-1.11.0/jquery.min.js", "assets/js/bootstrap.min.js", "assets/js/bootswatch.js", "assets/js/lightbox.min.js")
+styles <- c("cyborg/bootstrap.css", "assets/css/bootswatch.min.css", "assets/libs/font-awesome-4.1.0/css/font-awesome.css", "assets/css/lightbox.css")
+styles.args <- list("", list(media="screen"), "", "")
 
 # check
 htmlHead(script.paths=scripts, stylesheet.paths=styles, stylesheet.args=styles.args)
 
 # Add a background image
-back.img <- "assets/images/frac23.jpg"
+back.img <- "assets/img/frac23.jpg"
 # check
 htmlBodyTop(background.image=back.img)
 
@@ -136,10 +140,17 @@ genNavbar(htmlfile="navbar.html", title=user.site, menu=nb.menu, submenus=sub.me
 htmlBottom()
 
 # Specify dic container elements to include in body
-all.containers <- list.files(pattern="_container")
-keep <- c("about", "updates", "projects", "apps", "data-visualizations")
-keep.ind <- match(keep, sapply(strsplit(all.containers, "_"), "[[", 1))
-containers <- all.containers[keep.ind]
+all.containers <- list.files(pattern="_container.html$")
+keep.main <- c("about", "updates", "projects", "apps", "data-visualizations")
+keep.main.ind <- match(keep.main, sapply(strsplit(all.containers, "_"), "[[", 1))
+main.containers <- all.containers[keep.main.ind]
 
-# Create web page
-genUserPage(file="C:/github/leonawicz.github.io/indextmp.html", navbar="navbar.html", containers=containers, script.paths=scripts, stylesheet.paths=styles, stylesheet.args=styles.args, background.image=back.img)
+gallery.containers <- list.files(pattern="^gallery.*.html$")
+
+# Create web pages
+genUserPage(file=file.path(proj.location, user.site, "index.html"), navbar="navbar.html", containers=main.containers, script.paths=scripts, stylesheet.paths=styles, stylesheet.args=styles.args, background.image=back.img)
+
+files.out <- gsub("_", "-", gsub("_-_", "-", gallery.containers))
+for(i in 1:length(gallery.containers)){
+	genUserPage(file=file.path(proj.location, user.site, files.out[i]), navbar="navbar.html", containers=gallery.containers[i], script.paths=scripts, stylesheet.paths=styles, stylesheet.args=styles.args, background.image=back.img)
+}
