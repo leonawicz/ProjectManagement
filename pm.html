@@ -242,6 +242,113 @@ libs &lt;-<span class="st"> &quot;libs&quot;</span>
 common.header &lt;-<span class="st"> &quot;include/in_header.html&quot;</span>
 <span class="kw">genOutyaml</span>(<span class="dt">file =</span> yaml.out, <span class="dt">lib =</span> libs, <span class="dt">header =</span> common.header, <span class="dt">before_body =</span> <span class="st">&quot;include/navbar.html&quot;</span>)</code></pre>
 </div>
+<div id="knit-documents" class="section level3">
+<h3>Knit documents</h3>
+<p>Both Rmd and Rnw files can be knitted to various formats. Rms and Rnw files can also be conveted back and forth, with notable limitations. Files can be reorganized after knitting.</p>
+<pre class="sourceCode r"><code class="sourceCode r"><span class="kw">library</span>(rmarkdown)
+<span class="kw">library</span>(knitr)
+<span class="kw">setwd</span>(rmd.path)
+
+<span class="co"># R scripts files.r &lt;- list.files(&#39;../../code&#39;, pattern=&#39;.R$&#39;, full=T)</span>
+
+<span class="co"># Rmd files</span>
+files.Rmd &lt;-<span class="st"> </span><span class="kw">list.files</span>(<span class="dt">pattern =</span> <span class="st">&quot;.Rmd$&quot;</span>, <span class="dt">full =</span> T)
+
+<span class="co"># potential non-Rmd directories for writing various output files outtype &lt;-</span>
+<span class="co"># file.path(dirname(getwd()), list.dirs(&#39;../&#39;, full=F, recursive=F)) outtype</span>
+<span class="co"># &lt;- outtype[basename(outtype)!=&#39;Rmd&#39;]</span></code></pre>
+<pre class="sourceCode r"><code class="sourceCode r"><span class="co"># write all yaml front-matter-specified outputs to Rmd directory for all Rmd</span>
+<span class="co"># files</span>
+<span class="kw">lapply</span>(files.Rmd, render, <span class="dt">output_format =</span> <span class="st">&quot;all&quot;</span>)
+<span class="kw">moveDocs</span>(<span class="dt">path.docs =</span> docs.path)
+
+<span class="co"># if also making PDFs for a project, speed up the Rmd to Rnw file</span>
+<span class="co"># conversion/duplication</span>
+rnw.path &lt;-<span class="st"> </span><span class="kw">file.path</span>(docs.path, <span class="st">&quot;Rnw&quot;</span>)
+<span class="kw">setwd</span>(rnw.path)
+<span class="co"># themes &lt;- knit_theme$get()</span>
+highlight &lt;-<span class="st"> &quot;solarized-dark&quot;</span>
+<span class="kw">convertDocs</span>(<span class="dt">path =</span> rmd.path, <span class="dt">emphasis =</span> <span class="st">&quot;replace&quot;</span>, <span class="dt">overwrite =</span> <span class="ot">TRUE</span>, <span class="dt">highlight =</span> highlight)  <span class="co"># Take care not to reverse write</span>
+<span class="kw">lapply</span>(<span class="kw">list.files</span>(<span class="dt">pattern =</span> <span class="st">&quot;.Rnw$&quot;</span>), knit2pdf)
+<span class="kw">moveDocs</span>(<span class="dt">path.docs =</span> docs.path, <span class="dt">type =</span> <span class="st">&quot;pdf&quot;</span>, <span class="dt">remove.latex =</span> <span class="ot">FALSE</span>)</code></pre>
+</div>
+<div id="prepare-a-github-user-website" class="section level3">
+<h3>Prepare a Github user website</h3>
+<p>As mentioned, the same functions can be applied to the generation of a Github user account website just as they are used to build individual project sites. I am currently using two somewhat incompatible bootstrap CSS themes for my user site vs. my project sites. I have made some ugly “generalizations” to the code which generates container elements for each in order to accommodate this frustrating desire. This is primarily an issue with differences in navbar construction.</p>
+<p>I have only tested the code, and namely the navbar, with two themes, <code>united</code> and <code>cyborg</code>, and used these to generalize some of the code. I suspect all the other common Bootswatch themes will work once I make them permissible.</p>
+<pre class="sourceCode r"><code class="sourceCode r"><span class="co"># Assuming project and app repos exist and are properly prepared</span>
+user &lt;-<span class="st"> &quot;leonawicz&quot;</span>
+user.site &lt;-<span class="st"> </span><span class="kw">paste0</span>(user, <span class="st">&quot;.github.io&quot;</span>)
+mainDir &lt;-<span class="st"> </span><span class="kw">file.path</span>(proj.location, user.site)
+<span class="kw">setwd</span>(<span class="kw">file.path</span>(mainDir, <span class="st">&quot;assets&quot;</span>))
+
+<span class="co"># create projects container html file</span>
+<span class="kw">genPanelDiv</span>(<span class="dt">outDir =</span> <span class="kw">getwd</span>(), <span class="dt">type =</span> <span class="st">&quot;projects&quot;</span>, <span class="dt">main =</span> <span class="st">&quot;Projects&quot;</span>, <span class="dt">github.user =</span> user, 
+    <span class="dt">col =</span> <span class="st">&quot;primary&quot;</span>)
+<span class="co"># create Shiny apps container html file</span>
+<span class="kw">genPanelDiv</span>(<span class="dt">outDir =</span> <span class="kw">getwd</span>(), <span class="dt">type =</span> <span class="st">&quot;apps&quot;</span>, <span class="dt">main =</span> <span class="st">&quot;Shiny Apps&quot;</span>, <span class="dt">github.user =</span> <span class="st">&quot;ua-snap&quot;</span>)
+<span class="co"># create Data Visualizations master container html file</span>
+<span class="kw">genPanelDiv</span>(<span class="dt">outDir =</span> <span class="kw">getwd</span>(), <span class="dt">type =</span> <span class="st">&quot;datavis&quot;</span>, <span class="dt">main =</span> <span class="st">&quot;Data Visualizations&quot;</span>, 
+    <span class="dt">github.user =</span> user, <span class="dt">col =</span> <span class="st">&quot;default&quot;</span>)
+<span class="co"># create all Gallery container html files</span>
+<span class="kw">genPanelDiv</span>(<span class="dt">outDir =</span> <span class="kw">getwd</span>(), <span class="dt">type =</span> <span class="st">&quot;gallery&quot;</span>, <span class="dt">main =</span> <span class="st">&quot;Gallery&quot;</span>, <span class="dt">github.user =</span> user, 
+    <span class="dt">col =</span> <span class="st">&quot;default&quot;</span>, <span class="dt">lightbox =</span> <span class="ot">TRUE</span>)
+
+<span class="co"># Specify libraries for html head &#39;assets&#39; is first because it resides in</span>
+<span class="co"># the top-level directory where the web site html files reside.</span>
+scripts =<span class="st"> </span><span class="kw">c</span>(<span class="st">&quot;assets/libs/jquery-1.11.0/jquery.min.js&quot;</span>, <span class="st">&quot;assets/js/bootstrap.min.js&quot;</span>, 
+    <span class="st">&quot;assets/js/bootswatch.js&quot;</span>, <span class="st">&quot;assets/js/lightbox.min.js&quot;</span>)
+styles &lt;-<span class="st"> </span><span class="kw">c</span>(<span class="st">&quot;cyborg/bootstrap.css&quot;</span>, <span class="st">&quot;assets/css/bootswatch.min.css&quot;</span>, <span class="st">&quot;assets/libs/font-awesome-4.1.0/css/font-awesome.css&quot;</span>, 
+    <span class="st">&quot;assets/css/lightbox.css&quot;</span>)
+styles.args &lt;-<span class="st"> </span><span class="kw">list</span>(<span class="st">&quot;&quot;</span>, <span class="kw">list</span>(<span class="dt">media =</span> <span class="st">&quot;screen&quot;</span>), <span class="st">&quot;&quot;</span>, <span class="st">&quot;&quot;</span>)
+
+<span class="co"># check</span>
+<span class="kw">htmlHead</span>(<span class="dt">script.paths =</span> scripts, <span class="dt">stylesheet.paths =</span> styles, <span class="dt">stylesheet.args =</span> styles.args)
+
+<span class="co"># Add a background image</span>
+back.img &lt;-<span class="st"> &quot;assets/img/frac23.jpg&quot;</span>
+<span class="co"># check</span>
+<span class="kw">htmlBodyTop</span>(<span class="dt">background.image =</span> back.img)
+
+<span class="co"># Prepare navbar</span>
+nb.menu &lt;-<span class="st"> </span><span class="kw">c</span>(<span class="st">&quot;Projects&quot;</span>, <span class="st">&quot;Apps&quot;</span>, <span class="st">&quot;Data Visualizations&quot;</span>, <span class="st">&quot;Test1&quot;</span>)
+
+sub.menu &lt;-<span class="st"> </span><span class="kw">list</span>(<span class="kw">c</span>(<span class="st">&quot;empty&quot;</span>), <span class="kw">c</span>(<span class="st">&quot;empty&quot;</span>), <span class="kw">c</span>(<span class="st">&quot;empty&quot;</span>), <span class="kw">c</span>(<span class="st">&quot;A title&quot;</span>, <span class="st">&quot;A page&quot;</span>, 
+    <span class="st">&quot;divider&quot;</span>, <span class="st">&quot;Another title&quot;</span>, <span class="st">&quot;Page 1&quot;</span>, <span class="st">&quot;Page 2&quot;</span>))
+
+files.menu &lt;-<span class="st"> </span><span class="kw">list</span>(<span class="kw">c</span>(<span class="st">&quot;#projects&quot;</span>), <span class="kw">c</span>(<span class="st">&quot;#apps&quot;</span>), <span class="kw">c</span>(<span class="st">&quot;#data-visualizations&quot;</span>), <span class="kw">c</span>(<span class="st">&quot;header&quot;</span>, 
+    <span class="st">&quot;#&quot;</span>, <span class="st">&quot;divider&quot;</span>, <span class="st">&quot;header&quot;</span>, <span class="st">&quot;#&quot;</span>, <span class="st">&quot;#&quot;</span>))
+
+github.url &lt;-<span class="st"> </span><span class="kw">file.path</span>(<span class="st">&quot;https://github.com&quot;</span>, user, user.site)
+<span class="co"># Create navbar.html</span>
+<span class="kw">genNavbar</span>(<span class="dt">htmlfile =</span> <span class="st">&quot;navbar.html&quot;</span>, <span class="dt">title =</span> user.site, <span class="dt">menu =</span> nb.menu, <span class="dt">submenus =</span> sub.menu, 
+    <span class="dt">files =</span> files.menu, <span class="dt">theme =</span> <span class="st">&quot;cyborg&quot;</span>, <span class="dt">title.url =</span> <span class="st">&quot;index.html&quot;</span>, <span class="dt">home.url =</span> <span class="st">&quot;index.html&quot;</span>, 
+    <span class="dt">site.url =</span> github.url, <span class="dt">include.home =</span> <span class="ot">FALSE</span>)
+
+<span class="co"># check</span>
+<span class="kw">htmlBottom</span>()
+
+<span class="co"># Specify dic container elements to include in body</span>
+all.containers &lt;-<span class="st"> </span><span class="kw">list.files</span>(<span class="dt">pattern =</span> <span class="st">&quot;_container.html$&quot;</span>)
+keep.main &lt;-<span class="st"> </span><span class="kw">c</span>(<span class="st">&quot;about&quot;</span>, <span class="st">&quot;updates&quot;</span>, <span class="st">&quot;projects&quot;</span>, <span class="st">&quot;apps&quot;</span>, <span class="st">&quot;data-visualizations&quot;</span>)
+keep.main.ind &lt;-<span class="st"> </span><span class="kw">match</span>(keep.main, <span class="kw">sapply</span>(<span class="kw">strsplit</span>(all.containers, <span class="st">&quot;_&quot;</span>), <span class="st">&quot;[[&quot;</span>, 
+    <span class="dv">1</span>))
+main.containers &lt;-<span class="st"> </span>all.containers[keep.main.ind]
+
+gallery.containers &lt;-<span class="st"> </span><span class="kw">list.files</span>(<span class="dt">pattern =</span> <span class="st">&quot;^gallery.*.html$&quot;</span>)
+
+<span class="co"># Create web pages</span>
+<span class="kw">genUserPage</span>(<span class="dt">file =</span> <span class="kw">file.path</span>(proj.location, user.site, <span class="st">&quot;index.html&quot;</span>), <span class="dt">navbar =</span> <span class="st">&quot;navbar.html&quot;</span>, 
+    <span class="dt">containers =</span> main.containers, <span class="dt">script.paths =</span> scripts, <span class="dt">stylesheet.paths =</span> styles, 
+    <span class="dt">stylesheet.args =</span> styles.args, <span class="dt">background.image =</span> back.img)
+
+files.out &lt;-<span class="st"> </span><span class="kw">gsub</span>(<span class="st">&quot;_&quot;</span>, <span class="st">&quot;-&quot;</span>, <span class="kw">gsub</span>(<span class="st">&quot;_-_&quot;</span>, <span class="st">&quot;-&quot;</span>, gallery.containers))
+for (i in <span class="dv">1</span>:<span class="kw">length</span>(gallery.containers)) {
+    <span class="kw">genUserPage</span>(<span class="dt">file =</span> <span class="kw">file.path</span>(proj.location, user.site, files.out[i]), <span class="dt">navbar =</span> <span class="st">&quot;navbar.html&quot;</span>, 
+        <span class="dt">containers =</span> gallery.containers[i], <span class="dt">script.paths =</span> scripts, <span class="dt">stylesheet.paths =</span> styles, 
+        <span class="dt">stylesheet.args =</span> styles.args, <span class="dt">background.image =</span> back.img)
+}</code></pre>
+</div>
 </div>
 
 
