@@ -594,8 +594,8 @@ genPanelDiv <- function(outDir, type="projects", main="Projects",
 			web.url <- file.path(web.url, paste0(pfx, gsub("_", "-", gsub("_-_", "-", prj)), ".html"))
 		} else {
 			prj <- prjs[p]
-			img.src <- file.path(gsub("/tree/", "/raw/", gh.url), prjs[p], panels[i])
-			web.url <- file.path(gsub("/tree/", "/raw/", gh.url), prjs[p], img.loc, panels[i])
+			img.src <- file.path(gsub("/tree/", "/raw/", gh.url), prjs[p], img.loc, panels[i])
+			web.url <- file.path(gsub("/tree/", "/raw/", gh.url), prjs[p], panels[i])
 			if(lightbox) atts <- gsub("ID", gsub(" - ", ": ", gsub("_", " ", prjs[p])), atts1) else atts <- atts1
 		}
 		if(include.buttons){
