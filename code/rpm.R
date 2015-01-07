@@ -532,7 +532,9 @@ genAppDiv <- function(file="C:/github/leonawicz.github.io/assets/apps_container.
 
 # @knitr fun_genPanelDiv
 genPanelDiv <- function(outDir, type="projects", main="Projects",
-	github.user="leonawicz", prjs.dir="C:/github", exclude=c("leonawicz.github.io", "shiny-apps", "DataVisExamples", ".git", "_images"), img.loc="_images/cropped", lightbox=FALSE, ...){
+	github.user="leonawicz", prjs.dir="C:/github", exclude=c("leonawicz.github.io", "shiny-apps", "DataVisExamples", ".git", "_images"),
+	img.loc="_images/small", lightbox=FALSE, include.buttons=TRUE, ...){
+	
 	stopifnot(github.user %in% c("leonawicz", "ua-snap"))
 	if(type=="apps"){
 		filename <- "apps_container.html"
@@ -572,7 +574,7 @@ genPanelDiv <- function(outDir, type="projects", main="Projects",
 		go.label <- "Expand"
 		prjs <- list.dirs(file.path(prjs.dir, "DataVisExamples"), full=T, recursive=F)
 		prjs <- prjs[!(basename(prjs) %in% exclude)]
-		prjs.img <- lapply(1:length(prjs), function(x, files) list.files(path=files[x]), files=prjs)
+		prjs.img <- lapply(1:length(prjs), function(x, files, imgDir) list.files(path=file.path(files[x], imgDir), recursive=FALSE), files=prjs, imgDir=img.loc)
 		prjs <- basename(prjs)
 		filename <- paste0("gallery-", gsub(" ", "-", gsub(" - ", " ", prjs)), ".html")
 	}
@@ -593,23 +595,22 @@ genPanelDiv <- function(outDir, type="projects", main="Projects",
 		} else {
 			prj <- prjs[p]
 			img.src <- file.path(gsub("/tree/", "/raw/", gh.url), prjs[p], panels[i])
-			web.url <- img.src
+			web.url <- file.path(gsub("/tree/", "/raw/", gh.url), prjs[p], img.loc, panels[i])
 			if(lightbox) atts <- gsub("ID", gsub(" - ", ": ", gsub("_", " ", prjs[p])), atts1) else atts <- atts1
 		}
-	    x <- paste0('<div class="col-lg-4">
-		  <div class="bs-component">
-			<div class="panel panel-', col, '">
-			  <div class="panel-heading"><h3 class="panel-title">', panel.main, '</h3>
-			  </div>
-			  <div class="panel-body"><a href="', web.url, '"', atts, '><img src="', img.src, '" alt="', panel.main, '" width=100% height=200px></a><p></p>
-				<div class="btn-group btn-group-justified">
-				  <a href="', web.url, '"', atts, ' class="btn btn-success">', go.label, '</a>
-				  <a href="', file.path(gh.url, prj), '" class="btn btn-info">Github</a>
-				</div>
-			  </div>
-			</div>
-		  </div>
-		</div>')
+		if(include.buttons){
+			panel.buttons <- paste0('<div class="btn-group btn-group-justified">
+			<a href="', web.url, '"', atts, ' class="btn btn-success">', go.label, '</a>
+			<a href="', file.path(gh.url, prj), '" class="btn btn-info">Github</a>
+		  </div>\n        ')
+		} else panel.buttons <- ""
+	    x <- paste0('    <div class="col-lg-4">
+      <div class="bs-component">
+        <div class="panel panel-', col, '">
+          <div class="panel-heading"><h3 class="panel-title">', panel.main, '</h3>
+          </div>
+          <div class="panel-body"><a href="', web.url, '"', atts, '><img src="', img.src, '" alt="', panel.main, '" width=100% height=200px></a><p></p>\n          ', panel.buttons,
+		 '  </div>\n        </div>\n      </div>\n    </div>\n  ')
 	}
 	
 	for(p in 1:length(filename)){

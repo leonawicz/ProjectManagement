@@ -99,7 +99,7 @@ genPanelDiv(outDir=getwd(), type="apps", main="Shiny Apps", github.user="ua-snap
 # create Data Visualizations master container html file
 genPanelDiv(outDir=getwd(), type="datavis", main="Data Visualizations", github.user=user, col="default")
 # create all Gallery container html files
-genPanelDiv(outDir=getwd(), type="gallery", main="Gallery", github.user=user, col="default", lightbox=TRUE)
+genPanelDiv(outDir=getwd(), type="gallery", main="Gallery", github.user=user, col="default", lightbox=TRUE, include.buttons=FALSE)
 
 # Specify libraries for html head
 # 'assets' is first because it resides in the top-level directory where the web site html files reside.
