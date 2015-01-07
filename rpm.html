@@ -218,7 +218,7 @@ code > span.er { color: #c3bf9f; }
   &lt;/head&gt;
   &lt;body &gt;
     
-    &lt;div id = 'chart11f07ec71094' class = 'rChart d3_sankey'&gt;&lt;/div&gt;    
+    &lt;div id = 'chart173c458598' class = 'rChart d3_sankey'&gt;&lt;/div&gt;    
     ï»¿&lt;!--Attribution:
 Mike Bostock https://github.com/d3/d3-plugins/tree/master/sankey
 Mike Bostock http://bost.ocks.org/mike/sankey/
@@ -227,7 +227,7 @@ Mike Bostock http://bost.ocks.org/mike/sankey/
 &lt;script&gt;
 (function(){
 var params = {
- &quot;dom&quot;: &quot;chart11f07ec71094&quot;,
+ &quot;dom&quot;: &quot;chart173c458598&quot;,
 &quot;width&quot;:    900,
 &quot;height&quot;:    800,
 &quot;data&quot;: {
@@ -245,7 +245,7 @@ var params = {
 &quot;top&quot;:     20 
 },
 &quot;title&quot;: &quot;Matt's Projects&quot;,
-&quot;id&quot;: &quot;chart11f07ec71094&quot; 
+&quot;id&quot;: &quot;chart173c458598&quot; 
 };
 
 params.units ? units = &quot; &quot; + params.units : units = &quot;&quot;;
@@ -365,11 +365,11 @@ node.append(&quot;text&quot;)
     
     &lt;script&gt;
       var cscale = d3.scale.category20b();
-      d3.selectAll('#chart11f07ec71094 svg path.link')
+      d3.selectAll('#chart173c458598 svg path.link')
         .style('stroke', function(d){
           return cscale(d.source.name);
         })
-      d3.selectAll('#chart11f07ec71094 svg .node rect')
+      d3.selectAll('#chart173c458598 svg .node rect')
         .style('fill', function(d){
           return cscale(d.name)
         })
@@ -377,7 +377,7 @@ node.append(&quot;text&quot;)
     &lt;/script&gt;
         
   &lt;/body&gt;
-&lt;/html&gt; " scrolling="no" frameBorder="0" seamless class="rChart  http://timelyportfolio.github.io/rCharts_d3_sankey/libraries/widgets/d3_sankey  " id="iframe-chart11f07ec71094">
+&lt;/html&gt; " scrolling="no" frameBorder="0" seamless class="rChart  http://timelyportfolio.github.io/rCharts_d3_sankey/libraries/widgets/d3_sankey  " id="iframe-chart173c458598">
 </iframe>
 <style>iframe.rChart{ width: 100%; height: 400px;}</style>
 <style>iframe.rChart{ width: 100%; height: 840px;}</style>
@@ -1047,21 +1047,33 @@ genAppDiv &lt;-<span class="st"> </span>function(<span class="dt">file =</span> 
 <div id="genpaneldiv" class="section level4">
 <h4>genPanelDiv</h4>
 <p><code>genPanelDiv</code> generates an html file storing a container div element which in its current state of development organizes two types of content: <strong>R</strong> projects and Shiny web applications.</p>
-<p>The <code>type</code> argument can be either <code>projects</code> or <code>apps</code> and essentially bifurcates the behavior of <code>genPanelDiv</code>. The purpose of the function is to generate an html file defining a container div element to display and reference either my <strong>R</strong> projects or my Shiny apps.</p>
+<p>The <code>type</code> argument can be one of <code>projects</code>, <code>apps</code>, <code>datavis</code>, or <code>gallery</code>. The purpose of the function is to generate an html file defining a container div element to display and reference either my <strong>R</strong> projects, my Shiny apps, or my example visualization galleries.</p>
+<div id="projects" class="section level5">
+<h5>Projects</h5>
 <p>For projects, the function scans a directory of local repositories and takes any directories found to be the names of projects. There is an <code>exclude</code> argument for dropping any known directories that are to be avoided. My defaults are <code>exclude=&quot;leonawicz.github.io&quot;, &quot;shiny-apps&quot;</code> since the first is just a local repository for my Github user account web site and not a “project” in the same sense of my other projects and the second is the local repository which is scanned by <code>genPanelDiv</code> when <code>type=&quot;apps&quot;</code>.</p>
-<p>For apps, the function scans a directory of Shiny app subdirectories. Unlike for projects, where <code>genPanelDiv</code> scans a directory of multiple local repositories, this apps directory should be a specific local repository. The apps contained within are not inndividual repositories. I have taken this approach for now simply because this is how my apps tend to be stored.</p>
+</div>
+<div id="apps" class="section level5">
+<h5>Apps</h5>
+<p>For apps, the function scans a directory of Shiny app subdirectories. Unlike for projects, where <code>genPanelDiv</code> scans a directory of multiple local repositories, this apps directory should be a specific local repository. The apps contained within are not individual repositories. I have taken this approach for now simply because this is how my apps tend to be stored.</p>
 <p>Specifically, the <code>genAppDiv</code> looks for a named directory of image files. There should be one image per app, named exactly as the respective app directory is named. Only apps with corresponding images are built into the html container. If you wish to leave out, say, a developmental app from being linked to on you Github user website, do not include an image file for that app.</p>
 <p>The container element includes an image link to each app’s url as well as a link to the source code on Github. Although the app scans for images in a local repository, the images referenced in the output html are of course not local. They point to the same images stored on Github, hence why it is useful for the local directory of apps to be a Github repository.</p>
+</div>
+<div id="datavis-and-galleries" class="section level5">
+<h5>DataVis and Galleries</h5>
+<p>Whereas the first three types generate containers for the main Github user web page, I use <code>type=&quot;gallery&quot;</code> to make a separate container html file of graphics for each panel occurring in my <code>datavis</code> container. These containers tend to be added to unique web pages. <code>datavis</code> is for highlighting a number of galleries whereas <code>gallery</code> is for the galleries’ respective contents.</p>
+<p>In order to use <code>type=&quot;datavis&quot;</code> there must be a data visualization local repository. Mine is named <code>DataVisualizationExamples</code>, evident from the hardcoding currently in place within this function. Similar to when <code>type=&quot;apps&quot;</code>, this repository includes a directory of images, in t his case one image for each gallery. Each image in this directory is named such that it identically matches another the name of a gallery images directory containing multiple images. As with <code>type=&quot;apps&quot;</code>, gallery directories are only included if a corresponding thumbnail image in the images directory exists.</p>
+<p>When <code>type=&quot;gallery&quot;</code>, the behavior of <code>genPanelDiv</code> is most unique. For each gallery which exists, the function will make a unique html file with a gallery container element.</p>
 <p>This function makes the more specific <code>genAppDiv</code> redundant and will likely replace it.</p>
 <pre class="sourceCode r"><code class="sourceCode r">genPanelDiv &lt;-<span class="st"> </span>function(outDir, <span class="dt">type =</span> <span class="st">&quot;projects&quot;</span>, <span class="dt">main =</span> <span class="st">&quot;Projects&quot;</span>, <span class="dt">github.user =</span> <span class="st">&quot;leonawicz&quot;</span>, 
-    <span class="dt">prjs.dir =</span> <span class="st">&quot;C:/github&quot;</span>, <span class="dt">exclude =</span> <span class="kw">c</span>(<span class="st">&quot;leonawicz.github.io&quot;</span>, <span class="st">&quot;shiny-apps&quot;</span>), 
-    <span class="dt">img.loc =</span> <span class="st">&quot;_images/cropped&quot;</span>, ...) {
+    <span class="dt">prjs.dir =</span> <span class="st">&quot;C:/github&quot;</span>, <span class="dt">exclude =</span> <span class="kw">c</span>(<span class="st">&quot;leonawicz.github.io&quot;</span>, <span class="st">&quot;shiny-apps&quot;</span>, 
+        <span class="st">&quot;DataVisExamples&quot;</span>, <span class="st">&quot;.git&quot;</span>, <span class="st">&quot;_images&quot;</span>), <span class="dt">img.loc =</span> <span class="st">&quot;_images/cropped&quot;</span>, 
+    <span class="dt">lightbox =</span> <span class="ot">FALSE</span>, ...) {
     <span class="kw">stopifnot</span>(github.user %in%<span class="st"> </span><span class="kw">c</span>(<span class="st">&quot;leonawicz&quot;</span>, <span class="st">&quot;ua-snap&quot;</span>))
     if (type ==<span class="st"> &quot;apps&quot;</span>) {
         filename &lt;-<span class="st"> &quot;apps_container.html&quot;</span>
         web.url &lt;-<span class="st"> &quot;http://shiny.snap.uaf.edu&quot;</span>
         gh.url.tail &lt;-<span class="st"> &quot;shiny-apps/tree/master&quot;</span>
-        target &lt;-<span class="st"> &quot; target=</span><span class="ch">\&quot;</span><span class="st">_blank</span><span class="ch">\&quot;</span><span class="st">&quot;</span>
+        atts &lt;-<span class="st"> &quot; target=</span><span class="ch">\&quot;</span><span class="st">_blank</span><span class="ch">\&quot;</span><span class="st">&quot;</span>
         go.label &lt;-<span class="st"> &quot;Launch&quot;</span>
         prjs.dir &lt;-<span class="st"> </span><span class="kw">file.path</span>(prjs.dir, <span class="st">&quot;shiny-apps&quot;</span>)
         prjs.img &lt;-<span class="st"> </span><span class="kw">list.files</span>(<span class="kw">file.path</span>(prjs.dir, img.loc))
@@ -1071,7 +1083,7 @@ genAppDiv &lt;-<span class="st"> </span>function(<span class="dt">file =</span> 
         filename &lt;-<span class="st"> &quot;projects_container.html&quot;</span>
         web.url &lt;-<span class="st"> </span><span class="kw">paste0</span>(<span class="st">&quot;http://&quot;</span>, github.user, <span class="st">&quot;.github.io&quot;</span>)
         gh.url.tail &lt;-<span class="st"> &quot;&quot;</span>
-        target &lt;-<span class="st"> &quot;&quot;</span>
+        atts &lt;-<span class="st"> &quot;&quot;</span>
         go.label &lt;-<span class="st"> &quot;Website&quot;</span>
         prjs &lt;-<span class="st"> </span><span class="kw">list.dirs</span>(prjs.dir, <span class="dt">full =</span> <span class="ot">TRUE</span>, <span class="dt">recursive =</span> <span class="ot">FALSE</span>)
         prjs &lt;-<span class="st"> </span>prjs[!(<span class="kw">basename</span>(prjs) %in%<span class="st"> </span>exclude)]
@@ -1079,52 +1091,98 @@ genAppDiv &lt;-<span class="st"> </span>function(<span class="dt">file =</span> 
             <span class="st">&quot;plots&quot;</span>), <span class="dt">pattern =</span> <span class="kw">paste0</span>(<span class="st">&quot;^_&quot;</span>, <span class="kw">basename</span>(a)[i])), <span class="dt">a =</span> prjs)
         prjs &lt;-<span class="st"> </span><span class="kw">basename</span>(prjs)
     }
+    if (type ==<span class="st"> &quot;datavis&quot;</span>) {
+        filename &lt;-<span class="st"> &quot;data-visualizations_container.html&quot;</span>
+        web.url &lt;-<span class="st"> </span><span class="kw">paste0</span>(<span class="st">&quot;http://&quot;</span>, github.user, <span class="st">&quot;.github.io&quot;</span>)
+        gh.url.tail &lt;-<span class="st"> &quot;DataVisExamples/tree/master&quot;</span>
+        atts &lt;-<span class="st"> &quot;&quot;</span>
+        go.label &lt;-<span class="st"> &quot;See More&quot;</span>
+        prjs.dir &lt;-<span class="st"> </span><span class="kw">file.path</span>(prjs.dir, <span class="st">&quot;DataVisExamples&quot;</span>)
+        prjs.img &lt;-<span class="st"> </span><span class="kw">list.files</span>(<span class="kw">file.path</span>(prjs.dir, img.loc))
+        prjs &lt;-<span class="st"> </span><span class="kw">sapply</span>(<span class="kw">strsplit</span>(prjs.img, <span class="st">&quot;</span><span class="ch">\\</span><span class="st">.&quot;</span>), <span class="st">&quot;[[&quot;</span>, <span class="dv">1</span>)
+    }
+    if (type ==<span class="st"> &quot;gallery&quot;</span>) {
+        web.url &lt;-<span class="st"> </span><span class="kw">paste0</span>(<span class="st">&quot;http://&quot;</span>, github.user, <span class="st">&quot;.github.io&quot;</span>)
+        gh.url.tail &lt;-<span class="st"> &quot;DataVisExamples/tree/master&quot;</span>
+        if (lightbox) 
+            atts1 &lt;-<span class="st"> &quot; data-lightbox=</span><span class="ch">\&quot;</span><span class="st">ID</span><span class="ch">\&quot;</span><span class="st">&quot;</span> else atts1 &lt;-<span class="st"> &quot;&quot;</span>
+        go.label &lt;-<span class="st"> &quot;Expand&quot;</span>
+        prjs &lt;-<span class="st"> </span><span class="kw">list.dirs</span>(<span class="kw">file.path</span>(prjs.dir, <span class="st">&quot;DataVisExamples&quot;</span>), <span class="dt">full =</span> T, 
+            <span class="dt">recursive =</span> F)
+        prjs &lt;-<span class="st"> </span>prjs[!(<span class="kw">basename</span>(prjs) %in%<span class="st"> </span>exclude)]
+        prjs.img &lt;-<span class="st"> </span><span class="kw">lapply</span>(<span class="dv">1</span>:<span class="kw">length</span>(prjs), function(x, files) <span class="kw">list.files</span>(<span class="dt">path =</span> files[x]), 
+            <span class="dt">files =</span> prjs)
+        prjs &lt;-<span class="st"> </span><span class="kw">basename</span>(prjs)
+        filename &lt;-<span class="st"> </span><span class="kw">paste0</span>(<span class="st">&quot;gallery-&quot;</span>, <span class="kw">gsub</span>(<span class="st">&quot; &quot;</span>, <span class="st">&quot;-&quot;</span>, <span class="kw">gsub</span>(<span class="st">&quot; - &quot;</span>, <span class="st">&quot; &quot;</span>, prjs)), 
+            <span class="st">&quot;.html&quot;</span>)
+    }
     gh.url &lt;-<span class="st"> </span><span class="kw">file.path</span>(<span class="st">&quot;https://github.com&quot;</span>, github.user, gh.url.tail)
-    x &lt;-<span class="st"> </span><span class="kw">paste0</span>(<span class="st">&quot;&lt;div class=</span><span class="ch">\&quot;</span><span class="st">container</span><span class="ch">\&quot;</span><span class="st">&gt;</span><span class="ch">\n</span><span class="st">  &lt;div class=</span><span class="ch">\&quot;</span><span class="st">row</span><span class="ch">\&quot;</span><span class="st">&gt;</span><span class="ch">\n</span><span class="st">    &lt;div class=</span><span class="ch">\&quot;</span><span class="st">col-lg-12</span><span class="ch">\&quot;</span><span class="st">&gt;</span><span class="ch">\n</span><span class="st">      &lt;div class=</span><span class="ch">\&quot;</span><span class="st">page-header</span><span class="ch">\&quot;</span><span class="st">&gt;</span><span class="ch">\n</span><span class="st">        &lt;h3 id=</span><span class="ch">\&quot;</span><span class="st">&quot;</span>, 
-        type, <span class="st">&quot;</span><span class="ch">\&quot;</span><span class="st">&gt;&quot;</span>, main, <span class="st">&quot;&lt;/h3&gt;</span><span class="ch">\n</span><span class="st">      &lt;/div&gt;</span><span class="ch">\n</span><span class="st">    &lt;/div&gt;</span><span class="ch">\n</span><span class="st">  &lt;/div&gt;</span><span class="ch">\n</span><span class="st">  &quot;</span>)
     
     fillRow &lt;-<span class="st"> </span>function(i, ...) {
-        prj &lt;-<span class="st"> </span>prjs[i]
-        if (type ==<span class="st"> &quot;apps&quot;</span>) 
-            img.src &lt;-<span class="st"> </span><span class="kw">file.path</span>(<span class="kw">gsub</span>(<span class="st">&quot;/tree/&quot;</span>, <span class="st">&quot;/raw/&quot;</span>, gh.url), img.loc, prjs.img[i])
-        if (type ==<span class="st"> &quot;projects&quot;</span>) 
-            img.src &lt;-<span class="st"> </span><span class="kw">file.path</span>(gh.url, prj, <span class="st">&quot;raw/master/plots&quot;</span>, prjs.img[i])
-        web.url &lt;-<span class="st"> </span><span class="kw">file.path</span>(web.url, prj)
+        prj &lt;-<span class="st"> </span>panels[i]
         dots &lt;-<span class="st"> </span><span class="kw">list</span>(...)
         if (<span class="kw">is.null</span>(dots$col)) 
             col &lt;-<span class="st"> &quot;warning&quot;</span> else col &lt;-<span class="st"> </span>dots$col
         if (<span class="kw">is.null</span>(dots$panel.main)) 
-            panel.main &lt;-<span class="st"> </span><span class="kw">gsub</span>(<span class="st">&quot;_&quot;</span>, <span class="st">&quot; &quot;</span>, prj) else panel.main &lt;-<span class="st"> </span>dots$panel.main
+            panel.main &lt;-<span class="st"> </span><span class="kw">gsub</span>(<span class="st">&quot; - &quot;</span>, <span class="st">&quot;: &quot;</span>, <span class="kw">gsub</span>(<span class="st">&quot;_&quot;</span>, <span class="st">&quot; &quot;</span>, prj)) else panel.main &lt;-<span class="st"> </span>dots$panel.main
         if (<span class="kw">length</span>(panel.main) &gt;<span class="st"> </span><span class="dv">1</span>) 
             panel.main &lt;-<span class="st"> </span>panel.main[i]
+        if (type ==<span class="st"> &quot;apps&quot;</span>) 
+            img.src &lt;-<span class="st"> </span><span class="kw">file.path</span>(<span class="kw">gsub</span>(<span class="st">&quot;/tree/&quot;</span>, <span class="st">&quot;/raw/&quot;</span>, gh.url), img.loc, prjs.img[i])
+        if (type ==<span class="st"> &quot;projects&quot;</span>) 
+            img.src &lt;-<span class="st"> </span><span class="kw">file.path</span>(gh.url, prj, <span class="st">&quot;raw/master/plots&quot;</span>, prjs.img[i])
+        if (type ==<span class="st"> &quot;datavis&quot;</span>) 
+            img.src &lt;-<span class="st"> </span><span class="kw">file.path</span>(<span class="kw">gsub</span>(<span class="st">&quot;/tree/&quot;</span>, <span class="st">&quot;/raw/&quot;</span>, gh.url), img.loc, prjs.img[i])
+        if (type !=<span class="st"> &quot;gallery&quot;</span>) {
+            if (type ==<span class="st"> &quot;datavis&quot;</span>) 
+                pfx &lt;-<span class="st"> &quot;gallery-&quot;</span> else pfx &lt;-<span class="st"> &quot;&quot;</span>
+            web.url &lt;-<span class="st"> </span><span class="kw">file.path</span>(web.url, <span class="kw">paste0</span>(pfx, <span class="kw">gsub</span>(<span class="st">&quot;_&quot;</span>, <span class="st">&quot;-&quot;</span>, <span class="kw">gsub</span>(<span class="st">&quot;_-_&quot;</span>, 
+                <span class="st">&quot;-&quot;</span>, prj)), <span class="st">&quot;.html&quot;</span>))
+        } else {
+            prj &lt;-<span class="st"> </span>prjs[p]
+            img.src &lt;-<span class="st"> </span><span class="kw">file.path</span>(<span class="kw">gsub</span>(<span class="st">&quot;/tree/&quot;</span>, <span class="st">&quot;/raw/&quot;</span>, gh.url), prjs[p], panels[i])
+            web.url &lt;-<span class="st"> </span>img.src
+            if (lightbox) 
+                atts &lt;-<span class="st"> </span><span class="kw">gsub</span>(<span class="st">&quot;ID&quot;</span>, <span class="kw">gsub</span>(<span class="st">&quot; - &quot;</span>, <span class="st">&quot;: &quot;</span>, <span class="kw">gsub</span>(<span class="st">&quot;_&quot;</span>, <span class="st">&quot; &quot;</span>, prjs[p])), 
+                  atts1) else atts &lt;-<span class="st"> </span>atts1
+        }
         x &lt;-<span class="st"> </span><span class="kw">paste0</span>(<span class="st">&quot;&lt;div class=</span><span class="ch">\&quot;</span><span class="st">col-lg-4</span><span class="ch">\&quot;</span><span class="st">&gt;</span><span class="ch">\n\t\t</span><span class="st">  &lt;div class=</span><span class="ch">\&quot;</span><span class="st">bs-component</span><span class="ch">\&quot;</span><span class="st">&gt;</span><span class="ch">\n\t\t\t</span><span class="st">&lt;div class=</span><span class="ch">\&quot;</span><span class="st">panel panel-&quot;</span>, 
             col, <span class="st">&quot;</span><span class="ch">\&quot;</span><span class="st">&gt;</span><span class="ch">\n\t\t\t</span><span class="st">  &lt;div class=</span><span class="ch">\&quot;</span><span class="st">panel-heading</span><span class="ch">\&quot;</span><span class="st">&gt;&lt;h3 class=</span><span class="ch">\&quot;</span><span class="st">panel-title</span><span class="ch">\&quot;</span><span class="st">&gt;&quot;</span>, 
             panel.main, <span class="st">&quot;&lt;/h3&gt;</span><span class="ch">\n\t\t\t</span><span class="st">  &lt;/div&gt;</span><span class="ch">\n\t\t\t</span><span class="st">  &lt;div class=</span><span class="ch">\&quot;</span><span class="st">panel-body</span><span class="ch">\&quot;</span><span class="st">&gt;&lt;a href=</span><span class="ch">\&quot;</span><span class="st">&quot;</span>, 
-            web.url, <span class="st">&quot;</span><span class="ch">\&quot;</span><span class="st">&quot;</span>, target, <span class="st">&quot;&gt;&lt;img src=</span><span class="ch">\&quot;</span><span class="st">&quot;</span>, img.src, <span class="st">&quot;</span><span class="ch">\&quot;</span><span class="st"> alt=</span><span class="ch">\&quot;</span><span class="st">&quot;</span>, prj, 
+            web.url, <span class="st">&quot;</span><span class="ch">\&quot;</span><span class="st">&quot;</span>, atts, <span class="st">&quot;&gt;&lt;img src=</span><span class="ch">\&quot;</span><span class="st">&quot;</span>, img.src, <span class="st">&quot;</span><span class="ch">\&quot;</span><span class="st"> alt=</span><span class="ch">\&quot;</span><span class="st">&quot;</span>, panel.main, 
             <span class="st">&quot;</span><span class="ch">\&quot;</span><span class="st"> width=100% height=200px&gt;&lt;/a&gt;&lt;p&gt;&lt;/p&gt;</span><span class="ch">\n\t\t\t\t</span><span class="st">&lt;div class=</span><span class="ch">\&quot;</span><span class="st">btn-group btn-group-justified</span><span class="ch">\&quot;</span><span class="st">&gt;</span><span class="ch">\n\t\t\t\t</span><span class="st">  &lt;a href=</span><span class="ch">\&quot;</span><span class="st">&quot;</span>, 
-            web.url, <span class="st">&quot;</span><span class="ch">\&quot;</span><span class="st">&quot;</span>, target, <span class="st">&quot; class=</span><span class="ch">\&quot;</span><span class="st">btn btn-success</span><span class="ch">\&quot;</span><span class="st">&gt;&quot;</span>, go.label, 
-            <span class="st">&quot;&lt;/a&gt;</span><span class="ch">\n\t\t\t\t</span><span class="st">  &lt;a href=</span><span class="ch">\&quot;</span><span class="st">&quot;</span>, <span class="kw">file.path</span>(gh.url, prj), <span class="st">&quot;</span><span class="ch">\&quot;</span><span class="st"> class=</span><span class="ch">\&quot;</span><span class="st">btn btn-info</span><span class="ch">\&quot;</span><span class="st">&gt;Github&lt;/a&gt;</span><span class="ch">\n\t\t\t\t</span><span class="st">&lt;/div&gt;</span><span class="ch">\n\t\t\t</span><span class="st">  &lt;/div&gt;</span><span class="ch">\n\t\t\t</span><span class="st">&lt;/div&gt;</span><span class="ch">\n\t\t</span><span class="st">  &lt;/div&gt;</span><span class="ch">\n\t\t</span><span class="st">&lt;/div&gt;&quot;</span>)
+            web.url, <span class="st">&quot;</span><span class="ch">\&quot;</span><span class="st">&quot;</span>, atts, <span class="st">&quot; class=</span><span class="ch">\&quot;</span><span class="st">btn btn-success</span><span class="ch">\&quot;</span><span class="st">&gt;&quot;</span>, go.label, <span class="st">&quot;&lt;/a&gt;</span><span class="ch">\n\t\t\t\t</span><span class="st">  &lt;a href=</span><span class="ch">\&quot;</span><span class="st">&quot;</span>, 
+            <span class="kw">file.path</span>(gh.url, prj), <span class="st">&quot;</span><span class="ch">\&quot;</span><span class="st"> class=</span><span class="ch">\&quot;</span><span class="st">btn btn-info</span><span class="ch">\&quot;</span><span class="st">&gt;Github&lt;/a&gt;</span><span class="ch">\n\t\t\t\t</span><span class="st">&lt;/div&gt;</span><span class="ch">\n\t\t\t</span><span class="st">  &lt;/div&gt;</span><span class="ch">\n\t\t\t</span><span class="st">&lt;/div&gt;</span><span class="ch">\n\t\t</span><span class="st">  &lt;/div&gt;</span><span class="ch">\n\t\t</span><span class="st">&lt;/div&gt;&quot;</span>)
     }
     
-    n &lt;-<span class="st"> </span><span class="kw">length</span>(prjs)
-    seq1 &lt;-<span class="st"> </span><span class="kw">seq</span>(<span class="dv">1</span>, n, <span class="dt">by =</span> <span class="dv">3</span>)
-    y &lt;-<span class="st"> </span><span class="kw">c</span>()
-    for (j in <span class="dv">1</span>:<span class="kw">length</span>(seq1)) {
-        ind &lt;-<span class="st"> </span>seq1[j]:(seq1[j] +<span class="st"> </span><span class="dv">2</span>)
-        ind &lt;-<span class="st"> </span>ind[ind %in%<span class="st"> </span><span class="dv">1</span>:n]
-        y &lt;-<span class="st"> </span><span class="kw">c</span>(y, <span class="kw">paste0</span>(<span class="st">&quot;&lt;div class=</span><span class="ch">\&quot;</span><span class="st">row</span><span class="ch">\&quot;</span><span class="st">&gt;</span><span class="ch">\n</span><span class="st">&quot;</span>, <span class="kw">paste0</span>(<span class="kw">sapply</span>(ind, fillRow, 
-            ...), <span class="dt">collapse =</span> <span class="st">&quot;</span><span class="ch">\n</span><span class="st">&quot;</span>), <span class="st">&quot;&lt;/div&gt;</span><span class="ch">\n</span><span class="st">&quot;</span>))
+    for (p in <span class="dv">1</span>:<span class="kw">length</span>(filename)) {
+        if (type ==<span class="st"> &quot;gallery&quot;</span>) {
+            panels &lt;-<span class="st"> </span>prjs.img[[p]]
+            main &lt;-<span class="st"> </span><span class="kw">gsub</span>(<span class="st">&quot; - &quot;</span>, <span class="st">&quot;: &quot;</span>, <span class="kw">gsub</span>(<span class="st">&quot;_&quot;</span>, <span class="st">&quot; &quot;</span>, prjs[p]))
+        } else panels &lt;-<span class="st"> </span>prjs
+        n &lt;-<span class="st"> </span><span class="kw">length</span>(panels)
+        seq1 &lt;-<span class="st"> </span><span class="kw">seq</span>(<span class="dv">1</span>, n, <span class="dt">by =</span> <span class="dv">3</span>)
+        x &lt;-<span class="st"> </span><span class="kw">paste0</span>(<span class="st">&quot;&lt;div class=</span><span class="ch">\&quot;</span><span class="st">container</span><span class="ch">\&quot;</span><span class="st">&gt;</span><span class="ch">\n</span><span class="st">  &lt;div class=</span><span class="ch">\&quot;</span><span class="st">row</span><span class="ch">\&quot;</span><span class="st">&gt;</span><span class="ch">\n</span><span class="st">    &lt;div class=</span><span class="ch">\&quot;</span><span class="st">col-lg-12</span><span class="ch">\&quot;</span><span class="st">&gt;</span><span class="ch">\n</span><span class="st">      &lt;div class=</span><span class="ch">\&quot;</span><span class="st">page-header</span><span class="ch">\&quot;</span><span class="st">&gt;</span><span class="ch">\n</span><span class="st">        &lt;h3 id=</span><span class="ch">\&quot;</span><span class="st">&quot;</span>, 
+            type, <span class="st">&quot;</span><span class="ch">\&quot;</span><span class="st">&gt;&quot;</span>, main, <span class="st">&quot;&lt;/h3&gt;</span><span class="ch">\n</span><span class="st">      &lt;/div&gt;</span><span class="ch">\n</span><span class="st">    &lt;/div&gt;</span><span class="ch">\n</span><span class="st">  &lt;/div&gt;</span><span class="ch">\n</span><span class="st">  &quot;</span>)
+        y &lt;-<span class="st"> </span><span class="kw">c</span>()
+        for (j in <span class="dv">1</span>:<span class="kw">length</span>(seq1)) {
+            ind &lt;-<span class="st"> </span>seq1[j]:(seq1[j] +<span class="st"> </span><span class="dv">2</span>)
+            ind &lt;-<span class="st"> </span>ind[ind %in%<span class="st"> </span><span class="dv">1</span>:n]
+            y &lt;-<span class="st"> </span><span class="kw">c</span>(y, <span class="kw">paste0</span>(<span class="st">&quot;&lt;div class=</span><span class="ch">\&quot;</span><span class="st">row</span><span class="ch">\&quot;</span><span class="st">&gt;</span><span class="ch">\n</span><span class="st">&quot;</span>, <span class="kw">paste0</span>(<span class="kw">sapply</span>(ind, fillRow, 
+                ...), <span class="dt">collapse =</span> <span class="st">&quot;</span><span class="ch">\n</span><span class="st">&quot;</span>), <span class="st">&quot;&lt;/div&gt;</span><span class="ch">\n</span><span class="st">&quot;</span>))
+        }
+        z &lt;-<span class="st"> &quot;&lt;/div&gt;</span><span class="ch">\n</span><span class="st">&quot;</span>
+        <span class="kw">sink</span>(<span class="kw">file.path</span>(outDir, filename[p]))
+        <span class="kw">sapply</span>(<span class="kw">c</span>(x, y, z), cat)
+        <span class="kw">sink</span>()
+        <span class="kw">cat</span>(<span class="st">&quot;div container html file created.</span><span class="ch">\n</span><span class="st">&quot;</span>)
     }
-    z &lt;-<span class="st"> &quot;&lt;/div&gt;</span><span class="ch">\n</span><span class="st">&quot;</span>
-    <span class="kw">sink</span>(<span class="kw">file.path</span>(outDir, filename))
-    <span class="kw">sapply</span>(<span class="kw">c</span>(x, y, z), cat)
-    <span class="kw">sink</span>()
-    <span class="kw">cat</span>(<span class="st">&quot;div container html file created.</span><span class="ch">\n</span><span class="st">&quot;</span>)
 }</code></pre>
+</div>
 </div>
 <div id="htmlhead" class="section level4">
 <h4>htmlHead</h4>
-<p><code>htmlHead</code> .</p>
+<p><code>htmlHead</code> is useful for including javascript and CSS stylesheets in the head of an html document. Stylesheet arguments can be passed along as well in proper order.</p>
 <pre class="sourceCode r"><code class="sourceCode r">htmlHead &lt;-<span class="st"> </span>function(<span class="dt">author =</span> <span class="st">&quot;Matthew Leonawicz&quot;</span>, <span class="dt">title =</span> author, <span class="dt">script.paths =</span> <span class="ot">NULL</span>, 
     stylesheet.paths, <span class="dt">stylesheet.args =</span> <span class="kw">vector</span>(<span class="st">&quot;list&quot;</span>, <span class="kw">length</span>(path.stylesheets)), 
     ...) {
@@ -1162,7 +1220,7 @@ genAppDiv &lt;-<span class="st"> </span>function(<span class="dt">file =</span> 
 </div>
 <div id="htmlbodytop" class="section level4">
 <h4>htmlBodyTop</h4>
-<p><code>htmlBodyTop</code> .</p>
+<p><code>htmlBodyTop</code> currently is used for including custom CSS and a background image in the html body. CSS can be included as a text string or as a path to a CSS file.</p>
 <pre class="sourceCode r"><code class="sourceCode r">htmlBodyTop &lt;-<span class="st"> </span>function(<span class="dt">css.file =</span> <span class="ot">NULL</span>, <span class="dt">css.string =</span> <span class="ot">NULL</span>, <span class="dt">background.image =</span> <span class="st">&quot;&quot;</span>, 
     <span class="dt">include.default =</span> <span class="ot">TRUE</span>, ...) {
     x &lt;-<span class="st"> &quot;&lt;style type = </span><span class="ch">\&quot;</span><span class="st">text/css</span><span class="ch">\&quot;</span><span class="st">&gt;</span><span class="ch">\n</span><span class="st">&quot;</span>
@@ -1184,52 +1242,30 @@ genAppDiv &lt;-<span class="st"> </span>function(<span class="dt">file =</span> 
 </div>
 <div id="htmlbottom" class="section level4">
 <h4>htmlBottom</h4>
-<p><code>htmlBottom</code> .</p>
+<p><code>htmlBottom</code> does not do anything else at this time other than close up the html document.</p>
 <pre class="sourceCode r"><code class="sourceCode r">htmlBottom &lt;-<span class="st"> </span>function(...) {
     <span class="co"># temporary</span>
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
+    <span class="st">&quot;&lt;/body&gt;</span><span class="ch">\n\t</span><span class="st">&lt;/html&gt;&quot;</span>
+}</code></pre>
+</div>
+<div id="genuserpage" class="section level4">
+<h4>genUserPage</h4>
+<p><code>genUserPage</code> generates a Github user account web page by combining precompiled html files of container elements made using <code>genPanelDiv</code> as well as various lingering hardcoded elements for my own work. I use this function to produce my main Github user page, the <code>index.html</code>, as well as supplemental gallery pages.</p>
+<pre class="sourceCode r"><code class="sourceCode r">genUserPage &lt;-<span class="st"> </span>function(<span class="dt">file =</span> <span class="st">&quot;C:/github/leonawicz.github.io/index.html&quot;</span>, <span class="dt">containers =</span> <span class="ot">NULL</span>, 
+    <span class="dt">navbar =</span> <span class="st">&quot;&quot;</span>, ...) {
+    x1 &lt;-<span class="st"> </span><span class="kw">htmlHead</span>(...)
+    x2 &lt;-<span class="st"> </span><span class="kw">htmlBodyTop</span>(...)
+    if (!<span class="kw">is.null</span>(containers)) 
+        x3 &lt;-<span class="st"> </span><span class="kw">sapply</span>(containers, function(x) <span class="kw">paste0</span>(<span class="kw">paste0</span>(<span class="kw">readLines</span>(x), <span class="dt">collapse =</span> <span class="st">&quot;</span><span class="ch">\n</span><span class="st">&quot;</span>), 
+            <span class="st">&quot;</span><span class="ch">\n\n</span><span class="st">&quot;</span>)) else x3 &lt;-<span class="st"> &quot;&quot;</span>
+    x4 &lt;-<span class="st"> </span><span class="kw">htmlBottom</span>(...)
+    nb &lt;-<span class="st"> </span>if (<span class="kw">file.exists</span>(navbar) &amp;&amp;<span class="st"> </span><span class="kw">substr</span>(navbar, <span class="kw">nchar</span>(navbar) -<span class="st"> </span><span class="dv">4</span>, <span class="kw">nchar</span>(navbar)) ==<span class="st"> </span>
+<span class="st">        &quot;.html&quot;</span>) 
+        nb &lt;-<span class="st"> </span><span class="kw">paste0</span>(<span class="kw">paste0</span>(<span class="kw">readLines</span>(navbar), <span class="dt">collapse =</span> <span class="st">&quot;</span><span class="ch">\n</span><span class="st">&quot;</span>), <span class="st">&quot;</span><span class="ch">\n\n</span><span class="st">&quot;</span>)
+    <span class="kw">sink</span>(file)
+    <span class="kw">sapply</span>(<span class="kw">c</span>(x1, x2, nb, x3, x4), cat)
+    <span class="kw">sink</span>()
+    <span class="kw">cat</span>(<span class="st">&quot;Github User page html file created.</span><span class="ch">\n</span><span class="st">&quot;</span>)
 }</code></pre>
 </div>
 </div>
