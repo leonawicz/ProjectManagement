@@ -141,7 +141,7 @@ genNavbar(htmlfile="navbar.html", title=user.site, menu=nb.menu, submenus=sub.me
 # check
 htmlBottom()
 
-# Specify dic container elements to include in body
+# Specify div container elements to include in body
 all.containers <- list.files(pattern="_container.html$")
 keep.main <- c("about", "updates", "projects", "apps", "data-visualizations")
 keep.main.ind <- match(keep.main, sapply(strsplit(all.containers, "_"), "[[", 1))
