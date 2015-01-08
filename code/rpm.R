@@ -576,7 +576,7 @@ genPanelDiv <- function(outDir, type="projects", main="Projects",
 		prjs <- prjs[!(basename(prjs) %in% exclude)]
 		prjs.img <- lapply(1:length(prjs), function(x, files, imgDir) list.files(path=file.path(files[x], imgDir), recursive=FALSE), files=prjs, imgDir=img.loc)
 		prjs <- basename(prjs)
-		filename <- paste0("gallery-", gsub(" ", "-", gsub(" - ", " ", prjs)), ".html")
+		filename <- tolower(paste0("gallery-", gsub(" ", "-", gsub(" - ", " ", prjs)), ".html"))
 	}
 	gh.url <- file.path("https://github.com", github.user, gh.url.tail)
 	
@@ -591,7 +591,7 @@ genPanelDiv <- function(outDir, type="projects", main="Projects",
 		if(type=="datavis") img.src <- file.path(gsub("/tree/", "/raw/", gh.url), img.loc, prjs.img[i])
 	    if(type!="gallery"){
 			if(type=="datavis") pfx <- "gallery-" else pfx <- ""
-			web.url <- file.path(web.url, paste0(pfx, gsub("_", "-", gsub("_-_", "-", prj)), ".html"))
+			web.url <- file.path(web.url, tolower(paste0(pfx, gsub("_", "-", gsub("_-_", "-", prj)), ".html")))
 		} else {
 			prj <- prjs[p]
 			img.src <- file.path(gsub("/tree/", "/raw/", gh.url), prjs[p], img.loc, panels[i])
