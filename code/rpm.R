@@ -196,7 +196,7 @@ chunkNames <- function(path, rChunkID="# @knitr", rmdChunkID="```{r", append.new
 			for(i in 1:length(ind)){
 				h <- x[ind[i]]
 				heading <- paste0("## ", substr(h, 10, nchar(h)-2), "\n")
-				x[ind[i]] <- heading #gsub(gsbraces(h), heading, h)
+				x[ind[i]] <- heading
 			}
 		}
 		ind <- which(substr(x, 1, 4)=="\\sub")
@@ -206,7 +206,7 @@ chunkNames <- function(path, rChunkID="# @knitr", rmdChunkID="```{r", append.new
 				z <- substr(h, 2, 10)
 				if(z=="subsubsub") {p <- "##### "; n <- 19 } else if(substr(z, 1, 6)=="subsub") { p <- "#### "; n <- 16 } else if(substr(z, 1, 3)=="sub") { p <- "### "; n <- 13 }
 				heading <- paste0(p, substr(h, n, nchar(h)-2), "\n")
-				x[ind[i]] <- heading #gsub(gsbraces(h), heading, h)
+				x[ind[i]] <- heading
 			}
 		}
 	}
@@ -218,6 +218,7 @@ chunkNames <- function(path, rChunkID="# @knitr", rmdChunkID="```{r", append.new
 # Conversion support functions
 # called by .swap()
 .swapChunks <- function(from, to, x, offset.end=1){
+	gsbraces <- function(txt) gsub("\\{", "\\\\{", txt)
 	nc <- nchar(x)
 	chunk.start.open <- substr(x, 1, nchar(from[1]))==from[1]
 	chunk.start.close <- substr(x, nc-offset.end-nchar(from[2])+1, nc - offset.end)==from[2]
@@ -262,7 +263,7 @@ chunkNames <- function(path, rChunkID="# @knitr", rmdChunkID="```{r", append.new
 # Rmd <-> Rnw document conversion
 # Conversion support functions
 # called by .convertDocs()
-.swap <- function(file, header=NULL, outDir, ...){
+.swap <- function(file, header=NULL, outDir, rmdChunkID, rnwChunkID, emphasis, overwrite, ...){
 	title <- list(...)$title
 	author <- list(...)$author
 	highlight <- list(...)$highlight
@@ -340,7 +341,6 @@ convertDocs <- function(path, rmdChunkID=c("```{r", "}", "```"), rnwChunkID=c("<
 	rnw.files <- list.files(path, pattern=".Rnw$", full=TRUE)
 	dots <- list(...)
 	if(rmdChunkID[1]=="```{r") rmdChunkID[1] <- paste0(rmdChunkID[1], " ")
-	gsbraces <- function(txt) gsub("\\{", "\\\\{", txt)
 	if(type=="Rmd"){
 		stopifnot(length(rmd.files) > 0)
 		outDir <- file.path(dirname(path), "Rnw")
@@ -356,10 +356,10 @@ convertDocs <- function(path, rmdChunkID=c("```{r", "}", "```"), rnwChunkID=c("<
 		outDir <- file.path(dirname(path), "Rmd")
 	} else stop("path must end in 'Rmd' or 'Rnw'.")
 	if(type=="Rmd"){
-		sapply(rmd.files, .swap, header=header.rnw, outDir=outDir, ...)
+		sapply(rmd.files, .swap, header=header.rnw, outDir=outDir, rmdChunkID=rmdChunkID, rnwChunkID=rnwChunkID, emphasis=emphasis, overwrite=overwrite, ...)
 		cat(".Rmd to .Rnw file conversion complete.\n")
 	} else {
-		sapply(rnw.files, .swap, header=NULL, outDir=outDir, ...)
+		sapply(rnw.files, .swap, header=NULL, outDir=outDir, rmdChunkID=rmdChunkID, rnwChunkID=rnwChunkID, emphasis=emphasis, overwrite=overwrite, ...)
 		cat(".Rnw to .Rmd file conversion complete.\n")
 	}
 }
@@ -611,7 +611,6 @@ genPanelDiv <- function(outDir, type="projects", main="Projects",
 	    x <- paste0('    <div class="col-lg-4">
       <div class="bs-component">
         <div class="panel panel-', col, '">\n          ', panel.title,
-          
          '<div class="panel-body"><a href="', web.url, '"', atts, '><img src="', img.src, '" alt="', panel.main, '" width=100% height=200px></a><p></p>\n          ', panel.buttons,
 		 '  </div>\n        </div>\n      </div>\n    </div>\n  ')
 	}
