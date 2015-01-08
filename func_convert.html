@@ -196,7 +196,7 @@ code > span.er { color: #c3bf9f; }
             for (i in <span class="dv">1</span>:<span class="kw">length</span>(ind)) {
                 h &lt;-<span class="st"> </span>x[ind[i]]
                 heading &lt;-<span class="st"> </span><span class="kw">paste0</span>(<span class="st">&quot;## &quot;</span>, <span class="kw">substr</span>(h, <span class="dv">10</span>, <span class="kw">nchar</span>(h) -<span class="st"> </span><span class="dv">2</span>), <span class="st">&quot;</span><span class="ch">\n</span><span class="st">&quot;</span>)
-                x[ind[i]] &lt;-<span class="st"> </span>heading  <span class="co">#gsub(gsbraces(h), heading, h)</span>
+                x[ind[i]] &lt;-<span class="st"> </span>heading
             }
         }
         ind &lt;-<span class="st"> </span><span class="kw">which</span>(<span class="kw">substr</span>(x, <span class="dv">1</span>, <span class="dv">4</span>) ==<span class="st"> &quot;</span><span class="ch">\\</span><span class="st">sub&quot;</span>)
@@ -215,7 +215,7 @@ code > span.er { color: #c3bf9f; }
                   n &lt;-<span class="st"> </span><span class="dv">13</span>
                 }
                 heading &lt;-<span class="st"> </span><span class="kw">paste0</span>(p, <span class="kw">substr</span>(h, n, <span class="kw">nchar</span>(h) -<span class="st"> </span><span class="dv">2</span>), <span class="st">&quot;</span><span class="ch">\n</span><span class="st">&quot;</span>)
-                x[ind[i]] &lt;-<span class="st"> </span>heading  <span class="co">#gsub(gsbraces(h), heading, h)</span>
+                x[ind[i]] &lt;-<span class="st"> </span>heading
             }
         }
     }
@@ -228,6 +228,7 @@ code > span.er { color: #c3bf9f; }
 <pre class="sourceCode r"><code class="sourceCode r"><span class="co"># Rmd &lt;-&gt; Rnw document conversion Conversion support functions called by</span>
 <span class="co"># .swap()</span>
 .swapChunks &lt;-<span class="st"> </span>function(from, to, x, <span class="dt">offset.end =</span> <span class="dv">1</span>) {
+    gsbraces &lt;-<span class="st"> </span>function(txt) <span class="kw">gsub</span>(<span class="st">&quot;</span><span class="ch">\\</span><span class="st">{&quot;</span>, <span class="st">&quot;</span><span class="ch">\\\\</span><span class="st">{&quot;</span>, txt)
     nc &lt;-<span class="st"> </span><span class="kw">nchar</span>(x)
     chunk.start.open &lt;-<span class="st"> </span><span class="kw">substr</span>(x, <span class="dv">1</span>, <span class="kw">nchar</span>(from[<span class="dv">1</span>])) ==<span class="st"> </span>from[<span class="dv">1</span>]
     chunk.start.close &lt;-<span class="st"> </span><span class="kw">substr</span>(x, nc -<span class="st"> </span>offset.end -<span class="st"> </span><span class="kw">nchar</span>(from[<span class="dv">2</span>]) +<span class="st"> </span><span class="dv">1</span>, nc -<span class="st"> </span>
@@ -281,7 +282,8 @@ code > span.er { color: #c3bf9f; }
 <p><code>.swap</code> assists in bidirectional conversion between Rmd and Rnw files. It is called internal to <code>convertDocs</code>.</p>
 <pre class="sourceCode r"><code class="sourceCode r"><span class="co"># Rmd &lt;-&gt; Rnw document conversion Conversion support functions called by</span>
 <span class="co"># .convertDocs()</span>
-.swap &lt;-<span class="st"> </span>function(file, <span class="dt">header =</span> <span class="ot">NULL</span>, outDir, ...) {
+.swap &lt;-<span class="st"> </span>function(file, <span class="dt">header =</span> <span class="ot">NULL</span>, outDir, rmdChunkID, rnwChunkID, emphasis, 
+    overwrite, ...) {
     title &lt;-<span class="st"> </span><span class="kw">list</span>(...)$title
     author &lt;-<span class="st"> </span><span class="kw">list</span>(...)$author
     highlight &lt;-<span class="st"> </span><span class="kw">list</span>(...)$highlight
@@ -390,7 +392,6 @@ convertDocs &lt;-<span class="st"> </span>function(path, <span class="dt">rmdChu
     dots &lt;-<span class="st"> </span><span class="kw">list</span>(...)
     if (rmdChunkID[<span class="dv">1</span>] ==<span class="st"> &quot;```{r&quot;</span>) 
         rmdChunkID[<span class="dv">1</span>] &lt;-<span class="st"> </span><span class="kw">paste0</span>(rmdChunkID[<span class="dv">1</span>], <span class="st">&quot; &quot;</span>)
-    gsbraces &lt;-<span class="st"> </span>function(txt) <span class="kw">gsub</span>(<span class="st">&quot;</span><span class="ch">\\</span><span class="st">{&quot;</span>, <span class="st">&quot;</span><span class="ch">\\\\</span><span class="st">{&quot;</span>, txt)
     if (type ==<span class="st"> &quot;Rmd&quot;</span>) {
         <span class="kw">stopifnot</span>(<span class="kw">length</span>(rmd.files) &gt;<span class="st"> </span><span class="dv">0</span>)
         outDir &lt;-<span class="st"> </span><span class="kw">file.path</span>(<span class="kw">dirname</span>(path), <span class="st">&quot;Rnw&quot;</span>)
@@ -411,10 +412,14 @@ convertDocs &lt;-<span class="st"> </span>function(path, <span class="dt">rmdChu
         outDir &lt;-<span class="st"> </span><span class="kw">file.path</span>(<span class="kw">dirname</span>(path), <span class="st">&quot;Rmd&quot;</span>)
     } else <span class="kw">stop</span>(<span class="st">&quot;path must end in &#39;Rmd&#39; or &#39;Rnw&#39;.&quot;</span>)
     if (type ==<span class="st"> &quot;Rmd&quot;</span>) {
-        <span class="kw">sapply</span>(rmd.files, .swap, <span class="dt">header =</span> header.rnw, <span class="dt">outDir =</span> outDir, ...)
+        <span class="kw">sapply</span>(rmd.files, .swap, <span class="dt">header =</span> header.rnw, <span class="dt">outDir =</span> outDir, <span class="dt">rmdChunkID =</span> rmdChunkID, 
+            <span class="dt">rnwChunkID =</span> rnwChunkID, <span class="dt">emphasis =</span> emphasis, <span class="dt">overwrite =</span> overwrite, 
+            ...)
         <span class="kw">cat</span>(<span class="st">&quot;.Rmd to .Rnw file conversion complete.</span><span class="ch">\n</span><span class="st">&quot;</span>)
     } else {
-        <span class="kw">sapply</span>(rnw.files, .swap, <span class="dt">header =</span> <span class="ot">NULL</span>, <span class="dt">outDir =</span> outDir, ...)
+        <span class="kw">sapply</span>(rnw.files, .swap, <span class="dt">header =</span> <span class="ot">NULL</span>, <span class="dt">outDir =</span> outDir, <span class="dt">rmdChunkID =</span> rmdChunkID, 
+            <span class="dt">rnwChunkID =</span> rnwChunkID, <span class="dt">emphasis =</span> emphasis, <span class="dt">overwrite =</span> overwrite, 
+            ...)
         <span class="kw">cat</span>(<span class="st">&quot;.Rnw to .Rmd file conversion complete.</span><span class="ch">\n</span><span class="st">&quot;</span>)
     }
 }</code></pre>

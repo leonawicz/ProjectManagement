@@ -244,7 +244,7 @@ common.header &lt;-<span class="st"> &quot;include/in_header.html&quot;</span>
 </div>
 <div id="knit-documents" class="section level3">
 <h3>Knit documents</h3>
-<p>Both Rmd and Rnw files can be knitted to various formats. Rms and Rnw files can also be conveted back and forth, with notable limitations. Files can be reorganized after knitting.</p>
+<p>Both Rmd and Rnw files can be knitted to various formats. Rmd and Rnw files can also be converted back and forth, with notable limitations. Files can be reorganized after knitting.</p>
 <pre class="sourceCode r"><code class="sourceCode r"><span class="kw">library</span>(rmarkdown)
 <span class="kw">library</span>(knitr)
 <span class="kw">setwd</span>(rmd.path)
@@ -292,7 +292,8 @@ mainDir &lt;-<span class="st"> </span><span class="kw">file.path</span>(proj.loc
     <span class="dt">github.user =</span> user, <span class="dt">col =</span> <span class="st">&quot;default&quot;</span>)
 <span class="co"># create all Gallery container html files</span>
 <span class="kw">genPanelDiv</span>(<span class="dt">outDir =</span> <span class="kw">getwd</span>(), <span class="dt">type =</span> <span class="st">&quot;gallery&quot;</span>, <span class="dt">main =</span> <span class="st">&quot;Gallery&quot;</span>, <span class="dt">github.user =</span> user, 
-    <span class="dt">col =</span> <span class="st">&quot;default&quot;</span>, <span class="dt">lightbox =</span> <span class="ot">TRUE</span>)
+    <span class="dt">col =</span> <span class="st">&quot;default&quot;</span>, <span class="dt">img.loc =</span> <span class="st">&quot;small&quot;</span>, <span class="dt">lightbox =</span> <span class="ot">TRUE</span>, <span class="dt">include.buttons =</span> <span class="ot">FALSE</span>, 
+    <span class="dt">include.titles =</span> <span class="ot">FALSE</span>)
 
 <span class="co"># Specify libraries for html head &#39;assets&#39; is first because it resides in</span>
 <span class="co"># the top-level directory where the web site html files reside.</span>
@@ -310,16 +311,18 @@ back.img &lt;-<span class="st"> &quot;assets/img/frac23.jpg&quot;</span>
 <span class="co"># check</span>
 <span class="kw">htmlBodyTop</span>(<span class="dt">background.image =</span> back.img)
 
+github.url &lt;-<span class="st"> </span><span class="kw">file.path</span>(<span class="st">&quot;https://github.com&quot;</span>, user, user.site)
+
 <span class="co"># Prepare navbar</span>
 nb.menu &lt;-<span class="st"> </span><span class="kw">c</span>(<span class="st">&quot;Projects&quot;</span>, <span class="st">&quot;Apps&quot;</span>, <span class="st">&quot;Data Visualizations&quot;</span>, <span class="st">&quot;Test1&quot;</span>)
 
 sub.menu &lt;-<span class="st"> </span><span class="kw">list</span>(<span class="kw">c</span>(<span class="st">&quot;empty&quot;</span>), <span class="kw">c</span>(<span class="st">&quot;empty&quot;</span>), <span class="kw">c</span>(<span class="st">&quot;empty&quot;</span>), <span class="kw">c</span>(<span class="st">&quot;A title&quot;</span>, <span class="st">&quot;A page&quot;</span>, 
     <span class="st">&quot;divider&quot;</span>, <span class="st">&quot;Another title&quot;</span>, <span class="st">&quot;Page 1&quot;</span>, <span class="st">&quot;Page 2&quot;</span>))
 
-files.menu &lt;-<span class="st"> </span><span class="kw">list</span>(<span class="kw">c</span>(<span class="st">&quot;#projects&quot;</span>), <span class="kw">c</span>(<span class="st">&quot;#apps&quot;</span>), <span class="kw">c</span>(<span class="st">&quot;#data-visualizations&quot;</span>), <span class="kw">c</span>(<span class="st">&quot;header&quot;</span>, 
-    <span class="st">&quot;#&quot;</span>, <span class="st">&quot;divider&quot;</span>, <span class="st">&quot;header&quot;</span>, <span class="st">&quot;#&quot;</span>, <span class="st">&quot;#&quot;</span>))
+files.menu &lt;-<span class="st"> </span><span class="kw">list</span>(<span class="kw">c</span>(<span class="st">&quot;index.html#projects&quot;</span>), <span class="kw">c</span>(<span class="st">&quot;index.html#apps&quot;</span>), <span class="kw">c</span>(<span class="st">&quot;index.html#datavis&quot;</span>), 
+    <span class="kw">c</span>(<span class="st">&quot;header&quot;</span>, <span class="st">&quot;#&quot;</span>, <span class="st">&quot;divider&quot;</span>, <span class="st">&quot;header&quot;</span>, <span class="st">&quot;#&quot;</span>, <span class="st">&quot;#&quot;</span>))
 
-github.url &lt;-<span class="st"> </span><span class="kw">file.path</span>(<span class="st">&quot;https://github.com&quot;</span>, user, user.site)
+
 <span class="co"># Create navbar.html</span>
 <span class="kw">genNavbar</span>(<span class="dt">htmlfile =</span> <span class="st">&quot;navbar.html&quot;</span>, <span class="dt">title =</span> user.site, <span class="dt">menu =</span> nb.menu, <span class="dt">submenus =</span> sub.menu, 
     <span class="dt">files =</span> files.menu, <span class="dt">theme =</span> <span class="st">&quot;cyborg&quot;</span>, <span class="dt">title.url =</span> <span class="st">&quot;index.html&quot;</span>, <span class="dt">home.url =</span> <span class="st">&quot;index.html&quot;</span>, 
@@ -328,7 +331,7 @@ github.url &lt;-<span class="st"> </span><span class="kw">file.path</span>(<span
 <span class="co"># check</span>
 <span class="kw">htmlBottom</span>()
 
-<span class="co"># Specify dic container elements to include in body</span>
+<span class="co"># Specify div container elements to include in body</span>
 all.containers &lt;-<span class="st"> </span><span class="kw">list.files</span>(<span class="dt">pattern =</span> <span class="st">&quot;_container.html$&quot;</span>)
 keep.main &lt;-<span class="st"> </span><span class="kw">c</span>(<span class="st">&quot;about&quot;</span>, <span class="st">&quot;updates&quot;</span>, <span class="st">&quot;projects&quot;</span>, <span class="st">&quot;apps&quot;</span>, <span class="st">&quot;data-visualizations&quot;</span>)
 keep.main.ind &lt;-<span class="st"> </span><span class="kw">match</span>(keep.main, <span class="kw">sapply</span>(<span class="kw">strsplit</span>(all.containers, <span class="st">&quot;_&quot;</span>), <span class="st">&quot;[[&quot;</span>, 
