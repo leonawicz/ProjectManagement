@@ -533,7 +533,7 @@ genAppDiv <- function(file="C:/github/leonawicz.github.io/assets/apps_container.
 # @knitr fun_genPanelDiv
 genPanelDiv <- function(outDir, type="projects", main="Projects",
 	github.user="leonawicz", prjs.dir="C:/github", exclude=c("leonawicz.github.io", "shiny-apps", "DataVisExamples", ".git", "_images"),
-	img.loc="_images/small", lightbox=FALSE, include.buttons=TRUE, ...){
+	img.loc="_images/small", lightbox=FALSE, include.buttons=TRUE, include.titles=TRUE, ...){
 	
 	stopifnot(github.user %in% c("leonawicz", "ua-snap"))
 	if(type=="apps"){
@@ -598,6 +598,10 @@ genPanelDiv <- function(outDir, type="projects", main="Projects",
 			web.url <- file.path(gsub("/tree/", "/raw/", gh.url), prjs[p], panels[i])
 			if(lightbox) atts <- gsub("ID", gsub(" - ", ": ", gsub("_", " ", prjs[p])), atts1) else atts <- atts1
 		}
+		if(include.titles){
+		panel.title <- paste0('<div class="panel-heading"><h3 class="panel-title">', panel.main, '</h3>
+          </div>\n          ')
+		} else panel.title <- ""
 		if(include.buttons){
 			panel.buttons <- paste0('<div class="btn-group btn-group-justified">
 			<a href="', web.url, '"', atts, ' class="btn btn-success">', go.label, '</a>
@@ -606,10 +610,9 @@ genPanelDiv <- function(outDir, type="projects", main="Projects",
 		} else panel.buttons <- ""
 	    x <- paste0('    <div class="col-lg-4">
       <div class="bs-component">
-        <div class="panel panel-', col, '">
-          <div class="panel-heading"><h3 class="panel-title">', panel.main, '</h3>
-          </div>
-          <div class="panel-body"><a href="', web.url, '"', atts, '><img src="', img.src, '" alt="', panel.main, '" width=100% height=200px></a><p></p>\n          ', panel.buttons,
+        <div class="panel panel-', col, '">\n          ', panel.title,
+          
+         '<div class="panel-body"><a href="', web.url, '"', atts, '><img src="', img.src, '" alt="', panel.main, '" width=100% height=200px></a><p></p>\n          ', panel.buttons,
 		 '  </div>\n        </div>\n      </div>\n    </div>\n  ')
 	}
 	
