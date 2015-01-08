@@ -99,7 +99,7 @@ genOutyaml(file = yaml.out, lib = libs, header = common.header, before_body = "i
 
 ### Knit documents
 Both Rmd and Rnw files can be knitted to various formats.
-Rms and Rnw files can also be conveted back and forth, with notable limitations.
+Rmd and Rnw files can also be converted back and forth, with notable limitations.
 Files can be reorganized after knitting.
 
 
@@ -163,7 +163,8 @@ genPanelDiv(outDir = getwd(), type = "datavis", main = "Data Visualizations",
     github.user = user, col = "default")
 # create all Gallery container html files
 genPanelDiv(outDir = getwd(), type = "gallery", main = "Gallery", github.user = user, 
-    col = "default", lightbox = TRUE)
+    col = "default", img.loc = "small", lightbox = TRUE, include.buttons = FALSE, 
+    include.titles = FALSE)
 
 # Specify libraries for html head 'assets' is first because it resides in
 # the top-level directory where the web site html files reside.
@@ -181,16 +182,18 @@ back.img <- "assets/img/frac23.jpg"
 # check
 htmlBodyTop(background.image = back.img)
 
+github.url <- file.path("https://github.com", user, user.site)
+
 # Prepare navbar
 nb.menu <- c("Projects", "Apps", "Data Visualizations", "Test1")
 
 sub.menu <- list(c("empty"), c("empty"), c("empty"), c("A title", "A page", 
     "divider", "Another title", "Page 1", "Page 2"))
 
-files.menu <- list(c("#projects"), c("#apps"), c("#data-visualizations"), c("header", 
-    "#", "divider", "header", "#", "#"))
+files.menu <- list(c("index.html#projects"), c("index.html#apps"), c("index.html#datavis"), 
+    c("header", "#", "divider", "header", "#", "#"))
 
-github.url <- file.path("https://github.com", user, user.site)
+
 # Create navbar.html
 genNavbar(htmlfile = "navbar.html", title = user.site, menu = nb.menu, submenus = sub.menu, 
     files = files.menu, theme = "cyborg", title.url = "index.html", home.url = "index.html", 
@@ -199,7 +202,7 @@ genNavbar(htmlfile = "navbar.html", title = user.site, menu = nb.menu, submenus 
 # check
 htmlBottom()
 
-# Specify dic container elements to include in body
+# Specify div container elements to include in body
 all.containers <- list.files(pattern = "_container.html$")
 keep.main <- c("about", "updates", "projects", "apps", "data-visualizations")
 keep.main.ind <- match(keep.main, sapply(strsplit(all.containers, "_"), "[[", 

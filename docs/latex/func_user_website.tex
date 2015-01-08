@@ -137,16 +137,20 @@ This function will probably be removed in favor of the more general \texttt{genP
 
 \texttt{genPanelDiv} generates an html file storing a container div element which in its current state of development organizes two types of content: \textbf{R} projects and Shiny web applications.
 
-The \texttt{type} argument can be either \texttt{projects} or \texttt{apps} and essentially bifurcates the behavior of \texttt{genPanelDiv}.
-The purpose of the function is to generate an html file defining a container div element to display and reference either my \textbf{R} projects or my Shiny apps.
+The \texttt{type} argument can be one of \texttt{projects}, \texttt{apps}, \texttt{datavis}, or \texttt{gallery}.
+The purpose of the function is to generate an html file defining a container div element to display and reference either my \textbf{R} projects, my Shiny apps, or my example visualization galleries.
+
+\subsubsubsection{Projects}
 
 For projects, the function scans a directory of local repositories and takes any directories found to be the names of projects.
 There is an \texttt{exclude} argument for dropping any known directories that are to be avoided.
 My defaults are \texttt{exclude="leonawicz.github.io", "shiny-apps"} since the first is just a local repository for my Github user account web site and not a "project" in the same sense of my other projects
 and the second is the local repository which is scanned by \texttt{genPanelDiv} when \texttt{type="apps"}.
 
+\subsubsubsection{Apps}
+
 For apps, the function scans a directory of Shiny app subdirectories.
-Unlike for projects, where \texttt{genPanelDiv} scans a directory of multiple local repositories, this apps directory should be a specific local repository. The apps contained within are not inndividual repositories.
+Unlike for projects, where \texttt{genPanelDiv} scans a directory of multiple local repositories, this apps directory should be a specific local repository. The apps contained within are not individual repositories.
 I have taken this approach for now simply because this is how my apps tend to be stored.
 
 Specifically, the \texttt{genAppDiv} looks for a named directory of image files.
@@ -158,20 +162,37 @@ The container element includes an image link to each app's url as well as a link
 Although the app scans for images in a local repository, the images referenced in the output html are of course not local.
 They point to the same images stored on Github, hence why it is useful for the local directory of apps to be a Github repository.
 
+\subsubsubsection{DataVis and Galleries}
+
+Whereas the first three types generate containers for the main Github user web page, I use \texttt{type="gallery"} to make a separate container html file of graphics for each panel occurring in my \texttt{datavis} container.
+These containers tend to be added to unique web pages.
+\texttt{datavis} is for highlighting a number of galleries whereas \texttt{gallery} is for the galleries' respective contents.
+
+In order to use \texttt{type="datavis"} there must be a data visualization local repository.
+Mine is named \texttt{DataVisualizationExamples}, evident from the hardcoding currently in place within this function.
+Similar to when \texttt{type="apps"}, this repository includes a directory of images, in t his case one image for each gallery.
+Each image in this directory is named such that it identically matches another the name of a gallery images directory containing multiple images.
+As with \texttt{type="apps"}, gallery directories are only included if a corresponding thumbnail image in the images directory exists.
+
+When \texttt{type="gallery"}, the behavior of \texttt{genPanelDiv} is most unique.
+For each gallery which exists, the function will make a unique html file with a gallery container element.
+
 This function makes the more specific \texttt{genAppDiv} redundant and will likely replace it.
 
 \begin{knitrout}
 \definecolor{shadecolor}{rgb}{0, 0.169, 0.212}\color{fgcolor}\begin{kframe}
 \begin{alltt}
 \hlstd{genPanelDiv} \hlkwb{<-} \hlkwa{function}\hlstd{(}\hlkwc{outDir}\hlstd{,} \hlkwc{type} \hlstd{=} \hlstr{"projects"}\hlstd{,} \hlkwc{main} \hlstd{=} \hlstr{"Projects"}\hlstd{,} \hlkwc{github.user} \hlstd{=} \hlstr{"leonawicz"}\hlstd{,}
-    \hlkwc{prjs.dir} \hlstd{=} \hlstr{"C:/github"}\hlstd{,} \hlkwc{exclude} \hlstd{=} \hlkwd{c}\hlstd{(}\hlstr{"leonawicz.github.io"}\hlstd{,} \hlstr{"shiny-apps"}\hlstd{),}
-    \hlkwc{img.loc} \hlstd{=} \hlstr{"_images/cropped"}\hlstd{,} \hlkwc{...}\hlstd{) \{}
+    \hlkwc{prjs.dir} \hlstd{=} \hlstr{"C:/github"}\hlstd{,} \hlkwc{exclude} \hlstd{=} \hlkwd{c}\hlstd{(}\hlstr{"leonawicz.github.io"}\hlstd{,} \hlstr{"shiny-apps"}\hlstd{,}
+        \hlstr{"DataVisExamples"}\hlstd{,} \hlstr{".git"}\hlstd{,} \hlstr{"_images"}\hlstd{),} \hlkwc{img.loc} \hlstd{=} \hlstr{"_images/small"}\hlstd{,} \hlkwc{lightbox} \hlstd{=} \hlnum{FALSE}\hlstd{,}
+    \hlkwc{include.buttons} \hlstd{=} \hlnum{TRUE}\hlstd{,} \hlkwc{include.titles} \hlstd{=} \hlnum{TRUE}\hlstd{,} \hlkwc{...}\hlstd{) \{}
+
     \hlkwd{stopifnot}\hlstd{(github.user} \hlopt{%in%} \hlkwd{c}\hlstd{(}\hlstr{"leonawicz"}\hlstd{,} \hlstr{"ua-snap"}\hlstd{))}
     \hlkwa{if} \hlstd{(type} \hlopt{==} \hlstr{"apps"}\hlstd{) \{}
         \hlstd{filename} \hlkwb{<-} \hlstr{"apps_container.html"}
         \hlstd{web.url} \hlkwb{<-} \hlstr{"http://shiny.snap.uaf.edu"}
         \hlstd{gh.url.tail} \hlkwb{<-} \hlstr{"shiny-apps/tree/master"}
-        \hlstd{target} \hlkwb{<-} \hlstr{" target=\textbackslash{}"_blank\textbackslash{}""}
+        \hlstd{atts} \hlkwb{<-} \hlstr{" target=\textbackslash{}"_blank\textbackslash{}""}
         \hlstd{go.label} \hlkwb{<-} \hlstr{"Launch"}
         \hlstd{prjs.dir} \hlkwb{<-} \hlkwd{file.path}\hlstd{(prjs.dir,} \hlstr{"shiny-apps"}\hlstd{)}
         \hlstd{prjs.img} \hlkwb{<-} \hlkwd{list.files}\hlstd{(}\hlkwd{file.path}\hlstd{(prjs.dir, img.loc))}
@@ -181,7 +202,7 @@ This function makes the more specific \texttt{genAppDiv} redundant and will like
         \hlstd{filename} \hlkwb{<-} \hlstr{"projects_container.html"}
         \hlstd{web.url} \hlkwb{<-} \hlkwd{paste0}\hlstd{(}\hlstr{"http://"}\hlstd{, github.user,} \hlstr{".github.io"}\hlstd{)}
         \hlstd{gh.url.tail} \hlkwb{<-} \hlstr{""}
-        \hlstd{target} \hlkwb{<-} \hlstr{""}
+        \hlstd{atts} \hlkwb{<-} \hlstr{""}
         \hlstd{go.label} \hlkwb{<-} \hlstr{"Website"}
         \hlstd{prjs} \hlkwb{<-} \hlkwd{list.dirs}\hlstd{(prjs.dir,} \hlkwc{full} \hlstd{=} \hlnum{TRUE}\hlstd{,} \hlkwc{recursive} \hlstd{=} \hlnum{FALSE}\hlstd{)}
         \hlstd{prjs} \hlkwb{<-} \hlstd{prjs[}\hlopt{!}\hlstd{(}\hlkwd{basename}\hlstd{(prjs)} \hlopt{%in%} \hlstd{exclude)]}
@@ -189,47 +210,100 @@ This function makes the more specific \texttt{genAppDiv} redundant and will like
             \hlstr{"plots"}\hlstd{),} \hlkwc{pattern} \hlstd{=} \hlkwd{paste0}\hlstd{(}\hlstr{"^_"}\hlstd{,} \hlkwd{basename}\hlstd{(a)[i])),} \hlkwc{a} \hlstd{= prjs)}
         \hlstd{prjs} \hlkwb{<-} \hlkwd{basename}\hlstd{(prjs)}
     \hlstd{\}}
+    \hlkwa{if} \hlstd{(type} \hlopt{==} \hlstr{"datavis"}\hlstd{) \{}
+        \hlstd{filename} \hlkwb{<-} \hlstr{"data-visualizations_container.html"}
+        \hlstd{web.url} \hlkwb{<-} \hlkwd{paste0}\hlstd{(}\hlstr{"http://"}\hlstd{, github.user,} \hlstr{".github.io"}\hlstd{)}
+        \hlstd{gh.url.tail} \hlkwb{<-} \hlstr{"DataVisExamples/tree/master"}
+        \hlstd{atts} \hlkwb{<-} \hlstr{""}
+        \hlstd{go.label} \hlkwb{<-} \hlstr{"See More"}
+        \hlstd{prjs.dir} \hlkwb{<-} \hlkwd{file.path}\hlstd{(prjs.dir,} \hlstr{"DataVisExamples"}\hlstd{)}
+        \hlstd{prjs.img} \hlkwb{<-} \hlkwd{list.files}\hlstd{(}\hlkwd{file.path}\hlstd{(prjs.dir, img.loc))}
+        \hlstd{prjs} \hlkwb{<-} \hlkwd{sapply}\hlstd{(}\hlkwd{strsplit}\hlstd{(prjs.img,} \hlstr{"\textbackslash{}\textbackslash{}."}\hlstd{),} \hlstr{"[["}\hlstd{,} \hlnum{1}\hlstd{)}
+    \hlstd{\}}
+    \hlkwa{if} \hlstd{(type} \hlopt{==} \hlstr{"gallery"}\hlstd{) \{}
+        \hlstd{web.url} \hlkwb{<-} \hlkwd{paste0}\hlstd{(}\hlstr{"http://"}\hlstd{, github.user,} \hlstr{".github.io"}\hlstd{)}
+        \hlstd{gh.url.tail} \hlkwb{<-} \hlstr{"DataVisExamples/tree/master"}
+        \hlkwa{if} \hlstd{(lightbox)}
+            \hlstd{atts1} \hlkwb{<-} \hlstr{" data-lightbox=\textbackslash{}"ID\textbackslash{}""} \hlkwa{else} \hlstd{atts1} \hlkwb{<-} \hlstr{""}
+        \hlstd{go.label} \hlkwb{<-} \hlstr{"Expand"}
+        \hlstd{prjs} \hlkwb{<-} \hlkwd{list.dirs}\hlstd{(}\hlkwd{file.path}\hlstd{(prjs.dir,} \hlstr{"DataVisExamples"}\hlstd{),} \hlkwc{full} \hlstd{= T,}
+            \hlkwc{recursive} \hlstd{= F)}
+        \hlstd{prjs} \hlkwb{<-} \hlstd{prjs[}\hlopt{!}\hlstd{(}\hlkwd{basename}\hlstd{(prjs)} \hlopt{%in%} \hlstd{exclude)]}
+        \hlstd{prjs.img} \hlkwb{<-} \hlkwd{lapply}\hlstd{(}\hlnum{1}\hlopt{:}\hlkwd{length}\hlstd{(prjs),} \hlkwa{function}\hlstd{(}\hlkwc{x}\hlstd{,} \hlkwc{files}\hlstd{,} \hlkwc{imgDir}\hlstd{)} \hlkwd{list.files}\hlstd{(}\hlkwc{path} \hlstd{=} \hlkwd{file.path}\hlstd{(files[x],}
+            \hlstd{imgDir),} \hlkwc{recursive} \hlstd{=} \hlnum{FALSE}\hlstd{),} \hlkwc{files} \hlstd{= prjs,} \hlkwc{imgDir} \hlstd{= img.loc)}
+        \hlstd{prjs} \hlkwb{<-} \hlkwd{basename}\hlstd{(prjs)}
+        \hlstd{filename} \hlkwb{<-} \hlkwd{tolower}\hlstd{(}\hlkwd{paste0}\hlstd{(}\hlstr{"gallery-"}\hlstd{,} \hlkwd{gsub}\hlstd{(}\hlstr{" "}\hlstd{,} \hlstr{"-"}\hlstd{,} \hlkwd{gsub}\hlstd{(}\hlstr{" - "}\hlstd{,} \hlstr{" "}\hlstd{,}
+            \hlstd{prjs)),} \hlstr{".html"}\hlstd{))}
+    \hlstd{\}}
     \hlstd{gh.url} \hlkwb{<-} \hlkwd{file.path}\hlstd{(}\hlstr{"https://github.com"}\hlstd{, github.user, gh.url.tail)}
-    \hlstd{x} \hlkwb{<-} \hlkwd{paste0}\hlstd{(}\hlstr{"<div class=\textbackslash{}"container\textbackslash{}">\textbackslash{}n  <div class=\textbackslash{}"row\textbackslash{}">\textbackslash{}n    <div class=\textbackslash{}"col-lg-12\textbackslash{}">\textbackslash{}n      <div class=\textbackslash{}"page-header\textbackslash{}">\textbackslash{}n        <h3 id=\textbackslash{}""}\hlstd{,}
-        \hlstd{type,} \hlstr{"\textbackslash{}">"}\hlstd{, main,} \hlstr{"</h3>\textbackslash{}n      </div>\textbackslash{}n    </div>\textbackslash{}n  </div>\textbackslash{}n  "}\hlstd{)}
 
     \hlstd{fillRow} \hlkwb{<-} \hlkwa{function}\hlstd{(}\hlkwc{i}\hlstd{,} \hlkwc{...}\hlstd{) \{}
-        \hlstd{prj} \hlkwb{<-} \hlstd{prjs[i]}
-        \hlkwa{if} \hlstd{(type} \hlopt{==} \hlstr{"apps"}\hlstd{)}
-            \hlstd{img.src} \hlkwb{<-} \hlkwd{file.path}\hlstd{(}\hlkwd{gsub}\hlstd{(}\hlstr{"/tree/"}\hlstd{,} \hlstr{"/raw/"}\hlstd{, gh.url), img.loc, prjs.img[i])}
-        \hlkwa{if} \hlstd{(type} \hlopt{==} \hlstr{"projects"}\hlstd{)}
-            \hlstd{img.src} \hlkwb{<-} \hlkwd{file.path}\hlstd{(gh.url, prj,} \hlstr{"raw/master/plots"}\hlstd{, prjs.img[i])}
-        \hlstd{web.url} \hlkwb{<-} \hlkwd{file.path}\hlstd{(web.url, prj)}
+        \hlstd{prj} \hlkwb{<-} \hlstd{panels[i]}
         \hlstd{dots} \hlkwb{<-} \hlkwd{list}\hlstd{(...)}
         \hlkwa{if} \hlstd{(}\hlkwd{is.null}\hlstd{(dots}\hlopt{$}\hlstd{col))}
             \hlstd{col} \hlkwb{<-} \hlstr{"warning"} \hlkwa{else} \hlstd{col} \hlkwb{<-} \hlstd{dots}\hlopt{$}\hlstd{col}
         \hlkwa{if} \hlstd{(}\hlkwd{is.null}\hlstd{(dots}\hlopt{$}\hlstd{panel.main))}
-            \hlstd{panel.main} \hlkwb{<-} \hlkwd{gsub}\hlstd{(}\hlstr{"_"}\hlstd{,} \hlstr{" "}\hlstd{, prj)} \hlkwa{else} \hlstd{panel.main} \hlkwb{<-} \hlstd{dots}\hlopt{$}\hlstd{panel.main}
+            \hlstd{panel.main} \hlkwb{<-} \hlkwd{gsub}\hlstd{(}\hlstr{" - "}\hlstd{,} \hlstr{": "}\hlstd{,} \hlkwd{gsub}\hlstd{(}\hlstr{"_"}\hlstd{,} \hlstr{" "}\hlstd{, prj))} \hlkwa{else} \hlstd{panel.main} \hlkwb{<-} \hlstd{dots}\hlopt{$}\hlstd{panel.main}
         \hlkwa{if} \hlstd{(}\hlkwd{length}\hlstd{(panel.main)} \hlopt{>} \hlnum{1}\hlstd{)}
             \hlstd{panel.main} \hlkwb{<-} \hlstd{panel.main[i]}
-        \hlstd{x} \hlkwb{<-} \hlkwd{paste0}\hlstd{(}\hlstr{"<div class=\textbackslash{}"col-lg-4\textbackslash{}">\textbackslash{}n\textbackslash{}t\textbackslash{}t  <div class=\textbackslash{}"bs-component\textbackslash{}">\textbackslash{}n\textbackslash{}t\textbackslash{}t\textbackslash{}t<div class=\textbackslash{}"panel panel-"}\hlstd{,}
-            \hlstd{col,} \hlstr{"\textbackslash{}">\textbackslash{}n\textbackslash{}t\textbackslash{}t\textbackslash{}t  <div class=\textbackslash{}"panel-heading\textbackslash{}"><h3 class=\textbackslash{}"panel-title\textbackslash{}">"}\hlstd{,}
-            \hlstd{panel.main,} \hlstr{"</h3>\textbackslash{}n\textbackslash{}t\textbackslash{}t\textbackslash{}t  </div>\textbackslash{}n\textbackslash{}t\textbackslash{}t\textbackslash{}t  <div class=\textbackslash{}"panel-body\textbackslash{}"><a href=\textbackslash{}""}\hlstd{,}
-            \hlstd{web.url,} \hlstr{"\textbackslash{}""}\hlstd{, target,} \hlstr{"><img src=\textbackslash{}""}\hlstd{, img.src,} \hlstr{"\textbackslash{}" alt=\textbackslash{}""}\hlstd{, prj,}
-            \hlstr{"\textbackslash{}" width=100% height=200px></a><p></p>\textbackslash{}n\textbackslash{}t\textbackslash{}t\textbackslash{}t\textbackslash{}t<div class=\textbackslash{}"btn-group btn-group-justified\textbackslash{}">\textbackslash{}n\textbackslash{}t\textbackslash{}t\textbackslash{}t\textbackslash{}t  <a href=\textbackslash{}""}\hlstd{,}
-            \hlstd{web.url,} \hlstr{"\textbackslash{}""}\hlstd{, target,} \hlstr{" class=\textbackslash{}"btn btn-success\textbackslash{}">"}\hlstd{, go.label,}
-            \hlstr{"</a>\textbackslash{}n\textbackslash{}t\textbackslash{}t\textbackslash{}t\textbackslash{}t  <a href=\textbackslash{}""}\hlstd{,} \hlkwd{file.path}\hlstd{(gh.url, prj),} \hlstr{"\textbackslash{}" class=\textbackslash{}"btn btn-info\textbackslash{}">Github</a>\textbackslash{}n\textbackslash{}t\textbackslash{}t\textbackslash{}t\textbackslash{}t</div>\textbackslash{}n\textbackslash{}t\textbackslash{}t\textbackslash{}t  </div>\textbackslash{}n\textbackslash{}t\textbackslash{}t\textbackslash{}t</div>\textbackslash{}n\textbackslash{}t\textbackslash{}t  </div>\textbackslash{}n\textbackslash{}t\textbackslash{}t</div>"}\hlstd{)}
+        \hlkwa{if} \hlstd{(type} \hlopt{==} \hlstr{"apps"}\hlstd{)}
+            \hlstd{img.src} \hlkwb{<-} \hlkwd{file.path}\hlstd{(}\hlkwd{gsub}\hlstd{(}\hlstr{"/tree/"}\hlstd{,} \hlstr{"/raw/"}\hlstd{, gh.url), img.loc, prjs.img[i])}
+        \hlkwa{if} \hlstd{(type} \hlopt{==} \hlstr{"projects"}\hlstd{)}
+            \hlstd{img.src} \hlkwb{<-} \hlkwd{file.path}\hlstd{(gh.url, prj,} \hlstr{"raw/master/plots"}\hlstd{, prjs.img[i])}
+        \hlkwa{if} \hlstd{(type} \hlopt{==} \hlstr{"datavis"}\hlstd{)}
+            \hlstd{img.src} \hlkwb{<-} \hlkwd{file.path}\hlstd{(}\hlkwd{gsub}\hlstd{(}\hlstr{"/tree/"}\hlstd{,} \hlstr{"/raw/"}\hlstd{, gh.url), img.loc, prjs.img[i])}
+        \hlkwa{if} \hlstd{(type} \hlopt{!=} \hlstr{"gallery"}\hlstd{) \{}
+            \hlkwa{if} \hlstd{(type} \hlopt{==} \hlstr{"datavis"}\hlstd{)}
+                \hlstd{pfx} \hlkwb{<-} \hlstr{"gallery-"} \hlkwa{else} \hlstd{pfx} \hlkwb{<-} \hlstr{""}
+            \hlstd{web.url} \hlkwb{<-} \hlkwd{file.path}\hlstd{(web.url,} \hlkwd{tolower}\hlstd{(}\hlkwd{paste0}\hlstd{(pfx,} \hlkwd{gsub}\hlstd{(}\hlstr{"_"}\hlstd{,} \hlstr{"-"}\hlstd{,}
+                \hlkwd{gsub}\hlstd{(}\hlstr{"_-_"}\hlstd{,} \hlstr{"-"}\hlstd{, prj)),} \hlstr{".html"}\hlstd{)))}
+        \hlstd{\}} \hlkwa{else} \hlstd{\{}
+            \hlstd{prj} \hlkwb{<-} \hlstd{prjs[p]}
+            \hlstd{img.src} \hlkwb{<-} \hlkwd{file.path}\hlstd{(}\hlkwd{gsub}\hlstd{(}\hlstr{"/tree/"}\hlstd{,} \hlstr{"/raw/"}\hlstd{, gh.url), prjs[p], img.loc,}
+                \hlstd{panels[i])}
+            \hlstd{web.url} \hlkwb{<-} \hlkwd{file.path}\hlstd{(}\hlkwd{gsub}\hlstd{(}\hlstr{"/tree/"}\hlstd{,} \hlstr{"/raw/"}\hlstd{, gh.url), prjs[p], panels[i])}
+            \hlkwa{if} \hlstd{(lightbox)}
+                \hlstd{atts} \hlkwb{<-} \hlkwd{gsub}\hlstd{(}\hlstr{"ID"}\hlstd{,} \hlkwd{gsub}\hlstd{(}\hlstr{" - "}\hlstd{,} \hlstr{": "}\hlstd{,} \hlkwd{gsub}\hlstd{(}\hlstr{"_"}\hlstd{,} \hlstr{" "}\hlstd{, prjs[p])),}
+                  \hlstd{atts1)} \hlkwa{else} \hlstd{atts} \hlkwb{<-} \hlstd{atts1}
+        \hlstd{\}}
+        \hlkwa{if} \hlstd{(include.titles) \{}
+            \hlstd{panel.title} \hlkwb{<-} \hlkwd{paste0}\hlstd{(}\hlstr{"<div class=\textbackslash{}"panel-heading\textbackslash{}"><h3 class=\textbackslash{}"panel-title\textbackslash{}">"}\hlstd{,}
+                \hlstd{panel.main,} \hlstr{"</h3>\textbackslash{}n          </div>\textbackslash{}n          "}\hlstd{)}
+        \hlstd{\}} \hlkwa{else} \hlstd{panel.title} \hlkwb{<-} \hlstr{""}
+        \hlkwa{if} \hlstd{(include.buttons) \{}
+            \hlstd{panel.buttons} \hlkwb{<-} \hlkwd{paste0}\hlstd{(}\hlstr{"<div class=\textbackslash{}"btn-group btn-group-justified\textbackslash{}">\textbackslash{}n\textbackslash{}t\textbackslash{}t\textbackslash{}t<a href=\textbackslash{}""}\hlstd{,}
+                \hlstd{web.url,} \hlstr{"\textbackslash{}""}\hlstd{, atts,} \hlstr{" class=\textbackslash{}"btn btn-success\textbackslash{}">"}\hlstd{, go.label,}
+                \hlstr{"</a>\textbackslash{}n\textbackslash{}t\textbackslash{}t\textbackslash{}t<a href=\textbackslash{}""}\hlstd{,} \hlkwd{file.path}\hlstd{(gh.url, prj),} \hlstr{"\textbackslash{}" class=\textbackslash{}"btn btn-info\textbackslash{}">Github</a>\textbackslash{}n\textbackslash{}t\textbackslash{}t  </div>\textbackslash{}n        "}\hlstd{)}
+        \hlstd{\}} \hlkwa{else} \hlstd{panel.buttons} \hlkwb{<-} \hlstr{""}
+        \hlstd{x} \hlkwb{<-} \hlkwd{paste0}\hlstd{(}\hlstr{"    <div class=\textbackslash{}"col-lg-4\textbackslash{}">\textbackslash{}n      <div class=\textbackslash{}"bs-component\textbackslash{}">\textbackslash{}n        <div class=\textbackslash{}"panel panel-"}\hlstd{,}
+            \hlstd{col,} \hlstr{"\textbackslash{}">\textbackslash{}n          "}\hlstd{, panel.title,} \hlstr{"<div class=\textbackslash{}"panel-body\textbackslash{}"><a href=\textbackslash{}""}\hlstd{,}
+            \hlstd{web.url,} \hlstr{"\textbackslash{}""}\hlstd{, atts,} \hlstr{"><img src=\textbackslash{}""}\hlstd{, img.src,} \hlstr{"\textbackslash{}" alt=\textbackslash{}""}\hlstd{, panel.main,}
+            \hlstr{"\textbackslash{}" width=100% height=200px></a><p></p>\textbackslash{}n          "}\hlstd{, panel.buttons,}
+            \hlstr{"  </div>\textbackslash{}n        </div>\textbackslash{}n      </div>\textbackslash{}n    </div>\textbackslash{}n  "}\hlstd{)}
     \hlstd{\}}
 
-    \hlstd{n} \hlkwb{<-} \hlkwd{length}\hlstd{(prjs)}
-    \hlstd{seq1} \hlkwb{<-} \hlkwd{seq}\hlstd{(}\hlnum{1}\hlstd{, n,} \hlkwc{by} \hlstd{=} \hlnum{3}\hlstd{)}
-    \hlstd{y} \hlkwb{<-} \hlkwd{c}\hlstd{()}
-    \hlkwa{for} \hlstd{(j} \hlkwa{in} \hlnum{1}\hlopt{:}\hlkwd{length}\hlstd{(seq1)) \{}
-        \hlstd{ind} \hlkwb{<-} \hlstd{seq1[j]}\hlopt{:}\hlstd{(seq1[j]} \hlopt{+} \hlnum{2}\hlstd{)}
-        \hlstd{ind} \hlkwb{<-} \hlstd{ind[ind} \hlopt{%in%} \hlnum{1}\hlopt{:}\hlstd{n]}
-        \hlstd{y} \hlkwb{<-} \hlkwd{c}\hlstd{(y,} \hlkwd{paste0}\hlstd{(}\hlstr{"<div class=\textbackslash{}"row\textbackslash{}">\textbackslash{}n"}\hlstd{,} \hlkwd{paste0}\hlstd{(}\hlkwd{sapply}\hlstd{(ind, fillRow,}
-            \hlstd{...),} \hlkwc{collapse} \hlstd{=} \hlstr{"\textbackslash{}n"}\hlstd{),} \hlstr{"</div>\textbackslash{}n"}\hlstd{))}
+    \hlkwa{for} \hlstd{(p} \hlkwa{in} \hlnum{1}\hlopt{:}\hlkwd{length}\hlstd{(filename)) \{}
+        \hlkwa{if} \hlstd{(type} \hlopt{==} \hlstr{"gallery"}\hlstd{) \{}
+            \hlstd{panels} \hlkwb{<-} \hlstd{prjs.img[[p]]}
+            \hlstd{main} \hlkwb{<-} \hlkwd{gsub}\hlstd{(}\hlstr{" - "}\hlstd{,} \hlstr{": "}\hlstd{,} \hlkwd{gsub}\hlstd{(}\hlstr{"_"}\hlstd{,} \hlstr{" "}\hlstd{, prjs[p]))}
+        \hlstd{\}} \hlkwa{else} \hlstd{panels} \hlkwb{<-} \hlstd{prjs}
+        \hlstd{n} \hlkwb{<-} \hlkwd{length}\hlstd{(panels)}
+        \hlstd{seq1} \hlkwb{<-} \hlkwd{seq}\hlstd{(}\hlnum{1}\hlstd{, n,} \hlkwc{by} \hlstd{=} \hlnum{3}\hlstd{)}
+        \hlstd{x} \hlkwb{<-} \hlkwd{paste0}\hlstd{(}\hlstr{"<div class=\textbackslash{}"container\textbackslash{}">\textbackslash{}n  <div class=\textbackslash{}"row\textbackslash{}">\textbackslash{}n    <div class=\textbackslash{}"col-lg-12\textbackslash{}">\textbackslash{}n      <div class=\textbackslash{}"page-header\textbackslash{}">\textbackslash{}n        <h3 id=\textbackslash{}""}\hlstd{,}
+            \hlstd{type,} \hlstr{"\textbackslash{}">"}\hlstd{, main,} \hlstr{"</h3>\textbackslash{}n      </div>\textbackslash{}n    </div>\textbackslash{}n  </div>\textbackslash{}n  "}\hlstd{)}
+        \hlstd{y} \hlkwb{<-} \hlkwd{c}\hlstd{()}
+        \hlkwa{for} \hlstd{(j} \hlkwa{in} \hlnum{1}\hlopt{:}\hlkwd{length}\hlstd{(seq1)) \{}
+            \hlstd{ind} \hlkwb{<-} \hlstd{seq1[j]}\hlopt{:}\hlstd{(seq1[j]} \hlopt{+} \hlnum{2}\hlstd{)}
+            \hlstd{ind} \hlkwb{<-} \hlstd{ind[ind} \hlopt{%in%} \hlnum{1}\hlopt{:}\hlstd{n]}
+            \hlstd{y} \hlkwb{<-} \hlkwd{c}\hlstd{(y,} \hlkwd{paste0}\hlstd{(}\hlstr{"<div class=\textbackslash{}"row\textbackslash{}">\textbackslash{}n"}\hlstd{,} \hlkwd{paste0}\hlstd{(}\hlkwd{sapply}\hlstd{(ind, fillRow,}
+                \hlstd{...),} \hlkwc{collapse} \hlstd{=} \hlstr{"\textbackslash{}n"}\hlstd{),} \hlstr{"</div>\textbackslash{}n"}\hlstd{))}
+        \hlstd{\}}
+        \hlstd{z} \hlkwb{<-} \hlstr{"</div>\textbackslash{}n"}
+        \hlkwd{sink}\hlstd{(}\hlkwd{file.path}\hlstd{(outDir, filename[p]))}
+        \hlkwd{sapply}\hlstd{(}\hlkwd{c}\hlstd{(x, y, z), cat)}
+        \hlkwd{sink}\hlstd{()}
+        \hlkwd{cat}\hlstd{(}\hlstr{"div container html file created.\textbackslash{}n"}\hlstd{)}
     \hlstd{\}}
-    \hlstd{z} \hlkwb{<-} \hlstr{"</div>\textbackslash{}n"}
-    \hlkwd{sink}\hlstd{(}\hlkwd{file.path}\hlstd{(outDir, filename))}
-    \hlkwd{sapply}\hlstd{(}\hlkwd{c}\hlstd{(x, y, z), cat)}
-    \hlkwd{sink}\hlstd{()}
-    \hlkwd{cat}\hlstd{(}\hlstr{"div container html file created.\textbackslash{}n"}\hlstd{)}
 \hlstd{\}}
 \end{alltt}
 \end{kframe}
@@ -237,8 +311,8 @@ This function makes the more specific \texttt{genAppDiv} redundant and will like
 
 \subsubsection{htmlHead}
 
-\texttt{htmlHead} .
-
+\texttt{htmlHead} is useful for including javascript and CSS stylesheets in the head of an html document.
+Stylesheet arguments can be passed along as well in proper order.
 
 \begin{knitrout}
 \definecolor{shadecolor}{rgb}{0, 0.169, 0.212}\color{fgcolor}\begin{kframe}
@@ -283,7 +357,8 @@ This function makes the more specific \texttt{genAppDiv} redundant and will like
 
 \subsubsection{htmlBodyTop}
 
-\texttt{htmlBodyTop} .
+\texttt{htmlBodyTop} currently is used for including custom CSS and a background image in the html body.
+CSS can be included as a text string or as a path to a CSS file.
 
 
 \begin{knitrout}
@@ -313,7 +388,7 @@ This function makes the more specific \texttt{genAppDiv} redundant and will like
 
 \subsubsection{htmlBottom}
 
-\texttt{htmlBottom} .
+\texttt{htmlBottom} does not do anything else at this time other than close up the html document.
 
 
 \begin{knitrout}
@@ -321,49 +396,7 @@ This function makes the more specific \texttt{genAppDiv} redundant and will like
 \begin{alltt}
 \hlstd{htmlBottom} \hlkwb{<-} \hlkwa{function}\hlstd{(}\hlkwc{...}\hlstd{) \{}
     \hlcom{# temporary}
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
+    \hlstr{"</body>\textbackslash{}n\textbackslash{}t</html>"}
 \hlstd{\}}
 \end{alltt}
 \end{kframe}
@@ -371,8 +404,9 @@ This function makes the more specific \texttt{genAppDiv} redundant and will like
 
 \subsubsection{genUserPage}
 
-\texttt{genUserPage} .
-
+\texttt{genUserPage} generates a Github user account web page by combining precompiled html files of container elements made using \texttt{genPanelDiv}
+as well as various lingering hardcoded elements for my own work.
+I use this function to produce my main Github user page, the \texttt{index.html}, as well as supplemental gallery pages.
 
 \begin{knitrout}
 \definecolor{shadecolor}{rgb}{0, 0.169, 0.212}\color{fgcolor}\begin{kframe}

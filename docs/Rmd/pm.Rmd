@@ -52,7 +52,7 @@ See [website-related functions](func_website.html "website-related functions").
 
 ### Knit documents
 Both Rmd and Rnw files can be knitted to various formats.
-Rms and Rnw files can also be conveted back and forth, with notable limitations.
+Rmd and Rnw files can also be converted back and forth, with notable limitations.
 Files can be reorganized after knitting.
 
 ```{r knit_setup}

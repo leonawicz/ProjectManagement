@@ -54,7 +54,7 @@ It is called directly by `swap`, internal to `convertDocs`.
             for (i in 1:length(ind)) {
                 h <- x[ind[i]]
                 heading <- paste0("## ", substr(h, 10, nchar(h) - 2), "\n")
-                x[ind[i]] <- heading  #gsub(gsbraces(h), heading, h)
+                x[ind[i]] <- heading
             }
         }
         ind <- which(substr(x, 1, 4) == "\\sub")
@@ -73,7 +73,7 @@ It is called directly by `swap`, internal to `convertDocs`.
                   n <- 13
                 }
                 heading <- paste0(p, substr(h, n, nchar(h) - 2), "\n")
-                x[ind[i]] <- heading  #gsub(gsbraces(h), heading, h)
+                x[ind[i]] <- heading
             }
         }
     }
@@ -92,6 +92,7 @@ It is called directly by `swap`, internal to `convertDocs`.
 # Rmd <-> Rnw document conversion Conversion support functions called by
 # .swap()
 .swapChunks <- function(from, to, x, offset.end = 1) {
+    gsbraces <- function(txt) gsub("\\{", "\\\\{", txt)
     nc <- nchar(x)
     chunk.start.open <- substr(x, 1, nchar(from[1])) == from[1]
     chunk.start.close <- substr(x, nc - offset.end - nchar(from[2]) + 1, nc - 
@@ -156,7 +157,8 @@ It is called internal to `convertDocs`.
 ```r
 # Rmd <-> Rnw document conversion Conversion support functions called by
 # .convertDocs()
-.swap <- function(file, header = NULL, outDir, ...) {
+.swap <- function(file, header = NULL, outDir, rmdChunkID, rnwChunkID, emphasis, 
+    overwrite, ...) {
     title <- list(...)$title
     author <- list(...)$author
     highlight <- list(...)$highlight
@@ -278,7 +280,6 @@ convertDocs <- function(path, rmdChunkID = c("```{r", "}", "```"), rnwChunkID = 
     dots <- list(...)
     if (rmdChunkID[1] == "```{r") 
         rmdChunkID[1] <- paste0(rmdChunkID[1], " ")
-    gsbraces <- function(txt) gsub("\\{", "\\\\{", txt)
     if (type == "Rmd") {
         stopifnot(length(rmd.files) > 0)
         outDir <- file.path(dirname(path), "Rnw")
@@ -299,10 +300,14 @@ convertDocs <- function(path, rmdChunkID = c("```{r", "}", "```"), rnwChunkID = 
         outDir <- file.path(dirname(path), "Rmd")
     } else stop("path must end in 'Rmd' or 'Rnw'.")
     if (type == "Rmd") {
-        sapply(rmd.files, .swap, header = header.rnw, outDir = outDir, ...)
+        sapply(rmd.files, .swap, header = header.rnw, outDir = outDir, rmdChunkID = rmdChunkID, 
+            rnwChunkID = rnwChunkID, emphasis = emphasis, overwrite = overwrite, 
+            ...)
         cat(".Rmd to .Rnw file conversion complete.\n")
     } else {
-        sapply(rnw.files, .swap, header = NULL, outDir = outDir, ...)
+        sapply(rnw.files, .swap, header = NULL, outDir = outDir, rmdChunkID = rmdChunkID, 
+            rnwChunkID = rnwChunkID, emphasis = emphasis, overwrite = overwrite, 
+            ...)
         cat(".Rnw to .Rmd file conversion complete.\n")
     }
 }

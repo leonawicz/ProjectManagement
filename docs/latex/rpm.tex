@@ -116,10 +116,17 @@ Here is a project hierarchy diagram showing the relationships among all my curre
 
 
 
-\begin{kframe}
 
 
-{\ttfamily\noindent\bfseries\color{errorcolor}{Error in eval(expr, envir, enclos): object 'p' not found}}\end{kframe}
+
+
+
+
+
+
+
+
+
 
 \section{\textbf{R} code}
 
@@ -368,6 +375,271 @@ This is not always the case for a given project, but again, the purpose is to ge
 Unnecessary files can always be deleted later, or edits made such that one \textbf{R} Markdown file reads multiple \textbf{R} scripts,
 as is the case with the Rmd file used to generate this document.
 
+
+The main function for conversion between Rmd and Rnw files is \texttt{convertDocs}.
+This function contains several internal support functions, each of which is somewhat limited in how much specific conversion it can achieve.
+The functions below were written with my particular style of Rmd and Rnw documentation in mind.
+As such they are necessarily a bit idiosyncratic and cannot account for every possible difference found between Rmd and Rnw formatting across any pair of documents.
+I only strived to speed up the process by which I convert my own documents, most of which follow a set of general rules and expectations most of the time.
+Anything atypical which doesn't convert properly can be adjusted by hand afterward.
+This is still better than rewriting, copy-pasting, and search-and-replacing many sections of many files on a recurring basis.
+Further improvements in conversion will be added later.
+
+\subsubsection{.swapHeadings}
+\texttt{.swapHeadings} assists in bidirectional conversion between Rmd and Rnw files.
+It swaps section headings formatting.
+It is called directly by \texttt{swap}, internal to \texttt{convertDocs}.
+
+
+\begin{knitrout}
+\definecolor{shadecolor}{rgb}{0, 0.169, 0.212}\color{fgcolor}\begin{kframe}
+\begin{alltt}
+\hlcom{# Rmd <-> Rnw document conversion Conversion support functions called by}
+\hlcom{# .swap()}
+\hlstd{.swapHeadings} \hlkwb{<-} \hlkwa{function}\hlstd{(}\hlkwc{from}\hlstd{,} \hlkwc{to}\hlstd{,} \hlkwc{x}\hlstd{) \{}
+    \hlstd{nc} \hlkwb{<-} \hlkwd{nchar}\hlstd{(x)}
+    \hlstd{ind} \hlkwb{<-} \hlkwd{which}\hlstd{(}\hlkwd{substr}\hlstd{(x,} \hlnum{1}\hlstd{,} \hlnum{1}\hlstd{)} \hlopt{==} \hlstr{"\textbackslash{}\textbackslash{}"}\hlstd{)}
+    \hlkwa{if} \hlstd{(}\hlopt{!}\hlkwd{length}\hlstd{(ind)) \{}
+        \hlcom{# assume Rmd file}
+        \hlstd{ind} \hlkwb{<-} \hlkwd{which}\hlstd{(}\hlkwd{substr}\hlstd{(x,} \hlnum{1}\hlstd{,} \hlnum{1}\hlstd{)} \hlopt{==} \hlstr{"#"}\hlstd{)}
+        \hlstd{ind.n} \hlkwb{<-} \hlkwd{rep}\hlstd{(}\hlnum{1}\hlstd{,} \hlkwd{length}\hlstd{(ind))}
+        \hlkwa{for} \hlstd{(i} \hlkwa{in} \hlnum{2}\hlopt{:}\hlnum{6}\hlstd{) \{}
+            \hlstd{ind.tmp} \hlkwb{<-} \hlkwd{which}\hlstd{(}\hlkwd{substr}\hlstd{(x[ind],} \hlnum{1}\hlstd{, i)} \hlopt{==} \hlkwd{substr}\hlstd{(}\hlstr{"######"}\hlstd{,} \hlnum{1}\hlstd{, i))}
+            \hlkwa{if} \hlstd{(}\hlkwd{length}\hlstd{(ind.tmp))}
+                \hlstd{ind.n[ind.tmp]} \hlkwb{<-} \hlstd{ind.n[ind.tmp]} \hlopt{+} \hlnum{1} \hlkwa{else break}
+        \hlstd{\}}
+        \hlkwa{for} \hlstd{(i} \hlkwa{in} \hlnum{1}\hlopt{:}\hlkwd{length}\hlstd{(ind)) \{}
+            \hlstd{n} \hlkwb{<-} \hlstd{ind.n[i]}
+            \hlstd{input} \hlkwb{<-} \hlkwd{paste0}\hlstd{(}\hlkwd{substr}\hlstd{(}\hlstr{"######"}\hlstd{,} \hlnum{1}\hlstd{, n),} \hlstr{" "}\hlstd{)}
+            \hlstd{h} \hlkwb{<-} \hlstd{x[ind[i]]}
+            \hlstd{h} \hlkwb{<-} \hlkwd{gsub}\hlstd{(}\hlstr{"\textbackslash{}\textbackslash{}*"}\hlstd{,} \hlstr{"_"}\hlstd{, h)}  \hlcom{# Switch any markdown boldface asterisks in headings to double underscores}
+            \hlstd{heading} \hlkwb{<-} \hlkwd{gsub}\hlstd{(}\hlstr{"\textbackslash{}n"}\hlstd{,} \hlstr{""}\hlstd{,} \hlkwd{substr}\hlstd{(h, n} \hlopt{+} \hlnum{2}\hlstd{, nc[ind[i]]))}
+            \hlcom{# h <- gsub(input, '', h)}
+            \hlkwa{if} \hlstd{(n} \hlopt{<=} \hlnum{2}\hlstd{)}
+                \hlstd{subs} \hlkwb{<-} \hlstr{"\textbackslash{}\textbackslash{}"} \hlkwa{else if} \hlstd{(n} \hlopt{==} \hlnum{3}\hlstd{)}
+                \hlstd{subs} \hlkwb{<-} \hlstr{"\textbackslash{}\textbackslash{}sub"} \hlkwa{else if} \hlstd{(n} \hlopt{==} \hlnum{4}\hlstd{)}
+                \hlstd{subs} \hlkwb{<-} \hlstr{"\textbackslash{}\textbackslash{}subsub"} \hlkwa{else if} \hlstd{(n} \hlopt{>=} \hlnum{5}\hlstd{)}
+                \hlstd{subs} \hlkwb{<-} \hlstr{"\textbackslash{}\textbackslash{}subsubsub"}
+            \hlstd{output} \hlkwb{<-} \hlkwd{paste0}\hlstd{(}\hlstr{"\textbackslash{}\textbackslash{}"}\hlstd{, subs,} \hlstr{"section\{"}\hlstd{, heading,} \hlstr{"\}\textbackslash{}n"}\hlstd{)}
+            \hlstd{x[ind[i]]} \hlkwb{<-} \hlkwd{gsub}\hlstd{(h, output, h)}
+        \hlstd{\}}
+    \hlstd{\}} \hlkwa{else} \hlstd{\{}
+        \hlcom{# assume Rnw file}
+        \hlstd{ind} \hlkwb{<-} \hlkwd{which}\hlstd{(}\hlkwd{substr}\hlstd{(x,} \hlnum{1}\hlstd{,} \hlnum{8}\hlstd{)} \hlopt{==} \hlstr{"\textbackslash{}\textbackslash{}section"}\hlstd{)}
+        \hlkwa{if} \hlstd{(}\hlkwd{length}\hlstd{(ind)) \{}
+            \hlkwa{for} \hlstd{(i} \hlkwa{in} \hlnum{1}\hlopt{:}\hlkwd{length}\hlstd{(ind)) \{}
+                \hlstd{h} \hlkwb{<-} \hlstd{x[ind[i]]}
+                \hlstd{heading} \hlkwb{<-} \hlkwd{paste0}\hlstd{(}\hlstr{"## "}\hlstd{,} \hlkwd{substr}\hlstd{(h,} \hlnum{10}\hlstd{,} \hlkwd{nchar}\hlstd{(h)} \hlopt{-} \hlnum{2}\hlstd{),} \hlstr{"\textbackslash{}n"}\hlstd{)}
+                \hlstd{x[ind[i]]} \hlkwb{<-} \hlstd{heading}
+            \hlstd{\}}
+        \hlstd{\}}
+        \hlstd{ind} \hlkwb{<-} \hlkwd{which}\hlstd{(}\hlkwd{substr}\hlstd{(x,} \hlnum{1}\hlstd{,} \hlnum{4}\hlstd{)} \hlopt{==} \hlstr{"\textbackslash{}\textbackslash{}sub"}\hlstd{)}
+        \hlkwa{if} \hlstd{(}\hlkwd{length}\hlstd{(ind)) \{}
+            \hlkwa{for} \hlstd{(i} \hlkwa{in} \hlnum{1}\hlopt{:}\hlkwd{length}\hlstd{(ind)) \{}
+                \hlstd{h} \hlkwb{<-} \hlstd{x[ind[i]]}
+                \hlstd{z} \hlkwb{<-} \hlkwd{substr}\hlstd{(h,} \hlnum{2}\hlstd{,} \hlnum{10}\hlstd{)}
+                \hlkwa{if} \hlstd{(z} \hlopt{==} \hlstr{"subsubsub"}\hlstd{) \{}
+                  \hlstd{p} \hlkwb{<-} \hlstr{"##### "}
+                  \hlstd{n} \hlkwb{<-} \hlnum{19}
+                \hlstd{\}} \hlkwa{else if} \hlstd{(}\hlkwd{substr}\hlstd{(z,} \hlnum{1}\hlstd{,} \hlnum{6}\hlstd{)} \hlopt{==} \hlstr{"subsub"}\hlstd{) \{}
+                  \hlstd{p} \hlkwb{<-} \hlstr{"#### "}
+                  \hlstd{n} \hlkwb{<-} \hlnum{16}
+                \hlstd{\}} \hlkwa{else if} \hlstd{(}\hlkwd{substr}\hlstd{(z,} \hlnum{1}\hlstd{,} \hlnum{3}\hlstd{)} \hlopt{==} \hlstr{"sub"}\hlstd{) \{}
+                  \hlstd{p} \hlkwb{<-} \hlstr{"### "}
+                  \hlstd{n} \hlkwb{<-} \hlnum{13}
+                \hlstd{\}}
+                \hlstd{heading} \hlkwb{<-} \hlkwd{paste0}\hlstd{(p,} \hlkwd{substr}\hlstd{(h, n,} \hlkwd{nchar}\hlstd{(h)} \hlopt{-} \hlnum{2}\hlstd{),} \hlstr{"\textbackslash{}n"}\hlstd{)}
+                \hlstd{x[ind[i]]} \hlkwb{<-} \hlstd{heading}
+            \hlstd{\}}
+        \hlstd{\}}
+    \hlstd{\}}
+    \hlstd{x}
+\hlstd{\}}
+\end{alltt}
+\end{kframe}
+\end{knitrout}
+
+\subsubsection{.swapChunks}
+\texttt{.swapChunks} assists in bidirectional conversion between Rmd and Rnw files.
+It swaps code chunk formatting.
+It is called directly by \texttt{swap}, internal to \texttt{convertDocs}.
+
+
+\begin{knitrout}
+\definecolor{shadecolor}{rgb}{0, 0.169, 0.212}\color{fgcolor}\begin{kframe}
+\begin{alltt}
+\hlcom{# Rmd <-> Rnw document conversion Conversion support functions called by}
+\hlcom{# .swap()}
+\hlstd{.swapChunks} \hlkwb{<-} \hlkwa{function}\hlstd{(}\hlkwc{from}\hlstd{,} \hlkwc{to}\hlstd{,} \hlkwc{x}\hlstd{,} \hlkwc{offset.end} \hlstd{=} \hlnum{1}\hlstd{) \{}
+    \hlstd{gsbraces} \hlkwb{<-} \hlkwa{function}\hlstd{(}\hlkwc{txt}\hlstd{)} \hlkwd{gsub}\hlstd{(}\hlstr{"\textbackslash{}\textbackslash{}\{"}\hlstd{,} \hlstr{"\textbackslash{}\textbackslash{}\textbackslash{}\textbackslash{}\{"}\hlstd{, txt)}
+    \hlstd{nc} \hlkwb{<-} \hlkwd{nchar}\hlstd{(x)}
+    \hlstd{chunk.start.open} \hlkwb{<-} \hlkwd{substr}\hlstd{(x,} \hlnum{1}\hlstd{,} \hlkwd{nchar}\hlstd{(from[}\hlnum{1}\hlstd{]))} \hlopt{==} \hlstd{from[}\hlnum{1}\hlstd{]}
+    \hlstd{chunk.start.close} \hlkwb{<-} \hlkwd{substr}\hlstd{(x, nc} \hlopt{-} \hlstd{offset.end} \hlopt{-} \hlkwd{nchar}\hlstd{(from[}\hlnum{2}\hlstd{])} \hlopt{+} \hlnum{1}\hlstd{, nc} \hlopt{-}
+        \hlstd{offset.end)} \hlopt{==} \hlstd{from[}\hlnum{2}\hlstd{]}
+    \hlstd{chunk.start} \hlkwb{<-} \hlkwd{which}\hlstd{(chunk.start.open} \hlopt{&} \hlstd{chunk.start.close)}
+    \hlstd{chunk.end} \hlkwb{<-} \hlkwd{which}\hlstd{(}\hlkwd{substr}\hlstd{(x,} \hlnum{1}\hlstd{,} \hlkwd{nchar}\hlstd{(from[}\hlnum{3}\hlstd{]))} \hlopt{==} \hlstd{from[}\hlnum{3}\hlstd{]} \hlopt{&} \hlstd{nc} \hlopt{==} \hlkwd{nchar}\hlstd{(from[}\hlnum{3}\hlstd{])} \hlopt{+}
+        \hlstd{offset.end)}
+    \hlstd{x[chunk.start]} \hlkwb{<-} \hlkwd{gsub}\hlstd{(from[}\hlnum{2}\hlstd{], to[}\hlnum{2}\hlstd{],} \hlkwd{gsub}\hlstd{(}\hlkwd{gsbraces}\hlstd{(from[}\hlnum{1}\hlstd{]),} \hlkwd{gsbraces}\hlstd{(to[}\hlnum{1}\hlstd{]),}
+        \hlstd{x[chunk.start]))}
+    \hlstd{x[chunk.end]} \hlkwb{<-} \hlkwd{gsub}\hlstd{(from[}\hlnum{3}\hlstd{], to[}\hlnum{3}\hlstd{], x[chunk.end])}
+    \hlstd{chunklines} \hlkwb{<-} \hlkwd{as.numeric}\hlstd{(}\hlkwd{unlist}\hlstd{(}\hlkwd{mapply}\hlstd{(seq, chunk.start, chunk.end)))}
+    \hlkwd{list}\hlstd{(x, chunklines)}
+\hlstd{\}}
+\end{alltt}
+\end{kframe}
+\end{knitrout}
+
+\subsubsection{.swapEmphasis}
+\texttt{.swapEmphasis} assists in bidirectional conversion between Rmd and Rnw files.
+It swaps text formatting such as boldface and typewriter font.
+It is called directly by \texttt{swap}, internal to \texttt{convertDocs}.
+
+
+\begin{knitrout}
+\definecolor{shadecolor}{rgb}{0, 0.169, 0.212}\color{fgcolor}\begin{kframe}
+\begin{alltt}
+\hlcom{# Rmd <-> Rnw document conversion Conversion support functions called by}
+\hlcom{# .swap() I know I use '**' strictly for bold font in Rmd files.  For now,}
+\hlcom{# this function assumes: 1. The only emphasis in a doc is boldface or}
+\hlcom{# typewriter.  2. These instances are always preceded by a space, a carriage}
+\hlcom{# return, or an open bracket, 3. and followed by a space, period, comma, or}
+\hlcom{# closing bracket.}
+\hlstd{.swapEmphasis} \hlkwb{<-} \hlkwa{function}\hlstd{(}\hlkwc{x}\hlstd{,} \hlkwc{emphasis} \hlstd{=} \hlstr{"remove"}\hlstd{,} \hlkwc{pat.remove} \hlstd{=} \hlkwd{c}\hlstd{(}\hlstr{"`"}\hlstd{,} \hlstr{"\textbackslash{}\textbackslash{}*\textbackslash{}\textbackslash{}*"}\hlstd{,}
+    \hlstr{"__"}\hlstd{),} \hlkwc{pat.replace} \hlstd{= pat.remove,} \hlkwc{replacement} \hlstd{=} \hlkwd{c}\hlstd{(}\hlstr{"\textbackslash{}\textbackslash{}\textbackslash{}\textbackslash{}texttt\textbackslash{}\textbackslash{}\{"}\hlstd{,} \hlstr{"\textbackslash{}\textbackslash{}\textbackslash{}\textbackslash{}textbf\textbackslash{}\textbackslash{}\{"}\hlstd{,}
+    \hlstr{"\textbackslash{}\textbackslash{}\textbackslash{}\textbackslash{}textbf\textbackslash{}\textbackslash{}\{"}\hlstd{,} \hlstr{"\textbackslash{}\textbackslash{}\}"}\hlstd{,} \hlstr{"\textbackslash{}\textbackslash{}\}"}\hlstd{,} \hlstr{"\textbackslash{}\textbackslash{}\}"}\hlstd{)) \{}
+
+    \hlkwd{stopifnot}\hlstd{(emphasis} \hlopt{%in%} \hlkwd{c}\hlstd{(}\hlstr{"remove"}\hlstd{,} \hlstr{"replace"}\hlstd{))}
+    \hlstd{n} \hlkwb{<-} \hlkwd{length}\hlstd{(pat.replace)}
+    \hlstd{rep1} \hlkwb{<-} \hlstd{replacement[}\hlnum{1}\hlopt{:}\hlstd{n]}
+    \hlstd{rep2} \hlkwb{<-} \hlstd{replacement[(n} \hlopt{+} \hlnum{1}\hlstd{)}\hlopt{:}\hlstd{(}\hlnum{2} \hlopt{*} \hlstd{n)]}
+    \hlstd{prefix} \hlkwb{<-} \hlkwd{c}\hlstd{(}\hlstr{" "}\hlstd{,} \hlstr{"^"}\hlstd{,} \hlstr{"\textbackslash{}\textbackslash{}\{"}\hlstd{,} \hlstr{"\textbackslash{}\textbackslash{}("}\hlstd{)}
+    \hlstd{suffix} \hlkwb{<-} \hlkwd{c}\hlstd{(}\hlstr{" "}\hlstd{,} \hlstr{","}\hlstd{,} \hlstr{"-"}\hlstd{,} \hlstr{"\textbackslash{}n"}\hlstd{,} \hlstr{"\textbackslash{}\textbackslash{}."}\hlstd{,} \hlstr{"\textbackslash{}\textbackslash{}\}"}\hlstd{,} \hlstr{"\textbackslash{}\textbackslash{})"}\hlstd{)}
+    \hlstd{n.p} \hlkwb{<-} \hlkwd{length}\hlstd{(prefix)}
+    \hlstd{n.s} \hlkwb{<-} \hlkwd{length}\hlstd{(suffix)}
+    \hlstd{pat.replace} \hlkwb{<-} \hlkwd{c}\hlstd{(}\hlkwd{paste0}\hlstd{(}\hlkwd{rep}\hlstd{(prefix, n),} \hlkwd{rep}\hlstd{(pat.replace,} \hlkwc{each} \hlstd{= n.p)),} \hlkwd{paste0}\hlstd{(}\hlkwd{rep}\hlstd{(pat.replace,}
+        \hlkwc{each} \hlstd{= n.s),} \hlkwd{rep}\hlstd{(suffix, n)))}
+    \hlstd{replacement} \hlkwb{<-} \hlkwd{c}\hlstd{(}\hlkwd{paste0}\hlstd{(}\hlkwd{rep}\hlstd{(}\hlkwd{gsub}\hlstd{(}\hlstr{"\textbackslash{}\textbackslash{}^"}\hlstd{,} \hlstr{""}\hlstd{, prefix), n),} \hlkwd{rep}\hlstd{(rep1,} \hlkwc{each} \hlstd{= n.p)),}
+        \hlkwd{paste0}\hlstd{(}\hlkwd{rep}\hlstd{(rep2,} \hlkwc{each} \hlstd{= n.s),} \hlkwd{rep}\hlstd{(suffix, n)))}
+    \hlkwa{if} \hlstd{(emphasis} \hlopt{==} \hlstr{"remove"}\hlstd{)}
+        \hlkwa{for} \hlstd{(k} \hlkwa{in} \hlnum{1}\hlopt{:}\hlkwd{length}\hlstd{(pat.remove)) x} \hlkwb{<-} \hlkwd{sapply}\hlstd{(x,} \hlkwa{function}\hlstd{(}\hlkwc{v}\hlstd{,} \hlkwc{p}\hlstd{,} \hlkwc{r}\hlstd{)} \hlkwd{gsub}\hlstd{(p,}
+            \hlstd{r, v),} \hlkwc{p} \hlstd{= pat.remove[k],} \hlkwc{r} \hlstd{=} \hlstr{""}\hlstd{)}
+    \hlkwa{if} \hlstd{(emphasis} \hlopt{==} \hlstr{"replace"}\hlstd{)}
+        \hlkwa{for} \hlstd{(k} \hlkwa{in} \hlnum{1}\hlopt{:}\hlkwd{length}\hlstd{(pat.replace)) x} \hlkwb{<-} \hlkwd{sapply}\hlstd{(x,} \hlkwa{function}\hlstd{(}\hlkwc{v}\hlstd{,} \hlkwc{p}\hlstd{,} \hlkwc{r}\hlstd{)} \hlkwd{gsub}\hlstd{(p,}
+            \hlstd{r, v),} \hlkwc{p} \hlstd{= pat.replace[k],} \hlkwc{r} \hlstd{= replacement[k])}
+    \hlstd{x}
+\hlstd{\}}
+\end{alltt}
+\end{kframe}
+\end{knitrout}
+
+\subsubsection{.swap}
+\texttt{.swap} assists in bidirectional conversion between Rmd and Rnw files.
+It is called internal to \texttt{convertDocs}.
+
+
+\begin{knitrout}
+\definecolor{shadecolor}{rgb}{0, 0.169, 0.212}\color{fgcolor}\begin{kframe}
+\begin{alltt}
+\hlcom{# Rmd <-> Rnw document conversion Conversion support functions called by}
+\hlcom{# .convertDocs()}
+\hlstd{.swap} \hlkwb{<-} \hlkwa{function}\hlstd{(}\hlkwc{file}\hlstd{,} \hlkwc{header} \hlstd{=} \hlkwa{NULL}\hlstd{,} \hlkwc{outDir}\hlstd{,} \hlkwc{rmdChunkID}\hlstd{,} \hlkwc{rnwChunkID}\hlstd{,} \hlkwc{emphasis}\hlstd{,}
+    \hlkwc{overwrite}\hlstd{,} \hlkwc{...}\hlstd{) \{}
+    \hlstd{title} \hlkwb{<-} \hlkwd{list}\hlstd{(...)}\hlopt{$}\hlstd{title}
+    \hlstd{author} \hlkwb{<-} \hlkwd{list}\hlstd{(...)}\hlopt{$}\hlstd{author}
+    \hlstd{highlight} \hlkwb{<-} \hlkwd{list}\hlstd{(...)}\hlopt{$}\hlstd{highlight}
+    \hlstd{ext} \hlkwb{<-} \hlkwd{tail}\hlstd{(}\hlkwd{strsplit}\hlstd{(file,} \hlstr{"\textbackslash{}\textbackslash{}."}\hlstd{)[[}\hlnum{1}\hlstd{]],} \hlnum{1}\hlstd{)}
+    \hlstd{l} \hlkwb{<-} \hlkwd{readLines}\hlstd{(file)}
+    \hlstd{l} \hlkwb{<-} \hlstd{l[}\hlkwd{substr}\hlstd{(l,} \hlnum{1}\hlstd{,} \hlnum{7}\hlstd{)} \hlopt{!=} \hlstr{"<style>"}\hlstd{]}  \hlcom{# Strip any html style lines}
+    \hlkwa{if} \hlstd{(ext} \hlopt{==} \hlstr{"Rmd"}\hlstd{) \{}
+        \hlstd{from} \hlkwb{<-} \hlstd{rmdChunkID}
+        \hlstd{to} \hlkwb{<-} \hlstd{rnwChunkID}
+        \hlstd{hl.default} \hlkwb{<-} \hlstr{"solarized-light"}
+        \hlstd{out.ext} \hlkwb{<-} \hlstr{"Rnw"}
+        \hlstd{h.ind} \hlkwb{<-} \hlnum{1}\hlopt{:}\hlkwd{which}\hlstd{(l} \hlopt{==} \hlstr{"---"}\hlstd{)[}\hlnum{2}\hlstd{]}
+        \hlstd{h} \hlkwb{<-} \hlstd{l[h.ind]}
+        \hlstd{t.ind} \hlkwb{<-} \hlkwd{which}\hlstd{(}\hlkwd{substr}\hlstd{(h,} \hlnum{1}\hlstd{,} \hlnum{7}\hlstd{)} \hlopt{==} \hlstr{"title: "}\hlstd{)}
+        \hlstd{a.ind} \hlkwb{<-} \hlkwd{which}\hlstd{(}\hlkwd{substr}\hlstd{(h,} \hlnum{1}\hlstd{,} \hlnum{8}\hlstd{)} \hlopt{==} \hlstr{"author: "}\hlstd{)}
+        \hlstd{highlight.ind} \hlkwb{<-} \hlkwd{which}\hlstd{(}\hlkwd{substr}\hlstd{(h,} \hlnum{1}\hlstd{,} \hlnum{11}\hlstd{)} \hlopt{==} \hlstr{"highlight: "}\hlstd{)}
+        \hlkwa{if} \hlstd{(}\hlkwd{is.null}\hlstd{(title)} \hlopt{&} \hlkwd{length}\hlstd{(t.ind))}
+            \hlstd{title} \hlkwb{<-} \hlkwd{substr}\hlstd{(h[t.ind],} \hlnum{8}\hlstd{,} \hlkwd{nchar}\hlstd{(h[t.ind]))} \hlkwa{else if} \hlstd{(}\hlkwd{is.null}\hlstd{(title))}
+            \hlstd{title} \hlkwb{<-} \hlstr{""}
+        \hlkwa{if} \hlstd{(}\hlkwd{is.null}\hlstd{(author)} \hlopt{&} \hlkwd{length}\hlstd{(a.ind))}
+            \hlstd{author} \hlkwb{<-} \hlkwd{substr}\hlstd{(h[a.ind],} \hlnum{9}\hlstd{,} \hlkwd{nchar}\hlstd{(h[a.ind]))} \hlkwa{else if} \hlstd{(}\hlkwd{is.null}\hlstd{(author))}
+            \hlstd{author} \hlkwb{<-} \hlstr{""}
+        \hlkwa{if} \hlstd{(}\hlkwd{is.null}\hlstd{(highlight)} \hlopt{&} \hlkwd{length}\hlstd{(highlight.ind))}
+            \hlstd{highlight} \hlkwb{<-} \hlkwd{substr}\hlstd{(h[highlight.ind],} \hlnum{12}\hlstd{,} \hlkwd{nchar}\hlstd{(h[highlight.ind]))} \hlkwa{else if} \hlstd{(}\hlkwd{is.null}\hlstd{(highlight))}
+            \hlstd{highlight} \hlkwb{<-} \hlstd{hl.default} \hlkwa{else if} \hlstd{(}\hlopt{!}\hlstd{(highlight} \hlopt{%in%} \hlstd{knit_theme}\hlopt{$}\hlkwd{get}\hlstd{()))}
+            \hlstd{highlight} \hlkwb{<-} \hlstd{hl.default}
+        \hlkwa{if} \hlstd{(}\hlopt{!}\hlkwd{is.null}\hlstd{(title))}
+            \hlstd{header} \hlkwb{<-} \hlkwd{c}\hlstd{(header,} \hlkwd{paste0}\hlstd{(}\hlstr{"\textbackslash{}\textbackslash{}title\{"}\hlstd{, title,} \hlstr{"\}"}\hlstd{))}
+        \hlkwa{if} \hlstd{(}\hlopt{!}\hlkwd{is.null}\hlstd{(author))}
+            \hlstd{header} \hlkwb{<-} \hlkwd{c}\hlstd{(header,} \hlkwd{paste0}\hlstd{(}\hlstr{"\textbackslash{}\textbackslash{}author\{"}\hlstd{, author,} \hlstr{"\}"}\hlstd{))}
+        \hlkwa{if} \hlstd{(}\hlopt{!}\hlkwd{is.null}\hlstd{(title))}
+            \hlstd{header} \hlkwb{<-} \hlkwd{c}\hlstd{(header,} \hlstr{"\textbackslash{}\textbackslash{}maketitle\textbackslash{}n"}\hlstd{)}
+        \hlstd{header} \hlkwb{<-} \hlkwd{c}\hlstd{(header,} \hlkwd{paste0}\hlstd{(}\hlstr{"<<highlight, echo=FALSE>>=\textbackslash{}nknit_theme$set(knit_theme$get('"}\hlstd{,}
+            \hlstd{highlight,} \hlstr{"'))\textbackslash{}n@\textbackslash{}n"}\hlstd{))}
+    \hlstd{\}} \hlkwa{else if} \hlstd{(ext} \hlopt{==} \hlstr{"Rnw"}\hlstd{) \{}
+        \hlstd{from} \hlkwb{<-} \hlstd{rnwChunkID}
+        \hlstd{to} \hlkwb{<-} \hlstd{rmdChunkID}
+        \hlstd{hl.default} \hlkwb{<-} \hlstr{"tango"}
+        \hlstd{out.ext} \hlkwb{<-} \hlstr{"Rmd"}
+        \hlstd{begin.doc} \hlkwb{<-} \hlkwd{which}\hlstd{(l} \hlopt{==} \hlstr{"\textbackslash{}\textbackslash{}begin\{document\}"}\hlstd{)}
+        \hlstd{make.title} \hlkwb{<-} \hlkwd{which}\hlstd{(l} \hlopt{==} \hlstr{"\textbackslash{}\textbackslash{}maketitle"}\hlstd{)}
+        \hlkwa{if} \hlstd{(}\hlkwd{length}\hlstd{(make.title))}
+            \hlstd{h.ind} \hlkwb{<-} \hlnum{1}\hlopt{:}\hlstd{make.title} \hlkwa{else} \hlstd{h.ind} \hlkwb{<-} \hlnum{1}\hlopt{:}\hlstd{begin.doc}
+        \hlstd{h} \hlkwb{<-} \hlstd{l[h.ind]}
+        \hlstd{t.ind} \hlkwb{<-} \hlkwd{which}\hlstd{(}\hlkwd{substr}\hlstd{(h,} \hlnum{1}\hlstd{,} \hlnum{6}\hlstd{)} \hlopt{==} \hlstr{"\textbackslash{}\textbackslash{}title"}\hlstd{)}
+        \hlstd{a.ind} \hlkwb{<-} \hlkwd{which}\hlstd{(}\hlkwd{substr}\hlstd{(h,} \hlnum{1}\hlstd{,} \hlnum{7}\hlstd{)} \hlopt{==} \hlstr{"\textbackslash{}\textbackslash{}author"}\hlstd{)}
+        \hlstd{highlight.ind} \hlkwb{<-} \hlkwd{which}\hlstd{(}\hlkwd{substr}\hlstd{(l,} \hlnum{1}\hlstd{,} \hlnum{11}\hlstd{)} \hlopt{==} \hlstr{"<<highlight"}\hlstd{)}
+        \hlkwa{if} \hlstd{(}\hlkwd{is.null}\hlstd{(title)} \hlopt{&} \hlkwd{length}\hlstd{(t.ind))}
+            \hlstd{title} \hlkwb{<-} \hlkwd{substr}\hlstd{(h[t.ind],} \hlnum{8}\hlstd{,} \hlkwd{nchar}\hlstd{(h[t.ind])} \hlopt{-} \hlnum{1}\hlstd{)}
+        \hlkwa{if} \hlstd{(}\hlkwd{is.null}\hlstd{(author)} \hlopt{&} \hlkwd{length}\hlstd{(a.ind))}
+            \hlstd{author} \hlkwb{<-} \hlkwd{substr}\hlstd{(h[a.ind],} \hlnum{9}\hlstd{,} \hlkwd{nchar}\hlstd{(h[a.ind])} \hlopt{-} \hlnum{1}\hlstd{)}
+        \hlkwa{if} \hlstd{(}\hlkwd{length}\hlstd{(highlight.ind)) \{}
+            \hlstd{l1} \hlkwb{<-} \hlstd{l[highlight.ind} \hlopt{+} \hlnum{1}\hlstd{]}
+            \hlstd{h1} \hlkwb{<-} \hlkwd{substr}\hlstd{(l1,} \hlkwd{nchar}\hlstd{(}\hlstr{"knit_theme$set(knit_theme$get('"}\hlstd{)} \hlopt{+} \hlnum{1}\hlstd{,} \hlkwd{nchar}\hlstd{(l1)} \hlopt{-}
+                \hlkwd{nchar}\hlstd{(}\hlstr{"'))\textbackslash{}n"}\hlstd{))}
+            \hlkwa{if} \hlstd{(}\hlopt{!}\hlstd{(h1} \hlopt{%in%} \hlstd{knit_theme}\hlopt{$}\hlkwd{get}\hlstd{()))}
+                \hlstd{h1} \hlkwb{<-} \hlstd{hl.default}
+        \hlstd{\}}
+        \hlkwa{if} \hlstd{(}\hlkwd{is.null}\hlstd{(highlight)} \hlopt{&} \hlkwd{length}\hlstd{(highlight.ind))}
+            \hlstd{highlight} \hlkwb{<-} \hlstd{h1} \hlkwa{else if} \hlstd{(}\hlkwd{is.null}\hlstd{(highlight))}
+            \hlstd{highlight} \hlkwb{<-} \hlstd{hl.default} \hlkwa{else if} \hlstd{(}\hlopt{!}\hlstd{(highlight} \hlopt{%in%} \hlstd{knit_theme}\hlopt{$}\hlkwd{get}\hlstd{()))}
+            \hlstd{highlight} \hlkwb{<-} \hlstd{hl.default}
+        \hlstd{header} \hlkwb{<-} \hlkwd{rmdHeader}\hlstd{(}\hlkwc{title} \hlstd{= title,} \hlkwc{author} \hlstd{= author,} \hlkwc{highlight} \hlstd{= highlight)}
+        \hlstd{h.chunks} \hlkwb{<-} \hlkwd{.swapChunks}\hlstd{(}\hlkwc{from} \hlstd{= from,} \hlkwc{to} \hlstd{= to,} \hlkwc{x} \hlstd{= h,} \hlkwc{offset.end} \hlstd{=} \hlnum{0}\hlstd{)}
+        \hlstd{header} \hlkwb{<-} \hlkwd{c}\hlstd{(header, h.chunks[[}\hlnum{1}\hlstd{]][h.chunks[[}\hlnum{2}\hlstd{]]])}
+    \hlstd{\}}
+    \hlstd{header} \hlkwb{<-} \hlkwd{paste0}\hlstd{(header,} \hlkwc{collapse} \hlstd{=} \hlstr{"\textbackslash{}n"}\hlstd{)}
+    \hlstd{l} \hlkwb{<-} \hlkwd{paste0}\hlstd{(l[}\hlopt{-}\hlstd{h.ind],} \hlstr{"\textbackslash{}n"}\hlstd{)}
+    \hlstd{l} \hlkwb{<-} \hlkwd{.swapHeadings}\hlstd{(}\hlkwc{from} \hlstd{= from,} \hlkwc{to} \hlstd{= to,} \hlkwc{x} \hlstd{= l)}
+    \hlstd{chunks} \hlkwb{<-} \hlkwd{.swapChunks}\hlstd{(}\hlkwc{from} \hlstd{= from,} \hlkwc{to} \hlstd{= to,} \hlkwc{x} \hlstd{= l)}
+    \hlstd{l} \hlkwb{<-} \hlstd{chunks[[}\hlnum{1}\hlstd{]]}
+    \hlkwa{if} \hlstd{(ext} \hlopt{==} \hlstr{"Rmd"}\hlstd{)}
+        \hlstd{l} \hlkwb{<-} \hlkwd{.swapEmphasis}\hlstd{(}\hlkwc{x} \hlstd{= l,} \hlkwc{emphasis} \hlstd{= emphasis)}
+    \hlkwa{if} \hlstd{(ext} \hlopt{==} \hlstr{"Rmd"}\hlstd{)}
+        \hlstd{l[}\hlopt{-}\hlstd{chunks[[}\hlnum{2}\hlstd{]]]} \hlkwb{<-} \hlkwd{sapply}\hlstd{(l[}\hlopt{-}\hlstd{chunks[[}\hlnum{2}\hlstd{]]],} \hlkwa{function}\hlstd{(}\hlkwc{v}\hlstd{,} \hlkwc{p}\hlstd{,} \hlkwc{r}\hlstd{)} \hlkwd{gsub}\hlstd{(p,}
+            \hlstd{r, v),} \hlkwc{p} \hlstd{=} \hlstr{"_"}\hlstd{,} \hlkwc{r} \hlstd{=} \hlstr{"\textbackslash{}\textbackslash{}\textbackslash{}\textbackslash{}_"}\hlstd{)}
+    \hlstd{l} \hlkwb{<-} \hlkwd{c}\hlstd{(header, l)}
+    \hlkwa{if} \hlstd{(ext} \hlopt{==} \hlstr{"Rmd"}\hlstd{)}
+        \hlstd{l} \hlkwb{<-} \hlkwd{c}\hlstd{(l,} \hlstr{"\textbackslash{}n\textbackslash{}\textbackslash{}end\{document\}\textbackslash{}n"}\hlstd{)}
+    \hlkwa{if} \hlstd{(ext} \hlopt{==} \hlstr{"Rnw"}\hlstd{) \{}
+        \hlstd{ind} \hlkwb{<-} \hlkwd{which}\hlstd{(}\hlkwd{substr}\hlstd{(l,} \hlnum{1}\hlstd{,} \hlnum{1}\hlstd{)} \hlopt{==} \hlstr{"\textbackslash{}\textbackslash{}"}\hlstd{)}  \hlcom{# drop any remaining lines beginning with a backslash}
+        \hlstd{l} \hlkwb{<-} \hlstd{l[}\hlopt{-}\hlstd{ind]}
+    \hlstd{\}}
+    \hlstd{outfile} \hlkwb{<-} \hlkwd{file.path}\hlstd{(outDir,} \hlkwd{gsub}\hlstd{(}\hlkwd{paste0}\hlstd{(}\hlstr{"\textbackslash{}\textbackslash{}."}\hlstd{, ext),} \hlkwd{paste0}\hlstd{(}\hlstr{"\textbackslash{}\textbackslash{}."}\hlstd{, out.ext),}
+        \hlkwd{basename}\hlstd{(file)))}
+    \hlkwa{if} \hlstd{(overwrite} \hlopt{|| !}\hlkwd{file.exists}\hlstd{(outfile)) \{}
+        \hlkwd{sink}\hlstd{(outfile)}
+        \hlkwd{sapply}\hlstd{(l, cat)}
+        \hlkwd{sink}\hlstd{()}
+        \hlkwd{print}\hlstd{(}\hlkwd{paste}\hlstd{(}\hlstr{"Writing"}\hlstd{, outfile))}
+    \hlstd{\}}
+\hlstd{\}}
+\end{alltt}
+\end{kframe}
+\end{knitrout}
+
 \subsubsection{convertDocs}
 \texttt{convertDocs} converts between Rmd and Rnw files.
 The project's \texttt{docs/Rmd} or \texttt{docs/Rnw} directory is specified.
@@ -386,8 +658,7 @@ It amounts to a text-parsing hack that is intended to handle the most common of 
 \begin{knitrout}
 \definecolor{shadecolor}{rgb}{0, 0.169, 0.212}\color{fgcolor}\begin{kframe}
 \begin{alltt}
-\hlcom{# Rmd <-> Rnw document conversion Conversion support functions Main}
-\hlcom{# conversion function}
+\hlcom{# Rmd <-> Rnw document conversion Main conversion function}
 \hlstd{convertDocs} \hlkwb{<-} \hlkwa{function}\hlstd{(}\hlkwc{path}\hlstd{,} \hlkwc{rmdChunkID} \hlstd{=} \hlkwd{c}\hlstd{(}\hlstr{"```\{r"}\hlstd{,} \hlstr{"\}"}\hlstd{,} \hlstr{"```"}\hlstd{),} \hlkwc{rnwChunkID} \hlstd{=} \hlkwd{c}\hlstd{(}\hlstr{"<<"}\hlstd{,}
     \hlstr{">>="}\hlstd{,} \hlstr{"@"}\hlstd{),} \hlkwc{emphasis} \hlstd{=} \hlstr{"replace"}\hlstd{,} \hlkwc{overwrite} \hlstd{=} \hlnum{FALSE}\hlstd{,} \hlkwc{...}\hlstd{) \{}
     \hlkwd{stopifnot}\hlstd{(}\hlkwd{is.character}\hlstd{(path))}
@@ -397,7 +668,6 @@ It amounts to a text-parsing hack that is intended to handle the most common of 
     \hlstd{dots} \hlkwb{<-} \hlkwd{list}\hlstd{(...)}
     \hlkwa{if} \hlstd{(rmdChunkID[}\hlnum{1}\hlstd{]} \hlopt{==} \hlstr{"```\{r"}\hlstd{)}
         \hlstd{rmdChunkID[}\hlnum{1}\hlstd{]} \hlkwb{<-} \hlkwd{paste0}\hlstd{(rmdChunkID[}\hlnum{1}\hlstd{],} \hlstr{" "}\hlstd{)}
-    \hlstd{gsbraces} \hlkwb{<-} \hlkwa{function}\hlstd{(}\hlkwc{txt}\hlstd{)} \hlkwd{gsub}\hlstd{(}\hlstr{"\textbackslash{}\textbackslash{}\{"}\hlstd{,} \hlstr{"\textbackslash{}\textbackslash{}\textbackslash{}\textbackslash{}\{"}\hlstd{, txt)}
     \hlkwa{if} \hlstd{(type} \hlopt{==} \hlstr{"Rmd"}\hlstd{) \{}
         \hlkwd{stopifnot}\hlstd{(}\hlkwd{length}\hlstd{(rmd.files)} \hlopt{>} \hlnum{0}\hlstd{)}
         \hlstd{outDir} \hlkwb{<-} \hlkwd{file.path}\hlstd{(}\hlkwd{dirname}\hlstd{(path),} \hlstr{"Rnw"}\hlstd{)}
@@ -417,208 +687,15 @@ It amounts to a text-parsing hack that is intended to handle the most common of 
         \hlkwd{stopifnot}\hlstd{(}\hlkwd{length}\hlstd{(rnw.files)} \hlopt{>} \hlnum{0}\hlstd{)}
         \hlstd{outDir} \hlkwb{<-} \hlkwd{file.path}\hlstd{(}\hlkwd{dirname}\hlstd{(path),} \hlstr{"Rmd"}\hlstd{)}
     \hlstd{\}} \hlkwa{else} \hlkwd{stop}\hlstd{(}\hlstr{"path must end in 'Rmd' or 'Rnw'."}\hlstd{)}
-
-    \hlstd{swapHeadings} \hlkwb{<-} \hlkwa{function}\hlstd{(}\hlkwc{from}\hlstd{,} \hlkwc{to}\hlstd{,} \hlkwc{x}\hlstd{) \{}
-        \hlstd{nc} \hlkwb{<-} \hlkwd{nchar}\hlstd{(x)}
-        \hlstd{ind} \hlkwb{<-} \hlkwd{which}\hlstd{(}\hlkwd{substr}\hlstd{(x,} \hlnum{1}\hlstd{,} \hlnum{8}\hlstd{)} \hlopt{==} \hlstr{"\textbackslash{}\textbackslash{}section"} \hlopt{|} \hlkwd{substr}\hlstd{(x,} \hlnum{1}\hlstd{,} \hlnum{4}\hlstd{)} \hlopt{==} \hlstr{"\textbackslash{}\textbackslash{}sub"}\hlstd{)}
-        \hlkwa{if} \hlstd{(}\hlopt{!}\hlkwd{length}\hlstd{(ind)) \{}
-            \hlcom{# assume Rmd file}
-            \hlstd{ind} \hlkwb{<-} \hlkwd{which}\hlstd{(}\hlkwd{substr}\hlstd{(x,} \hlnum{1}\hlstd{,} \hlnum{1}\hlstd{)} \hlopt{==} \hlstr{"#"}\hlstd{)}
-            \hlstd{ind.n} \hlkwb{<-} \hlkwd{rep}\hlstd{(}\hlnum{1}\hlstd{,} \hlkwd{length}\hlstd{(ind))}
-            \hlkwa{for} \hlstd{(i} \hlkwa{in} \hlnum{2}\hlopt{:}\hlnum{6}\hlstd{) \{}
-                \hlstd{ind.tmp} \hlkwb{<-} \hlkwd{which}\hlstd{(}\hlkwd{substr}\hlstd{(x[ind],} \hlnum{1}\hlstd{, i)} \hlopt{==} \hlkwd{substr}\hlstd{(}\hlstr{"######"}\hlstd{,} \hlnum{1}\hlstd{,}
-                  \hlstd{i))}
-                \hlkwa{if} \hlstd{(}\hlkwd{length}\hlstd{(ind.tmp))}
-                  \hlstd{ind.n[ind.tmp]} \hlkwb{<-} \hlstd{ind.n[ind.tmp]} \hlopt{+} \hlnum{1} \hlkwa{else break}
-            \hlstd{\}}
-            \hlkwa{for} \hlstd{(i} \hlkwa{in} \hlnum{1}\hlopt{:}\hlkwd{length}\hlstd{(ind)) \{}
-                \hlstd{n} \hlkwb{<-} \hlstd{ind.n[i]}
-                \hlstd{input} \hlkwb{<-} \hlkwd{paste0}\hlstd{(}\hlkwd{substr}\hlstd{(}\hlstr{"######"}\hlstd{,} \hlnum{1}\hlstd{, n),} \hlstr{" "}\hlstd{)}
-                \hlstd{h} \hlkwb{<-} \hlstd{x[ind[i]]}
-                \hlstd{h} \hlkwb{<-} \hlkwd{gsub}\hlstd{(}\hlstr{"\textbackslash{}\textbackslash{}*"}\hlstd{,} \hlstr{"_"}\hlstd{, h)}  \hlcom{# Switch any markdown boldface asterisks in headings to double underscores}
-                \hlstd{heading} \hlkwb{<-} \hlkwd{gsub}\hlstd{(}\hlstr{"\textbackslash{}n"}\hlstd{,} \hlstr{""}\hlstd{,} \hlkwd{substr}\hlstd{(h, n} \hlopt{+} \hlnum{2}\hlstd{, nc[ind[i]]))}
-                \hlcom{# h <- gsub(input, '', h)}
-                \hlkwa{if} \hlstd{(n} \hlopt{<=} \hlnum{2}\hlstd{)}
-                  \hlstd{subs} \hlkwb{<-} \hlstr{"\textbackslash{}\textbackslash{}"} \hlkwa{else if} \hlstd{(n} \hlopt{==} \hlnum{3}\hlstd{)}
-                  \hlstd{subs} \hlkwb{<-} \hlstr{"\textbackslash{}\textbackslash{}sub"} \hlkwa{else if} \hlstd{(n} \hlopt{==} \hlnum{4}\hlstd{)}
-                  \hlstd{subs} \hlkwb{<-} \hlstr{"\textbackslash{}\textbackslash{}subsub"} \hlkwa{else if} \hlstd{(n} \hlopt{>=} \hlnum{5}\hlstd{)}
-                  \hlstd{subs} \hlkwb{<-} \hlstr{"\textbackslash{}\textbackslash{}subsubsub"}
-                \hlstd{output} \hlkwb{<-} \hlkwd{paste0}\hlstd{(}\hlstr{"\textbackslash{}\textbackslash{}"}\hlstd{, subs,} \hlstr{"section\{"}\hlstd{, heading,} \hlstr{"\}\textbackslash{}n"}\hlstd{)}
-                \hlstd{x[ind[i]]} \hlkwb{<-} \hlkwd{gsub}\hlstd{(h, output, h)}
-            \hlstd{\}}
-        \hlstd{\}} \hlkwa{else} \hlstd{\{}
-            \hlcom{# assume Rnw file}
-            \hlstd{ind} \hlkwb{<-} \hlkwd{which}\hlstd{(}\hlkwd{substr}\hlstd{(x,} \hlnum{1}\hlstd{,} \hlnum{8}\hlstd{)} \hlopt{==} \hlstr{"\textbackslash{}\textbackslash{}section"}\hlstd{)}
-            \hlkwa{if} \hlstd{(}\hlkwd{length}\hlstd{(ind)) \{}
-                \hlkwa{for} \hlstd{(i} \hlkwa{in} \hlnum{1}\hlopt{:}\hlkwd{length}\hlstd{(ind)) \{}
-                  \hlstd{h} \hlkwb{<-} \hlstd{x[ind[i]]}
-                  \hlstd{heading} \hlkwb{<-} \hlkwd{paste0}\hlstd{(}\hlstr{"## "}\hlstd{,} \hlkwd{substr}\hlstd{(h,} \hlnum{10}\hlstd{,} \hlkwd{nchar}\hlstd{(h)} \hlopt{-} \hlnum{2}\hlstd{))}
-                  \hlstd{x[ind[i]]} \hlkwb{<-} \hlkwd{gsub}\hlstd{(}\hlkwd{gsbraces}\hlstd{(h), heading, h)}
-                \hlstd{\}}
-            \hlstd{\}}
-            \hlstd{ind} \hlkwb{<-} \hlkwd{which}\hlstd{(}\hlkwd{substr}\hlstd{(x,} \hlnum{1}\hlstd{,} \hlnum{4}\hlstd{)} \hlopt{==} \hlstr{"\textbackslash{}\textbackslash{}sub"}\hlstd{)}
-            \hlkwa{if} \hlstd{(}\hlkwd{length}\hlstd{(ind)) \{}
-                \hlkwa{for} \hlstd{(i} \hlkwa{in} \hlnum{1}\hlopt{:}\hlkwd{length}\hlstd{(ind)) \{}
-                  \hlstd{h} \hlkwb{<-} \hlstd{x[ind[i]]}
-                  \hlstd{z} \hlkwb{<-} \hlkwd{substr}\hlstd{(h,} \hlnum{2}\hlstd{,} \hlnum{10}\hlstd{)}
-                  \hlkwa{if} \hlstd{(z} \hlopt{==} \hlstr{"subsubsub"}\hlstd{) \{}
-                    \hlstd{p} \hlkwb{<-} \hlstr{"##### "}
-                    \hlstd{n} \hlkwb{<-} \hlnum{18}
-                  \hlstd{\}} \hlkwa{else if} \hlstd{(}\hlkwd{substr}\hlstd{(z,} \hlnum{1}\hlstd{,} \hlnum{6}\hlstd{)} \hlopt{==} \hlstr{"subsub"}\hlstd{) \{}
-                    \hlstd{p} \hlkwb{<-} \hlstr{"#### "}
-                    \hlstd{n} \hlkwb{<-} \hlnum{15}
-                  \hlstd{\}} \hlkwa{else if} \hlstd{(}\hlkwd{substr}\hlstd{(z,} \hlnum{1}\hlstd{,} \hlnum{3}\hlstd{)} \hlopt{==} \hlstr{"sub"}\hlstd{) \{}
-                    \hlstd{p} \hlkwb{<-} \hlstr{"### "}
-                    \hlstd{n} \hlkwb{<-} \hlnum{12}
-                  \hlstd{\}}
-                  \hlstd{heading} \hlkwb{<-} \hlkwd{paste0}\hlstd{(p,} \hlkwd{substr}\hlstd{(h, n,} \hlkwd{nchar}\hlstd{(h)} \hlopt{-} \hlnum{2}\hlstd{))}
-                  \hlstd{x[ind[i]]} \hlkwb{<-} \hlkwd{gsub}\hlstd{(}\hlkwd{gsbraces}\hlstd{(h), heading, h)}
-                \hlstd{\}}
-            \hlstd{\}}
-        \hlstd{\}}
-        \hlstd{x}
-    \hlstd{\}}
-
-    \hlstd{swapChunks} \hlkwb{<-} \hlkwa{function}\hlstd{(}\hlkwc{from}\hlstd{,} \hlkwc{to}\hlstd{,} \hlkwc{x}\hlstd{) \{}
-        \hlstd{nc} \hlkwb{<-} \hlkwd{nchar}\hlstd{(x)}
-        \hlstd{chunk.start.open} \hlkwb{<-} \hlkwd{substr}\hlstd{(x,} \hlnum{1}\hlstd{,} \hlkwd{nchar}\hlstd{(from[}\hlnum{1}\hlstd{]))} \hlopt{==} \hlstd{from[}\hlnum{1}\hlstd{]}
-        \hlstd{chunk.start.close} \hlkwb{<-} \hlkwd{substr}\hlstd{(x, nc} \hlopt{-} \hlnum{1} \hlopt{-} \hlkwd{nchar}\hlstd{(from[}\hlnum{2}\hlstd{])} \hlopt{+} \hlnum{1}\hlstd{, nc} \hlopt{-} \hlnum{1}\hlstd{)} \hlopt{==}
-            \hlstd{from[}\hlnum{2}\hlstd{]}
-        \hlstd{chunk.start} \hlkwb{<-} \hlkwd{which}\hlstd{(chunk.start.open} \hlopt{&} \hlstd{chunk.start.close)}
-        \hlstd{chunk.end} \hlkwb{<-} \hlkwd{which}\hlstd{(}\hlkwd{substr}\hlstd{(x,} \hlnum{1}\hlstd{,} \hlkwd{nchar}\hlstd{(from[}\hlnum{3}\hlstd{]))} \hlopt{==} \hlstd{from[}\hlnum{3}\hlstd{]} \hlopt{&} \hlstd{nc} \hlopt{==} \hlkwd{nchar}\hlstd{(from[}\hlnum{3}\hlstd{])} \hlopt{+}
-            \hlnum{1}\hlstd{)}
-        \hlstd{x[chunk.start]} \hlkwb{<-} \hlkwd{gsub}\hlstd{(from[}\hlnum{2}\hlstd{], to[}\hlnum{2}\hlstd{],} \hlkwd{gsub}\hlstd{(}\hlkwd{gsbraces}\hlstd{(from[}\hlnum{1}\hlstd{]),} \hlkwd{gsbraces}\hlstd{(to[}\hlnum{1}\hlstd{]),}
-            \hlstd{x[chunk.start]))}
-        \hlstd{x[chunk.end]} \hlkwb{<-} \hlkwd{gsub}\hlstd{(from[}\hlnum{3}\hlstd{], to[}\hlnum{3}\hlstd{], x[chunk.end])}
-        \hlstd{chunklines} \hlkwb{<-} \hlkwd{as.numeric}\hlstd{(}\hlkwd{unlist}\hlstd{(}\hlkwd{mapply}\hlstd{(seq, chunk.start, chunk.end)))}
-        \hlkwd{list}\hlstd{(x, chunklines)}
-    \hlstd{\}}
-
-    \hlcom{# I know I use '**' strictly for bold font in Rmd files.  For now, this}
-    \hlcom{# function assumes: 1. The only emphasis in a doc is boldface or typewriter.}
-    \hlcom{# 2. These instances are always preceded by a space, a carriage return, or}
-    \hlcom{# an open bracket, 3. and followed by a space, period, comma, or closing}
-    \hlcom{# bracket.}
-    \hlstd{swapEmphasis} \hlkwb{<-} \hlkwa{function}\hlstd{(}\hlkwc{x}\hlstd{,} \hlkwc{emphasis} \hlstd{=} \hlstr{"remove"}\hlstd{,} \hlkwc{pat.remove} \hlstd{=} \hlkwd{c}\hlstd{(}\hlstr{"`"}\hlstd{,} \hlstr{"\textbackslash{}\textbackslash{}*\textbackslash{}\textbackslash{}*"}\hlstd{,}
-        \hlstr{"__"}\hlstd{),} \hlkwc{pat.replace} \hlstd{= pat.remove,} \hlkwc{replacement} \hlstd{=} \hlkwd{c}\hlstd{(}\hlstr{"\textbackslash{}\textbackslash{}\textbackslash{}\textbackslash{}texttt\textbackslash{}\textbackslash{}\{"}\hlstd{,} \hlstr{"\textbackslash{}\textbackslash{}\textbackslash{}\textbackslash{}textbf\textbackslash{}\textbackslash{}\{"}\hlstd{,}
-        \hlstr{"\textbackslash{}\textbackslash{}\textbackslash{}\textbackslash{}textbf\textbackslash{}\textbackslash{}\{"}\hlstd{,} \hlstr{"\textbackslash{}\textbackslash{}\}"}\hlstd{,} \hlstr{"\textbackslash{}\textbackslash{}\}"}\hlstd{,} \hlstr{"\textbackslash{}\textbackslash{}\}"}\hlstd{)) \{}
-
-        \hlkwd{stopifnot}\hlstd{(emphasis} \hlopt{%in%} \hlkwd{c}\hlstd{(}\hlstr{"remove"}\hlstd{,} \hlstr{"replace"}\hlstd{))}
-        \hlstd{n} \hlkwb{<-} \hlkwd{length}\hlstd{(pat.replace)}
-        \hlstd{rep1} \hlkwb{<-} \hlstd{replacement[}\hlnum{1}\hlopt{:}\hlstd{n]}
-        \hlstd{rep2} \hlkwb{<-} \hlstd{replacement[(n} \hlopt{+} \hlnum{1}\hlstd{)}\hlopt{:}\hlstd{(}\hlnum{2} \hlopt{*} \hlstd{n)]}
-        \hlstd{prefix} \hlkwb{<-} \hlkwd{c}\hlstd{(}\hlstr{" "}\hlstd{,} \hlstr{"^"}\hlstd{,} \hlstr{"\textbackslash{}\textbackslash{}\{"}\hlstd{,} \hlstr{"\textbackslash{}\textbackslash{}("}\hlstd{)}
-        \hlstd{suffix} \hlkwb{<-} \hlkwd{c}\hlstd{(}\hlstr{" "}\hlstd{,} \hlstr{","}\hlstd{,} \hlstr{"-"}\hlstd{,} \hlstr{"\textbackslash{}n"}\hlstd{,} \hlstr{"\textbackslash{}\textbackslash{}."}\hlstd{,} \hlstr{"\textbackslash{}\textbackslash{}\}"}\hlstd{,} \hlstr{"\textbackslash{}\textbackslash{})"}\hlstd{)}
-        \hlstd{n.p} \hlkwb{<-} \hlkwd{length}\hlstd{(prefix)}
-        \hlstd{n.s} \hlkwb{<-} \hlkwd{length}\hlstd{(suffix)}
-        \hlstd{pat.replace} \hlkwb{<-} \hlkwd{c}\hlstd{(}\hlkwd{paste0}\hlstd{(}\hlkwd{rep}\hlstd{(prefix, n),} \hlkwd{rep}\hlstd{(pat.replace,} \hlkwc{each} \hlstd{= n.p)),}
-            \hlkwd{paste0}\hlstd{(}\hlkwd{rep}\hlstd{(pat.replace,} \hlkwc{each} \hlstd{= n.s),} \hlkwd{rep}\hlstd{(suffix, n)))}
-        \hlstd{replacement} \hlkwb{<-} \hlkwd{c}\hlstd{(}\hlkwd{paste0}\hlstd{(}\hlkwd{rep}\hlstd{(}\hlkwd{gsub}\hlstd{(}\hlstr{"\textbackslash{}\textbackslash{}^"}\hlstd{,} \hlstr{""}\hlstd{, prefix), n),} \hlkwd{rep}\hlstd{(rep1,} \hlkwc{each} \hlstd{= n.p)),}
-            \hlkwd{paste0}\hlstd{(}\hlkwd{rep}\hlstd{(rep2,} \hlkwc{each} \hlstd{= n.s),} \hlkwd{rep}\hlstd{(suffix, n)))}
-        \hlkwa{if} \hlstd{(emphasis} \hlopt{==} \hlstr{"remove"}\hlstd{)}
-            \hlkwa{for} \hlstd{(k} \hlkwa{in} \hlnum{1}\hlopt{:}\hlkwd{length}\hlstd{(pat.remove)) x} \hlkwb{<-} \hlkwd{sapply}\hlstd{(x,} \hlkwa{function}\hlstd{(}\hlkwc{v}\hlstd{,} \hlkwc{p}\hlstd{,} \hlkwc{r}\hlstd{)} \hlkwd{gsub}\hlstd{(p,}
-                \hlstd{r, v),} \hlkwc{p} \hlstd{= pat.remove[k],} \hlkwc{r} \hlstd{=} \hlstr{""}\hlstd{)}
-        \hlkwa{if} \hlstd{(emphasis} \hlopt{==} \hlstr{"replace"}\hlstd{)}
-            \hlkwa{for} \hlstd{(k} \hlkwa{in} \hlnum{1}\hlopt{:}\hlkwd{length}\hlstd{(pat.replace)) x} \hlkwb{<-} \hlkwd{sapply}\hlstd{(x,} \hlkwa{function}\hlstd{(}\hlkwc{v}\hlstd{,} \hlkwc{p}\hlstd{,} \hlkwc{r}\hlstd{)} \hlkwd{gsub}\hlstd{(p,}
-                \hlstd{r, v),} \hlkwc{p} \hlstd{= pat.replace[k],} \hlkwc{r} \hlstd{= replacement[k])}
-        \hlstd{x}
-    \hlstd{\}}
-
-    \hlstd{swap} \hlkwb{<-} \hlkwa{function}\hlstd{(}\hlkwc{file}\hlstd{,} \hlkwc{header} \hlstd{=} \hlkwa{NULL}\hlstd{,} \hlkwc{outDir}\hlstd{,} \hlkwc{...}\hlstd{) \{}
-        \hlstd{title} \hlkwb{<-} \hlkwd{list}\hlstd{(...)}\hlopt{$}\hlstd{title}
-        \hlstd{author} \hlkwb{<-} \hlkwd{list}\hlstd{(...)}\hlopt{$}\hlstd{author}
-        \hlstd{highlight} \hlkwb{<-} \hlkwd{list}\hlstd{(...)}\hlopt{$}\hlstd{highlight}
-        \hlstd{ext} \hlkwb{<-} \hlkwd{tail}\hlstd{(}\hlkwd{strsplit}\hlstd{(file,} \hlstr{"\textbackslash{}\textbackslash{}."}\hlstd{)[[}\hlnum{1}\hlstd{]],} \hlnum{1}\hlstd{)}
-        \hlstd{l} \hlkwb{<-} \hlkwd{readLines}\hlstd{(file)}
-        \hlstd{l} \hlkwb{<-} \hlstd{l[}\hlkwd{substr}\hlstd{(l,} \hlnum{1}\hlstd{,} \hlnum{7}\hlstd{)} \hlopt{!=} \hlstr{"<style>"}\hlstd{]}  \hlcom{# Strip any html style lines}
-        \hlkwa{if} \hlstd{(ext} \hlopt{==} \hlstr{"Rmd"}\hlstd{) \{}
-            \hlstd{hl.default} \hlkwb{<-} \hlstr{"solarized-light"}
-            \hlstd{out.ext} \hlkwb{<-} \hlstr{"Rnw"}
-            \hlstd{h.ind} \hlkwb{<-} \hlnum{1}\hlopt{:}\hlkwd{which}\hlstd{(l} \hlopt{==} \hlstr{"---"}\hlstd{)[}\hlnum{2}\hlstd{]}
-            \hlstd{h} \hlkwb{<-} \hlstd{l[h.ind]}
-            \hlstd{t.ind} \hlkwb{<-} \hlkwd{which}\hlstd{(}\hlkwd{substr}\hlstd{(h,} \hlnum{1}\hlstd{,} \hlnum{7}\hlstd{)} \hlopt{==} \hlstr{"title: "}\hlstd{)}
-            \hlstd{a.ind} \hlkwb{<-} \hlkwd{which}\hlstd{(}\hlkwd{substr}\hlstd{(h,} \hlnum{1}\hlstd{,} \hlnum{8}\hlstd{)} \hlopt{==} \hlstr{"author: "}\hlstd{)}
-            \hlstd{highlight.ind} \hlkwb{<-} \hlkwd{which}\hlstd{(}\hlkwd{substr}\hlstd{(h,} \hlnum{1}\hlstd{,} \hlnum{11}\hlstd{)} \hlopt{==} \hlstr{"highlight: "}\hlstd{)}
-            \hlkwa{if} \hlstd{(}\hlkwd{is.null}\hlstd{(title)} \hlopt{&} \hlkwd{length}\hlstd{(t.ind))}
-                \hlstd{title} \hlkwb{<-} \hlkwd{substr}\hlstd{(h[t.ind],} \hlnum{8}\hlstd{,} \hlkwd{nchar}\hlstd{(h[t.ind]))} \hlkwa{else if} \hlstd{(}\hlkwd{is.null}\hlstd{(title))}
-                \hlstd{title} \hlkwb{<-} \hlstr{""}
-            \hlkwa{if} \hlstd{(}\hlkwd{is.null}\hlstd{(author)} \hlopt{&} \hlkwd{length}\hlstd{(a.ind))}
-                \hlstd{author} \hlkwb{<-} \hlkwd{substr}\hlstd{(h[a.ind],} \hlnum{9}\hlstd{,} \hlkwd{nchar}\hlstd{(h[a.ind]))} \hlkwa{else if} \hlstd{(}\hlkwd{is.null}\hlstd{(author))}
-                \hlstd{author} \hlkwb{<-} \hlstr{""}
-            \hlkwa{if} \hlstd{(}\hlkwd{is.null}\hlstd{(highlight)} \hlopt{&} \hlkwd{length}\hlstd{(highlight.ind))}
-                \hlstd{highlight} \hlkwb{<-} \hlkwd{substr}\hlstd{(h[highlight.ind],} \hlnum{12}\hlstd{,} \hlkwd{nchar}\hlstd{(h[highlight.ind]))} \hlkwa{else if} \hlstd{(}\hlkwd{is.null}\hlstd{(highlight))}
-                \hlstd{highlight} \hlkwb{<-} \hlstd{hl.default} \hlkwa{else if} \hlstd{(}\hlopt{!}\hlstd{(highlight} \hlopt{%in%} \hlstd{knit_theme}\hlopt{$}\hlkwd{get}\hlstd{()))}
-                \hlstd{highlight} \hlkwb{<-} \hlstd{hl.default}
-            \hlkwa{if} \hlstd{(}\hlopt{!}\hlkwd{is.null}\hlstd{(title))}
-                \hlstd{header} \hlkwb{<-} \hlkwd{c}\hlstd{(header,} \hlkwd{paste0}\hlstd{(}\hlstr{"\textbackslash{}\textbackslash{}title\{"}\hlstd{, title,} \hlstr{"\}"}\hlstd{))}
-            \hlkwa{if} \hlstd{(}\hlopt{!}\hlkwd{is.null}\hlstd{(author))}
-                \hlstd{header} \hlkwb{<-} \hlkwd{c}\hlstd{(header,} \hlkwd{paste0}\hlstd{(}\hlstr{"\textbackslash{}\textbackslash{}author\{"}\hlstd{, author,} \hlstr{"\}"}\hlstd{))}
-            \hlkwa{if} \hlstd{(}\hlopt{!}\hlkwd{is.null}\hlstd{(title))}
-                \hlstd{header} \hlkwb{<-} \hlkwd{c}\hlstd{(header,} \hlstr{"\textbackslash{}\textbackslash{}maketitle\textbackslash{}n"}\hlstd{)}
-            \hlstd{header} \hlkwb{<-} \hlkwd{c}\hlstd{(header,} \hlkwd{paste0}\hlstd{(}\hlstr{"<<highlight, echo=FALSE>>=\textbackslash{}nknit_theme$set(knit_theme$get('"}\hlstd{,}
-                \hlstd{highlight,} \hlstr{"'))\textbackslash{}n@\textbackslash{}n"}\hlstd{))}
-        \hlstd{\}} \hlkwa{else if} \hlstd{(ext} \hlopt{==} \hlstr{"Rnw"}\hlstd{) \{}
-            \hlstd{hl.default} \hlkwb{<-} \hlstr{"tango"}
-            \hlstd{out.ext} \hlkwb{<-} \hlstr{"Rmd"}
-            \hlstd{begin.doc} \hlkwb{<-} \hlkwd{which}\hlstd{(l} \hlopt{==} \hlstr{"\textbackslash{}\textbackslash{}begin\{document\}"}\hlstd{)}
-            \hlstd{make.title} \hlkwb{<-} \hlkwd{which}\hlstd{(l} \hlopt{==} \hlstr{"\textbackslash{}\textbackslash{}maketitle"}\hlstd{)}
-            \hlkwa{if} \hlstd{(}\hlkwd{length}\hlstd{(make.title))}
-                \hlstd{h.ind} \hlkwb{<-} \hlnum{1}\hlopt{:}\hlstd{make.title} \hlkwa{else} \hlstd{h.ind} \hlkwb{<-} \hlnum{1}\hlopt{:}\hlstd{begin.doc}
-            \hlstd{h} \hlkwb{<-} \hlstd{l[h.ind]}
-            \hlstd{t.ind} \hlkwb{<-} \hlkwd{which}\hlstd{(}\hlkwd{substr}\hlstd{(h,} \hlnum{1}\hlstd{,} \hlnum{6}\hlstd{)} \hlopt{==} \hlstr{"\textbackslash{}\textbackslash{}title"}\hlstd{)}
-            \hlstd{a.ind} \hlkwb{<-} \hlkwd{which}\hlstd{(}\hlkwd{substr}\hlstd{(h,} \hlnum{1}\hlstd{,} \hlnum{7}\hlstd{)} \hlopt{==} \hlstr{"\textbackslash{}\textbackslash{}author"}\hlstd{)}
-            \hlstd{highlight.ind} \hlkwb{<-} \hlkwd{which}\hlstd{(}\hlkwd{substr}\hlstd{(l,} \hlnum{1}\hlstd{,} \hlnum{11}\hlstd{)} \hlopt{==} \hlstr{"<<highlight"}\hlstd{)}
-            \hlkwa{if} \hlstd{(}\hlkwd{is.null}\hlstd{(title)} \hlopt{&} \hlkwd{length}\hlstd{(t.ind))}
-                \hlstd{title} \hlkwb{<-} \hlkwd{substr}\hlstd{(h[t.ind],} \hlnum{8}\hlstd{,} \hlkwd{nchar}\hlstd{(h[t.ind])} \hlopt{-} \hlnum{1}\hlstd{)}
-            \hlkwa{if} \hlstd{(}\hlkwd{is.null}\hlstd{(author)} \hlopt{&} \hlkwd{length}\hlstd{(a.ind))}
-                \hlstd{author} \hlkwb{<-} \hlkwd{substr}\hlstd{(h[a.ind],} \hlnum{9}\hlstd{,} \hlkwd{nchar}\hlstd{(h[a.ind])} \hlopt{-} \hlnum{1}\hlstd{)}
-            \hlkwa{if} \hlstd{(}\hlkwd{length}\hlstd{(highlight.ind)) \{}
-                \hlstd{l1} \hlkwb{<-} \hlstd{l[highlight.ind} \hlopt{+} \hlnum{1}\hlstd{]}
-                \hlstd{h1} \hlkwb{<-} \hlkwd{substr}\hlstd{(l1,} \hlkwd{nchar}\hlstd{(}\hlstr{"knit_theme$set(knit_theme$get('"}\hlstd{)} \hlopt{+}
-                  \hlnum{1}\hlstd{,} \hlkwd{nchar}\hlstd{(l1)} \hlopt{-} \hlkwd{nchar}\hlstd{(}\hlstr{"'))\textbackslash{}n"}\hlstd{))}
-                \hlkwa{if} \hlstd{(}\hlopt{!}\hlstd{(h1} \hlopt{%in%} \hlstd{knit_theme}\hlopt{$}\hlkwd{get}\hlstd{()))}
-                  \hlstd{h1} \hlkwb{<-} \hlstd{hl.default}
-            \hlstd{\}}
-            \hlkwa{if} \hlstd{(}\hlkwd{is.null}\hlstd{(highlight)} \hlopt{&} \hlkwd{length}\hlstd{(highlight.ind))}
-                \hlstd{highlight} \hlkwb{<-} \hlstd{h1} \hlkwa{else if} \hlstd{(}\hlkwd{is.null}\hlstd{(highlight))}
-                \hlstd{highlight} \hlkwb{<-} \hlstd{hl.default} \hlkwa{else if} \hlstd{(}\hlopt{!}\hlstd{(highlight} \hlopt{%in%} \hlstd{knit_theme}\hlopt{$}\hlkwd{get}\hlstd{()))}
-                \hlstd{highlight} \hlkwb{<-} \hlstd{hl.default}
-            \hlstd{header} \hlkwb{<-} \hlkwd{rmdHeader}\hlstd{(}\hlkwc{title} \hlstd{= title,} \hlkwc{author} \hlstd{= author,} \hlkwc{highlight} \hlstd{= highlight)}
-        \hlstd{\}}
-        \hlstd{header} \hlkwb{<-} \hlkwd{paste0}\hlstd{(header,} \hlkwc{collapse} \hlstd{=} \hlstr{"\textbackslash{}n"}\hlstd{)}
-        \hlstd{l} \hlkwb{<-} \hlkwd{paste0}\hlstd{(l[}\hlopt{-}\hlstd{h.ind],} \hlstr{"\textbackslash{}n"}\hlstd{)}
-        \hlkwa{if} \hlstd{(ext} \hlopt{==} \hlstr{"Rmd"}\hlstd{) \{}
-            \hlstd{from} \hlkwb{<-} \hlstd{rmdChunkID}
-            \hlstd{to} \hlkwb{<-} \hlstd{rnwChunkID}
-        \hlstd{\}}
-        \hlkwa{if} \hlstd{(ext} \hlopt{==} \hlstr{"Rnw"}\hlstd{) \{}
-            \hlstd{from} \hlkwb{<-} \hlstd{rnwChunkID}
-            \hlstd{to} \hlkwb{<-} \hlstd{rmdChunkID}
-        \hlstd{\}}
-        \hlstd{l} \hlkwb{<-} \hlkwd{swapHeadings}\hlstd{(}\hlkwc{from} \hlstd{= from,} \hlkwc{to} \hlstd{= to,} \hlkwc{x} \hlstd{= l)}
-        \hlstd{chunks} \hlkwb{<-} \hlkwd{swapChunks}\hlstd{(}\hlkwc{from} \hlstd{= from,} \hlkwc{to} \hlstd{= to,} \hlkwc{x} \hlstd{= l)}
-        \hlstd{l} \hlkwb{<-} \hlstd{chunks[[}\hlnum{1}\hlstd{]]}
-        \hlkwa{if} \hlstd{(ext} \hlopt{==} \hlstr{"Rmd"}\hlstd{)}
-            \hlstd{l} \hlkwb{<-} \hlkwd{swapEmphasis}\hlstd{(}\hlkwc{x} \hlstd{= l,} \hlkwc{emphasis} \hlstd{= emphasis)}
-        \hlkwa{if} \hlstd{(ext} \hlopt{==} \hlstr{"Rmd"}\hlstd{)}
-            \hlstd{l[}\hlopt{-}\hlstd{chunks[[}\hlnum{2}\hlstd{]]]} \hlkwb{<-} \hlkwd{sapply}\hlstd{(l[}\hlopt{-}\hlstd{chunks[[}\hlnum{2}\hlstd{]]],} \hlkwa{function}\hlstd{(}\hlkwc{v}\hlstd{,} \hlkwc{p}\hlstd{,} \hlkwc{r}\hlstd{)} \hlkwd{gsub}\hlstd{(p,}
-                \hlstd{r, v),} \hlkwc{p} \hlstd{=} \hlstr{"_"}\hlstd{,} \hlkwc{r} \hlstd{=} \hlstr{"\textbackslash{}\textbackslash{}\textbackslash{}\textbackslash{}_"}\hlstd{)}
-        \hlstd{l} \hlkwb{<-} \hlkwd{c}\hlstd{(header, l,} \hlstr{"\textbackslash{}n\textbackslash{}\textbackslash{}end\{document\}\textbackslash{}n"}\hlstd{)}
-        \hlstd{outfile} \hlkwb{<-} \hlkwd{file.path}\hlstd{(outDir,} \hlkwd{gsub}\hlstd{(}\hlkwd{paste0}\hlstd{(}\hlstr{"\textbackslash{}\textbackslash{}."}\hlstd{, ext),} \hlkwd{paste0}\hlstd{(}\hlstr{"\textbackslash{}\textbackslash{}."}\hlstd{,}
-            \hlstd{out.ext),} \hlkwd{basename}\hlstd{(file)))}
-        \hlkwa{if} \hlstd{(overwrite} \hlopt{|| !}\hlkwd{file.exists}\hlstd{(outfile)) \{}
-            \hlkwd{sink}\hlstd{(outfile)}
-            \hlkwd{sapply}\hlstd{(l, cat)}
-            \hlkwd{sink}\hlstd{()}
-            \hlkwd{print}\hlstd{(}\hlkwd{paste}\hlstd{(}\hlstr{"Writing"}\hlstd{, outfile))}
-        \hlstd{\}}
-    \hlstd{\}}
-
     \hlkwa{if} \hlstd{(type} \hlopt{==} \hlstr{"Rmd"}\hlstd{) \{}
-        \hlkwd{sapply}\hlstd{(rmd.files, swap,} \hlkwc{header} \hlstd{= header.rnw,} \hlkwc{outDir} \hlstd{= outDir, ...)}
+        \hlkwd{sapply}\hlstd{(rmd.files, .swap,} \hlkwc{header} \hlstd{= header.rnw,} \hlkwc{outDir} \hlstd{= outDir,} \hlkwc{rmdChunkID} \hlstd{= rmdChunkID,}
+            \hlkwc{rnwChunkID} \hlstd{= rnwChunkID,} \hlkwc{emphasis} \hlstd{= emphasis,} \hlkwc{overwrite} \hlstd{= overwrite,}
+            \hlstd{...)}
         \hlkwd{cat}\hlstd{(}\hlstr{".Rmd to .Rnw file conversion complete.\textbackslash{}n"}\hlstd{)}
     \hlstd{\}} \hlkwa{else} \hlstd{\{}
-        \hlkwd{sapply}\hlstd{(rnw.files, swap,} \hlkwc{header} \hlstd{=} \hlkwa{NULL}\hlstd{,} \hlkwc{outDir} \hlstd{= outDir, ...)}
+        \hlkwd{sapply}\hlstd{(rnw.files, .swap,} \hlkwc{header} \hlstd{=} \hlkwa{NULL}\hlstd{,} \hlkwc{outDir} \hlstd{= outDir,} \hlkwc{rmdChunkID} \hlstd{= rmdChunkID,}
+            \hlkwc{rnwChunkID} \hlstd{= rnwChunkID,} \hlkwc{emphasis} \hlstd{= emphasis,} \hlkwc{overwrite} \hlstd{= overwrite,}
+            \hlstd{...)}
         \hlkwd{cat}\hlstd{(}\hlstr{".Rnw to .Rmd file conversion complete.\textbackslash{}n"}\hlstd{)}
     \hlstd{\}}
 \hlstd{\}}
@@ -925,16 +1002,20 @@ This function will probably be removed in favor of the more general \texttt{genP
 
 \texttt{genPanelDiv} generates an html file storing a container div element which in its current state of development organizes two types of content: \textbf{R} projects and Shiny web applications.
 
-The \texttt{type} argument can be either \texttt{projects} or \texttt{apps} and essentially bifurcates the behavior of \texttt{genPanelDiv}.
-The purpose of the function is to generate an html file defining a container div element to display and reference either my \textbf{R} projects or my Shiny apps.
+The \texttt{type} argument can be one of \texttt{projects}, \texttt{apps}, \texttt{datavis}, or \texttt{gallery}.
+The purpose of the function is to generate an html file defining a container div element to display and reference either my \textbf{R} projects, my Shiny apps, or my example visualization galleries.
+
+\subsubsubsection{Projects}
 
 For projects, the function scans a directory of local repositories and takes any directories found to be the names of projects.
 There is an \texttt{exclude} argument for dropping any known directories that are to be avoided.
 My defaults are \texttt{exclude="leonawicz.github.io", "shiny-apps"} since the first is just a local repository for my Github user account web site and not a "project" in the same sense of my other projects
 and the second is the local repository which is scanned by \texttt{genPanelDiv} when \texttt{type="apps"}.
 
+\subsubsubsection{Apps}
+
 For apps, the function scans a directory of Shiny app subdirectories.
-Unlike for projects, where \texttt{genPanelDiv} scans a directory of multiple local repositories, this apps directory should be a specific local repository. The apps contained within are not inndividual repositories.
+Unlike for projects, where \texttt{genPanelDiv} scans a directory of multiple local repositories, this apps directory should be a specific local repository. The apps contained within are not individual repositories.
 I have taken this approach for now simply because this is how my apps tend to be stored.
 
 Specifically, the \texttt{genAppDiv} looks for a named directory of image files.
@@ -946,20 +1027,37 @@ The container element includes an image link to each app's url as well as a link
 Although the app scans for images in a local repository, the images referenced in the output html are of course not local.
 They point to the same images stored on Github, hence why it is useful for the local directory of apps to be a Github repository.
 
+\subsubsubsection{DataVis and Galleries}
+
+Whereas the first three types generate containers for the main Github user web page, I use \texttt{type="gallery"} to make a separate container html file of graphics for each panel occurring in my \texttt{datavis} container.
+These containers tend to be added to unique web pages.
+\texttt{datavis} is for highlighting a number of galleries whereas \texttt{gallery} is for the galleries' respective contents.
+
+In order to use \texttt{type="datavis"} there must be a data visualization local repository.
+Mine is named \texttt{DataVisualizationExamples}, evident from the hardcoding currently in place within this function.
+Similar to when \texttt{type="apps"}, this repository includes a directory of images, in t his case one image for each gallery.
+Each image in this directory is named such that it identically matches another the name of a gallery images directory containing multiple images.
+As with \texttt{type="apps"}, gallery directories are only included if a corresponding thumbnail image in the images directory exists.
+
+When \texttt{type="gallery"}, the behavior of \texttt{genPanelDiv} is most unique.
+For each gallery which exists, the function will make a unique html file with a gallery container element.
+
 This function makes the more specific \texttt{genAppDiv} redundant and will likely replace it.
 
 \begin{knitrout}
 \definecolor{shadecolor}{rgb}{0, 0.169, 0.212}\color{fgcolor}\begin{kframe}
 \begin{alltt}
 \hlstd{genPanelDiv} \hlkwb{<-} \hlkwa{function}\hlstd{(}\hlkwc{outDir}\hlstd{,} \hlkwc{type} \hlstd{=} \hlstr{"projects"}\hlstd{,} \hlkwc{main} \hlstd{=} \hlstr{"Projects"}\hlstd{,} \hlkwc{github.user} \hlstd{=} \hlstr{"leonawicz"}\hlstd{,}
-    \hlkwc{prjs.dir} \hlstd{=} \hlstr{"C:/github"}\hlstd{,} \hlkwc{exclude} \hlstd{=} \hlkwd{c}\hlstd{(}\hlstr{"leonawicz.github.io"}\hlstd{,} \hlstr{"shiny-apps"}\hlstd{),}
-    \hlkwc{img.loc} \hlstd{=} \hlstr{"_images/cropped"}\hlstd{,} \hlkwc{...}\hlstd{) \{}
+    \hlkwc{prjs.dir} \hlstd{=} \hlstr{"C:/github"}\hlstd{,} \hlkwc{exclude} \hlstd{=} \hlkwd{c}\hlstd{(}\hlstr{"leonawicz.github.io"}\hlstd{,} \hlstr{"shiny-apps"}\hlstd{,}
+        \hlstr{"DataVisExamples"}\hlstd{,} \hlstr{".git"}\hlstd{,} \hlstr{"_images"}\hlstd{),} \hlkwc{img.loc} \hlstd{=} \hlstr{"_images/small"}\hlstd{,} \hlkwc{lightbox} \hlstd{=} \hlnum{FALSE}\hlstd{,}
+    \hlkwc{include.buttons} \hlstd{=} \hlnum{TRUE}\hlstd{,} \hlkwc{include.titles} \hlstd{=} \hlnum{TRUE}\hlstd{,} \hlkwc{...}\hlstd{) \{}
+
     \hlkwd{stopifnot}\hlstd{(github.user} \hlopt{%in%} \hlkwd{c}\hlstd{(}\hlstr{"leonawicz"}\hlstd{,} \hlstr{"ua-snap"}\hlstd{))}
     \hlkwa{if} \hlstd{(type} \hlopt{==} \hlstr{"apps"}\hlstd{) \{}
         \hlstd{filename} \hlkwb{<-} \hlstr{"apps_container.html"}
         \hlstd{web.url} \hlkwb{<-} \hlstr{"http://shiny.snap.uaf.edu"}
         \hlstd{gh.url.tail} \hlkwb{<-} \hlstr{"shiny-apps/tree/master"}
-        \hlstd{target} \hlkwb{<-} \hlstr{" target=\textbackslash{}"_blank\textbackslash{}""}
+        \hlstd{atts} \hlkwb{<-} \hlstr{" target=\textbackslash{}"_blank\textbackslash{}""}
         \hlstd{go.label} \hlkwb{<-} \hlstr{"Launch"}
         \hlstd{prjs.dir} \hlkwb{<-} \hlkwd{file.path}\hlstd{(prjs.dir,} \hlstr{"shiny-apps"}\hlstd{)}
         \hlstd{prjs.img} \hlkwb{<-} \hlkwd{list.files}\hlstd{(}\hlkwd{file.path}\hlstd{(prjs.dir, img.loc))}
@@ -969,7 +1067,7 @@ This function makes the more specific \texttt{genAppDiv} redundant and will like
         \hlstd{filename} \hlkwb{<-} \hlstr{"projects_container.html"}
         \hlstd{web.url} \hlkwb{<-} \hlkwd{paste0}\hlstd{(}\hlstr{"http://"}\hlstd{, github.user,} \hlstr{".github.io"}\hlstd{)}
         \hlstd{gh.url.tail} \hlkwb{<-} \hlstr{""}
-        \hlstd{target} \hlkwb{<-} \hlstr{""}
+        \hlstd{atts} \hlkwb{<-} \hlstr{""}
         \hlstd{go.label} \hlkwb{<-} \hlstr{"Website"}
         \hlstd{prjs} \hlkwb{<-} \hlkwd{list.dirs}\hlstd{(prjs.dir,} \hlkwc{full} \hlstd{=} \hlnum{TRUE}\hlstd{,} \hlkwc{recursive} \hlstd{=} \hlnum{FALSE}\hlstd{)}
         \hlstd{prjs} \hlkwb{<-} \hlstd{prjs[}\hlopt{!}\hlstd{(}\hlkwd{basename}\hlstd{(prjs)} \hlopt{%in%} \hlstd{exclude)]}
@@ -977,47 +1075,100 @@ This function makes the more specific \texttt{genAppDiv} redundant and will like
             \hlstr{"plots"}\hlstd{),} \hlkwc{pattern} \hlstd{=} \hlkwd{paste0}\hlstd{(}\hlstr{"^_"}\hlstd{,} \hlkwd{basename}\hlstd{(a)[i])),} \hlkwc{a} \hlstd{= prjs)}
         \hlstd{prjs} \hlkwb{<-} \hlkwd{basename}\hlstd{(prjs)}
     \hlstd{\}}
+    \hlkwa{if} \hlstd{(type} \hlopt{==} \hlstr{"datavis"}\hlstd{) \{}
+        \hlstd{filename} \hlkwb{<-} \hlstr{"data-visualizations_container.html"}
+        \hlstd{web.url} \hlkwb{<-} \hlkwd{paste0}\hlstd{(}\hlstr{"http://"}\hlstd{, github.user,} \hlstr{".github.io"}\hlstd{)}
+        \hlstd{gh.url.tail} \hlkwb{<-} \hlstr{"DataVisExamples/tree/master"}
+        \hlstd{atts} \hlkwb{<-} \hlstr{""}
+        \hlstd{go.label} \hlkwb{<-} \hlstr{"See More"}
+        \hlstd{prjs.dir} \hlkwb{<-} \hlkwd{file.path}\hlstd{(prjs.dir,} \hlstr{"DataVisExamples"}\hlstd{)}
+        \hlstd{prjs.img} \hlkwb{<-} \hlkwd{list.files}\hlstd{(}\hlkwd{file.path}\hlstd{(prjs.dir, img.loc))}
+        \hlstd{prjs} \hlkwb{<-} \hlkwd{sapply}\hlstd{(}\hlkwd{strsplit}\hlstd{(prjs.img,} \hlstr{"\textbackslash{}\textbackslash{}."}\hlstd{),} \hlstr{"[["}\hlstd{,} \hlnum{1}\hlstd{)}
+    \hlstd{\}}
+    \hlkwa{if} \hlstd{(type} \hlopt{==} \hlstr{"gallery"}\hlstd{) \{}
+        \hlstd{web.url} \hlkwb{<-} \hlkwd{paste0}\hlstd{(}\hlstr{"http://"}\hlstd{, github.user,} \hlstr{".github.io"}\hlstd{)}
+        \hlstd{gh.url.tail} \hlkwb{<-} \hlstr{"DataVisExamples/tree/master"}
+        \hlkwa{if} \hlstd{(lightbox)}
+            \hlstd{atts1} \hlkwb{<-} \hlstr{" data-lightbox=\textbackslash{}"ID\textbackslash{}""} \hlkwa{else} \hlstd{atts1} \hlkwb{<-} \hlstr{""}
+        \hlstd{go.label} \hlkwb{<-} \hlstr{"Expand"}
+        \hlstd{prjs} \hlkwb{<-} \hlkwd{list.dirs}\hlstd{(}\hlkwd{file.path}\hlstd{(prjs.dir,} \hlstr{"DataVisExamples"}\hlstd{),} \hlkwc{full} \hlstd{= T,}
+            \hlkwc{recursive} \hlstd{= F)}
+        \hlstd{prjs} \hlkwb{<-} \hlstd{prjs[}\hlopt{!}\hlstd{(}\hlkwd{basename}\hlstd{(prjs)} \hlopt{%in%} \hlstd{exclude)]}
+        \hlstd{prjs.img} \hlkwb{<-} \hlkwd{lapply}\hlstd{(}\hlnum{1}\hlopt{:}\hlkwd{length}\hlstd{(prjs),} \hlkwa{function}\hlstd{(}\hlkwc{x}\hlstd{,} \hlkwc{files}\hlstd{,} \hlkwc{imgDir}\hlstd{)} \hlkwd{list.files}\hlstd{(}\hlkwc{path} \hlstd{=} \hlkwd{file.path}\hlstd{(files[x],}
+            \hlstd{imgDir),} \hlkwc{recursive} \hlstd{=} \hlnum{FALSE}\hlstd{),} \hlkwc{files} \hlstd{= prjs,} \hlkwc{imgDir} \hlstd{= img.loc)}
+        \hlstd{prjs} \hlkwb{<-} \hlkwd{basename}\hlstd{(prjs)}
+        \hlstd{filename} \hlkwb{<-} \hlkwd{tolower}\hlstd{(}\hlkwd{paste0}\hlstd{(}\hlstr{"gallery-"}\hlstd{,} \hlkwd{gsub}\hlstd{(}\hlstr{" "}\hlstd{,} \hlstr{"-"}\hlstd{,} \hlkwd{gsub}\hlstd{(}\hlstr{" - "}\hlstd{,} \hlstr{" "}\hlstd{,}
+            \hlstd{prjs)),} \hlstr{".html"}\hlstd{))}
+    \hlstd{\}}
     \hlstd{gh.url} \hlkwb{<-} \hlkwd{file.path}\hlstd{(}\hlstr{"https://github.com"}\hlstd{, github.user, gh.url.tail)}
-    \hlstd{x} \hlkwb{<-} \hlkwd{paste0}\hlstd{(}\hlstr{"<div class=\textbackslash{}"container\textbackslash{}">\textbackslash{}n  <div class=\textbackslash{}"row\textbackslash{}">\textbackslash{}n    <div class=\textbackslash{}"col-lg-12\textbackslash{}">\textbackslash{}n      <div class=\textbackslash{}"page-header\textbackslash{}">\textbackslash{}n        <h3 id=\textbackslash{}""}\hlstd{,}
-        \hlstd{type,} \hlstr{"\textbackslash{}">"}\hlstd{, main,} \hlstr{"</h3>\textbackslash{}n      </div>\textbackslash{}n    </div>\textbackslash{}n  </div>\textbackslash{}n  "}\hlstd{)}
 
     \hlstd{fillRow} \hlkwb{<-} \hlkwa{function}\hlstd{(}\hlkwc{i}\hlstd{,} \hlkwc{...}\hlstd{) \{}
-        \hlstd{prj} \hlkwb{<-} \hlstd{prjs[i]}
-        \hlkwa{if} \hlstd{(type} \hlopt{==} \hlstr{"apps"}\hlstd{)}
-            \hlstd{img.src} \hlkwb{<-} \hlkwd{file.path}\hlstd{(}\hlkwd{gsub}\hlstd{(}\hlstr{"/tree/"}\hlstd{,} \hlstr{"/raw/"}\hlstd{, gh.url), img.loc, prjs.img[i])}
-        \hlkwa{if} \hlstd{(type} \hlopt{==} \hlstr{"projects"}\hlstd{)}
-            \hlstd{img.src} \hlkwb{<-} \hlkwd{file.path}\hlstd{(gh.url, prj,} \hlstr{"raw/master/plots"}\hlstd{, prjs.img[i])}
-        \hlstd{web.url} \hlkwb{<-} \hlkwd{file.path}\hlstd{(web.url, prj)}
+        \hlstd{prj} \hlkwb{<-} \hlstd{panels[i]}
         \hlstd{dots} \hlkwb{<-} \hlkwd{list}\hlstd{(...)}
         \hlkwa{if} \hlstd{(}\hlkwd{is.null}\hlstd{(dots}\hlopt{$}\hlstd{col))}
             \hlstd{col} \hlkwb{<-} \hlstr{"warning"} \hlkwa{else} \hlstd{col} \hlkwb{<-} \hlstd{dots}\hlopt{$}\hlstd{col}
         \hlkwa{if} \hlstd{(}\hlkwd{is.null}\hlstd{(dots}\hlopt{$}\hlstd{panel.main))}
-            \hlstd{panel.main} \hlkwb{<-} \hlkwd{gsub}\hlstd{(}\hlstr{"_"}\hlstd{,} \hlstr{" "}\hlstd{, prj)} \hlkwa{else} \hlstd{panel.main} \hlkwb{<-} \hlstd{dots}\hlopt{$}\hlstd{panel.main}
+            \hlstd{panel.main} \hlkwb{<-} \hlkwd{gsub}\hlstd{(}\hlstr{" - "}\hlstd{,} \hlstr{": "}\hlstd{,} \hlkwd{gsub}\hlstd{(}\hlstr{"_"}\hlstd{,} \hlstr{" "}\hlstd{, prj))} \hlkwa{else} \hlstd{panel.main} \hlkwb{<-} \hlstd{dots}\hlopt{$}\hlstd{panel.main}
         \hlkwa{if} \hlstd{(}\hlkwd{length}\hlstd{(panel.main)} \hlopt{>} \hlnum{1}\hlstd{)}
             \hlstd{panel.main} \hlkwb{<-} \hlstd{panel.main[i]}
-        \hlstd{x} \hlkwb{<-} \hlkwd{paste0}\hlstd{(}\hlstr{"<div class=\textbackslash{}"col-lg-4\textbackslash{}">\textbackslash{}n\textbackslash{}t\textbackslash{}t  <div class=\textbackslash{}"bs-component\textbackslash{}">\textbackslash{}n\textbackslash{}t\textbackslash{}t\textbackslash{}t<div class=\textbackslash{}"panel panel-"}\hlstd{,}
-            \hlstd{col,} \hlstr{"\textbackslash{}">\textbackslash{}n\textbackslash{}t\textbackslash{}t\textbackslash{}t  <div class=\textbackslash{}"panel-heading\textbackslash{}"><h3 class=\textbackslash{}"panel-title\textbackslash{}">"}\hlstd{,}
-            \hlstd{panel.main,} \hlstr{"</h3>\textbackslash{}n\textbackslash{}t\textbackslash{}t\textbackslash{}t  </div>\textbackslash{}n\textbackslash{}t\textbackslash{}t\textbackslash{}t  <div class=\textbackslash{}"panel-body\textbackslash{}"><a href=\textbackslash{}""}\hlstd{,}
-            \hlstd{web.url,} \hlstr{"\textbackslash{}""}\hlstd{, target,} \hlstr{"><img src=\textbackslash{}""}\hlstd{, img.src,} \hlstr{"\textbackslash{}" alt=\textbackslash{}""}\hlstd{, prj,}
-            \hlstr{"\textbackslash{}" width=100% height=200px></a><p></p>\textbackslash{}n\textbackslash{}t\textbackslash{}t\textbackslash{}t\textbackslash{}t<div class=\textbackslash{}"btn-group btn-group-justified\textbackslash{}">\textbackslash{}n\textbackslash{}t\textbackslash{}t\textbackslash{}t\textbackslash{}t  <a href=\textbackslash{}""}\hlstd{,}
-            \hlstd{web.url,} \hlstr{"\textbackslash{}""}\hlstd{, target,} \hlstr{" class=\textbackslash{}"btn btn-success\textbackslash{}">"}\hlstd{, go.label,}
-            \hlstr{"</a>\textbackslash{}n\textbackslash{}t\textbackslash{}t\textbackslash{}t\textbackslash{}t  <a href=\textbackslash{}""}\hlstd{,} \hlkwd{file.path}\hlstd{(gh.url, prj),} \hlstr{"\textbackslash{}" class=\textbackslash{}"btn btn-info\textbackslash{}">Github</a>\textbackslash{}n\textbackslash{}t\textbackslash{}t\textbackslash{}t\textbackslash{}t</div>\textbackslash{}n\textbackslash{}t\textbackslash{}t\textbackslash{}t  </div>\textbackslash{}n\textbackslash{}t\textbackslash{}t\textbackslash{}t</div>\textbackslash{}n\textbackslash{}t\textbackslash{}t  </div>\textbackslash{}n\textbackslash{}t\textbackslash{}t</div>"}\hlstd{)}
+        \hlkwa{if} \hlstd{(type} \hlopt{==} \hlstr{"apps"}\hlstd{)}
+            \hlstd{img.src} \hlkwb{<-} \hlkwd{file.path}\hlstd{(}\hlkwd{gsub}\hlstd{(}\hlstr{"/tree/"}\hlstd{,} \hlstr{"/raw/"}\hlstd{, gh.url), img.loc, prjs.img[i])}
+        \hlkwa{if} \hlstd{(type} \hlopt{==} \hlstr{"projects"}\hlstd{)}
+            \hlstd{img.src} \hlkwb{<-} \hlkwd{file.path}\hlstd{(gh.url, prj,} \hlstr{"raw/master/plots"}\hlstd{, prjs.img[i])}
+        \hlkwa{if} \hlstd{(type} \hlopt{==} \hlstr{"datavis"}\hlstd{)}
+            \hlstd{img.src} \hlkwb{<-} \hlkwd{file.path}\hlstd{(}\hlkwd{gsub}\hlstd{(}\hlstr{"/tree/"}\hlstd{,} \hlstr{"/raw/"}\hlstd{, gh.url), img.loc, prjs.img[i])}
+        \hlkwa{if} \hlstd{(type} \hlopt{!=} \hlstr{"gallery"}\hlstd{) \{}
+            \hlkwa{if} \hlstd{(type} \hlopt{==} \hlstr{"datavis"}\hlstd{)}
+                \hlstd{pfx} \hlkwb{<-} \hlstr{"gallery-"} \hlkwa{else} \hlstd{pfx} \hlkwb{<-} \hlstr{""}
+            \hlstd{web.url} \hlkwb{<-} \hlkwd{file.path}\hlstd{(web.url,} \hlkwd{tolower}\hlstd{(}\hlkwd{paste0}\hlstd{(pfx,} \hlkwd{gsub}\hlstd{(}\hlstr{"_"}\hlstd{,} \hlstr{"-"}\hlstd{,}
+                \hlkwd{gsub}\hlstd{(}\hlstr{"_-_"}\hlstd{,} \hlstr{"-"}\hlstd{, prj)),} \hlstr{".html"}\hlstd{)))}
+        \hlstd{\}} \hlkwa{else} \hlstd{\{}
+            \hlstd{prj} \hlkwb{<-} \hlstd{prjs[p]}
+            \hlstd{img.src} \hlkwb{<-} \hlkwd{file.path}\hlstd{(}\hlkwd{gsub}\hlstd{(}\hlstr{"/tree/"}\hlstd{,} \hlstr{"/raw/"}\hlstd{, gh.url), prjs[p], img.loc,}
+                \hlstd{panels[i])}
+            \hlstd{web.url} \hlkwb{<-} \hlkwd{file.path}\hlstd{(}\hlkwd{gsub}\hlstd{(}\hlstr{"/tree/"}\hlstd{,} \hlstr{"/raw/"}\hlstd{, gh.url), prjs[p], panels[i])}
+            \hlkwa{if} \hlstd{(lightbox)}
+                \hlstd{atts} \hlkwb{<-} \hlkwd{gsub}\hlstd{(}\hlstr{"ID"}\hlstd{,} \hlkwd{gsub}\hlstd{(}\hlstr{" - "}\hlstd{,} \hlstr{": "}\hlstd{,} \hlkwd{gsub}\hlstd{(}\hlstr{"_"}\hlstd{,} \hlstr{" "}\hlstd{, prjs[p])),}
+                  \hlstd{atts1)} \hlkwa{else} \hlstd{atts} \hlkwb{<-} \hlstd{atts1}
+        \hlstd{\}}
+        \hlkwa{if} \hlstd{(include.titles) \{}
+            \hlstd{panel.title} \hlkwb{<-} \hlkwd{paste0}\hlstd{(}\hlstr{"<div class=\textbackslash{}"panel-heading\textbackslash{}"><h3 class=\textbackslash{}"panel-title\textbackslash{}">"}\hlstd{,}
+                \hlstd{panel.main,} \hlstr{"</h3>\textbackslash{}n          </div>\textbackslash{}n          "}\hlstd{)}
+        \hlstd{\}} \hlkwa{else} \hlstd{panel.title} \hlkwb{<-} \hlstr{""}
+        \hlkwa{if} \hlstd{(include.buttons) \{}
+            \hlstd{panel.buttons} \hlkwb{<-} \hlkwd{paste0}\hlstd{(}\hlstr{"<div class=\textbackslash{}"btn-group btn-group-justified\textbackslash{}">\textbackslash{}n\textbackslash{}t\textbackslash{}t\textbackslash{}t<a href=\textbackslash{}""}\hlstd{,}
+                \hlstd{web.url,} \hlstr{"\textbackslash{}""}\hlstd{, atts,} \hlstr{" class=\textbackslash{}"btn btn-success\textbackslash{}">"}\hlstd{, go.label,}
+                \hlstr{"</a>\textbackslash{}n\textbackslash{}t\textbackslash{}t\textbackslash{}t<a href=\textbackslash{}""}\hlstd{,} \hlkwd{file.path}\hlstd{(gh.url, prj),} \hlstr{"\textbackslash{}" class=\textbackslash{}"btn btn-info\textbackslash{}">Github</a>\textbackslash{}n\textbackslash{}t\textbackslash{}t  </div>\textbackslash{}n        "}\hlstd{)}
+        \hlstd{\}} \hlkwa{else} \hlstd{panel.buttons} \hlkwb{<-} \hlstr{""}
+        \hlstd{x} \hlkwb{<-} \hlkwd{paste0}\hlstd{(}\hlstr{"    <div class=\textbackslash{}"col-lg-4\textbackslash{}">\textbackslash{}n      <div class=\textbackslash{}"bs-component\textbackslash{}">\textbackslash{}n        <div class=\textbackslash{}"panel panel-"}\hlstd{,}
+            \hlstd{col,} \hlstr{"\textbackslash{}">\textbackslash{}n          "}\hlstd{, panel.title,} \hlstr{"<div class=\textbackslash{}"panel-body\textbackslash{}"><a href=\textbackslash{}""}\hlstd{,}
+            \hlstd{web.url,} \hlstr{"\textbackslash{}""}\hlstd{, atts,} \hlstr{"><img src=\textbackslash{}""}\hlstd{, img.src,} \hlstr{"\textbackslash{}" alt=\textbackslash{}""}\hlstd{, panel.main,}
+            \hlstr{"\textbackslash{}" width=100% height=200px></a><p></p>\textbackslash{}n          "}\hlstd{, panel.buttons,}
+            \hlstr{"  </div>\textbackslash{}n        </div>\textbackslash{}n      </div>\textbackslash{}n    </div>\textbackslash{}n  "}\hlstd{)}
     \hlstd{\}}
 
-    \hlstd{n} \hlkwb{<-} \hlkwd{length}\hlstd{(prjs)}
-    \hlstd{seq1} \hlkwb{<-} \hlkwd{seq}\hlstd{(}\hlnum{1}\hlstd{, n,} \hlkwc{by} \hlstd{=} \hlnum{3}\hlstd{)}
-    \hlstd{y} \hlkwb{<-} \hlkwd{c}\hlstd{()}
-    \hlkwa{for} \hlstd{(j} \hlkwa{in} \hlnum{1}\hlopt{:}\hlkwd{length}\hlstd{(seq1)) \{}
-        \hlstd{ind} \hlkwb{<-} \hlstd{seq1[j]}\hlopt{:}\hlstd{(seq1[j]} \hlopt{+} \hlnum{2}\hlstd{)}
-        \hlstd{ind} \hlkwb{<-} \hlstd{ind[ind} \hlopt{%in%} \hlnum{1}\hlopt{:}\hlstd{n]}
-        \hlstd{y} \hlkwb{<-} \hlkwd{c}\hlstd{(y,} \hlkwd{paste0}\hlstd{(}\hlstr{"<div class=\textbackslash{}"row\textbackslash{}">\textbackslash{}n"}\hlstd{,} \hlkwd{paste0}\hlstd{(}\hlkwd{sapply}\hlstd{(ind, fillRow,}
-            \hlstd{...),} \hlkwc{collapse} \hlstd{=} \hlstr{"\textbackslash{}n"}\hlstd{),} \hlstr{"</div>\textbackslash{}n"}\hlstd{))}
+    \hlkwa{for} \hlstd{(p} \hlkwa{in} \hlnum{1}\hlopt{:}\hlkwd{length}\hlstd{(filename)) \{}
+        \hlkwa{if} \hlstd{(type} \hlopt{==} \hlstr{"gallery"}\hlstd{) \{}
+            \hlstd{panels} \hlkwb{<-} \hlstd{prjs.img[[p]]}
+            \hlstd{main} \hlkwb{<-} \hlkwd{gsub}\hlstd{(}\hlstr{" - "}\hlstd{,} \hlstr{": "}\hlstd{,} \hlkwd{gsub}\hlstd{(}\hlstr{"_"}\hlstd{,} \hlstr{" "}\hlstd{, prjs[p]))}
+        \hlstd{\}} \hlkwa{else} \hlstd{panels} \hlkwb{<-} \hlstd{prjs}
+        \hlstd{n} \hlkwb{<-} \hlkwd{length}\hlstd{(panels)}
+        \hlstd{seq1} \hlkwb{<-} \hlkwd{seq}\hlstd{(}\hlnum{1}\hlstd{, n,} \hlkwc{by} \hlstd{=} \hlnum{3}\hlstd{)}
+        \hlstd{x} \hlkwb{<-} \hlkwd{paste0}\hlstd{(}\hlstr{"<div class=\textbackslash{}"container\textbackslash{}">\textbackslash{}n  <div class=\textbackslash{}"row\textbackslash{}">\textbackslash{}n    <div class=\textbackslash{}"col-lg-12\textbackslash{}">\textbackslash{}n      <div class=\textbackslash{}"page-header\textbackslash{}">\textbackslash{}n        <h3 id=\textbackslash{}""}\hlstd{,}
+            \hlstd{type,} \hlstr{"\textbackslash{}">"}\hlstd{, main,} \hlstr{"</h3>\textbackslash{}n      </div>\textbackslash{}n    </div>\textbackslash{}n  </div>\textbackslash{}n  "}\hlstd{)}
+        \hlstd{y} \hlkwb{<-} \hlkwd{c}\hlstd{()}
+        \hlkwa{for} \hlstd{(j} \hlkwa{in} \hlnum{1}\hlopt{:}\hlkwd{length}\hlstd{(seq1)) \{}
+            \hlstd{ind} \hlkwb{<-} \hlstd{seq1[j]}\hlopt{:}\hlstd{(seq1[j]} \hlopt{+} \hlnum{2}\hlstd{)}
+            \hlstd{ind} \hlkwb{<-} \hlstd{ind[ind} \hlopt{%in%} \hlnum{1}\hlopt{:}\hlstd{n]}
+            \hlstd{y} \hlkwb{<-} \hlkwd{c}\hlstd{(y,} \hlkwd{paste0}\hlstd{(}\hlstr{"<div class=\textbackslash{}"row\textbackslash{}">\textbackslash{}n"}\hlstd{,} \hlkwd{paste0}\hlstd{(}\hlkwd{sapply}\hlstd{(ind, fillRow,}
+                \hlstd{...),} \hlkwc{collapse} \hlstd{=} \hlstr{"\textbackslash{}n"}\hlstd{),} \hlstr{"</div>\textbackslash{}n"}\hlstd{))}
+        \hlstd{\}}
+        \hlstd{z} \hlkwb{<-} \hlstr{"</div>\textbackslash{}n"}
+        \hlkwd{sink}\hlstd{(}\hlkwd{file.path}\hlstd{(outDir, filename[p]))}
+        \hlkwd{sapply}\hlstd{(}\hlkwd{c}\hlstd{(x, y, z), cat)}
+        \hlkwd{sink}\hlstd{()}
+        \hlkwd{cat}\hlstd{(}\hlstr{"div container html file created.\textbackslash{}n"}\hlstd{)}
     \hlstd{\}}
-    \hlstd{z} \hlkwb{<-} \hlstr{"</div>\textbackslash{}n"}
-    \hlkwd{sink}\hlstd{(}\hlkwd{file.path}\hlstd{(outDir, filename))}
-    \hlkwd{sapply}\hlstd{(}\hlkwd{c}\hlstd{(x, y, z), cat)}
-    \hlkwd{sink}\hlstd{()}
-    \hlkwd{cat}\hlstd{(}\hlstr{"div container html file created.\textbackslash{}n"}\hlstd{)}
 \hlstd{\}}
 \end{alltt}
 \end{kframe}
@@ -1025,8 +1176,8 @@ This function makes the more specific \texttt{genAppDiv} redundant and will like
 
 \subsubsection{htmlHead}
 
-\texttt{htmlHead} .
-
+\texttt{htmlHead} is useful for including javascript and CSS stylesheets in the head of an html document.
+Stylesheet arguments can be passed along as well in proper order.
 
 \begin{knitrout}
 \definecolor{shadecolor}{rgb}{0, 0.169, 0.212}\color{fgcolor}\begin{kframe}
@@ -1071,7 +1222,8 @@ This function makes the more specific \texttt{genAppDiv} redundant and will like
 
 \subsubsection{htmlBodyTop}
 
-\texttt{htmlBodyTop} .
+\texttt{htmlBodyTop} currently is used for including custom CSS and a background image in the html body.
+CSS can be included as a text string or as a path to a CSS file.
 
 
 \begin{knitrout}
@@ -1101,7 +1253,7 @@ This function makes the more specific \texttt{genAppDiv} redundant and will like
 
 \subsubsection{htmlBottom}
 
-\texttt{htmlBottom} .
+\texttt{htmlBottom} does not do anything else at this time other than close up the html document.
 
 
 \begin{knitrout}
@@ -1109,49 +1261,36 @@ This function makes the more specific \texttt{genAppDiv} redundant and will like
 \begin{alltt}
 \hlstd{htmlBottom} \hlkwb{<-} \hlkwa{function}\hlstd{(}\hlkwc{...}\hlstd{) \{}
     \hlcom{# temporary}
+    \hlstr{"</body>\textbackslash{}n\textbackslash{}t</html>"}
+\hlstd{\}}
+\end{alltt}
+\end{kframe}
+\end{knitrout}
 
+\subsubsection{genUserPage}
 
+\texttt{genUserPage} generates a Github user account web page by combining precompiled html files of container elements made using \texttt{genPanelDiv}
+as well as various lingering hardcoded elements for my own work.
+I use this function to produce my main Github user page, the \texttt{index.html}, as well as supplemental gallery pages.
 
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
+\begin{knitrout}
+\definecolor{shadecolor}{rgb}{0, 0.169, 0.212}\color{fgcolor}\begin{kframe}
+\begin{alltt}
+\hlstd{genUserPage} \hlkwb{<-} \hlkwa{function}\hlstd{(}\hlkwc{file} \hlstd{=} \hlstr{"C:/github/leonawicz.github.io/index.html"}\hlstd{,} \hlkwc{containers} \hlstd{=} \hlkwa{NULL}\hlstd{,}
+    \hlkwc{navbar} \hlstd{=} \hlstr{""}\hlstd{,} \hlkwc{...}\hlstd{) \{}
+    \hlstd{x1} \hlkwb{<-} \hlkwd{htmlHead}\hlstd{(...)}
+    \hlstd{x2} \hlkwb{<-} \hlkwd{htmlBodyTop}\hlstd{(...)}
+    \hlkwa{if} \hlstd{(}\hlopt{!}\hlkwd{is.null}\hlstd{(containers))}
+        \hlstd{x3} \hlkwb{<-} \hlkwd{sapply}\hlstd{(containers,} \hlkwa{function}\hlstd{(}\hlkwc{x}\hlstd{)} \hlkwd{paste0}\hlstd{(}\hlkwd{paste0}\hlstd{(}\hlkwd{readLines}\hlstd{(x),} \hlkwc{collapse} \hlstd{=} \hlstr{"\textbackslash{}n"}\hlstd{),}
+            \hlstr{"\textbackslash{}n\textbackslash{}n"}\hlstd{))} \hlkwa{else} \hlstd{x3} \hlkwb{<-} \hlstr{""}
+    \hlstd{x4} \hlkwb{<-} \hlkwd{htmlBottom}\hlstd{(...)}
+    \hlstd{nb} \hlkwb{<-} \hlkwa{if} \hlstd{(}\hlkwd{file.exists}\hlstd{(navbar)} \hlopt{&&} \hlkwd{substr}\hlstd{(navbar,} \hlkwd{nchar}\hlstd{(navbar)} \hlopt{-} \hlnum{4}\hlstd{,} \hlkwd{nchar}\hlstd{(navbar))} \hlopt{==}
+        \hlstr{".html"}\hlstd{)}
+        \hlstd{nb} \hlkwb{<-} \hlkwd{paste0}\hlstd{(}\hlkwd{paste0}\hlstd{(}\hlkwd{readLines}\hlstd{(navbar),} \hlkwc{collapse} \hlstd{=} \hlstr{"\textbackslash{}n"}\hlstd{),} \hlstr{"\textbackslash{}n\textbackslash{}n"}\hlstd{)}
+    \hlkwd{sink}\hlstd{(file)}
+    \hlkwd{sapply}\hlstd{(}\hlkwd{c}\hlstd{(x1, x2, nb, x3, x4), cat)}
+    \hlkwd{sink}\hlstd{()}
+    \hlkwd{cat}\hlstd{(}\hlstr{"Github User page html file created.\textbackslash{}n"}\hlstd{)}
 \hlstd{\}}
 \end{alltt}
 \end{kframe}

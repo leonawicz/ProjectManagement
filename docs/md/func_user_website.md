@@ -120,8 +120,9 @@ This function makes the more specific `genAppDiv` redundant and will likely repl
 ```r
 genPanelDiv <- function(outDir, type = "projects", main = "Projects", github.user = "leonawicz", 
     prjs.dir = "C:/github", exclude = c("leonawicz.github.io", "shiny-apps", 
-        "DataVisExamples", ".git", "_images"), img.loc = "_images/cropped", 
-    lightbox = FALSE, ...) {
+        "DataVisExamples", ".git", "_images"), img.loc = "_images/small", lightbox = FALSE, 
+    include.buttons = TRUE, include.titles = TRUE, ...) {
+    
     stopifnot(github.user %in% c("leonawicz", "ua-snap"))
     if (type == "apps") {
         filename <- "apps_container.html"
@@ -164,11 +165,11 @@ genPanelDiv <- function(outDir, type = "projects", main = "Projects", github.use
         prjs <- list.dirs(file.path(prjs.dir, "DataVisExamples"), full = T, 
             recursive = F)
         prjs <- prjs[!(basename(prjs) %in% exclude)]
-        prjs.img <- lapply(1:length(prjs), function(x, files) list.files(path = files[x]), 
-            files = prjs)
+        prjs.img <- lapply(1:length(prjs), function(x, files, imgDir) list.files(path = file.path(files[x], 
+            imgDir), recursive = FALSE), files = prjs, imgDir = img.loc)
         prjs <- basename(prjs)
-        filename <- paste0("gallery-", gsub(" ", "-", gsub(" - ", " ", prjs)), 
-            ".html")
+        filename <- tolower(paste0("gallery-", gsub(" ", "-", gsub(" - ", " ", 
+            prjs)), ".html"))
     }
     gh.url <- file.path("https://github.com", github.user, gh.url.tail)
     
@@ -190,23 +191,31 @@ genPanelDiv <- function(outDir, type = "projects", main = "Projects", github.use
         if (type != "gallery") {
             if (type == "datavis") 
                 pfx <- "gallery-" else pfx <- ""
-            web.url <- file.path(web.url, paste0(pfx, gsub("_", "-", gsub("_-_", 
-                "-", prj)), ".html"))
+            web.url <- file.path(web.url, tolower(paste0(pfx, gsub("_", "-", 
+                gsub("_-_", "-", prj)), ".html")))
         } else {
             prj <- prjs[p]
-            img.src <- file.path(gsub("/tree/", "/raw/", gh.url), prjs[p], panels[i])
-            web.url <- img.src
+            img.src <- file.path(gsub("/tree/", "/raw/", gh.url), prjs[p], img.loc, 
+                panels[i])
+            web.url <- file.path(gsub("/tree/", "/raw/", gh.url), prjs[p], panels[i])
             if (lightbox) 
                 atts <- gsub("ID", gsub(" - ", ": ", gsub("_", " ", prjs[p])), 
                   atts1) else atts <- atts1
         }
-        x <- paste0("<div class=\"col-lg-4\">\n\t\t  <div class=\"bs-component\">\n\t\t\t<div class=\"panel panel-", 
-            col, "\">\n\t\t\t  <div class=\"panel-heading\"><h3 class=\"panel-title\">", 
-            panel.main, "</h3>\n\t\t\t  </div>\n\t\t\t  <div class=\"panel-body\"><a href=\"", 
+        if (include.titles) {
+            panel.title <- paste0("<div class=\"panel-heading\"><h3 class=\"panel-title\">", 
+                panel.main, "</h3>\n          </div>\n          ")
+        } else panel.title <- ""
+        if (include.buttons) {
+            panel.buttons <- paste0("<div class=\"btn-group btn-group-justified\">\n\t\t\t<a href=\"", 
+                web.url, "\"", atts, " class=\"btn btn-success\">", go.label, 
+                "</a>\n\t\t\t<a href=\"", file.path(gh.url, prj), "\" class=\"btn btn-info\">Github</a>\n\t\t  </div>\n        ")
+        } else panel.buttons <- ""
+        x <- paste0("    <div class=\"col-lg-4\">\n      <div class=\"bs-component\">\n        <div class=\"panel panel-", 
+            col, "\">\n          ", panel.title, "<div class=\"panel-body\"><a href=\"", 
             web.url, "\"", atts, "><img src=\"", img.src, "\" alt=\"", panel.main, 
-            "\" width=100% height=200px></a><p></p>\n\t\t\t\t<div class=\"btn-group btn-group-justified\">\n\t\t\t\t  <a href=\"", 
-            web.url, "\"", atts, " class=\"btn btn-success\">", go.label, "</a>\n\t\t\t\t  <a href=\"", 
-            file.path(gh.url, prj), "\" class=\"btn btn-info\">Github</a>\n\t\t\t\t</div>\n\t\t\t  </div>\n\t\t\t</div>\n\t\t  </div>\n\t\t</div>")
+            "\" width=100% height=200px></a><p></p>\n          ", panel.buttons, 
+            "  </div>\n        </div>\n      </div>\n    </div>\n  ")
     }
     
     for (p in 1:length(filename)) {

@@ -42,16 +42,20 @@ This function will probably be removed in favor of the more general \texttt{genP
 
 \texttt{genPanelDiv} generates an html file storing a container div element which in its current state of development organizes two types of content: \textbf{R} projects and Shiny web applications.
 
-The \texttt{type} argument can be either \texttt{projects} or \texttt{apps} and essentially bifurcates the behavior of \texttt{genPanelDiv}.
-The purpose of the function is to generate an html file defining a container div element to display and reference either my \textbf{R} projects or my Shiny apps.
+The \texttt{type} argument can be one of \texttt{projects}, \texttt{apps}, \texttt{datavis}, or \texttt{gallery}.
+The purpose of the function is to generate an html file defining a container div element to display and reference either my \textbf{R} projects, my Shiny apps, or my example visualization galleries.
+
+\subsubsubsection{Projects}
 
 For projects, the function scans a directory of local repositories and takes any directories found to be the names of projects.
 There is an \texttt{exclude} argument for dropping any known directories that are to be avoided.
 My defaults are \texttt{exclude="leonawicz.github.io", "shiny-apps"} since the first is just a local repository for my Github user account web site and not a "project" in the same sense of my other projects
 and the second is the local repository which is scanned by \texttt{genPanelDiv} when \texttt{type="apps"}.
 
+\subsubsubsection{Apps}
+
 For apps, the function scans a directory of Shiny app subdirectories.
-Unlike for projects, where \texttt{genPanelDiv} scans a directory of multiple local repositories, this apps directory should be a specific local repository. The apps contained within are not inndividual repositories.
+Unlike for projects, where \texttt{genPanelDiv} scans a directory of multiple local repositories, this apps directory should be a specific local repository. The apps contained within are not individual repositories.
 I have taken this approach for now simply because this is how my apps tend to be stored.
 
 Specifically, the \texttt{genAppDiv} looks for a named directory of image files.
@@ -63,6 +67,21 @@ The container element includes an image link to each app's url as well as a link
 Although the app scans for images in a local repository, the images referenced in the output html are of course not local.
 They point to the same images stored on Github, hence why it is useful for the local directory of apps to be a Github repository.
 
+\subsubsubsection{DataVis and Galleries}
+
+Whereas the first three types generate containers for the main Github user web page, I use \texttt{type="gallery"} to make a separate container html file of graphics for each panel occurring in my \texttt{datavis} container.
+These containers tend to be added to unique web pages.
+\texttt{datavis} is for highlighting a number of galleries whereas \texttt{gallery} is for the galleries' respective contents.
+
+In order to use \texttt{type="datavis"} there must be a data visualization local repository.
+Mine is named \texttt{DataVisualizationExamples}, evident from the hardcoding currently in place within this function.
+Similar to when \texttt{type="apps"}, this repository includes a directory of images, in t his case one image for each gallery.
+Each image in this directory is named such that it identically matches another the name of a gallery images directory containing multiple images.
+As with \texttt{type="apps"}, gallery directories are only included if a corresponding thumbnail image in the images directory exists.
+
+When \texttt{type="gallery"}, the behavior of \texttt{genPanelDiv} is most unique.
+For each gallery which exists, the function will make a unique html file with a gallery container element.
+
 This function makes the more specific \texttt{genAppDiv} redundant and will likely replace it.
 
 <<fun_genPanelDiv>>=
@@ -70,15 +89,16 @@ This function makes the more specific \texttt{genAppDiv} redundant and will like
 
 \subsubsection{htmlHead}
 
-\texttt{htmlHead} .
-
+\texttt{htmlHead} is useful for including javascript and CSS stylesheets in the head of an html document.
+Stylesheet arguments can be passed along as well in proper order.
 
 <<fun_htmlHead>>=
 @
 
 \subsubsection{htmlBodyTop}
 
-\texttt{htmlBodyTop} .
+\texttt{htmlBodyTop} currently is used for including custom CSS and a background image in the html body.
+CSS can be included as a text string or as a path to a CSS file.
 
 
 <<fun_htmlBodyTop>>=
@@ -86,7 +106,7 @@ This function makes the more specific \texttt{genAppDiv} redundant and will like
 
 \subsubsection{htmlBottom}
 
-\texttt{htmlBottom} .
+\texttt{htmlBottom} does not do anything else at this time other than close up the html document.
 
 
 <<fun_htmlBottom>>=
@@ -94,8 +114,9 @@ This function makes the more specific \texttt{genAppDiv} redundant and will like
 
 \subsubsection{genUserPage}
 
-\texttt{genUserPage} .
-
+\texttt{genUserPage} generates a Github user account web page by combining precompiled html files of container elements made using \texttt{genPanelDiv}
+as well as various lingering hardcoded elements for my own work.
+I use this function to produce my main Github user page, the \texttt{index.html}, as well as supplemental gallery pages.
 
 <<fun_genUserPage>>=
 @

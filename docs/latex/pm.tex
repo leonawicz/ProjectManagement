@@ -164,4 +164,140 @@ See [website-related functions](func\_website.html "website-related functions").
 \end{kframe}
 \end{knitrout}
 
+\subsection{Knit documents}
+Both Rmd and Rnw files can be knitted to various formats.
+Rmd and Rnw files can also be converted back and forth, with notable limitations.
+Files can be reorganized after knitting.
+
+\begin{knitrout}
+\definecolor{shadecolor}{rgb}{0, 0.169, 0.212}\color{fgcolor}\begin{kframe}
+\begin{alltt}
+\hlkwd{library}\hlstd{(rmarkdown)}
+\hlkwd{library}\hlstd{(knitr)}
+\hlkwd{setwd}\hlstd{(rmd.path)}
+
+\hlcom{# R scripts files.r <- list.files('../../code', pattern='.R$', full=T)}
+
+\hlcom{# Rmd files}
+\hlstd{files.Rmd} \hlkwb{<-} \hlkwd{list.files}\hlstd{(}\hlkwc{pattern} \hlstd{=} \hlstr{".Rmd$"}\hlstd{,} \hlkwc{full} \hlstd{= T)}
+
+\hlcom{# potential non-Rmd directories for writing various output files outtype <-}
+\hlcom{# file.path(dirname(getwd()), list.dirs('../', full=F, recursive=F)) outtype}
+\hlcom{# <- outtype[basename(outtype)!='Rmd']}
+\end{alltt}
+\end{kframe}
+\end{knitrout}
+
+\begin{knitrout}
+\definecolor{shadecolor}{rgb}{0, 0.169, 0.212}\color{fgcolor}\begin{kframe}
+\begin{alltt}
+\hlcom{# write all yaml front-matter-specified outputs to Rmd directory for all Rmd}
+\hlcom{# files}
+\hlkwd{lapply}\hlstd{(files.Rmd, render,} \hlkwc{output_format} \hlstd{=} \hlstr{"all"}\hlstd{)}
+\hlkwd{moveDocs}\hlstd{(}\hlkwc{path.docs} \hlstd{= docs.path)}
+
+\hlcom{# if also making PDFs for a project, speed up the Rmd to Rnw file}
+\hlcom{# conversion/duplication}
+\hlstd{rnw.path} \hlkwb{<-} \hlkwd{file.path}\hlstd{(docs.path,} \hlstr{"Rnw"}\hlstd{)}
+\hlkwd{setwd}\hlstd{(rnw.path)}
+\hlcom{# themes <- knit_theme$get()}
+\hlstd{highlight} \hlkwb{<-} \hlstr{"solarized-dark"}
+\hlkwd{convertDocs}\hlstd{(}\hlkwc{path} \hlstd{= rmd.path,} \hlkwc{emphasis} \hlstd{=} \hlstr{"replace"}\hlstd{,} \hlkwc{overwrite} \hlstd{=} \hlnum{TRUE}\hlstd{,} \hlkwc{highlight} \hlstd{= highlight)}  \hlcom{# Take care not to reverse write}
+\hlkwd{lapply}\hlstd{(}\hlkwd{list.files}\hlstd{(}\hlkwc{pattern} \hlstd{=} \hlstr{".Rnw$"}\hlstd{), knit2pdf)}
+\hlkwd{moveDocs}\hlstd{(}\hlkwc{path.docs} \hlstd{= docs.path,} \hlkwc{type} \hlstd{=} \hlstr{"pdf"}\hlstd{,} \hlkwc{remove.latex} \hlstd{=} \hlnum{FALSE}\hlstd{)}
+\end{alltt}
+\end{kframe}
+\end{knitrout}
+
+\subsection{Prepare a Github user website}
+As mentioned, the same functions can be applied to the generation of a Github user account website just as they are used to build individual project sites.
+I am currently using two somewhat incompatible bootstrap CSS themes for my user site vs. my project sites.
+I have made some ugly "generalizations" to the code which generates container elements for each in order to accommodate this frustrating desire.
+This is primarily an issue with differences in navbar construction.
+
+I have only tested the code, and namely the navbar, with two themes, \texttt{united} and \texttt{cyborg}, and used these to generalize some of the code.
+I suspect all the other common Bootswatch themes will work once I make them permissible.
+
+\begin{knitrout}
+\definecolor{shadecolor}{rgb}{0, 0.169, 0.212}\color{fgcolor}\begin{kframe}
+\begin{alltt}
+\hlcom{# Assuming project and app repos exist and are properly prepared}
+\hlstd{user} \hlkwb{<-} \hlstr{"leonawicz"}
+\hlstd{user.site} \hlkwb{<-} \hlkwd{paste0}\hlstd{(user,} \hlstr{".github.io"}\hlstd{)}
+\hlstd{mainDir} \hlkwb{<-} \hlkwd{file.path}\hlstd{(proj.location, user.site)}
+\hlkwd{setwd}\hlstd{(}\hlkwd{file.path}\hlstd{(mainDir,} \hlstr{"assets"}\hlstd{))}
+
+\hlcom{# create projects container html file}
+\hlkwd{genPanelDiv}\hlstd{(}\hlkwc{outDir} \hlstd{=} \hlkwd{getwd}\hlstd{(),} \hlkwc{type} \hlstd{=} \hlstr{"projects"}\hlstd{,} \hlkwc{main} \hlstd{=} \hlstr{"Projects"}\hlstd{,} \hlkwc{github.user} \hlstd{= user,}
+    \hlkwc{col} \hlstd{=} \hlstr{"primary"}\hlstd{)}
+\hlcom{# create Shiny apps container html file}
+\hlkwd{genPanelDiv}\hlstd{(}\hlkwc{outDir} \hlstd{=} \hlkwd{getwd}\hlstd{(),} \hlkwc{type} \hlstd{=} \hlstr{"apps"}\hlstd{,} \hlkwc{main} \hlstd{=} \hlstr{"Shiny Apps"}\hlstd{,} \hlkwc{github.user} \hlstd{=} \hlstr{"ua-snap"}\hlstd{)}
+\hlcom{# create Data Visualizations master container html file}
+\hlkwd{genPanelDiv}\hlstd{(}\hlkwc{outDir} \hlstd{=} \hlkwd{getwd}\hlstd{(),} \hlkwc{type} \hlstd{=} \hlstr{"datavis"}\hlstd{,} \hlkwc{main} \hlstd{=} \hlstr{"Data Visualizations"}\hlstd{,}
+    \hlkwc{github.user} \hlstd{= user,} \hlkwc{col} \hlstd{=} \hlstr{"default"}\hlstd{)}
+\hlcom{# create all Gallery container html files}
+\hlkwd{genPanelDiv}\hlstd{(}\hlkwc{outDir} \hlstd{=} \hlkwd{getwd}\hlstd{(),} \hlkwc{type} \hlstd{=} \hlstr{"gallery"}\hlstd{,} \hlkwc{main} \hlstd{=} \hlstr{"Gallery"}\hlstd{,} \hlkwc{github.user} \hlstd{= user,}
+    \hlkwc{col} \hlstd{=} \hlstr{"default"}\hlstd{,} \hlkwc{img.loc} \hlstd{=} \hlstr{"small"}\hlstd{,} \hlkwc{lightbox} \hlstd{=} \hlnum{TRUE}\hlstd{,} \hlkwc{include.buttons} \hlstd{=} \hlnum{FALSE}\hlstd{,}
+    \hlkwc{include.titles} \hlstd{=} \hlnum{FALSE}\hlstd{)}
+
+\hlcom{# Specify libraries for html head 'assets' is first because it resides in}
+\hlcom{# the top-level directory where the web site html files reside.}
+\hlstd{scripts} \hlkwb{=} \hlkwd{c}\hlstd{(}\hlstr{"assets/libs/jquery-1.11.0/jquery.min.js"}\hlstd{,} \hlstr{"assets/js/bootstrap.min.js"}\hlstd{,}
+    \hlstr{"assets/js/bootswatch.js"}\hlstd{,} \hlstr{"assets/js/lightbox.min.js"}\hlstd{)}
+\hlstd{styles} \hlkwb{<-} \hlkwd{c}\hlstd{(}\hlstr{"cyborg/bootstrap.css"}\hlstd{,} \hlstr{"assets/css/bootswatch.min.css"}\hlstd{,} \hlstr{"assets/libs/font-awesome-4.1.0/css/font-awesome.css"}\hlstd{,}
+    \hlstr{"assets/css/lightbox.css"}\hlstd{)}
+\hlstd{styles.args} \hlkwb{<-} \hlkwd{list}\hlstd{(}\hlstr{""}\hlstd{,} \hlkwd{list}\hlstd{(}\hlkwc{media} \hlstd{=} \hlstr{"screen"}\hlstd{),} \hlstr{""}\hlstd{,} \hlstr{""}\hlstd{)}
+
+\hlcom{# check}
+\hlkwd{htmlHead}\hlstd{(}\hlkwc{script.paths} \hlstd{= scripts,} \hlkwc{stylesheet.paths} \hlstd{= styles,} \hlkwc{stylesheet.args} \hlstd{= styles.args)}
+
+\hlcom{# Add a background image}
+\hlstd{back.img} \hlkwb{<-} \hlstr{"assets/img/frac23.jpg"}
+\hlcom{# check}
+\hlkwd{htmlBodyTop}\hlstd{(}\hlkwc{background.image} \hlstd{= back.img)}
+
+\hlstd{github.url} \hlkwb{<-} \hlkwd{file.path}\hlstd{(}\hlstr{"https://github.com"}\hlstd{, user, user.site)}
+
+\hlcom{# Prepare navbar}
+\hlstd{nb.menu} \hlkwb{<-} \hlkwd{c}\hlstd{(}\hlstr{"Projects"}\hlstd{,} \hlstr{"Apps"}\hlstd{,} \hlstr{"Data Visualizations"}\hlstd{,} \hlstr{"Test1"}\hlstd{)}
+
+\hlstd{sub.menu} \hlkwb{<-} \hlkwd{list}\hlstd{(}\hlkwd{c}\hlstd{(}\hlstr{"empty"}\hlstd{),} \hlkwd{c}\hlstd{(}\hlstr{"empty"}\hlstd{),} \hlkwd{c}\hlstd{(}\hlstr{"empty"}\hlstd{),} \hlkwd{c}\hlstd{(}\hlstr{"A title"}\hlstd{,} \hlstr{"A page"}\hlstd{,}
+    \hlstr{"divider"}\hlstd{,} \hlstr{"Another title"}\hlstd{,} \hlstr{"Page 1"}\hlstd{,} \hlstr{"Page 2"}\hlstd{))}
+
+\hlstd{files.menu} \hlkwb{<-} \hlkwd{list}\hlstd{(}\hlkwd{c}\hlstd{(}\hlstr{"index.html#projects"}\hlstd{),} \hlkwd{c}\hlstd{(}\hlstr{"index.html#apps"}\hlstd{),} \hlkwd{c}\hlstd{(}\hlstr{"index.html#datavis"}\hlstd{),}
+    \hlkwd{c}\hlstd{(}\hlstr{"header"}\hlstd{,} \hlstr{"#"}\hlstd{,} \hlstr{"divider"}\hlstd{,} \hlstr{"header"}\hlstd{,} \hlstr{"#"}\hlstd{,} \hlstr{"#"}\hlstd{))}
+
+
+\hlcom{# Create navbar.html}
+\hlkwd{genNavbar}\hlstd{(}\hlkwc{htmlfile} \hlstd{=} \hlstr{"navbar.html"}\hlstd{,} \hlkwc{title} \hlstd{= user.site,} \hlkwc{menu} \hlstd{= nb.menu,} \hlkwc{submenus} \hlstd{= sub.menu,}
+    \hlkwc{files} \hlstd{= files.menu,} \hlkwc{theme} \hlstd{=} \hlstr{"cyborg"}\hlstd{,} \hlkwc{title.url} \hlstd{=} \hlstr{"index.html"}\hlstd{,} \hlkwc{home.url} \hlstd{=} \hlstr{"index.html"}\hlstd{,}
+    \hlkwc{site.url} \hlstd{= github.url,} \hlkwc{include.home} \hlstd{=} \hlnum{FALSE}\hlstd{)}
+
+\hlcom{# check}
+\hlkwd{htmlBottom}\hlstd{()}
+
+\hlcom{# Specify div container elements to include in body}
+\hlstd{all.containers} \hlkwb{<-} \hlkwd{list.files}\hlstd{(}\hlkwc{pattern} \hlstd{=} \hlstr{"_container.html$"}\hlstd{)}
+\hlstd{keep.main} \hlkwb{<-} \hlkwd{c}\hlstd{(}\hlstr{"about"}\hlstd{,} \hlstr{"updates"}\hlstd{,} \hlstr{"projects"}\hlstd{,} \hlstr{"apps"}\hlstd{,} \hlstr{"data-visualizations"}\hlstd{)}
+\hlstd{keep.main.ind} \hlkwb{<-} \hlkwd{match}\hlstd{(keep.main,} \hlkwd{sapply}\hlstd{(}\hlkwd{strsplit}\hlstd{(all.containers,} \hlstr{"_"}\hlstd{),} \hlstr{"[["}\hlstd{,}
+    \hlnum{1}\hlstd{))}
+\hlstd{main.containers} \hlkwb{<-} \hlstd{all.containers[keep.main.ind]}
+
+\hlstd{gallery.containers} \hlkwb{<-} \hlkwd{list.files}\hlstd{(}\hlkwc{pattern} \hlstd{=} \hlstr{"^gallery.*.html$"}\hlstd{)}
+
+\hlcom{# Create web pages}
+\hlkwd{genUserPage}\hlstd{(}\hlkwc{file} \hlstd{=} \hlkwd{file.path}\hlstd{(proj.location, user.site,} \hlstr{"index.html"}\hlstd{),} \hlkwc{navbar} \hlstd{=} \hlstr{"navbar.html"}\hlstd{,}
+    \hlkwc{containers} \hlstd{= main.containers,} \hlkwc{script.paths} \hlstd{= scripts,} \hlkwc{stylesheet.paths} \hlstd{= styles,}
+    \hlkwc{stylesheet.args} \hlstd{= styles.args,} \hlkwc{background.image} \hlstd{= back.img)}
+
+\hlstd{files.out} \hlkwb{<-} \hlkwd{gsub}\hlstd{(}\hlstr{"_"}\hlstd{,} \hlstr{"-"}\hlstd{,} \hlkwd{gsub}\hlstd{(}\hlstr{"_-_"}\hlstd{,} \hlstr{"-"}\hlstd{, gallery.containers))}
+\hlkwa{for} \hlstd{(i} \hlkwa{in} \hlnum{1}\hlopt{:}\hlkwd{length}\hlstd{(gallery.containers)) \{}
+    \hlkwd{genUserPage}\hlstd{(}\hlkwc{file} \hlstd{=} \hlkwd{file.path}\hlstd{(proj.location, user.site, files.out[i]),} \hlkwc{navbar} \hlstd{=} \hlstr{"navbar.html"}\hlstd{,}
+        \hlkwc{containers} \hlstd{= gallery.containers[i],} \hlkwc{script.paths} \hlstd{= scripts,} \hlkwc{stylesheet.paths} \hlstd{= styles,}
+        \hlkwc{stylesheet.args} \hlstd{= styles.args,} \hlkwc{background.image} \hlstd{= back.img)}
+\hlstd{\}}
+\end{alltt}
+\end{kframe}
+\end{knitrout}
+
 \end{document}

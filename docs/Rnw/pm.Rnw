@@ -52,4 +52,27 @@ See [website-related functions](func\_website.html "website-related functions").
 <<ex_website>>=
 @
 
+\subsection{Knit documents}
+Both Rmd and Rnw files can be knitted to various formats.
+Rmd and Rnw files can also be converted back and forth, with notable limitations.
+Files can be reorganized after knitting.
+
+<<knit_setup>>=
+@
+
+<<save>>=
+@
+
+\subsection{Prepare a Github user website}
+As mentioned, the same functions can be applied to the generation of a Github user account website just as they are used to build individual project sites.
+I am currently using two somewhat incompatible bootstrap CSS themes for my user site vs. my project sites.
+I have made some ugly "generalizations" to the code which generates container elements for each in order to accommodate this frustrating desire.
+This is primarily an issue with differences in navbar construction.
+
+I have only tested the code, and namely the navbar, with two themes, \texttt{united} and \texttt{cyborg}, and used these to generalize some of the code.
+I suspect all the other common Bootswatch themes will work once I make them permissible.
+
+<<ex_user_website>>=
+@
+
 \end{document}
