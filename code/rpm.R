@@ -590,8 +590,8 @@ genPanelDiv <- function(outDir, type="projects", main="Projects",
 		if(type=="projects") img.src <- file.path(gh.url, prj, "raw/master/plots", prjs.img[i])
 		if(type=="datavis") img.src <- file.path(gsub("/tree/", "/raw/", gh.url), img.loc, prjs.img[i])
 	    if(type!="gallery"){
-			if(type=="datavis") pfx <- "gallery-" else pfx <- ""
-			web.url <- file.path(web.url, tolower(paste0(pfx, gsub("_", "-", gsub("_-_", "-", prj)), ".html")))
+			if(type=="datavis") { pfx <- "gallery-"; sfx <- ".html" } else { pfx <- sfx <- "" }
+			web.url <- file.path(web.url, tolower(paste0(pfx, gsub("_", "-", gsub("_-_", "-", prj)), sfx)))
 		} else {
 			prj <- prjs[p]
 			img.src <- file.path(gsub("/tree/", "/raw/", gh.url), prjs[p], img.loc, panels[i])
