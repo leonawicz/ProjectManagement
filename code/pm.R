@@ -25,9 +25,6 @@ chunkNames(path=file.path(proj.location, proj.name, "code"), append.new=TRUE)
 
 # @knitr ex_website
 # Setup for generating a project website
-index.url <- file.path(rmd.path, "proj_intro.html") # temporary
-file.copy(index.url, file.path(rmd.path, "index.html"))
-
 proj.title <- "Project Management"
 proj.menu <- c("rpm", "R Code", "All Projects")
 
@@ -38,9 +35,9 @@ proj.submenu <- list(
 )
 
 proj.files <- list(
-	c("header", "proj_intro.html", "code_sankey.html", "pm.html"),
+	c("header", "index.html", "code_sankey.html", "pm.html"),
 	c("objects.html", "divider", "header", "func_new.html", "func_rmd.html", "func_convert.html", "func_organize.html", "func_website.html", "func_user_website.html"),
-	c("proj_sankey.html", "divider", "proj_intro.html", "proj_intro.html")
+	c("proj_sankey.html", "divider", "index.html", "index.html")
 )
 
 user <- "leonawicz"
