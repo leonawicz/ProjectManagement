@@ -115,7 +115,7 @@ code > span.er { color: #c3bf9f; }
             <a href="rpm" class="dropdown-toggle" data-toggle="dropdown">rpm <b class="caret"></b></a>
             <ul class="dropdown-menu">
               <li class="nav-header">About rpm</li>
-              <li><a href="proj_intro.html">Introduction</a></li>
+              <li><a href="index.html">Introduction</a></li>
               <li><a href="code_sankey.html">Related items</a></li>
               <li><a href="pm.html">Example usage</a></li>
             </ul>
@@ -139,8 +139,8 @@ code > span.er { color: #c3bf9f; }
             <ul class="dropdown-menu">
               <li><a href="proj_sankey.html">Projects diagram</a></li>
               <li class="divider"></li>
-              <li><a href="proj_intro.html">About</a></li>
-              <li><a href="proj_intro.html">Other</a></li>
+              <li><a href="index.html">About</a></li>
+              <li><a href="index.html">Other</a></li>
             </ul>
         </ul>
         <ul class="nav pull-right">
@@ -157,6 +157,35 @@ code > span.er { color: #c3bf9f; }
 
 
 <p>The main function for conversion between Rmd and Rnw files is <code>convertDocs</code>. This function contains several internal support functions, each of which is somewhat limited in how much specific conversion it can achieve. The functions below were written with my particular style of Rmd and Rnw documentation in mind. As such they are necessarily a bit idiosyncratic and cannot account for every possible difference found between Rmd and Rnw formatting across any pair of documents. I only strived to speed up the process by which I convert my own documents, most of which follow a set of general rules and expectations most of the time. Anything atypical which doesn’t convert properly can be adjusted by hand afterward. This is still better than rewriting, copy-pasting, and search-and-replacing many sections of many files on a recurring basis. Further improvements in conversion will be added later.</p>
+<div id="rules-and-assumptions-regarding-these-functions" class="section level5">
+<h5>Rules and assumptions regarding these functions</h5>
+<ul>
+<li>All Rnw file lines beginning with a backslash which are in the main body of the code (beyond the title, author, etc.) and are not part of a code chunk identifier string are stripped rather than converted for Rmd.</li>
+<li>Only title and author are parsed from the Rnw lines prior to where the R code chunks begin. LaTeX libraries and such are dropped.</li>
+<li>Standard, minimal LaTeX libraries and other requirements prior to beginning the document are inserted in place of the Rmd yaml front-matter.</li>
+<li>Rmd files must have yaml front-matter, identified always by the second line in the document to begin with <code>---</code>.</li>
+</ul>
+</div>
+<div id="formatting-rules" class="section level5">
+<h5>Formatting rules</h5>
+<ul>
+<li>I never use two consecutive asterisks or underscores except to indicate bold text</li>
+<li>Text with typewriter font in Rnw files is converted to text within backticks in Rmd files and vice versa.</li>
+<li>Italics or other formatting are not considered.</li>
+</ul>
+</div>
+<div id="heading-rules" class="section level5">
+<h5>Heading rules</h5>
+<ul>
+<li>Lists in Rmd files (like this one), are not yet addressed in conversion to Rnw and vice versa.</li>
+<li>I never (intentionally) use the two most extreme headings in Rmd files, <code>#</code> and <code>######</code>. I only use <code>##</code> through <code>#####</code>.</li>
+<li>I never go beyond <code>subsubsubsection</code> in Rnw files.</li>
+<li>Any occurrence of one or two <code>#</code> is converted to a new <code>section</code> in an Rnw file whereas a section converts to a <code>##</code> heading.</li>
+<li>Similarly, five- or six-<code>#</code> identified heading in Rmd convert to the maximum <code>subsubsubsection</code> which back-converts to a <code>#####</code> heading.</li>
+<li>Three- and four-<code>#</code> identified Rmd headings convert to <code>subsection</code>- and <code>subsubsection</code>-identified Rnw headings, respectively, and vice versa. As such, these are the only true one-to-one heading conversions.</li>
+</ul>
+<p>This may all sound like a lot, but it’s not. It does a decent job for now. It’s not a true conversion and plenty of work may remain afterward. Again, the point is to make conversion much less tedious and hands-on, which it does well enough so far.</p>
+</div>
 <div id="swapheadings" class="section level4">
 <h4>.swapHeadings</h4>
 <p><code>.swapHeadings</code> assists in bidirectional conversion between Rmd and Rnw files. It swaps section headings formatting. It is called directly by <code>swap</code>, internal to <code>convertDocs</code>.</p>

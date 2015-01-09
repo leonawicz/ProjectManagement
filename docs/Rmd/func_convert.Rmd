@@ -21,6 +21,32 @@ Anything atypical which doesn't convert properly can be adjusted by hand afterwa
 This is still better than rewriting, copy-pasting, and search-and-replacing many sections of many files on a recurring basis.
 Further improvements in conversion will be added later.
 
+##### Rules and assumptions regarding these functions
+
+- All Rnw file lines beginning with a backslash which are in the main body of the code (beyond the title, author, etc.) and are not part of a code chunk identifier string are stripped rather than converted for Rmd.
+- Only title and author are parsed from the Rnw lines prior to where the R code chunks begin. LaTeX libraries and such are dropped.
+- Standard, minimal LaTeX libraries and other requirements prior to beginning the document are inserted in place of the Rmd yaml front-matter.
+- Rmd files must have yaml front-matter, identified always by the second line in the document to begin with `---`.
+
+##### Formatting rules
+
+- I never use two consecutive asterisks or underscores except to indicate bold text
+- Text with typewriter font in Rnw files is converted to text within backticks in Rmd files and vice versa.
+- Italics or other formatting are not considered.
+
+##### Heading rules
+
+- Lists in Rmd files (like this one), are not yet addressed in conversion to Rnw and vice versa.
+- I never (intentionally) use the two most extreme headings in Rmd files, `#` and `######`. I only use `##` through `#####`.
+- I never go beyond `subsubsubsection` in Rnw files.
+- Any occurrence of one or two `#` is converted to a new `section` in an Rnw file whereas a section converts to a `##` heading.
+- Similarly, five- or six-`#` identified heading in Rmd convert to the maximum `subsubsubsection` which back-converts to a `#####` heading.
+- Three- and four-`#` identified Rmd headings convert to `subsection`- and `subsubsection`-identified Rnw headings, respectively, and vice versa. As such, these are the only true one-to-one heading conversions.
+
+This may all sound like a lot, but it's not. It does a decent job for now.
+It's not a true conversion and plenty of work may remain afterward.
+Again, the point is to make conversion much less tedious and hands-on, which it does well enough so far.
+
 #### .swapHeadings
 `.swapHeadings` assists in bidirectional conversion between Rmd and Rnw files.
 It swaps section headings formatting.

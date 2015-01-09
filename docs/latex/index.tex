@@ -1,0 +1,135 @@
+\documentclass{article}\usepackage[]{graphicx}\usepackage[]{color}
+%% maxwidth is the original width if it is less than linewidth
+%% otherwise use linewidth (to make sure the graphics do not exceed the margin)
+\makeatletter
+\def\maxwidth{ %
+  \ifdim\Gin@nat@width>\linewidth
+    \linewidth
+  \else
+    \Gin@nat@width
+  \fi
+}
+\makeatother
+
+\definecolor{fgcolor}{rgb}{0.514, 0.58, 0.588}
+\newcommand{\hlnum}[1]{\textcolor[rgb]{0.863,0.196,0.184}{#1}}%
+\newcommand{\hlstr}[1]{\textcolor[rgb]{0.863,0.196,0.184}{#1}}%
+\newcommand{\hlcom}[1]{\textcolor[rgb]{0.345,0.431,0.459}{#1}}%
+\newcommand{\hlopt}[1]{\textcolor[rgb]{0.576,0.631,0.631}{#1}}%
+\newcommand{\hlstd}[1]{\textcolor[rgb]{0.514,0.58,0.588}{#1}}%
+\newcommand{\hlkwa}[1]{\textcolor[rgb]{0.796,0.294,0.086}{#1}}%
+\newcommand{\hlkwb}[1]{\textcolor[rgb]{0.522,0.6,0}{#1}}%
+\newcommand{\hlkwc}[1]{\textcolor[rgb]{0.796,0.294,0.086}{#1}}%
+\newcommand{\hlkwd}[1]{\textcolor[rgb]{0.576,0.631,0.631}{#1}}%
+
+\usepackage{framed}
+\makeatletter
+\newenvironment{kframe}{%
+ \def\at@end@of@kframe{}%
+ \ifinner\ifhmode%
+  \def\at@end@of@kframe{\end{minipage}}%
+  \begin{minipage}{\columnwidth}%
+ \fi\fi%
+ \def\FrameCommand##1{\hskip\@totalleftmargin \hskip-\fboxsep
+ \colorbox{shadecolor}{##1}\hskip-\fboxsep
+     % There is no \\@totalrightmargin, so:
+     \hskip-\linewidth \hskip-\@totalleftmargin \hskip\columnwidth}%
+ \MakeFramed {\advance\hsize-\width
+   \@totalleftmargin\z@ \linewidth\hsize
+   \@setminipage}}%
+ {\par\unskip\endMakeFramed%
+ \at@end@of@kframe}
+\makeatother
+
+\definecolor{shadecolor}{rgb}{.97, .97, .97}
+\definecolor{messagecolor}{rgb}{0, 0, 0}
+\definecolor{warningcolor}{rgb}{1, 0, 1}
+\definecolor{errorcolor}{rgb}{1, 0, 0}
+\newenvironment{knitrout}{}{} % an empty environment to be redefined in TeX
+
+\usepackage{alltt}
+\usepackage{geometry}
+\geometry{verbose, tmargin=2.5cm, bmargin=2.5cm, lmargin=2.5cm, rmargin=2.5cm}
+\IfFileExists{upquote.sty}{\usepackage{upquote}}{}
+\begin{document}
+
+\title{Project Management}
+\author{Matthew Leonawicz}
+\maketitle
+
+
+
+\section{Introduction}
+This is a project management project.
+The aim of this project is the development of convenient \textbf{R}-related project management tools.
+
+\subsection{Motivation}
+I am working on these tools to enhance my own workflow across multiple \textbf{R} projects.
+
+\subsection{Details}
+\textbf{R} code for the project will be compiled into an \textbf{R} package, \texttt{rpm} for easy use.
+This is a personal package and will not be available anywhere but my Github repository,
+but you are welcome to explore the package and functions.
+It is unlikely that you would manage your \textbf{R} projects in the same manner that I do,
+but if you do, or just want some ideas, feel free to explore.
+
+\subsubsection{Capabilities}
+The \texttt{rpm} package offers a collection of functions ranging from creating new projects to compiling project websites.
+With \texttt{rmp} you can:
+
+- Create a new project
+- Bulk generate Rmd files associated with project \textbf{R} scripts
+- Update Rmd yaml front-matter contents
+- Append Rmd files with new code chunk identifiers after code is added to project \textbf{R} scripts
+- Bidirectional conversion between Rmd and Rnw files
+- Bulk file organization after generating a large number of final and intermediary project documentation files of various formats
+- Functions for generating a project-specific website, great for hosting on the \texttt{gh-pages} branch of your Github project repo
+- Functions for generating a Github user account website
+- Multi-project hierarchy diagram
+- Project-specific code flow diagram
+
+\subsubsection{Limitations}
+
+The project management code is not yet in package form.
+Additional features are yet to be incorporated.
+Below are specific limitations related to the above highlighted capabilities.
+
+\subsubsubsection{Files}
+While \texttt{rpm} assists with project documentation, this mainly takes the form of file generation and appending.
+Documentation is unique to every project of course. Every script is different.
+The most that is possible with Rmd generation and updating is to auto-fill commonly used code chunk names and metadata.
+Each document must be written individually by the author, but when a project has many \textbf{R} scripts requiring documentation,
+it is nice to not have to create all the corresponding Rmd files by hand and copy and paste generic contents.
+
+\subsubsubsection{Conversion}
+Conversion between Rmd and Rnw files also cannot be perfectly general.
+I have written this code mainly to account for the limited types of content and formatting which I tend to include in my own Rmd and Rnw files.
+The documentation on the conversion code (which you can find in html or pdf!) lists some [rules and assumptions](func_convert.html "rules and assumptions") I make about my own documentation,
+which defines the context in which the conversion functions in \texttt{rpm} operate.
+I may continue to expand the conversion code into some horrendous collection of functions and enclosures which take into account evermore idiosyncrasies that I find between my Rmd and Rnw files.
+However, this is obviously not something I can make account for the content and formatting of other people's files.
+
+\subsubsubsection{R, Rstudio, knitr, rmarkdown, MikTeX, Pandoc, Windows, Linux,... OH MY!}
+And I'm not particularly interested in thinking about Mac.
+Anyway, this is my own limitation, an area where my current knowledge of cross-system use and third party software integration is not strong.
+When using \texttt{knit} and/or \texttt{rmakrdown}, I tend to have more success avoiding crashes while knitting documents if I do all the file generation in the same directory as the source files.
+This is why \texttt{rpm} has code for moving output files after knitting them.
+I don't know why this problem exists, but for context, it is convenient for me to do the knitting with \textbf{R} on my Windows pc.
+I have \texttt{MikTeX} and \texttt{Pandoc} for Windows installed.
+However, I never bothered fussing with environment variables or whatever I might have to do in order to get pdf generation to work on Windows using the standard \textbf{R} GUI.
+Instead, I find it easier to use RStudio, in which case \texttt{Pandoc} is accessible and everything works fine.
+
+So I can do all of this with RStudio, but not all of it with standard \textbf{R} --- which is what I otherwise use exclusively, either on Windows or Linux.
+Suffice it to say that, for now at least, I must use RStudio specificallly for pdf generation.
+I cannot use standalone \textbf{R} on Windows. I know this is not a real prohibition, but due to my lack of having looked into it and figured it out yet.
+If I use Linux, pdf files sometimes come out looking a little different.
+This is all to say that I am not currently in a position with this project to produce something that will work completely and identically across multiple systems.
+In an ideal scenario, my full application of \texttt{knitr} and \texttt{rmarkdown} would work similarly in standard \textbf{R}, whether in interactive or non-interactive mode, and whether on Linux or Windows.
+I wouldn't worry about whether it worked seamlessly in RStudio as well.
+But for now I have the opposite situation.
+
+\subsubsubsection{Websites}
+Regarding the website-building functions, the limitations are that certain libraries are expected to be in place,
+only particular CSS themes and code highlighting are permitted, and the files, projects, and local Git repositories these functions parse the contents of are all required to follow my specific styles of organization.
+
+\end{document}

@@ -1,5 +1,13 @@
-# Project Management
-Matthew Leonawicz  
+---
+title: Project Management
+author: Matthew Leonawicz
+output:
+  html_document:
+    toc: false
+    theme: united
+    highlight: zenburn
+    keep_md: true
+---
 
 ## Introduction
 This is a project management project.

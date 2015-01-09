@@ -129,9 +129,6 @@ See [website-related functions](func\_website.html "website-related functions").
 \definecolor{shadecolor}{rgb}{0, 0.169, 0.212}\color{fgcolor}\begin{kframe}
 \begin{alltt}
 \hlcom{# Setup for generating a project website}
-\hlstd{index.url} \hlkwb{<-} \hlkwd{file.path}\hlstd{(rmd.path,} \hlstr{"proj_intro.html"}\hlstd{)}  \hlcom{# temporary}
-\hlkwd{file.copy}\hlstd{(index.url,} \hlkwd{file.path}\hlstd{(rmd.path,} \hlstr{"index.html"}\hlstd{))}
-
 \hlstd{proj.title} \hlkwb{<-} \hlstr{"Project Management"}
 \hlstd{proj.menu} \hlkwb{<-} \hlkwd{c}\hlstd{(}\hlstr{"rpm"}\hlstd{,} \hlstr{"R Code"}\hlstd{,} \hlstr{"All Projects"}\hlstd{)}
 
@@ -140,10 +137,10 @@ See [website-related functions](func\_website.html "website-related functions").
         \hlstr{"Document conversion"}\hlstd{,} \hlstr{"Organize documents"}\hlstd{,} \hlstr{"Make a project website"}\hlstd{,}
         \hlstr{"Github user website"}\hlstd{),} \hlkwd{c}\hlstd{(}\hlstr{"Projects diagram"}\hlstd{,} \hlstr{"divider"}\hlstd{,} \hlstr{"About"}\hlstd{,} \hlstr{"Other"}\hlstd{))}
 
-\hlstd{proj.files} \hlkwb{<-} \hlkwd{list}\hlstd{(}\hlkwd{c}\hlstd{(}\hlstr{"header"}\hlstd{,} \hlstr{"proj_intro.html"}\hlstd{,} \hlstr{"code_sankey.html"}\hlstd{,} \hlstr{"pm.html"}\hlstd{),}
+\hlstd{proj.files} \hlkwb{<-} \hlkwd{list}\hlstd{(}\hlkwd{c}\hlstd{(}\hlstr{"header"}\hlstd{,} \hlstr{"index.html"}\hlstd{,} \hlstr{"code_sankey.html"}\hlstd{,} \hlstr{"pm.html"}\hlstd{),}
     \hlkwd{c}\hlstd{(}\hlstr{"objects.html"}\hlstd{,} \hlstr{"divider"}\hlstd{,} \hlstr{"header"}\hlstd{,} \hlstr{"func_new.html"}\hlstd{,} \hlstr{"func_rmd.html"}\hlstd{,}
         \hlstr{"func_convert.html"}\hlstd{,} \hlstr{"func_organize.html"}\hlstd{,} \hlstr{"func_website.html"}\hlstd{,} \hlstr{"func_user_website.html"}\hlstd{),}
-    \hlkwd{c}\hlstd{(}\hlstr{"proj_sankey.html"}\hlstd{,} \hlstr{"divider"}\hlstd{,} \hlstr{"proj_intro.html"}\hlstd{,} \hlstr{"proj_intro.html"}\hlstd{))}
+    \hlkwd{c}\hlstd{(}\hlstr{"proj_sankey.html"}\hlstd{,} \hlstr{"divider"}\hlstd{,} \hlstr{"index.html"}\hlstd{,} \hlstr{"index.html"}\hlstd{))}
 
 \hlstd{user} \hlkwb{<-} \hlstr{"leonawicz"}
 \hlstd{proj.github} \hlkwb{<-} \hlkwd{file.path}\hlstd{(}\hlstr{"https://github.com"}\hlstd{, user, proj.name)}

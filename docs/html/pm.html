@@ -116,7 +116,7 @@ code > span.er { color: #c3bf9f; }
             <a href="rpm" class="dropdown-toggle" data-toggle="dropdown">rpm <b class="caret"></b></a>
             <ul class="dropdown-menu">
               <li class="nav-header">About rpm</li>
-              <li><a href="proj_intro.html">Introduction</a></li>
+              <li><a href="index.html">Introduction</a></li>
               <li><a href="code_sankey.html">Related items</a></li>
               <li><a href="pm.html">Example usage</a></li>
             </ul>
@@ -140,8 +140,8 @@ code > span.er { color: #c3bf9f; }
             <ul class="dropdown-menu">
               <li><a href="proj_sankey.html">Projects diagram</a></li>
               <li class="divider"></li>
-              <li><a href="proj_intro.html">About</a></li>
-              <li><a href="proj_intro.html">Other</a></li>
+              <li><a href="index.html">About</a></li>
+              <li><a href="index.html">Other</a></li>
             </ul>
         </ul>
         <ul class="nav pull-right">
@@ -210,9 +210,6 @@ rmd.path &lt;-<span class="st"> </span><span class="kw">file.path</span>(docs.pa
 <h3>Prepare a project website</h3>
 <p>With some additional project-specific setup, files can be generated which will assist in creating a project website. See <a href="func_website.html" title="website-related functions">website-related functions</a>.</p>
 <pre class="sourceCode r"><code class="sourceCode r"><span class="co"># Setup for generating a project website</span>
-index.url &lt;-<span class="st"> </span><span class="kw">file.path</span>(rmd.path, <span class="st">&quot;proj_intro.html&quot;</span>)  <span class="co"># temporary</span>
-<span class="kw">file.copy</span>(index.url, <span class="kw">file.path</span>(rmd.path, <span class="st">&quot;index.html&quot;</span>))
-
 proj.title &lt;-<span class="st"> &quot;Project Management&quot;</span>
 proj.menu &lt;-<span class="st"> </span><span class="kw">c</span>(<span class="st">&quot;rpm&quot;</span>, <span class="st">&quot;R Code&quot;</span>, <span class="st">&quot;All Projects&quot;</span>)
 
@@ -221,10 +218,10 @@ proj.submenu &lt;-<span class="st"> </span><span class="kw">list</span>(<span cl
         <span class="st">&quot;Document conversion&quot;</span>, <span class="st">&quot;Organize documents&quot;</span>, <span class="st">&quot;Make a project website&quot;</span>, 
         <span class="st">&quot;Github user website&quot;</span>), <span class="kw">c</span>(<span class="st">&quot;Projects diagram&quot;</span>, <span class="st">&quot;divider&quot;</span>, <span class="st">&quot;About&quot;</span>, <span class="st">&quot;Other&quot;</span>))
 
-proj.files &lt;-<span class="st"> </span><span class="kw">list</span>(<span class="kw">c</span>(<span class="st">&quot;header&quot;</span>, <span class="st">&quot;proj_intro.html&quot;</span>, <span class="st">&quot;code_sankey.html&quot;</span>, <span class="st">&quot;pm.html&quot;</span>), 
+proj.files &lt;-<span class="st"> </span><span class="kw">list</span>(<span class="kw">c</span>(<span class="st">&quot;header&quot;</span>, <span class="st">&quot;index.html&quot;</span>, <span class="st">&quot;code_sankey.html&quot;</span>, <span class="st">&quot;pm.html&quot;</span>), 
     <span class="kw">c</span>(<span class="st">&quot;objects.html&quot;</span>, <span class="st">&quot;divider&quot;</span>, <span class="st">&quot;header&quot;</span>, <span class="st">&quot;func_new.html&quot;</span>, <span class="st">&quot;func_rmd.html&quot;</span>, 
         <span class="st">&quot;func_convert.html&quot;</span>, <span class="st">&quot;func_organize.html&quot;</span>, <span class="st">&quot;func_website.html&quot;</span>, <span class="st">&quot;func_user_website.html&quot;</span>), 
-    <span class="kw">c</span>(<span class="st">&quot;proj_sankey.html&quot;</span>, <span class="st">&quot;divider&quot;</span>, <span class="st">&quot;proj_intro.html&quot;</span>, <span class="st">&quot;proj_intro.html&quot;</span>))
+    <span class="kw">c</span>(<span class="st">&quot;proj_sankey.html&quot;</span>, <span class="st">&quot;divider&quot;</span>, <span class="st">&quot;index.html&quot;</span>, <span class="st">&quot;index.html&quot;</span>))
 
 user &lt;-<span class="st"> &quot;leonawicz&quot;</span>
 proj.github &lt;-<span class="st"> </span><span class="kw">file.path</span>(<span class="st">&quot;https://github.com&quot;</span>, user, proj.name)

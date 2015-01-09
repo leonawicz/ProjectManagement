@@ -64,9 +64,6 @@ See [website-related functions](func_website.html "website-related functions").
 
 ```r
 # Setup for generating a project website
-index.url <- file.path(rmd.path, "proj_intro.html")  # temporary
-file.copy(index.url, file.path(rmd.path, "index.html"))
-
 proj.title <- "Project Management"
 proj.menu <- c("rpm", "R Code", "All Projects")
 
@@ -75,10 +72,10 @@ proj.submenu <- list(c("About rpm", "Introduction", "Related items", "Example us
         "Document conversion", "Organize documents", "Make a project website", 
         "Github user website"), c("Projects diagram", "divider", "About", "Other"))
 
-proj.files <- list(c("header", "proj_intro.html", "code_sankey.html", "pm.html"), 
+proj.files <- list(c("header", "index.html", "code_sankey.html", "pm.html"), 
     c("objects.html", "divider", "header", "func_new.html", "func_rmd.html", 
         "func_convert.html", "func_organize.html", "func_website.html", "func_user_website.html"), 
-    c("proj_sankey.html", "divider", "proj_intro.html", "proj_intro.html"))
+    c("proj_sankey.html", "divider", "index.html", "index.html"))
 
 user <- "leonawicz"
 proj.github <- file.path("https://github.com", user, proj.name)
