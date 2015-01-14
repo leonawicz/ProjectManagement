@@ -219,7 +219,7 @@ code > span.er { color: #c3bf9f; }
   &lt;/head&gt;
   &lt;body &gt;
     
-    &lt;div id = 'chart1f9c361877f5' class = 'rChart d3_sankey'&gt;&lt;/div&gt;    
+    &lt;div id = 'chart1f9c14485c52' class = 'rChart d3_sankey'&gt;&lt;/div&gt;    
     ï»¿&lt;!--Attribution:
 Mike Bostock https://github.com/d3/d3-plugins/tree/master/sankey
 Mike Bostock http://bost.ocks.org/mike/sankey/
@@ -228,7 +228,7 @@ Mike Bostock http://bost.ocks.org/mike/sankey/
 &lt;script&gt;
 (function(){
 var params = {
- &quot;dom&quot;: &quot;chart1f9c361877f5&quot;,
+ &quot;dom&quot;: &quot;chart1f9c14485c52&quot;,
 &quot;width&quot;:    900,
 &quot;height&quot;:    800,
 &quot;data&quot;: {
@@ -246,7 +246,7 @@ var params = {
 &quot;top&quot;:     20 
 },
 &quot;title&quot;: &quot;Matt's Projects&quot;,
-&quot;id&quot;: &quot;chart1f9c361877f5&quot; 
+&quot;id&quot;: &quot;chart1f9c14485c52&quot; 
 };
 
 params.units ? units = &quot; &quot; + params.units : units = &quot;&quot;;
@@ -366,11 +366,11 @@ node.append(&quot;text&quot;)
     
     &lt;script&gt;
       var cscale = d3.scale.category20b();
-      d3.selectAll('#chart1f9c361877f5 svg path.link')
+      d3.selectAll('#chart1f9c14485c52 svg path.link')
         .style('stroke', function(d){
           return cscale(d.source.name);
         })
-      d3.selectAll('#chart1f9c361877f5 svg .node rect')
+      d3.selectAll('#chart1f9c14485c52 svg .node rect')
         .style('fill', function(d){
           return cscale(d.name)
         })
@@ -378,7 +378,7 @@ node.append(&quot;text&quot;)
     &lt;/script&gt;
         
   &lt;/body&gt;
-&lt;/html&gt; " scrolling="no" frameBorder="0" seamless class="rChart  http://timelyportfolio.github.io/rCharts_d3_sankey/libraries/widgets/d3_sankey  " id="iframe-chart1f9c361877f5">
+&lt;/html&gt; " scrolling="no" frameBorder="0" seamless class="rChart  http://timelyportfolio.github.io/rCharts_d3_sankey/libraries/widgets/d3_sankey  " id="iframe-chart1f9c14485c52">
 </iframe>
 <style>iframe.rChart{ width: 100%; height: 400px;}</style>
 <style>iframe.rChart{ width: 100%; height: 840px;}</style>
@@ -938,7 +938,7 @@ moveDocs &lt;-<span class="st"> </span>function(path.docs, <span class="dt">type
 <h4>buttonGroup</h4>
 <p><code>buttonGroup</code> is a helper function for <code>genNavbar</code>. I used it to place social media buttons in the right side of the navigation bar at the top of a web page. For project pages I tend to only include a Github button linking to the project repo. For my Github user pages, I include more buttons. The function generates an html snippet defining a group of buttons. Typical use is to pass a list of the below arguments to <code>genNavbar</code>.</p>
 <p><code>txt</code> is a character vector of text to appear inside the button. <code>urls</code> represents an accompanying vector of page urls.</p>
-<p><code>fa.icons=NULL</code> (default) means no <code>Font Aweseome</code> icons will be included in the button to the left of the text. A vector of icon names can be passed. The whole string is not required, only the relevant text following <code>fa-</code>. For example, use <code>github</code> instead of <code>fa-github</code>.</p>
+<p><code>fa.icons=NULL</code> (default) means no Font Awesome icons will be included in the button to the left of the text. A vector of icon names can be passed. The whole string is not required, only the relevant text following <code>fa-</code>. For example, use <code>github</code> instead of <code>fa-github</code>.</p>
 <p>The <code>colors</code> argument takes any of the following CSS theme-defined “colors”: default, primary, success, info, warning, danger. If <code>solid.group=TRUE</code>, a justified block button group will be defined.</p>
 <pre class="sourceCode r"><code class="sourceCode r"><span class="co"># Functions for Github websites</span>
 buttonGroup &lt;-<span class="st"> </span>function(txt, urls, <span class="dt">fa.icons =</span> <span class="ot">NULL</span>, <span class="dt">colors =</span> <span class="st">&quot;primary&quot;</span>, <span class="dt">solid.group =</span> <span class="ot">FALSE</span>) {
@@ -977,7 +977,7 @@ buttonGroup &lt;-<span class="st"> </span>function(txt, urls, <span class="dt">f
 <p><code>genNavbar</code> generates a navigation bar for a web page. The html file created is generally written to the project’s <code>docs/Rmd/include</code> directory. However, if this function is used to create a navbar for a Github user web page, the html file should be stored in a sensible location inside the user pages repository, e.g., <code>leonawicz.github.io/assets</code>.</p>
 <p>The common navigation bar html is included at the beginning of the body of the html for each web page in the project’s website. <code>menu</code> is a vector of names for each dropdown menu. <code>submenus</code> is a list of vectors of menu options corresponding to each menu. <code>files</code> is a similar list of vectors. Each element is either an html file for a web page to be associated with the submenu link, “header” to indicate the corresponding name in <code>submenus</code> is only a group label and not a link to a web page, or “divider” to indicate placement of a bar for separating groups in a dropdown menu.</p>
 <p><code>theme</code> can be either <code>united</code> (default) or <code>cyborg</code>. Both are from Bootswatch. The function must apply some internal differentiation in the construction of the html navigation bar between themes. This is currently the only <code>rpm</code> function which attempts to handle multiple Bootswatch themes with different CSS tags.</p>
-<p>If <code>media.button.args=FALSE</code> (default), only the Github button will be included, and then only if <code>site.name=&quot;Github&quot;</code> and site.url is not blank. I use this default for project pages and do not insert additional buttons. For user pages, the same defualt will work. Alternatively, a list of arguments can passed on to <code>buttonGroup</code>. I have not checked yet to see if this also works for project pages.</p>
+<p>If <code>media.button.args=NULL</code> (default), only the Github button will be included, and then only if <code>site.name=&quot;Github&quot;</code> and site.url is not blank. I use this default for project pages and do not insert additional buttons. For user pages, the same defualt will work. Alternatively, a list of arguments can passed on to <code>buttonGroup</code>. I have not checked yet to see if this also works for project pages.</p>
 <pre class="sourceCode r"><code class="sourceCode r">genNavbar &lt;-<span class="st"> </span>function(<span class="dt">htmlfile =</span> <span class="st">&quot;navbar.html&quot;</span>, title, menu, submenus, files, 
     <span class="dt">title.url =</span> <span class="st">&quot;index.html&quot;</span>, <span class="dt">home.url =</span> <span class="st">&quot;index.html&quot;</span>, <span class="dt">site.url =</span> <span class="st">&quot;&quot;</span>, <span class="dt">site.name =</span> <span class="st">&quot;Github&quot;</span>, 
     <span class="dt">media.button.args =</span> <span class="ot">NULL</span>, <span class="dt">theme =</span> <span class="st">&quot;united&quot;</span>, <span class="dt">include.home =</span> <span class="ot">FALSE</span>) {
