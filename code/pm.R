@@ -149,7 +149,6 @@ btn.args <- list(
 # check
 do.call(buttonGroup, btn.args)
 
-
 genNavbar(htmlfile="navbar.html", title=user.site, menu=nb.menu, submenus=sub.menu, files=files.menu, theme="cyborg", title.url="index.html", home.url="index.html", site.url=github.url, media.button.args=btn.args, include.home=FALSE)
 
 # check

@@ -70,12 +70,13 @@ proj.menu <- c("rpm", "R Code", "All Projects")
 proj.submenu <- list(c("About rpm", "Introduction", "Related items", "Example usage"), 
     c("Default objects", "divider", "Functions", "Start a new project", "Working with Rmd files", 
         "Document conversion", "Organize documents", "Make a project website", 
-        "Github user website"), c("Projects diagram", "divider", "About", "Other"))
+        "Github user website"), c("Hierarchy of current projects", "Projects diagram", 
+        "divider", "Access all projects", "leonawicz.github.io"))
 
 proj.files <- list(c("header", "index.html", "code_sankey.html", "pm.html"), 
     c("objects.html", "divider", "header", "func_new.html", "func_rmd.html", 
         "func_convert.html", "func_organize.html", "func_website.html", "func_user_website.html"), 
-    c("proj_sankey.html", "divider", "index.html", "index.html"))
+    c("header", "proj_sankey.html", "divider", "header", "http://leonawicz.github.io"))
 
 user <- "leonawicz"
 proj.github <- file.path("https://github.com", user, proj.name)
@@ -182,19 +183,28 @@ htmlBodyTop(background.image = back.img)
 github.url <- file.path("https://github.com", user, user.site)
 
 # Prepare navbar
-nb.menu <- c("Projects", "Apps", "Data Visualizations", "Test1")
+nb.menu <- c("Projects", "Apps", "Data Visualizations")
 
-sub.menu <- list(c("empty"), c("empty"), c("empty"), c("A title", "A page", 
-    "divider", "Another title", "Page 1", "Page 2"))
+sub.menu <- list(c("empty"), c("empty"), c("empty"))
 
-files.menu <- list(c("index.html#projects"), c("index.html#apps"), c("index.html#datavis"), 
-    c("header", "#", "divider", "header", "#", "#"))
+files.menu <- list(c("index.html#projects"), c("index.html#apps"), c("index.html#datavis"))
 
 
 # Create navbar.html
+btn.args <- list(txt = c("Github", "Blog", "Twitter", "Linkedin", "StatMatt", 
+    "", "", ""), fa.icons = c("github", "wordpress", "twitter", "linkedin", 
+    "thumbs-o-up", "google-plus", "youtube", "pinterest"), colors = c("info", 
+    "success", "warning", "primary", "default", "danger", "danger", "danger"), 
+    urls = c(github.url, "http://blog.snap.uaf.edu/", "https://twitter.com/leonawicz", 
+        "https://www.linkedin.com/in/leonawicz", "http://statmatt.com/", "https://plus.google.com/+StatisticsWithR/posts", 
+        "https://www.youtube.com/user/StatisticsWithR/", "http://www.pinterest.com/leonawicz/"))
+
+# check
+do.call(buttonGroup, btn.args)
+
 genNavbar(htmlfile = "navbar.html", title = user.site, menu = nb.menu, submenus = sub.menu, 
     files = files.menu, theme = "cyborg", title.url = "index.html", home.url = "index.html", 
-    site.url = github.url, include.home = FALSE)
+    site.url = github.url, media.button.args = btn.args, include.home = FALSE)
 
 # check
 htmlBottom()

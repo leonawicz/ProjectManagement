@@ -217,12 +217,13 @@ proj.menu &lt;-<span class="st"> </span><span class="kw">c</span>(<span class="s
 proj.submenu &lt;-<span class="st"> </span><span class="kw">list</span>(<span class="kw">c</span>(<span class="st">&quot;About rpm&quot;</span>, <span class="st">&quot;Introduction&quot;</span>, <span class="st">&quot;Related items&quot;</span>, <span class="st">&quot;Example usage&quot;</span>), 
     <span class="kw">c</span>(<span class="st">&quot;Default objects&quot;</span>, <span class="st">&quot;divider&quot;</span>, <span class="st">&quot;Functions&quot;</span>, <span class="st">&quot;Start a new project&quot;</span>, <span class="st">&quot;Working with Rmd files&quot;</span>, 
         <span class="st">&quot;Document conversion&quot;</span>, <span class="st">&quot;Organize documents&quot;</span>, <span class="st">&quot;Make a project website&quot;</span>, 
-        <span class="st">&quot;Github user website&quot;</span>), <span class="kw">c</span>(<span class="st">&quot;Projects diagram&quot;</span>, <span class="st">&quot;divider&quot;</span>, <span class="st">&quot;About&quot;</span>, <span class="st">&quot;Other&quot;</span>))
+        <span class="st">&quot;Github user website&quot;</span>), <span class="kw">c</span>(<span class="st">&quot;Hierarchy of current projects&quot;</span>, <span class="st">&quot;Projects diagram&quot;</span>, 
+        <span class="st">&quot;divider&quot;</span>, <span class="st">&quot;Access all projects&quot;</span>, <span class="st">&quot;leonawicz.github.io&quot;</span>))
 
 proj.files &lt;-<span class="st"> </span><span class="kw">list</span>(<span class="kw">c</span>(<span class="st">&quot;header&quot;</span>, <span class="st">&quot;index.html&quot;</span>, <span class="st">&quot;code_sankey.html&quot;</span>, <span class="st">&quot;pm.html&quot;</span>), 
     <span class="kw">c</span>(<span class="st">&quot;objects.html&quot;</span>, <span class="st">&quot;divider&quot;</span>, <span class="st">&quot;header&quot;</span>, <span class="st">&quot;func_new.html&quot;</span>, <span class="st">&quot;func_rmd.html&quot;</span>, 
         <span class="st">&quot;func_convert.html&quot;</span>, <span class="st">&quot;func_organize.html&quot;</span>, <span class="st">&quot;func_website.html&quot;</span>, <span class="st">&quot;func_user_website.html&quot;</span>), 
-    <span class="kw">c</span>(<span class="st">&quot;proj_sankey.html&quot;</span>, <span class="st">&quot;divider&quot;</span>, <span class="st">&quot;index.html&quot;</span>, <span class="st">&quot;index.html&quot;</span>))
+    <span class="kw">c</span>(<span class="st">&quot;header&quot;</span>, <span class="st">&quot;proj_sankey.html&quot;</span>, <span class="st">&quot;divider&quot;</span>, <span class="st">&quot;header&quot;</span>, <span class="st">&quot;http://leonawicz.github.io&quot;</span>))
 
 user &lt;-<span class="st"> &quot;leonawicz&quot;</span>
 proj.github &lt;-<span class="st"> </span><span class="kw">file.path</span>(<span class="st">&quot;https://github.com&quot;</span>, user, proj.name)
@@ -312,19 +313,28 @@ back.img &lt;-<span class="st"> &quot;assets/img/frac23.jpg&quot;</span>
 github.url &lt;-<span class="st"> </span><span class="kw">file.path</span>(<span class="st">&quot;https://github.com&quot;</span>, user, user.site)
 
 <span class="co"># Prepare navbar</span>
-nb.menu &lt;-<span class="st"> </span><span class="kw">c</span>(<span class="st">&quot;Projects&quot;</span>, <span class="st">&quot;Apps&quot;</span>, <span class="st">&quot;Data Visualizations&quot;</span>, <span class="st">&quot;Test1&quot;</span>)
+nb.menu &lt;-<span class="st"> </span><span class="kw">c</span>(<span class="st">&quot;Projects&quot;</span>, <span class="st">&quot;Apps&quot;</span>, <span class="st">&quot;Data Visualizations&quot;</span>)
 
-sub.menu &lt;-<span class="st"> </span><span class="kw">list</span>(<span class="kw">c</span>(<span class="st">&quot;empty&quot;</span>), <span class="kw">c</span>(<span class="st">&quot;empty&quot;</span>), <span class="kw">c</span>(<span class="st">&quot;empty&quot;</span>), <span class="kw">c</span>(<span class="st">&quot;A title&quot;</span>, <span class="st">&quot;A page&quot;</span>, 
-    <span class="st">&quot;divider&quot;</span>, <span class="st">&quot;Another title&quot;</span>, <span class="st">&quot;Page 1&quot;</span>, <span class="st">&quot;Page 2&quot;</span>))
+sub.menu &lt;-<span class="st"> </span><span class="kw">list</span>(<span class="kw">c</span>(<span class="st">&quot;empty&quot;</span>), <span class="kw">c</span>(<span class="st">&quot;empty&quot;</span>), <span class="kw">c</span>(<span class="st">&quot;empty&quot;</span>))
 
-files.menu &lt;-<span class="st"> </span><span class="kw">list</span>(<span class="kw">c</span>(<span class="st">&quot;index.html#projects&quot;</span>), <span class="kw">c</span>(<span class="st">&quot;index.html#apps&quot;</span>), <span class="kw">c</span>(<span class="st">&quot;index.html#datavis&quot;</span>), 
-    <span class="kw">c</span>(<span class="st">&quot;header&quot;</span>, <span class="st">&quot;#&quot;</span>, <span class="st">&quot;divider&quot;</span>, <span class="st">&quot;header&quot;</span>, <span class="st">&quot;#&quot;</span>, <span class="st">&quot;#&quot;</span>))
+files.menu &lt;-<span class="st"> </span><span class="kw">list</span>(<span class="kw">c</span>(<span class="st">&quot;index.html#projects&quot;</span>), <span class="kw">c</span>(<span class="st">&quot;index.html#apps&quot;</span>), <span class="kw">c</span>(<span class="st">&quot;index.html#datavis&quot;</span>))
 
 
 <span class="co"># Create navbar.html</span>
+btn.args &lt;-<span class="st"> </span><span class="kw">list</span>(<span class="dt">txt =</span> <span class="kw">c</span>(<span class="st">&quot;Github&quot;</span>, <span class="st">&quot;Blog&quot;</span>, <span class="st">&quot;Twitter&quot;</span>, <span class="st">&quot;Linkedin&quot;</span>, <span class="st">&quot;StatMatt&quot;</span>, 
+    <span class="st">&quot;&quot;</span>, <span class="st">&quot;&quot;</span>, <span class="st">&quot;&quot;</span>), <span class="dt">fa.icons =</span> <span class="kw">c</span>(<span class="st">&quot;github&quot;</span>, <span class="st">&quot;wordpress&quot;</span>, <span class="st">&quot;twitter&quot;</span>, <span class="st">&quot;linkedin&quot;</span>, 
+    <span class="st">&quot;thumbs-o-up&quot;</span>, <span class="st">&quot;google-plus&quot;</span>, <span class="st">&quot;youtube&quot;</span>, <span class="st">&quot;pinterest&quot;</span>), <span class="dt">colors =</span> <span class="kw">c</span>(<span class="st">&quot;info&quot;</span>, 
+    <span class="st">&quot;success&quot;</span>, <span class="st">&quot;warning&quot;</span>, <span class="st">&quot;primary&quot;</span>, <span class="st">&quot;default&quot;</span>, <span class="st">&quot;danger&quot;</span>, <span class="st">&quot;danger&quot;</span>, <span class="st">&quot;danger&quot;</span>), 
+    <span class="dt">urls =</span> <span class="kw">c</span>(github.url, <span class="st">&quot;http://blog.snap.uaf.edu/&quot;</span>, <span class="st">&quot;https://twitter.com/leonawicz&quot;</span>, 
+        <span class="st">&quot;https://www.linkedin.com/in/leonawicz&quot;</span>, <span class="st">&quot;http://statmatt.com/&quot;</span>, <span class="st">&quot;https://plus.google.com/+StatisticsWithR/posts&quot;</span>, 
+        <span class="st">&quot;https://www.youtube.com/user/StatisticsWithR/&quot;</span>, <span class="st">&quot;http://www.pinterest.com/leonawicz/&quot;</span>))
+
+<span class="co"># check</span>
+<span class="kw">do.call</span>(buttonGroup, btn.args)
+
 <span class="kw">genNavbar</span>(<span class="dt">htmlfile =</span> <span class="st">&quot;navbar.html&quot;</span>, <span class="dt">title =</span> user.site, <span class="dt">menu =</span> nb.menu, <span class="dt">submenus =</span> sub.menu, 
     <span class="dt">files =</span> files.menu, <span class="dt">theme =</span> <span class="st">&quot;cyborg&quot;</span>, <span class="dt">title.url =</span> <span class="st">&quot;index.html&quot;</span>, <span class="dt">home.url =</span> <span class="st">&quot;index.html&quot;</span>, 
-    <span class="dt">site.url =</span> github.url, <span class="dt">include.home =</span> <span class="ot">FALSE</span>)
+    <span class="dt">site.url =</span> github.url, <span class="dt">media.button.args =</span> btn.args, <span class="dt">include.home =</span> <span class="ot">FALSE</span>)
 
 <span class="co"># check</span>
 <span class="kw">htmlBottom</span>()

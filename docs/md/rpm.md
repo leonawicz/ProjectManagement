@@ -90,7 +90,7 @@ Here is a project hierarchy diagram showing the relationships among all my curre
   &lt;/head&gt;
   &lt;body &gt;
     
-    &lt;div id = &#039;chart10a013a3c84&#039; class = &#039;rChart d3_sankey&#039;&gt;&lt;/div&gt;    
+    &lt;div id = &#039;chart1f9c361877f5&#039; class = &#039;rChart d3_sankey&#039;&gt;&lt;/div&gt;    
     ï»¿&lt;!--Attribution:
 Mike Bostock https://github.com/d3/d3-plugins/tree/master/sankey
 Mike Bostock http://bost.ocks.org/mike/sankey/
@@ -99,7 +99,7 @@ Mike Bostock http://bost.ocks.org/mike/sankey/
 &lt;script&gt;
 (function(){
 var params = {
- &quot;dom&quot;: &quot;chart10a013a3c84&quot;,
+ &quot;dom&quot;: &quot;chart1f9c361877f5&quot;,
 &quot;width&quot;:    900,
 &quot;height&quot;:    800,
 &quot;data&quot;: {
@@ -117,7 +117,7 @@ var params = {
 &quot;top&quot;:     20 
 },
 &quot;title&quot;: &quot;Matt&#039;s Projects&quot;,
-&quot;id&quot;: &quot;chart10a013a3c84&quot; 
+&quot;id&quot;: &quot;chart1f9c361877f5&quot; 
 };
 
 params.units ? units = &quot; &quot; + params.units : units = &quot;&quot;;
@@ -237,11 +237,11 @@ node.append(&quot;text&quot;)
     
     &lt;script&gt;
       var cscale = d3.scale.category20b();
-      d3.selectAll(&#039;#chart10a013a3c84 svg path.link&#039;)
+      d3.selectAll(&#039;#chart1f9c361877f5 svg path.link&#039;)
         .style(&#039;stroke&#039;, function(d){
           return cscale(d.source.name);
         })
-      d3.selectAll(&#039;#chart10a013a3c84 svg .node rect&#039;)
+      d3.selectAll(&#039;#chart1f9c361877f5 svg .node rect&#039;)
         .style(&#039;fill&#039;, function(d){
           return cscale(d.name)
         })
@@ -249,7 +249,7 @@ node.append(&quot;text&quot;)
     &lt;/script&gt;
         
   &lt;/body&gt;
-&lt;/html&gt; ' scrolling='no' frameBorder='0' seamless class='rChart  http://timelyportfolio.github.io/rCharts_d3_sankey/libraries/widgets/d3_sankey  ' id='iframe-chart10a013a3c84'> </iframe>
+&lt;/html&gt; ' scrolling='no' frameBorder='0' seamless class='rChart  http://timelyportfolio.github.io/rCharts_d3_sankey/libraries/widgets/d3_sankey  ' id='iframe-chart1f9c361877f5'> </iframe>
  <style>iframe.rChart{ width: 100%; height: 400px;}</style>
 <style>iframe.rChart{ width: 100%; height: 840px;}</style>
 
@@ -916,6 +916,58 @@ moveDocs <- function(path.docs, type = c("md", "html", "pdf"), move = TRUE,
 }
 ```
 
+#### buttonGroup
+`buttonGroup` is a helper function for `genNavbar`. I used it to place social media buttons in the right side of the navigation bar at the top of a web page.
+For project pages I tend to only include a Github button linking to the project repo.
+For my Github user pages, I include more buttons.
+The function generates an html snippet defining a group of buttons.
+Typical use is to pass a list of the below arguments to `genNavbar`.
+
+`txt` is a character vector of text to appear inside the button.
+`urls` represents an accompanying vector of page urls.
+
+`fa.icons=NULL` (default) means no `Font Aweseome` icons will be included in the button to the left of the text.
+A vector of icon names can be passed. The whole string is not required, only the relevant text following `fa-`.
+For example, use `github` instead of `fa-github`.
+
+The `colors` argument takes any of the following CSS theme-defined "colors": default, primary, success, info, warning, danger.
+If `solid.group=TRUE`, a justified block button group will be defined.
+
+
+```r
+# Functions for Github websites
+buttonGroup <- function(txt, urls, fa.icons = NULL, colors = "primary", solid.group = FALSE) {
+    stopifnot(is.character(txt) & is.character(urls))
+    n <- length(txt)
+    stopifnot(length(urls) == n)
+    stopifnot(colors %in% c("default", "primary", "success", "info", "warning", 
+        "danger", "link"))
+    stopifnot(n%%length(colors) == 0)
+    if (is.null(fa.icons)) 
+        icons <- vector("list", length(txt)) else if (is.character(fa.icons)) 
+        icons <- as.list(fa.icons) else stop("fa.icons must be character or NULL")
+    stopifnot(length(icons) == n)
+    if (length(colors) < n) 
+        colors <- rep(colors, length = n)
+    
+    btnlink <- function(i, txt, url, icon, col) {
+        x <- paste0("<a class=\"btn btn-", col[i], "\" href=\"", url[i], "\">")
+        y <- if (is.null(icon[[i]])) 
+            "" else paste0("<i class=\"fa fa-", icon[[i]], " fa-lg\"></i>")
+        z <- paste0(" ", txt[i], "</a>\n")
+        paste0(x, y, z)
+    }
+    
+    x <- if (solid.group) 
+        "<div class=\"btn-group btn-group-justified\">\n" else ""
+    y <- paste0(sapply(1:length(txt), btnlink, txt = txt, url = urls, icon = icons, 
+        col = colors), collapse = "")
+    z <- if (solid.group) 
+        "</div>\n" else ""
+    paste0(x, y, z)
+}
+```
+
 #### genNavbar
 
 `genNavbar` generates a navigation bar for a web page.
@@ -935,12 +987,17 @@ Both are from Bootswatch.
 The function must apply some internal differentiation in the construction of the html navigation bar between themes.
 This is currently the only `rpm` function which attempts to handle multiple Bootswatch themes with different CSS tags.
 
+If `media.button.args=FALSE` (default), only the Github button will be included, and then only if `site.name="Github"` and site.url is not blank.
+I use this default for project pages and do not insert additional buttons.
+For user pages, the same defualt will work.
+Alternatively, a list of arguments can passed on to `buttonGroup`.
+I have not checked yet to see if this also works for project pages.
+
 
 ```r
-# Functions for Github project websites
 genNavbar <- function(htmlfile = "navbar.html", title, menu, submenus, files, 
     title.url = "index.html", home.url = "index.html", site.url = "", site.name = "Github", 
-    theme = "united", include.home = FALSE) {
+    media.button.args = NULL, theme = "united", include.home = FALSE) {
     if (!(theme %in% c("united", "cyborg"))) 
         stop("Only the following themes supported: united, cyborg.")
     
@@ -949,10 +1006,19 @@ genNavbar <- function(htmlfile = "navbar.html", title, menu, submenus, files,
             "navbar-inner", "container", "", "btn btn-navbar", ".nav-collapse", 
             "</div>\n"), cyborg = c("navbar-brand", "navbar-collapse collapse navbar-responsive-collapse", 
             "nav navbar-nav", "nav navbar-nav navbar-right", "container", "navbar-header", 
-            "      </div>\n", "navbar-toggle", ".nav-collapse", ""))
+            "      </div>\n", "navbar-toggle", ".navbar-responsive-collapse", 
+            ""))
     }
     
     ncs <- navClassStrings(theme)
+    
+    if (!is.null(media.button.args)) {
+        media.buttons <- do.call(buttonGroup, media.button.args)
+    } else if (site.name == "Github" & site.url != "") {
+        media.buttons <- paste0("<a class=\"btn btn-primary\" href=\"", site.url, 
+            "\">\n            <i class=\"fa fa-github fa-lg\"></i>\n            ", 
+            site.name, "\n          </a>\n")
+    } else media.buttons <- ""
     
     fillSubmenu <- function(x, name, file, theme) {
         if (theme == "united") 
@@ -991,9 +1057,8 @@ genNavbar <- function(htmlfile = "navbar.html", title, menu, submenus, files,
         ncs[2], "\">\n        <ul class=\"", ncs[3], "\">\n          ", home, 
         paste(sapply(1:length(menu), fillMenu, menu = menu, submenus = submenus, 
             files = files, theme = theme), sep = "", collapse = "\n          "), 
-        "        </ul>\n        <ul class=\"", ncs[4], "\">\n          <a class=\"btn btn-primary\" href=\"", 
-        site.url, "\">\n            <i class=\"fa fa-github fa-lg\"></i>\n            ", 
-        site.name, "\n          </a>\n        </ul>\n      </div><!--/.nav-collapse -->\n    </div>\n  ", 
+        "        </ul>\n        <ul class=\"", ncs[4], "\">\n          ", media.buttons, 
+        "        </ul>\n      </div><!--/.nav-collapse -->\n    </div>\n  ", 
         ncs[10], "</div>\n", collpase = "")
     sink(htmlfile)
     cat(x)
@@ -1335,7 +1400,7 @@ CSS can be included as a text string or as a path to a CSS file.
 ```r
 htmlBodyTop <- function(css.file = NULL, css.string = NULL, background.image = "", 
     include.default = TRUE, ...) {
-    x <- "<style type = \"text/css\">\n"
+    x <- "<body>\n<style type = \"text/css\">\n"
     
     default <- paste0("\n\t.main-container {\n\t  max-width: 940px;\n\t  margin-left: auto;\n\t  margin-right: auto;\n\n\t}\n\n\tbody {\n\t  background-image: url(\"", 
         background.image, "\");\n\t  background-attachment: fixed;\n\t  background-size: 1920px 1080px;\n\t}\n\t\n\t/* padding for bootstrap navbar */\n\tbody {\n\t  padding-top: 50px;\n\t  padding-bottom: 40px;\n\t}\n\t@media (max-width: 979px) {\n\t  body {\n\t\tpadding-top: 0;\n\t  }\n\t}\n\t\n\t.nav>.btn {\n\t  line-height: 0.75em;\n\t  margin-top: 9px;\n\t}\n\t")
@@ -1347,7 +1412,7 @@ htmlBodyTop <- function(css.file = NULL, css.string = NULL, background.image = "
     if (include.default) 
         y <- c(default, y)
     
-    z <- "\n</style>\n\t<div class=\"container-fluid main-container\">\n\t"
+    z <- "\n</style>\n"
     
     c(x, y, z)
 }

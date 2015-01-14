@@ -301,7 +301,7 @@ CSS can be included as a text string or as a path to a CSS file.
 ```r
 htmlBodyTop <- function(css.file = NULL, css.string = NULL, background.image = "", 
     include.default = TRUE, ...) {
-    x <- "<style type = \"text/css\">\n"
+    x <- "<body>\n<style type = \"text/css\">\n"
     
     default <- paste0("\n\t.main-container {\n\t  max-width: 940px;\n\t  margin-left: auto;\n\t  margin-right: auto;\n\n\t}\n\n\tbody {\n\t  background-image: url(\"", 
         background.image, "\");\n\t  background-attachment: fixed;\n\t  background-size: 1920px 1080px;\n\t}\n\t\n\t/* padding for bootstrap navbar */\n\tbody {\n\t  padding-top: 50px;\n\t  padding-bottom: 40px;\n\t}\n\t@media (max-width: 979px) {\n\t  body {\n\t\tpadding-top: 0;\n\t  }\n\t}\n\t\n\t.nav>.btn {\n\t  line-height: 0.75em;\n\t  margin-top: 9px;\n\t}\n\t")
@@ -313,7 +313,7 @@ htmlBodyTop <- function(css.file = NULL, css.string = NULL, background.image = "
     if (include.default) 
         y <- c(default, y)
     
-    z <- "\n</style>\n\t<div class=\"container-fluid main-container\">\n\t"
+    z <- "\n</style>\n"
     
     c(x, y, z)
 }

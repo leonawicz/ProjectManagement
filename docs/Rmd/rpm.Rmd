@@ -284,6 +284,26 @@ An alternate location can be specified, such as "pdf" if you want to keep these 
 ```{r fun_moveDocs}
 ```
 
+#### buttonGroup
+`buttonGroup` is a helper function for `genNavbar`. I used it to place social media buttons in the right side of the navigation bar at the top of a web page.
+For project pages I tend to only include a Github button linking to the project repo.
+For my Github user pages, I include more buttons.
+The function generates an html snippet defining a group of buttons.
+Typical use is to pass a list of the below arguments to `genNavbar`.
+
+`txt` is a character vector of text to appear inside the button.
+`urls` represents an accompanying vector of page urls.
+
+`fa.icons=NULL` (default) means no `Font Aweseome` icons will be included in the button to the left of the text.
+A vector of icon names can be passed. The whole string is not required, only the relevant text following `fa-`.
+For example, use `github` instead of `fa-github`.
+
+The `colors` argument takes any of the following CSS theme-defined "colors": default, primary, success, info, warning, danger.
+If `solid.group=TRUE`, a justified block button group will be defined.
+
+```{r fun_buttonGroup}
+```
+
 #### genNavbar
 
 `genNavbar` generates a navigation bar for a web page.
@@ -302,6 +322,12 @@ or "divider" to indicate placement of a bar for separating groups in a dropdown 
 Both are from Bootswatch.
 The function must apply some internal differentiation in the construction of the html navigation bar between themes.
 This is currently the only `rpm` function which attempts to handle multiple Bootswatch themes with different CSS tags.
+
+If `media.button.args=FALSE` (default), only the Github button will be included, and then only if `site.name="Github"` and site.url is not blank.
+I use this default for project pages and do not insert additional buttons.
+For user pages, the same defualt will work.
+Alternatively, a list of arguments can passed on to `buttonGroup`.
+I have not checked yet to see if this also works for project pages.
 
 ```{r fun_genNavbar}
 ```
