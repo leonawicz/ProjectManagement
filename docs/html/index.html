@@ -111,10 +111,11 @@ body {
           <li class="dropdown">
             <a href="all-projects" class="dropdown-toggle" data-toggle="dropdown">All Projects <b class="caret"></b></a>
             <ul class="dropdown-menu">
+              <li class="nav-header">Hierarchy of current projects</li>
               <li><a href="proj_sankey.html">Projects diagram</a></li>
               <li class="divider"></li>
-              <li><a href="index.html">About</a></li>
-              <li><a href="index.html">Other</a></li>
+              <li class="nav-header">Access all projects</li>
+              <li><a href="http://leonawicz.github.io">leonawicz.github.io</a></li>
             </ul>
         </ul>
         <ul class="nav pull-right">
@@ -173,7 +174,7 @@ body {
 </div>
 <div id="r-rstudio-knitr-rmarkdown-miktex-pandoc-windows-linux-oh-my" class="section level5">
 <h5>R, Rstudio, knitr, rmarkdown, MikTeX, Pandoc, Windows, Linux,… OH MY!</h5>
-<p>And I’m not particularly interested in thinking about Mac. Anyway, this is my own limitation, an area where my current knowledge of cross-system use and third party software integration is not strong. When using <code>knit</code> and/or <code>rmakrdown</code>, I tend to have more success avoiding crashes while knitting documents if I do all the file generation in the same directory as the source files. This is why <code>rpm</code> has code for moving output files after knitting them. I don’t know why this problem exists, but for context, it is convenient for me to do the knitting with <strong>R</strong> on my Windows pc. I have <code>MikTeX</code> and <code>Pandoc</code> for Windows installed. However, I never bothered fussing with environment variables or whatever I might have to do in order to get pdf generation to work on Windows using the standard <strong>R</strong> GUI. Instead, I find it easier to use RStudio, in which case <code>Pandoc</code> is accessible and everything works fine.</p>
+<p>And I’m not particularly interested in thinking about Mac. Anyway, this is my own limitation, an area where my current knowledge of cross-system use and third party software integration is not strong. When using <code>knitr</code> and/or <code>rmakrdown</code>, I tend to have more success avoiding crashes while knitting documents if I do all the file generation in the same directory as the source files. This is why <code>rpm</code> has code for moving output files after knitting them. I don’t know why this problem exists, but for context, it is convenient for me to do the knitting with <strong>R</strong> on my Windows pc. I have <code>MikTeX</code> and <code>Pandoc</code> for Windows installed. However, I never bothered fussing with environment variables or whatever I might have to do in order to get pdf generation to work on Windows using the standard <strong>R</strong> GUI. Instead, I find it easier to use RStudio, in which case <code>Pandoc</code> is accessible and everything works fine.</p>
 <p>So I can do all of this with RStudio, but not all of it with standard <strong>R</strong> — which is what I otherwise use exclusively, either on Windows or Linux. Suffice it to say that, for now at least, I must use RStudio specificallly for pdf generation. I cannot use standalone <strong>R</strong> on Windows. I know this is not a real prohibition, but due to my lack of having looked into it and figured it out yet. If I use Linux, pdf files sometimes come out looking a little different. This is all to say that I am not currently in a position with this project to produce something that will work completely and identically across multiple systems. In an ideal scenario, my full application of <code>knitr</code> and <code>rmarkdown</code> would work similarly in standard <strong>R</strong>, whether in interactive or non-interactive mode, and whether on Linux or Windows. I wouldn’t worry about whether it worked seamlessly in RStudio as well. But for now I have the opposite situation.</p>
 </div>
 <div id="websites" class="section level5">

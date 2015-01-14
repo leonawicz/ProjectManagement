@@ -166,7 +166,7 @@ genPanelDiv(outDir = getwd(), type = "gallery", main = "Gallery", github.user = 
 # Specify libraries for html head 'assets' is first because it resides in
 # the top-level directory where the web site html files reside.
 scripts = c("assets/libs/jquery-1.11.0/jquery.min.js", "assets/js/bootstrap.min.js", 
-    "assets/js/bootswatch.js", "assets/js/lightbox.min.js")
+    "assets/js/bootswatch.js", "assets/js/lightbox.min.js", "assets/js/gatc.js")
 styles <- c("cyborg/bootstrap.css", "assets/css/bootswatch.min.css", "assets/libs/font-awesome-4.1.0/css/font-awesome.css", 
     "assets/css/lightbox.css")
 styles.args <- list("", list(media = "screen"), "", "")

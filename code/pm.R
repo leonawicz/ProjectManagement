@@ -31,13 +31,13 @@ proj.menu <- c("rpm", "R Code", "All Projects")
 proj.submenu <- list(
 	c("About rpm", "Introduction", "Related items", "Example usage"),
 	c("Default objects", "divider", "Functions", "Start a new project", "Working with Rmd files", "Document conversion", "Organize documents", "Make a project website", "Github user website"),
-	c("Projects diagram", "divider", "About", "Other")
+	c("Hierarchy of current projects", "Projects diagram", "divider", "Access all projects", "leonawicz.github.io")
 )
 
 proj.files <- list(
 	c("header", "index.html", "code_sankey.html", "pm.html"),
 	c("objects.html", "divider", "header", "func_new.html", "func_rmd.html", "func_convert.html", "func_organize.html", "func_website.html", "func_user_website.html"),
-	c("proj_sankey.html", "divider", "index.html", "index.html")
+	c("header", "proj_sankey.html", "divider", "header", "http://leonawicz.github.io")
 )
 
 user <- "leonawicz"

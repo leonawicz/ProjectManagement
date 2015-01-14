@@ -90,7 +90,7 @@ Here is a project hierarchy diagram showing the relationships among all my curre
   &lt;/head&gt;
   &lt;body &gt;
     
-    &lt;div id = &#039;chart11206323368d&#039; class = &#039;rChart d3_sankey&#039;&gt;&lt;/div&gt;    
+    &lt;div id = &#039;chart10a013a3c84&#039; class = &#039;rChart d3_sankey&#039;&gt;&lt;/div&gt;    
     ï»¿&lt;!--Attribution:
 Mike Bostock https://github.com/d3/d3-plugins/tree/master/sankey
 Mike Bostock http://bost.ocks.org/mike/sankey/
@@ -99,7 +99,7 @@ Mike Bostock http://bost.ocks.org/mike/sankey/
 &lt;script&gt;
 (function(){
 var params = {
- &quot;dom&quot;: &quot;chart11206323368d&quot;,
+ &quot;dom&quot;: &quot;chart10a013a3c84&quot;,
 &quot;width&quot;:    900,
 &quot;height&quot;:    800,
 &quot;data&quot;: {
@@ -117,7 +117,7 @@ var params = {
 &quot;top&quot;:     20 
 },
 &quot;title&quot;: &quot;Matt&#039;s Projects&quot;,
-&quot;id&quot;: &quot;chart11206323368d&quot; 
+&quot;id&quot;: &quot;chart10a013a3c84&quot; 
 };
 
 params.units ? units = &quot; &quot; + params.units : units = &quot;&quot;;
@@ -237,11 +237,11 @@ node.append(&quot;text&quot;)
     
     &lt;script&gt;
       var cscale = d3.scale.category20b();
-      d3.selectAll(&#039;#chart11206323368d svg path.link&#039;)
+      d3.selectAll(&#039;#chart10a013a3c84 svg path.link&#039;)
         .style(&#039;stroke&#039;, function(d){
           return cscale(d.source.name);
         })
-      d3.selectAll(&#039;#chart11206323368d svg .node rect&#039;)
+      d3.selectAll(&#039;#chart10a013a3c84 svg .node rect&#039;)
         .style(&#039;fill&#039;, function(d){
           return cscale(d.name)
         })
@@ -249,7 +249,7 @@ node.append(&quot;text&quot;)
     &lt;/script&gt;
         
   &lt;/body&gt;
-&lt;/html&gt; ' scrolling='no' frameBorder='0' seamless class='rChart  http://timelyportfolio.github.io/rCharts_d3_sankey/libraries/widgets/d3_sankey  ' id='iframe-chart11206323368d'> </iframe>
+&lt;/html&gt; ' scrolling='no' frameBorder='0' seamless class='rChart  http://timelyportfolio.github.io/rCharts_d3_sankey/libraries/widgets/d3_sankey  ' id='iframe-chart10a013a3c84'> </iframe>
  <style>iframe.rChart{ width: 100%; height: 400px;}</style>
 <style>iframe.rChart{ width: 100%; height: 840px;}</style>
 
@@ -491,6 +491,32 @@ I only strived to speed up the process by which I convert my own documents, most
 Anything atypical which doesn't convert properly can be adjusted by hand afterward.
 This is still better than rewriting, copy-pasting, and search-and-replacing many sections of many files on a recurring basis.
 Further improvements in conversion will be added later.
+
+##### Rules and assumptions regarding these functions
+
+- All Rnw file lines beginning with a backslash which are in the main body of the code (beyond the title, author, etc.) and are not part of a code chunk identifier string are stripped rather than converted for Rmd.
+- Only title and author are parsed from the Rnw lines prior to where the R code chunks begin. LaTeX libraries and such are dropped.
+- Standard, minimal LaTeX libraries and other requirements prior to beginning the document are inserted in place of the Rmd yaml front-matter.
+- Rmd files must have yaml front-matter, identified always by the second line in the document to begin with `---`.
+
+##### Formatting rules
+
+- I never use two consecutive asterisks or underscores except to indicate bold text
+- Text with typewriter font in Rnw files is converted to text within backticks in Rmd files and vice versa.
+- Italics or other formatting are not considered.
+
+##### Heading rules
+
+- Lists in Rmd files (like this one), are not yet addressed in conversion to Rnw and vice versa.
+- I never (intentionally) use the two most extreme headings in Rmd files, `#` and `######`. I only use `##` through `#####`.
+- I never go beyond `subsubsubsection` in Rnw files.
+- Any occurrence of one or two `#` is converted to a new `section` in an Rnw file whereas a section converts to a `##` heading.
+- Similarly, five- or six-`#` identified heading in Rmd convert to the maximum `subsubsubsection` which back-converts to a `#####` heading.
+- Three- and four-`#` identified Rmd headings convert to `subsection`- and `subsubsection`-identified Rnw headings, respectively, and vice versa. As such, these are the only true one-to-one heading conversions.
+
+This may all sound like a lot, but it's not. It does a decent job for now.
+It's not a true conversion and plenty of work may remain afterward.
+Again, the point is to make conversion much less tedious and hands-on, which it does well enough so far.
 
 #### .swapHeadings
 `.swapHeadings` assists in bidirectional conversion between Rmd and Rnw files.
@@ -1197,10 +1223,15 @@ genPanelDiv <- function(outDir, type = "projects", main = "Projects", github.use
         if (type == "datavis") 
             img.src <- file.path(gsub("/tree/", "/raw/", gh.url), img.loc, prjs.img[i])
         if (type != "gallery") {
-            if (type == "datavis") 
-                pfx <- "gallery-" else pfx <- ""
-            web.url <- file.path(web.url, tolower(paste0(pfx, gsub("_", "-", 
-                gsub("_-_", "-", prj)), ".html")))
+            if (type == "datavis") {
+                pfx <- "gallery-"
+                sfx <- ".html"
+                base <- tolower(paste0(pfx, gsub("_", "-", gsub("_-_", "-", 
+                  prj)), sfx))
+            } else {
+                base <- prj
+            }
+            web.url <- file.path(web.url, base)
         } else {
             prj <- prjs[p]
             img.src <- file.path(gsub("/tree/", "/raw/", gh.url), prjs[p], img.loc, 

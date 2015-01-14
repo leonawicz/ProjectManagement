@@ -138,10 +138,11 @@ code > span.er { color: #c3bf9f; }
           <li class="dropdown">
             <a href="all-projects" class="dropdown-toggle" data-toggle="dropdown">All Projects <b class="caret"></b></a>
             <ul class="dropdown-menu">
+              <li class="nav-header">Hierarchy of current projects</li>
               <li><a href="proj_sankey.html">Projects diagram</a></li>
               <li class="divider"></li>
-              <li><a href="index.html">About</a></li>
-              <li><a href="index.html">Other</a></li>
+              <li class="nav-header">Access all projects</li>
+              <li><a href="http://leonawicz.github.io">leonawicz.github.io</a></li>
             </ul>
         </ul>
         <ul class="nav pull-right">
@@ -295,7 +296,7 @@ mainDir &lt;-<span class="st"> </span><span class="kw">file.path</span>(proj.loc
 <span class="co"># Specify libraries for html head &#39;assets&#39; is first because it resides in</span>
 <span class="co"># the top-level directory where the web site html files reside.</span>
 scripts =<span class="st"> </span><span class="kw">c</span>(<span class="st">&quot;assets/libs/jquery-1.11.0/jquery.min.js&quot;</span>, <span class="st">&quot;assets/js/bootstrap.min.js&quot;</span>, 
-    <span class="st">&quot;assets/js/bootswatch.js&quot;</span>, <span class="st">&quot;assets/js/lightbox.min.js&quot;</span>)
+    <span class="st">&quot;assets/js/bootswatch.js&quot;</span>, <span class="st">&quot;assets/js/lightbox.min.js&quot;</span>, <span class="st">&quot;assets/js/gatc.js&quot;</span>)
 styles &lt;-<span class="st"> </span><span class="kw">c</span>(<span class="st">&quot;cyborg/bootstrap.css&quot;</span>, <span class="st">&quot;assets/css/bootswatch.min.css&quot;</span>, <span class="st">&quot;assets/libs/font-awesome-4.1.0/css/font-awesome.css&quot;</span>, 
     <span class="st">&quot;assets/css/lightbox.css&quot;</span>)
 styles.args &lt;-<span class="st"> </span><span class="kw">list</span>(<span class="st">&quot;&quot;</span>, <span class="kw">list</span>(<span class="dt">media =</span> <span class="st">&quot;screen&quot;</span>), <span class="st">&quot;&quot;</span>, <span class="st">&quot;&quot;</span>)
