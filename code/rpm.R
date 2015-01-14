@@ -417,19 +417,49 @@ moveDocs <- function(path.docs, type=c("md", "html","pdf"), move=TRUE, copy=FALS
 	}
 }
 
+# @knitr fun_buttonGroup
+# Functions for Github websites
+buttonGroup <- function(txt, urls, fa.icons=NULL, colors="primary", solid.group=FALSE){
+	stopifnot(is.character(txt) & is.character(urls))
+	n <- length(txt)
+	stopifnot(length(urls)==n)
+	stopifnot(colors %in% c("default", "primary", "success", "info", "warning", "danger", "link"))
+	stopifnot(n %% length(colors)==0)
+	if(is.null(fa.icons)) icons <- vector("list", length(txt)) else if(is.character(fa.icons)) icons <- as.list(fa.icons) else stop("fa.icons must be character or NULL")
+	stopifnot(length(icons)==n)
+	if(length(colors) < n) colors <- rep(colors, length=n)
+	
+	btnlink <- function(i, txt, url, icon, col){
+		x <- paste0('<a class="btn btn-', col[i], '" href="', url[i], '">')
+		y <- if(is.null(icon[[i]])) "" else paste0('<i class="fa fa-', icon[[i]], ' fa-lg"></i>')
+		z <- paste0(" ", txt[i], '</a>\n')
+		paste0(x, y, z)
+	}
+	
+	x <- if(solid.group) '<div class="btn-group btn-group-justified">\n' else ""
+	y <- paste0(sapply(1:length(txt), btnlink, txt=txt, url=urls, icon=icons, col=colors), collapse="")
+	z <- if(solid.group) '</div>\n' else ""
+	paste0(x, y, z)
+}
+
 # @knitr fun_genNavbar
-# Functions for Github project websites
-genNavbar <- function(htmlfile="navbar.html", title, menu, submenus, files, title.url="index.html", home.url="index.html", site.url="", site.name="Github", theme="united", include.home=FALSE){
+genNavbar <- function(htmlfile="navbar.html", title, menu, submenus, files, title.url="index.html", home.url="index.html", site.url="", site.name="Github", media.button.args=NULL, theme="united", include.home=FALSE){
 	if(!(theme %in% c("united", "cyborg"))) stop("Only the following themes supported: united, cyborg.")
 	
 	navClassStrings <- function(x){
 		switch(x,
 		united=c("brand", "nav-collapse collapse", "nav", "nav pull-right", "navbar-inner", "container", "", "btn btn-navbar", ".nav-collapse", "</div>\n"),
-		cyborg=c("navbar-brand", "navbar-collapse collapse navbar-responsive-collapse", "nav navbar-nav", "nav navbar-nav navbar-right", "container", "navbar-header", "      </div>\n", "navbar-toggle", ".nav-collapse", "")
+		cyborg=c("navbar-brand", "navbar-collapse collapse navbar-responsive-collapse", "nav navbar-nav", "nav navbar-nav navbar-right", "container", "navbar-header", "      </div>\n", "navbar-toggle", ".navbar-responsive-collapse", "")
 		)
 	}
 	
 	ncs <- navClassStrings(theme)
+	
+	if(!is.null(media.button.args)){
+		media.buttons <- do.call(buttonGroup, media.button.args)
+	} else if(site.name=="Github" & site.url!="") {
+		media.buttons <- paste0('<a class="btn btn-primary" href="', site.url, '">\n            <i class="fa fa-github fa-lg"></i>\n            ',site.name,'\n          </a>\n')
+	} else media.buttons <- ""
 	
 	fillSubmenu <- function(x, name, file, theme){
 		if(theme=="united") dd.menu.header <- "nav-header" else if(theme=="cyborg") dd.menu.header <- "dropdown-header"
@@ -461,7 +491,7 @@ genNavbar <- function(htmlfile="navbar.html", title, menu, submenus, files, titl
 		'<div class="navbar navbar-default navbar-fixed-top">\n  <div class="', ncs[5], '">\n    <div class="', ncs[6], '">\n      <button type="button" class="', ncs[8], '" data-toggle="collapse" data-target="', ncs[9], '">\n        <span class="icon-bar"></span>\n        <span class="icon-bar"></span>\n        <span class="icon-bar"></span>\n      </button>\n      <a class="', ncs[1], '" href="', title.url, '">', title, '</a>\n', ncs[7], '      <div class="', ncs[2], '">\n        <ul class="', ncs[3], '">\n          ',
 		home,
 		paste(sapply(1:length(menu), fillMenu, menu=menu, submenus=submenus, files=files, theme=theme), sep="", collapse="\n          "),
-		'        </ul>\n        <ul class="', ncs[4], '">\n          <a class="btn btn-primary" href="', site.url, '">\n            <i class="fa fa-github fa-lg"></i>\n            ',site.name,'\n          </a>\n        </ul>\n      </div><!--/.nav-collapse -->\n    </div>\n  ', ncs[10], '</div>\n',
+		'        </ul>\n        <ul class="', ncs[4], '">\n          ', media.buttons, '        </ul>\n      </div><!--/.nav-collapse -->\n    </div>\n  ', ncs[10], '</div>\n',
 		collpase="")
 	sink(htmlfile)
 	cat(x)
@@ -685,7 +715,7 @@ x
 
 # @knitr fun_htmlBodyTop
 htmlBodyTop <- function(css.file=NULL, css.string=NULL, background.image="", include.default=TRUE, ...){
-	x <- '<style type = "text/css">\n'
+	x <- '<body>\n<style type = "text/css">\n'
 	
 	default <- paste0('
 	.main-container {
@@ -722,9 +752,7 @@ htmlBodyTop <- function(css.file=NULL, css.string=NULL, background.image="", inc
 	if(!is.null(css.string)) y <- c(y, css.string)
 	if(include.default) y <- c(default, y)
 	
-	z <- '\n</style>
-	<div class="container-fluid main-container">
-	'
+	z <- '\n</style>\n'
 
 	c(x, y, z)
 }
