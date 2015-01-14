@@ -90,7 +90,7 @@ Here is a project hierarchy diagram showing the relationships among all my curre
   &lt;/head&gt;
   &lt;body &gt;
     
-    &lt;div id = &#039;chart1f9c361877f5&#039; class = &#039;rChart d3_sankey&#039;&gt;&lt;/div&gt;    
+    &lt;div id = &#039;chart1f9c14485c52&#039; class = &#039;rChart d3_sankey&#039;&gt;&lt;/div&gt;    
     ï»¿&lt;!--Attribution:
 Mike Bostock https://github.com/d3/d3-plugins/tree/master/sankey
 Mike Bostock http://bost.ocks.org/mike/sankey/
@@ -99,7 +99,7 @@ Mike Bostock http://bost.ocks.org/mike/sankey/
 &lt;script&gt;
 (function(){
 var params = {
- &quot;dom&quot;: &quot;chart1f9c361877f5&quot;,
+ &quot;dom&quot;: &quot;chart1f9c14485c52&quot;,
 &quot;width&quot;:    900,
 &quot;height&quot;:    800,
 &quot;data&quot;: {
@@ -117,7 +117,7 @@ var params = {
 &quot;top&quot;:     20 
 },
 &quot;title&quot;: &quot;Matt&#039;s Projects&quot;,
-&quot;id&quot;: &quot;chart1f9c361877f5&quot; 
+&quot;id&quot;: &quot;chart1f9c14485c52&quot; 
 };
 
 params.units ? units = &quot; &quot; + params.units : units = &quot;&quot;;
@@ -237,11 +237,11 @@ node.append(&quot;text&quot;)
     
     &lt;script&gt;
       var cscale = d3.scale.category20b();
-      d3.selectAll(&#039;#chart1f9c361877f5 svg path.link&#039;)
+      d3.selectAll(&#039;#chart1f9c14485c52 svg path.link&#039;)
         .style(&#039;stroke&#039;, function(d){
           return cscale(d.source.name);
         })
-      d3.selectAll(&#039;#chart1f9c361877f5 svg .node rect&#039;)
+      d3.selectAll(&#039;#chart1f9c14485c52 svg .node rect&#039;)
         .style(&#039;fill&#039;, function(d){
           return cscale(d.name)
         })
@@ -249,7 +249,7 @@ node.append(&quot;text&quot;)
     &lt;/script&gt;
         
   &lt;/body&gt;
-&lt;/html&gt; ' scrolling='no' frameBorder='0' seamless class='rChart  http://timelyportfolio.github.io/rCharts_d3_sankey/libraries/widgets/d3_sankey  ' id='iframe-chart1f9c361877f5'> </iframe>
+&lt;/html&gt; ' scrolling='no' frameBorder='0' seamless class='rChart  http://timelyportfolio.github.io/rCharts_d3_sankey/libraries/widgets/d3_sankey  ' id='iframe-chart1f9c14485c52'> </iframe>
  <style>iframe.rChart{ width: 100%; height: 400px;}</style>
 <style>iframe.rChart{ width: 100%; height: 840px;}</style>
 
@@ -926,7 +926,7 @@ Typical use is to pass a list of the below arguments to `genNavbar`.
 `txt` is a character vector of text to appear inside the button.
 `urls` represents an accompanying vector of page urls.
 
-`fa.icons=NULL` (default) means no `Font Aweseome` icons will be included in the button to the left of the text.
+`fa.icons=NULL` (default) means no Font Awesome icons will be included in the button to the left of the text.
 A vector of icon names can be passed. The whole string is not required, only the relevant text following `fa-`.
 For example, use `github` instead of `fa-github`.
 
@@ -987,7 +987,7 @@ Both are from Bootswatch.
 The function must apply some internal differentiation in the construction of the html navigation bar between themes.
 This is currently the only `rpm` function which attempts to handle multiple Bootswatch themes with different CSS tags.
 
-If `media.button.args=FALSE` (default), only the Github button will be included, and then only if `site.name="Github"` and site.url is not blank.
+If `media.button.args=NULL` (default), only the Github button will be included, and then only if `site.name="Github"` and site.url is not blank.
 I use this default for project pages and do not insert additional buttons.
 For user pages, the same defualt will work.
 Alternatively, a list of arguments can passed on to `buttonGroup`.

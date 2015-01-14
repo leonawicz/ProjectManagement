@@ -22,7 +22,7 @@ Typical use is to pass a list of the below arguments to `genNavbar`.
 `txt` is a character vector of text to appear inside the button.
 `urls` represents an accompanying vector of page urls.
 
-`fa.icons=NULL` (default) means no `Font Aweseome` icons will be included in the button to the left of the text.
+`fa.icons=NULL` (default) means no Font Awesome icons will be included in the button to the left of the text.
 A vector of icon names can be passed. The whole string is not required, only the relevant text following `fa-`.
 For example, use `github` instead of `fa-github`.
 
@@ -51,7 +51,7 @@ Both are from Bootswatch.
 The function must apply some internal differentiation in the construction of the html navigation bar between themes.
 This is currently the only `rpm` function which attempts to handle multiple Bootswatch themes with different CSS tags.
 
-If `media.button.args=FALSE` (default), only the Github button will be included, and then only if `site.name="Github"` and site.url is not blank.
+If `media.button.args=NULL` (default), only the Github button will be included, and then only if `site.name="Github"` and site.url is not blank.
 I use this default for project pages and do not insert additional buttons.
 For user pages, the same defualt will work.
 Alternatively, a list of arguments can passed on to `buttonGroup`.
