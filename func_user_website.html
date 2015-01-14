@@ -115,7 +115,7 @@ code > span.er { color: #c3bf9f; }
             <a href="rpm" class="dropdown-toggle" data-toggle="dropdown">rpm <b class="caret"></b></a>
             <ul class="dropdown-menu">
               <li class="nav-header">About rpm</li>
-              <li><a href="proj_intro.html">Introduction</a></li>
+              <li><a href="index.html">Introduction</a></li>
               <li><a href="code_sankey.html">Related items</a></li>
               <li><a href="pm.html">Example usage</a></li>
             </ul>
@@ -137,10 +137,11 @@ code > span.er { color: #c3bf9f; }
           <li class="dropdown">
             <a href="all-projects" class="dropdown-toggle" data-toggle="dropdown">All Projects <b class="caret"></b></a>
             <ul class="dropdown-menu">
+              <li class="nav-header">Hierarchy of current projects</li>
               <li><a href="proj_sankey.html">Projects diagram</a></li>
               <li class="divider"></li>
-              <li><a href="proj_intro.html">About</a></li>
-              <li><a href="proj_intro.html">Other</a></li>
+              <li class="nav-header">Access all projects</li>
+              <li><a href="http://leonawicz.github.io">leonawicz.github.io</a></li>
             </ul>
         </ul>
         <ul class="nav pull-right">
@@ -300,10 +301,15 @@ genAppDiv &lt;-<span class="st"> </span>function(<span class="dt">file =</span> 
         if (type ==<span class="st"> &quot;datavis&quot;</span>) 
             img.src &lt;-<span class="st"> </span><span class="kw">file.path</span>(<span class="kw">gsub</span>(<span class="st">&quot;/tree/&quot;</span>, <span class="st">&quot;/raw/&quot;</span>, gh.url), img.loc, prjs.img[i])
         if (type !=<span class="st"> &quot;gallery&quot;</span>) {
-            if (type ==<span class="st"> &quot;datavis&quot;</span>) 
-                pfx &lt;-<span class="st"> &quot;gallery-&quot;</span> else pfx &lt;-<span class="st"> &quot;&quot;</span>
-            web.url &lt;-<span class="st"> </span><span class="kw">file.path</span>(web.url, <span class="kw">tolower</span>(<span class="kw">paste0</span>(pfx, <span class="kw">gsub</span>(<span class="st">&quot;_&quot;</span>, <span class="st">&quot;-&quot;</span>, 
-                <span class="kw">gsub</span>(<span class="st">&quot;_-_&quot;</span>, <span class="st">&quot;-&quot;</span>, prj)), <span class="st">&quot;.html&quot;</span>)))
+            if (type ==<span class="st"> &quot;datavis&quot;</span>) {
+                pfx &lt;-<span class="st"> &quot;gallery-&quot;</span>
+                sfx &lt;-<span class="st"> &quot;.html&quot;</span>
+                base &lt;-<span class="st"> </span><span class="kw">tolower</span>(<span class="kw">paste0</span>(pfx, <span class="kw">gsub</span>(<span class="st">&quot;_&quot;</span>, <span class="st">&quot;-&quot;</span>, <span class="kw">gsub</span>(<span class="st">&quot;_-_&quot;</span>, <span class="st">&quot;-&quot;</span>, 
+                  prj)), sfx))
+            } else {
+                base &lt;-<span class="st"> </span>prj
+            }
+            web.url &lt;-<span class="st"> </span><span class="kw">file.path</span>(web.url, base)
         } else {
             prj &lt;-<span class="st"> </span>prjs[p]
             img.src &lt;-<span class="st"> </span><span class="kw">file.path</span>(<span class="kw">gsub</span>(<span class="st">&quot;/tree/&quot;</span>, <span class="st">&quot;/raw/&quot;</span>, gh.url), prjs[p], img.loc, 

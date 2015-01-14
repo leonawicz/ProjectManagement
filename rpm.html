@@ -116,7 +116,7 @@ code > span.er { color: #c3bf9f; }
             <a href="rpm" class="dropdown-toggle" data-toggle="dropdown">rpm <b class="caret"></b></a>
             <ul class="dropdown-menu">
               <li class="nav-header">About rpm</li>
-              <li><a href="proj_intro.html">Introduction</a></li>
+              <li><a href="index.html">Introduction</a></li>
               <li><a href="code_sankey.html">Related items</a></li>
               <li><a href="pm.html">Example usage</a></li>
             </ul>
@@ -138,10 +138,11 @@ code > span.er { color: #c3bf9f; }
           <li class="dropdown">
             <a href="all-projects" class="dropdown-toggle" data-toggle="dropdown">All Projects <b class="caret"></b></a>
             <ul class="dropdown-menu">
+              <li class="nav-header">Hierarchy of current projects</li>
               <li><a href="proj_sankey.html">Projects diagram</a></li>
               <li class="divider"></li>
-              <li><a href="proj_intro.html">About</a></li>
-              <li><a href="proj_intro.html">Other</a></li>
+              <li class="nav-header">Access all projects</li>
+              <li><a href="http://leonawicz.github.io">leonawicz.github.io</a></li>
             </ul>
         </ul>
         <ul class="nav pull-right">
@@ -218,7 +219,7 @@ code > span.er { color: #c3bf9f; }
   &lt;/head&gt;
   &lt;body &gt;
     
-    &lt;div id = 'chart11206323368d' class = 'rChart d3_sankey'&gt;&lt;/div&gt;    
+    &lt;div id = 'chart10a013a3c84' class = 'rChart d3_sankey'&gt;&lt;/div&gt;    
     ï»¿&lt;!--Attribution:
 Mike Bostock https://github.com/d3/d3-plugins/tree/master/sankey
 Mike Bostock http://bost.ocks.org/mike/sankey/
@@ -227,7 +228,7 @@ Mike Bostock http://bost.ocks.org/mike/sankey/
 &lt;script&gt;
 (function(){
 var params = {
- &quot;dom&quot;: &quot;chart11206323368d&quot;,
+ &quot;dom&quot;: &quot;chart10a013a3c84&quot;,
 &quot;width&quot;:    900,
 &quot;height&quot;:    800,
 &quot;data&quot;: {
@@ -245,7 +246,7 @@ var params = {
 &quot;top&quot;:     20 
 },
 &quot;title&quot;: &quot;Matt's Projects&quot;,
-&quot;id&quot;: &quot;chart11206323368d&quot; 
+&quot;id&quot;: &quot;chart10a013a3c84&quot; 
 };
 
 params.units ? units = &quot; &quot; + params.units : units = &quot;&quot;;
@@ -365,11 +366,11 @@ node.append(&quot;text&quot;)
     
     &lt;script&gt;
       var cscale = d3.scale.category20b();
-      d3.selectAll('#chart11206323368d svg path.link')
+      d3.selectAll('#chart10a013a3c84 svg path.link')
         .style('stroke', function(d){
           return cscale(d.source.name);
         })
-      d3.selectAll('#chart11206323368d svg .node rect')
+      d3.selectAll('#chart10a013a3c84 svg .node rect')
         .style('fill', function(d){
           return cscale(d.name)
         })
@@ -377,7 +378,7 @@ node.append(&quot;text&quot;)
     &lt;/script&gt;
         
   &lt;/body&gt;
-&lt;/html&gt; " scrolling="no" frameBorder="0" seamless class="rChart  http://timelyportfolio.github.io/rCharts_d3_sankey/libraries/widgets/d3_sankey  " id="iframe-chart11206323368d">
+&lt;/html&gt; " scrolling="no" frameBorder="0" seamless class="rChart  http://timelyportfolio.github.io/rCharts_d3_sankey/libraries/widgets/d3_sankey  " id="iframe-chart10a013a3c84">
 </iframe>
 <style>iframe.rChart{ width: 100%; height: 400px;}</style>
 <style>iframe.rChart{ width: 100%; height: 840px;}</style>
@@ -562,6 +563,35 @@ matt.proj.path &lt;-<span class="st"> &quot;C:/github&quot;</span></code></pre>
 }</code></pre>
 <p>Regarding the creation and updating of Rmd files, <code>rpm</code> simply assumes that there will be one <strong>R</strong> Markdown file corresponding to one <strong>R</strong> script. This is not always the case for a given project, but again, the purpose is to generate basic templates. Unnecessary files can always be deleted later, or edits made such that one <strong>R</strong> Markdown file reads multiple <strong>R</strong> scripts, as is the case with the Rmd file used to generate this document.</p>
 <p>The main function for conversion between Rmd and Rnw files is <code>convertDocs</code>. This function contains several internal support functions, each of which is somewhat limited in how much specific conversion it can achieve. The functions below were written with my particular style of Rmd and Rnw documentation in mind. As such they are necessarily a bit idiosyncratic and cannot account for every possible difference found between Rmd and Rnw formatting across any pair of documents. I only strived to speed up the process by which I convert my own documents, most of which follow a set of general rules and expectations most of the time. Anything atypical which doesn’t convert properly can be adjusted by hand afterward. This is still better than rewriting, copy-pasting, and search-and-replacing many sections of many files on a recurring basis. Further improvements in conversion will be added later.</p>
+<div id="rules-and-assumptions-regarding-these-functions" class="section level5">
+<h5>Rules and assumptions regarding these functions</h5>
+<ul>
+<li>All Rnw file lines beginning with a backslash which are in the main body of the code (beyond the title, author, etc.) and are not part of a code chunk identifier string are stripped rather than converted for Rmd.</li>
+<li>Only title and author are parsed from the Rnw lines prior to where the R code chunks begin. LaTeX libraries and such are dropped.</li>
+<li>Standard, minimal LaTeX libraries and other requirements prior to beginning the document are inserted in place of the Rmd yaml front-matter.</li>
+<li>Rmd files must have yaml front-matter, identified always by the second line in the document to begin with <code>---</code>.</li>
+</ul>
+</div>
+<div id="formatting-rules" class="section level5">
+<h5>Formatting rules</h5>
+<ul>
+<li>I never use two consecutive asterisks or underscores except to indicate bold text</li>
+<li>Text with typewriter font in Rnw files is converted to text within backticks in Rmd files and vice versa.</li>
+<li>Italics or other formatting are not considered.</li>
+</ul>
+</div>
+<div id="heading-rules" class="section level5">
+<h5>Heading rules</h5>
+<ul>
+<li>Lists in Rmd files (like this one), are not yet addressed in conversion to Rnw and vice versa.</li>
+<li>I never (intentionally) use the two most extreme headings in Rmd files, <code>#</code> and <code>######</code>. I only use <code>##</code> through <code>#####</code>.</li>
+<li>I never go beyond <code>subsubsubsection</code> in Rnw files.</li>
+<li>Any occurrence of one or two <code>#</code> is converted to a new <code>section</code> in an Rnw file whereas a section converts to a <code>##</code> heading.</li>
+<li>Similarly, five- or six-<code>#</code> identified heading in Rmd convert to the maximum <code>subsubsubsection</code> which back-converts to a <code>#####</code> heading.</li>
+<li>Three- and four-<code>#</code> identified Rmd headings convert to <code>subsection</code>- and <code>subsubsection</code>-identified Rnw headings, respectively, and vice versa. As such, these are the only true one-to-one heading conversions.</li>
+</ul>
+<p>This may all sound like a lot, but it’s not. It does a decent job for now. It’s not a true conversion and plenty of work may remain afterward. Again, the point is to make conversion much less tedious and hands-on, which it does well enough so far.</p>
+</div>
 </div>
 <div id="swapheadings" class="section level4">
 <h4>.swapHeadings</h4>
@@ -1140,10 +1170,15 @@ genAppDiv &lt;-<span class="st"> </span>function(<span class="dt">file =</span> 
         if (type ==<span class="st"> &quot;datavis&quot;</span>) 
             img.src &lt;-<span class="st"> </span><span class="kw">file.path</span>(<span class="kw">gsub</span>(<span class="st">&quot;/tree/&quot;</span>, <span class="st">&quot;/raw/&quot;</span>, gh.url), img.loc, prjs.img[i])
         if (type !=<span class="st"> &quot;gallery&quot;</span>) {
-            if (type ==<span class="st"> &quot;datavis&quot;</span>) 
-                pfx &lt;-<span class="st"> &quot;gallery-&quot;</span> else pfx &lt;-<span class="st"> &quot;&quot;</span>
-            web.url &lt;-<span class="st"> </span><span class="kw">file.path</span>(web.url, <span class="kw">tolower</span>(<span class="kw">paste0</span>(pfx, <span class="kw">gsub</span>(<span class="st">&quot;_&quot;</span>, <span class="st">&quot;-&quot;</span>, 
-                <span class="kw">gsub</span>(<span class="st">&quot;_-_&quot;</span>, <span class="st">&quot;-&quot;</span>, prj)), <span class="st">&quot;.html&quot;</span>)))
+            if (type ==<span class="st"> &quot;datavis&quot;</span>) {
+                pfx &lt;-<span class="st"> &quot;gallery-&quot;</span>
+                sfx &lt;-<span class="st"> &quot;.html&quot;</span>
+                base &lt;-<span class="st"> </span><span class="kw">tolower</span>(<span class="kw">paste0</span>(pfx, <span class="kw">gsub</span>(<span class="st">&quot;_&quot;</span>, <span class="st">&quot;-&quot;</span>, <span class="kw">gsub</span>(<span class="st">&quot;_-_&quot;</span>, <span class="st">&quot;-&quot;</span>, 
+                  prj)), sfx))
+            } else {
+                base &lt;-<span class="st"> </span>prj
+            }
+            web.url &lt;-<span class="st"> </span><span class="kw">file.path</span>(web.url, base)
         } else {
             prj &lt;-<span class="st"> </span>prjs[p]
             img.src &lt;-<span class="st"> </span><span class="kw">file.path</span>(<span class="kw">gsub</span>(<span class="st">&quot;/tree/&quot;</span>, <span class="st">&quot;/raw/&quot;</span>, gh.url), prjs[p], img.loc, 
