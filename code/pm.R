@@ -100,12 +100,12 @@ genPanelDiv(outDir=getwd(), type="gallery", main="Gallery", github.user=user, co
 
 # Specify libraries for html head
 # 'assets' is first because it resides in the top-level directory where the web site html files reside.
-scripts=c("assets/libs/jquery-1.11.0/jquery.min.js", "assets/js/bootstrap.min.js", "assets/js/bootswatch.js", "assets/js/lightbox.min.js", "assets/js/gatc.js")
+scripts=c("assets/libs/jquery-1.11.0/jquery.min.js", "assets/js/bootstrap.min.js", "assets/js/bootswatch.js", "assets/js/lightbox.min.js")
 styles <- c("cyborg/bootstrap.css", "assets/css/bootswatch.min.css", "assets/libs/font-awesome-4.1.0/css/font-awesome.css", "assets/css/lightbox.css")
 styles.args <- list("", list(media="screen"), "", "")
 
 # check
-htmlHead(script.paths=scripts, stylesheet.paths=styles, stylesheet.args=styles.args)
+htmlHead(script.paths=scripts, stylesheet.paths=styles, stylesheet.args=styles.args, include.ga=TRUE)
 
 # Add a background image
 back.img <- "assets/img/frac23.jpg"
@@ -163,7 +163,7 @@ main.containers <- all.containers[keep.main.ind]
 gallery.containers <- list.files(pattern="^gallery.*.html$")
 
 # Create web pages
-genUserPage(file=file.path(proj.location, user.site, "index.html"), navbar="navbar.html", containers=main.containers, script.paths=scripts, stylesheet.paths=styles, stylesheet.args=styles.args, background.image=back.img)
+genUserPage(file=file.path(proj.location, user.site, "index.html"), navbar="navbar.html", containers=main.containers, script.paths=scripts, stylesheet.paths=styles, stylesheet.args=styles.args, background.image=back.img, include.ga=TRUE)
 
 files.out <- gsub("_", "-", gsub("_-_", "-", gallery.containers))
 for(i in 1:length(gallery.containers)){
