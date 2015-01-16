@@ -674,7 +674,7 @@ genPanelDiv <- function(outDir, type="projects", main="Projects",
 }
 
 # @knitr fun_htmlHead
-htmlHead <- function(author="Matthew Leonawicz", title=author, script.paths=NULL, stylesheet.paths, stylesheet.args=vector("list", length(path.stylesheets)), ...){
+htmlHead <- function(author="Matthew Leonawicz", title=author, script.paths=NULL, stylesheet.paths, stylesheet.args=vector("list", length(path.stylesheets)), include.ga=FALSE, ...){
 x <- paste0('<!DOCTYPE html>
 
 <html xmlns="http://www.w3.org/1999/xhtml">
@@ -706,6 +706,21 @@ if(is.character(stylesheet.paths)){
 		}
 		x <- c(x, paste0('<link rel="stylesheet" href="', stylesheet.paths[i], '"', string, '>\n'))
 	}
+}
+
+if(include.ga) {
+x <- c(x,
+"<script>
+  (function(i,s,o,g,r,a,m){i['GoogleAnalyticsObject']=r;i[r]=i[r]||function(){
+  (i[r].q=i[r].q||[]).push(arguments)},i[r].l=1*new Date();a=s.createElement(o),
+  m=s.getElementsByTagName(o)[0];a.async=1;a.src=g;m.parentNode.insertBefore(a,m)
+  })(window,document,'script','//www.google-analytics.com/analytics.js','ga');
+
+  ga('create', 'UA-46129458-3', 'auto');
+  ga('send', 'pageview');
+
+</script>\n
+")
 }
 
 x <- c(x, '</head>\n')
@@ -759,8 +774,7 @@ htmlBodyTop <- function(css.file=NULL, css.string=NULL, background.image="", inc
 
 # @knitr fun_htmlBottom
 htmlBottom <- function(...){ # temporary
-	'</body>
-	</html>'
+	'</body>\n</html>'
 }
 
 
