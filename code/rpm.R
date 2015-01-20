@@ -674,7 +674,7 @@ genPanelDiv <- function(outDir, type="projects", main="Projects",
 }
 
 # @knitr fun_htmlHead
-htmlHead <- function(author="Matthew Leonawicz", title=author, script.paths=NULL, stylesheet.paths, stylesheet.args=vector("list", length(path.stylesheets)), include.ga=FALSE, ...){
+htmlHead <- function(author="Matthew Leonawicz", title=author, script.paths=NULL, stylesheet.paths, stylesheet.args=vector("list", length(path.stylesheets)), include.ga=TRUE, ...){
 x <- paste0('<!DOCTYPE html>
 
 <html xmlns="http://www.w3.org/1999/xhtml">
@@ -774,7 +774,7 @@ htmlBodyTop <- function(css.file=NULL, css.string=NULL, background.image="", inc
 
 # @knitr fun_htmlBottom
 htmlBottom <- function(...){ # temporary
-	'</body>\n</html>'
+	'<div class="container">Site made with <a href="http://leonawicz.github.io/ProjectManagement">rpm</a></div>\n</body>\n</html>'
 }
 
 
