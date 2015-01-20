@@ -105,7 +105,7 @@ styles <- c("cyborg/bootstrap.css", "assets/css/bootswatch.min.css", "assets/lib
 styles.args <- list("", list(media="screen"), "", "")
 
 # check
-htmlHead(script.paths=scripts, stylesheet.paths=styles, stylesheet.args=styles.args, include.ga=TRUE)
+htmlHead(script.paths=scripts, stylesheet.paths=styles, stylesheet.args=styles.args)
 
 # Add a background image
 back.img <- "assets/img/frac23.jpg"
@@ -163,7 +163,7 @@ main.containers <- all.containers[keep.main.ind]
 gallery.containers <- list.files(pattern="^gallery.*.html$")
 
 # Create web pages
-genUserPage(file=file.path(proj.location, user.site, "index.html"), navbar="navbar.html", containers=main.containers, script.paths=scripts, stylesheet.paths=styles, stylesheet.args=styles.args, background.image=back.img, include.ga=TRUE)
+genUserPage(file=file.path(proj.location, user.site, "index.html"), navbar="navbar.html", containers=main.containers, script.paths=scripts, stylesheet.paths=styles, stylesheet.args=styles.args, background.image=back.img)
 
 files.out <- gsub("_", "-", gsub("_-_", "-", gallery.containers))
 for(i in 1:length(gallery.containers)){
