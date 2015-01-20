@@ -513,6 +513,38 @@ genOutyaml <- function(file, theme="cosmo", highlight="zenburn", lib=NULL, heade
 	output.yaml
 }
 
+# @knitr fun_insert_gatc
+insert_gatc <- function(file, gatc=NULL){
+	nc <- nchar(file)
+	stopifnot(all(substr(file, nc-4, nc)==".html"))
+	l <- lapply(file, readLines)
+	l.ind <- sapply(l, function(x) which(gsub(" ", "", substr(x, 1, 7)) == "</head>"))
+	if(is.null(gatc)) gatc <-
+"<script>
+  (function(i,s,o,g,r,a,m){i['GoogleAnalyticsObject']=r;i[r]=i[r]||function(){
+  (i[r].q=i[r].q||[]).push(arguments)},i[r].l=1*new Date();a=s.createElement(o),
+  m=s.getElementsByTagName(o)[0];a.async=1;a.src=g;m.parentNode.insertBefore(a,m)
+  })(window,document,'script','//www.google-analytics.com/analytics.js','ga');
+
+  ga('create', 'UA-46129458-3', 'auto');
+  ga('send', 'pageview');
+
+</script>\n
+"
+	l <- lapply(1:length(l), function(i, x, ind, gatc) { x[[i]][ind[i]] <- paste0(gatc, "\n</head>"); x[[i]] }, x=l, ind=l.ind, gatc=gatc)
+	lapply(1:length(file),
+		function(i, file, x){
+			sink(file[i])
+			x <- x[[i]]
+			x <- paste0(x, "\n")
+			sapply(x, cat)
+			sink()
+		}, file=file, x=l)
+	
+	cat("Google Analytics tracking script inserted.\n")
+}
+
+
 # @knitr fun_genAppDiv
 # Functions for Github user website
 genAppDiv <- function(file="C:/github/leonawicz.github.io/assets/apps_container.html", type="apps", main="Shiny Apps",
