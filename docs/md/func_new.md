@@ -1,6 +1,8 @@
 
 
 
+### Functions: Project creation
+
 #### newProject
 `newProject` creates a new named project directory structure at the specified file path.
 If a directory with this project name already exists in this location on the file system and `overwrite=FALSE`, the function will abort.

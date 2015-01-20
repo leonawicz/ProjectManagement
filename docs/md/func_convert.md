@@ -1,6 +1,8 @@
 
 
 
+### Functions: Document conversion
+
 The main function for conversion between Rmd and Rnw files is `convertDocs`.
 This function contains several internal support functions, each of which is somewhat limited in how much specific conversion it can achieve.
 The functions below were written with my particular style of Rmd and Rnw documentation in mind.
@@ -12,25 +14,25 @@ Further improvements in conversion will be added later.
 
 ##### Rules and assumptions regarding these functions
 
-- All Rnw file lines beginning with a backslash which are in the main body of the code (beyond the title, author, etc.) and are not part of a code chunk identifier string are stripped rather than converted for Rmd.
-- Only title and author are parsed from the Rnw lines prior to where the R code chunks begin. LaTeX libraries and such are dropped.
-- Standard, minimal LaTeX libraries and other requirements prior to beginning the document are inserted in place of the Rmd yaml front-matter.
-- Rmd files must have yaml front-matter, identified always by the second line in the document to begin with `---`.
+- When converting to Rmd, all Rnw file lines beginning with a backslash which are in the main body of the code (beyond the title, author, etc.) and are not part of a code chunk identifier string are stripped rather than converted to anything.
+- Only title and author are parsed from the Rnw lines prior to where the **R** code chunks begin. LaTeX libraries and such are dropped.
+- When converting to Rnw, standard, minimal LaTeX libraries and other requirements prior to beginning the document are inserted by default in place of the Rmd yaml front-matter.
+- Rmd files must have yaml front-matter prior to converting to Rnw, identified always by the second line in the document to begin with `---`. More generally, conversion aside, it is expected than any Rmd file has a yaml front-matter section in the context of `rpm`.
 
 ##### Formatting rules
 
 - I never use two consecutive asterisks or underscores except to indicate bold text
 - Text with typewriter font in Rnw files is converted to text within backticks in Rmd files and vice versa.
-- Italics or other formatting are not considered.
+- Italics or other formatting are not considered at this time.
+- Lists in Rmd files (like this one), are not yet addressed in conversion to Rnw and vice versa.
+- In fact anything not explicitly mentioned here is not yet addressed.
 
 ##### Heading rules
-
-- Lists in Rmd files (like this one), are not yet addressed in conversion to Rnw and vice versa.
 - I never (intentionally) use the two most extreme headings in Rmd files, `#` and `######`. I only use `##` through `#####`.
 - I never go beyond `subsubsubsection` in Rnw files.
-- Any occurrence of one or two `#` is converted to a new `section` in an Rnw file whereas a section converts to a `##` heading.
-- Similarly, five- or six-`#` identified heading in Rmd convert to the maximum `subsubsubsection` which back-converts to a `#####` heading.
-- Three- and four-`#` identified Rmd headings convert to `subsection`- and `subsubsection`-identified Rnw headings, respectively, and vice versa. As such, these are the only true one-to-one heading conversions.
+- Any occurrence of a one- or two-`#` identified heading is converted to a new `section` heading in an Rnw file whereas a `section` heading converts to a `##` heading.
+- Similarly, five- or six-`#` identified headings in Rmd convert to the maximum `subsubsubsection` which back-converts to a `#####` heading.
+- Three- and four-`#` identified Rmd headings convert to `subsection` and `subsubsection` identified Rnw headings, respectively, and vice versa. As such, these are the only true one-to-one heading conversions.
 
 This may all sound like a lot, but it's not. It does a decent job for now.
 It's not a true conversion and plenty of work may remain afterward.
@@ -39,7 +41,7 @@ Again, the point is to make conversion much less tedious and hands-on, which it 
 #### .swapHeadings
 `.swapHeadings` assists in bidirectional conversion between Rmd and Rnw files.
 It swaps section headings formatting.
-It is called directly by `swap`, internal to `convertDocs`.
+It is called directly by `.swap`, internal to `convertDocs`.
 
 
 
@@ -110,7 +112,7 @@ It is called directly by `swap`, internal to `convertDocs`.
 #### .swapChunks
 `.swapChunks` assists in bidirectional conversion between Rmd and Rnw files.
 It swaps code chunk formatting.
-It is called directly by `swap`, internal to `convertDocs`.
+It is called directly by `.swap`, internal to `convertDocs`.
 
 
 
@@ -137,7 +139,7 @@ It is called directly by `swap`, internal to `convertDocs`.
 #### .swapEmphasis
 `.swapEmphasis` assists in bidirectional conversion between Rmd and Rnw files.
 It swaps text formatting such as boldface and typewriter font.
-It is called directly by `swap`, internal to `convertDocs`.
+It is called directly by `.swap`, internal to `convertDocs`.
 
 
 
@@ -285,14 +287,14 @@ The project's `docs/Rmd` or `docs/Rnw` directory is specified.
 Any files of the same type as the directory are converted to the other type and saved to the other directory.
 The input files are not removed.
 
-This function speeds up the process of duplicating files, e.g., when wanting to make PDFs from Rnw files when only Rmd files exist.
+This function speeds up the process of duplicating files, e.g., when wanting to make pdf files from Rnw files when only Rmd files exist.
 This is almost exclusively what I use this function for.
-On less frequent occasions I have used it in the other direction when I have Rnw files which were once used to make PDFs but later I decide to put them on the web as a web page and not as a link to a PDF.
+On less frequent occasions I have used it in the other direction when I have Rnw files which were once used to make PDFs but later I decide to put them on the web as a web page and not as a link to a pdf files.
 
-The user still makes specific changes by hand, for example, any required changes to `knitr` code chunk options that must differ for PDF output vs. html output.
+The user still makes specific changes by hand, for example, any required changes to `knitr` code chunk options that must differ for pdf output vs. html output.
 The primary benefit is in not having to fuss with large amounts of standard substitutions which can be automated, such as swapping code chunk enclosure styles and common file metadata.
 Of course, this function is not perfect.
-It amounts to a text-parsing hack that is intended to handle the most common of idiosyncrasies and differences which exist between my own Rmd and Rnw files in the context of my own set of rules and assumptions, outlined below.
+It amounts to a text-parsing hack that is intended to handle the most common of idiosyncrasies and differences which exist between my own Rmd and Rnw files in the context of my own limited rule set.
 
 
 ```r

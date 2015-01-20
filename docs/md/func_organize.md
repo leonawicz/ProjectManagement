@@ -1,6 +1,8 @@
 
 
 
+### Functions: Document organization
+
 #### moveDocs
 `moveDocs` relocates files by renaming with a new file path.
 Specifically, it scans for md and html files in the `docs/Rmd` directory and/or pdf files in the `docs/Rnw` directory.
@@ -25,6 +27,7 @@ these files will be removed if `remove.latex=TRUE` (default).
 If `FALSE`, the default `latexDir="LaTeX"` means that these files will be moved to the `docs/LaTeX` directory rather than deleted.
 If this directory does not exist, it will be created.
 An alternate location can be specified, such as "pdf" if you want to keep these files with the related pdf files after those are moved by `moveDocs` as well to `docs/pdf`.
+The directory of supplemental pdf figures, if any, which is creating during knitting, is not included in the file move at this time.
 
 
 ```r

@@ -2,8 +2,11 @@
 
 
 ### Template objects
+
 Character string objects are defined which are used to fill templates when generating new files for a project.
 A tentative default path is also included since this code relates to my own work.
+Realistically, any objects current shown here will most likely eventually be incorporated into package functions in some form.
+I prefer not to have many straggler objects floating around.
 
 
 ```r

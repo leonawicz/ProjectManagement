@@ -1,81 +1,14 @@
 
 
 
-#### genAppDiv
-
-`genAppDiv` generates an html file storing a container div element which organizes Shiny web applications.
-The function scans a directory of Shiny app subdirectories.
-This apps directory should be a local repository.
-
-Specifically, `genAppDiv` looks for a named directory of image files.
-There should be one image per app, named exactly as the respective app directory is named.
-Only apps with corresponding images are built into the html container.
-If you wish to leave out, say, a developmental app from being linked to on you Github user website, do not include an image file for that app.
-
-The container element includes an image link to each app's url as well as a link to the source code on Github.
-Although the function scans for images in directory inside a local repository, the images referenced in the output html are of course not local.
-They point to the same images stored on Github, hence why it is useful for the local directory of apps to be a Github repository.
-As an example, a repository may contain the directories, `app1`, `app2`, `app3`, and `images`.
-
-This function will probably be removed in favor of the more general `genPanelDiv` function.
-
-
-
-```r
-# Functions for Github user website
-genAppDiv <- function(file = "C:/github/leonawicz.github.io/assets/apps_container.html", 
-    type = "apps", main = "Shiny Apps", apps.url = "http://shiny.snap.uaf.edu", 
-    github.url = "https://github.com/ua-snap/shiny-apps/tree/master", apps.dir = "C:/github/shiny-apps", 
-    img.loc = "_images/cropped", ...) {
-    
-    apps.img <- list.files(file.path(apps.dir, img.loc))
-    apps <- sapply(strsplit(apps.img, "\\."), "[[", 1)
-    x <- paste0("<div class=\"container\">\n  <div class=\"row\">\n    <div class=\"col-lg-12\">\n      <div class=\"page-header\">\n        <h3 id=\"", 
-        type, "\">", main, "</h3>\n      </div>\n    </div>\n  </div>\n  ")
-    
-    fillRow <- function(i, ...) {
-        app <- apps[i]
-        app.url <- file.path(apps.url, app)
-        dots <- list(...)
-        if (is.null(dots$col)) 
-            col <- "warning" else col <- dots$col
-        if (is.null(dots$panel.main)) 
-            panel.main <- gsub("_", " ", app) else panel.main <- dots$panel.main
-        if (length(panel.main) > 1) 
-            panel.main <- panel.main[i]
-        x <- paste0("<div class=\"col-lg-4\">\n\t\t  <div class=\"bs-component\">\n\t\t\t<div class=\"panel panel-", 
-            col, "\">\n\t\t\t  <div class=\"panel-heading\"><h3 class=\"panel-title\">", 
-            panel.main, "</h3>\n\t\t\t  </div>\n\t\t\t  <div class=\"panel-body\"><a href=\"", 
-            app.url, "\" target=\"_blank\"><img src=\"", file.path(gsub("/tree/", 
-                "/raw/", github.url), img.loc, apps.img[i]), "\" alt=\"", apps[i], 
-            "\" width=100% height=200px></a><p></p>\n\t\t\t\t<div class=\"btn-group btn-group-justified\">\n\t\t\t\t  <a href=\"", 
-            app.url, "\" target=\"_blank\" class=\"btn btn-success\">Launch</a>\n\t\t\t\t  <a href=\"", 
-            file.path(github.url, app), "\" target=\"_blank\" class=\"btn btn-info\">Github</a>\n\t\t\t\t</div>\n\t\t\t  </div>\n\t\t\t</div>\n\t\t  </div>\n\t\t</div>")
-    }
-    
-    n <- length(apps)
-    seq1 <- seq(1, n, by = 3)
-    y <- c()
-    for (j in 1:length(seq1)) {
-        ind <- seq1[j]:(seq1[j] + 2)
-        ind <- ind[ind %in% 1:n]
-        y <- c(y, paste0("<div class=\"row\">\n", paste0(sapply(ind, fillRow, 
-            ...), collapse = "\n"), "</div>\n"))
-    }
-    z <- "</div>\n"
-    sink(file)
-    sapply(c(x, y, z), cat)
-    sink()
-    cat("div container html created for Shiny Apps.\n")
-}
-```
+### Functions: Github user web sites
 
 #### genPanelDiv
 
-`genPanelDiv` generates an html file storing a container div element which in its current state of development organizes two types of content: **R** projects and Shiny web applications.
+`genPanelDiv` generates an html file storing a container div element which in its current state of development organizes four types of content: **R** projects, **R** Shiny web applications, data visualization galleries, and gallery images.
 
 The `type` argument can be one of `projects`, `apps`, `datavis`, or `gallery`.
-The purpose of the function is to generate an html file defining a container div element to display and reference either my **R** projects, my Shiny apps, or my example visualization galleries.
+The purpose of the function is to generate an html file defining a container element to display and reference either my **R** projects, my Shiny apps, or my example visualization galleries.
 
 ##### Projects
 
@@ -103,7 +36,7 @@ They point to the same images stored on Github, hence why it is useful for the l
 
 Whereas the first three types generate containers for the main Github user web page, I use `type="gallery"` to make a separate container html file of graphics for each panel occurring in my `datavis` container.
 These containers tend to be added to unique web pages.
-`datavis` is for highlighting a number of galleries whereas `gallery` is for the galleries' respective contents.
+`datavis` is for highlighting a number of galleries whereas `gallery` is for each highlighted gallery's respective contents.
 
 In order to use `type="datavis"` there must be a data visualization local repository.
 Mine is named `DataVisualizationExamples`, evident from the hardcoding currently in place within this function.
@@ -257,7 +190,7 @@ Stylesheet arguments can be passed along as well in proper order.
 ```r
 htmlHead <- function(author = "Matthew Leonawicz", title = author, script.paths = NULL, 
     stylesheet.paths, stylesheet.args = vector("list", length(path.stylesheets)), 
-    ...) {
+    include.ga = TRUE, ...) {
     x <- paste0("<!DOCTYPE html>\n\n<html xmlns=\"http://www.w3.org/1999/xhtml\">\n\n<head>\n\n<meta charset=\"utf-8\">\n<meta http-equiv=\"Content-Type\" content=\"text/html; charset=utf-8\" />\n\n<meta name=\"author\" content=", 
         author, " />\n\n<title>", title, "</title>\n")
     
@@ -283,6 +216,10 @@ htmlHead <- function(author = "Matthew Leonawicz", title = author, script.paths 
             x <- c(x, paste0("<link rel=\"stylesheet\" href=\"", stylesheet.paths[i], 
                 "\"", string, ">\n"))
         }
+    }
+    
+    if (include.ga) {
+        x <- c(x, "<script>\n  (function(i,s,o,g,r,a,m){i['GoogleAnalyticsObject']=r;i[r]=i[r]||function(){\n  (i[r].q=i[r].q||[]).push(arguments)},i[r].l=1*new Date();a=s.createElement(o),\n  m=s.getElementsByTagName(o)[0];a.async=1;a.src=g;m.parentNode.insertBefore(a,m)\n  })(window,document,'script','//www.google-analytics.com/analytics.js','ga');\n\n  ga('create', 'UA-46129458-3', 'auto');\n  ga('send', 'pageview');\n\n</script>\n\n")
     }
     
     x <- c(x, "</head>\n")
@@ -328,7 +265,7 @@ htmlBodyTop <- function(css.file = NULL, css.string = NULL, background.image = "
 ```r
 htmlBottom <- function(...) {
     # temporary
-    "</body>\n\t</html>"
+    "<div class=\"container\">Site made with <a href=\"http://leonawicz.github.io/ProjectManagement\">rpm</a></div>\n</body>\n</html>"
 }
 ```
 

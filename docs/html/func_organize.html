@@ -157,13 +157,15 @@ code > span.er { color: #c3bf9f; }
 
 
 
+<div id="functions-document-organization" class="section level3">
+<h3>Functions: Document organization</h3>
 <div id="movedocs" class="section level4">
 <h4>moveDocs</h4>
 <p><code>moveDocs</code> relocates files by renaming with a new file path. Specifically, it scans for md and html files in the <code>docs/Rmd</code> directory and/or pdf files in the <code>docs/Rnw</code> directory. If such files are found in the respective locations, they are moved to <code>docs/md</code>, <code>docs/html</code>, and <code>docs/pdf</code>, respectively.</p>
 <p>The intent is to clean up the Rmd and Rnw directories after <code>knitr</code> has been used to knit documents in place. I do this because I have more success knitting documents with the confluence of <code>RStudio</code>, <code>rmarkdown</code>, <code>knitr</code>, <code>pandoc</code>, and <code>LaTeX</code> when the knitting occurs all within the directory of the originating files. The process is more prone to throwing errors when trying to specify alternate locations for outputs.</p>
 <p><code>moveDocs</code> makes a nominal effort to replace a possible relative path with a full file path before proceeding, if the former is supplied. Default arguments include <code>move=TRUE</code> which will call <code>file.rename</code> and <code>copy=FALSE</code> which, if <code>TRUE</code> (and <code>move=FALSE</code>), will alternatively call <code>file.copy</code>. If both are <code>TRUE</code>, any files found are moved.</p>
 <p>This function will always overwrite any existing file versions previously moved to the output directories, by way of <code>file.rename</code>. To keep the behavior consistent, when <code>move=FALSE</code> and <code>copy=TRUE</code>, <code>file.copy</code> always executes with its argument, <code>overwrite=TRUE</code>. This should never cause problems because in the context I intend for this function, the types of files being moved or copied from <code>docs/Rmd</code> and <code>docs/Rnw</code> are never used as inputs to other files, functions, or processes, nor are they meant to be edited by hand after being generated.</p>
-<p>If there are LaTeX-associated files present (.TeX, .aux, and .txt files with the same file names as local pdf files.), these files will be removed if <code>remove.latex=TRUE</code> (default). If <code>FALSE</code>, the default <code>latexDir=&quot;LaTeX&quot;</code> means that these files will be moved to the <code>docs/LaTeX</code> directory rather than deleted. If this directory does not exist, it will be created. An alternate location can be specified, such as “pdf” if you want to keep these files with the related pdf files after those are moved by <code>moveDocs</code> as well to <code>docs/pdf</code>.</p>
+<p>If there are LaTeX-associated files present (.TeX, .aux, and .txt files with the same file names as local pdf files.), these files will be removed if <code>remove.latex=TRUE</code> (default). If <code>FALSE</code>, the default <code>latexDir=&quot;LaTeX&quot;</code> means that these files will be moved to the <code>docs/LaTeX</code> directory rather than deleted. If this directory does not exist, it will be created. An alternate location can be specified, such as “pdf” if you want to keep these files with the related pdf files after those are moved by <code>moveDocs</code> as well to <code>docs/pdf</code>. The directory of supplemental pdf figures, if any, which is creating during knitting, is not included in the file move at this time.</p>
 <pre class="sourceCode r"><code class="sourceCode r"><span class="co"># Organization documentation</span>
 moveDocs &lt;-<span class="st"> </span>function(path.docs, <span class="dt">type =</span> <span class="kw">c</span>(<span class="st">&quot;md&quot;</span>, <span class="st">&quot;html&quot;</span>, <span class="st">&quot;pdf&quot;</span>), <span class="dt">move =</span> <span class="ot">TRUE</span>, 
     <span class="dt">copy =</span> <span class="ot">FALSE</span>, <span class="dt">remove.latex =</span> <span class="ot">TRUE</span>, <span class="dt">latexDir =</span> <span class="st">&quot;latex&quot;</span>) {
@@ -230,6 +232,7 @@ moveDocs &lt;-<span class="st"> </span>function(path.docs, <span class="dt">type
         }
     }
 }</code></pre>
+</div>
 </div>
 
 

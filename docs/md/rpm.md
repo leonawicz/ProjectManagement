@@ -46,7 +46,7 @@ It does make use of supplemental libraries for formatting during html document g
 `drg.R` is used to assist in dynamic report generation.
 
 ### Code flow
-The Sankey diagram has become part of project management.
+The Sankey diagram has become part of my project management.
 Each project has its own, detailing the relationships among **R** code and data relevant to the project,
 and in some cases, how they relate to code and data files which are more general and span multiple projects.
 In general, for my projects I would only provide the code flow diagram here among the rest of the project documentation,
@@ -90,7 +90,7 @@ Here is a project hierarchy diagram showing the relationships among all my curre
   &lt;/head&gt;
   &lt;body &gt;
     
-    &lt;div id = &#039;chart1f9c14485c52&#039; class = &#039;rChart d3_sankey&#039;&gt;&lt;/div&gt;    
+    &lt;div id = &#039;chart45050fe2cd4&#039; class = &#039;rChart d3_sankey&#039;&gt;&lt;/div&gt;    
     ï»¿&lt;!--Attribution:
 Mike Bostock https://github.com/d3/d3-plugins/tree/master/sankey
 Mike Bostock http://bost.ocks.org/mike/sankey/
@@ -99,7 +99,7 @@ Mike Bostock http://bost.ocks.org/mike/sankey/
 &lt;script&gt;
 (function(){
 var params = {
- &quot;dom&quot;: &quot;chart1f9c14485c52&quot;,
+ &quot;dom&quot;: &quot;chart45050fe2cd4&quot;,
 &quot;width&quot;:    900,
 &quot;height&quot;:    800,
 &quot;data&quot;: {
@@ -117,7 +117,7 @@ var params = {
 &quot;top&quot;:     20 
 },
 &quot;title&quot;: &quot;Matt&#039;s Projects&quot;,
-&quot;id&quot;: &quot;chart1f9c14485c52&quot; 
+&quot;id&quot;: &quot;chart45050fe2cd4&quot; 
 };
 
 params.units ? units = &quot; &quot; + params.units : units = &quot;&quot;;
@@ -237,11 +237,11 @@ node.append(&quot;text&quot;)
     
     &lt;script&gt;
       var cscale = d3.scale.category20b();
-      d3.selectAll(&#039;#chart1f9c14485c52 svg path.link&#039;)
+      d3.selectAll(&#039;#chart45050fe2cd4 svg path.link&#039;)
         .style(&#039;stroke&#039;, function(d){
           return cscale(d.source.name);
         })
-      d3.selectAll(&#039;#chart1f9c14485c52 svg .node rect&#039;)
+      d3.selectAll(&#039;#chart45050fe2cd4 svg .node rect&#039;)
         .style(&#039;fill&#039;, function(d){
           return cscale(d.name)
         })
@@ -249,15 +249,18 @@ node.append(&quot;text&quot;)
     &lt;/script&gt;
         
   &lt;/body&gt;
-&lt;/html&gt; ' scrolling='no' frameBorder='0' seamless class='rChart  http://timelyportfolio.github.io/rCharts_d3_sankey/libraries/widgets/d3_sankey  ' id='iframe-chart1f9c14485c52'> </iframe>
+&lt;/html&gt; ' scrolling='no' frameBorder='0' seamless class='rChart  http://timelyportfolio.github.io/rCharts_d3_sankey/libraries/widgets/d3_sankey  ' id='iframe-chart45050fe2cd4'> </iframe>
  <style>iframe.rChart{ width: 100%; height: 400px;}</style>
 <style>iframe.rChart{ width: 100%; height: 840px;}</style>
 
 ## **R** code
 
 ### Template objects
+
 Character string objects are defined which are used to fill templates when generating new files for a project.
 A tentative default path is also included since this code relates to my own work.
+Realistically, any objects current shown here will most likely eventually be incorporated into package functions in some form.
+I prefer not to have many straggler objects floating around.
 
 
 ```r
@@ -271,7 +274,8 @@ rmd.template <- "\n\n## Introduction\nADD_TEXT_HERE\n\n### Motivation\nADD_TEXT_
 matt.proj.path <- "C:/github"
 ```
 
-### Package functions
+### Functions: Project creation
+
 Functions are defined for creating new projects, generating Rmd files for project **R** scripts,
 and appending these **R** Markdown files with updated information from the corresponding **R** scripts as their development continues.
 Additional functions will be incorporated later.
@@ -307,6 +311,8 @@ newProject <- function(name, path, dirs = c("code", "data", "docs", "plots",
         cat("Project directories updated.\n") else cat("Project directories created.\n")
 }
 ```
+
+### Functions: Rmd documents
 
 #### rmdHeader
 `rmdHeader` generates the yaml metadata header for Rmd files as a character string to be inserted at the top of a file.
@@ -431,7 +437,7 @@ If no Rmd files have yet been generated, the function will abort.
 Otherwise, for the Rmd files which do exist (and this may correspond to a subset of the **R** files),
 these Rmd files are appended with a list of code chunk names found in the current corresponding **R** files
 which have not yet been integrated into the current state of the Rmd files.
-This fascilitates updating of Rmd documentation when it falls behind scripts which have been updated.
+This facilitates updating of Rmd documentation when it falls behind scripts which have been updated.
 
 
 ```r
@@ -482,6 +488,7 @@ This is not always the case for a given project, but again, the purpose is to ge
 Unnecessary files can always be deleted later, or edits made such that one **R** Markdown file reads multiple **R** scripts,
 as is the case with the Rmd file used to generate this document.
 
+### Functions: Document conversion
 
 The main function for conversion between Rmd and Rnw files is `convertDocs`.
 This function contains several internal support functions, each of which is somewhat limited in how much specific conversion it can achieve.
@@ -494,25 +501,25 @@ Further improvements in conversion will be added later.
 
 ##### Rules and assumptions regarding these functions
 
-- All Rnw file lines beginning with a backslash which are in the main body of the code (beyond the title, author, etc.) and are not part of a code chunk identifier string are stripped rather than converted for Rmd.
-- Only title and author are parsed from the Rnw lines prior to where the R code chunks begin. LaTeX libraries and such are dropped.
-- Standard, minimal LaTeX libraries and other requirements prior to beginning the document are inserted in place of the Rmd yaml front-matter.
-- Rmd files must have yaml front-matter, identified always by the second line in the document to begin with `---`.
+- When converting to Rmd, all Rnw file lines beginning with a backslash which are in the main body of the code (beyond the title, author, etc.) and are not part of a code chunk identifier string are stripped rather than converted to anything.
+- Only title and author are parsed from the Rnw lines prior to where the **R** code chunks begin. LaTeX libraries and such are dropped.
+- When converting to Rnw, standard, minimal LaTeX libraries and other requirements prior to beginning the document are inserted by default in place of the Rmd yaml front-matter.
+- Rmd files must have yaml front-matter prior to converting to Rnw, identified always by the second line in the document to begin with `---`. More generally, conversion aside, it is expected than any Rmd file has a yaml front-matter section in the context of `rpm`.
 
 ##### Formatting rules
 
 - I never use two consecutive asterisks or underscores except to indicate bold text
 - Text with typewriter font in Rnw files is converted to text within backticks in Rmd files and vice versa.
-- Italics or other formatting are not considered.
+- Italics or other formatting are not considered at this time.
+- Lists in Rmd files (like this one), are not yet addressed in conversion to Rnw and vice versa.
+- In fact anything not explicitly mentioned here is not yet addressed.
 
 ##### Heading rules
-
-- Lists in Rmd files (like this one), are not yet addressed in conversion to Rnw and vice versa.
 - I never (intentionally) use the two most extreme headings in Rmd files, `#` and `######`. I only use `##` through `#####`.
 - I never go beyond `subsubsubsection` in Rnw files.
-- Any occurrence of one or two `#` is converted to a new `section` in an Rnw file whereas a section converts to a `##` heading.
-- Similarly, five- or six-`#` identified heading in Rmd convert to the maximum `subsubsubsection` which back-converts to a `#####` heading.
-- Three- and four-`#` identified Rmd headings convert to `subsection`- and `subsubsection`-identified Rnw headings, respectively, and vice versa. As such, these are the only true one-to-one heading conversions.
+- Any occurrence of a one- or two-`#` identified heading is converted to a new `section` heading in an Rnw file whereas a `section` heading converts to a `##` heading.
+- Similarly, five- or six-`#` identified headings in Rmd convert to the maximum `subsubsubsection` which back-converts to a `#####` heading.
+- Three- and four-`#` identified Rmd headings convert to `subsection` and `subsubsection` identified Rnw headings, respectively, and vice versa. As such, these are the only true one-to-one heading conversions.
 
 This may all sound like a lot, but it's not. It does a decent job for now.
 It's not a true conversion and plenty of work may remain afterward.
@@ -521,7 +528,7 @@ Again, the point is to make conversion much less tedious and hands-on, which it 
 #### .swapHeadings
 `.swapHeadings` assists in bidirectional conversion between Rmd and Rnw files.
 It swaps section headings formatting.
-It is called directly by `swap`, internal to `convertDocs`.
+It is called directly by `.swap`, internal to `convertDocs`.
 
 
 
@@ -592,7 +599,7 @@ It is called directly by `swap`, internal to `convertDocs`.
 #### .swapChunks
 `.swapChunks` assists in bidirectional conversion between Rmd and Rnw files.
 It swaps code chunk formatting.
-It is called directly by `swap`, internal to `convertDocs`.
+It is called directly by `.swap`, internal to `convertDocs`.
 
 
 
@@ -619,7 +626,7 @@ It is called directly by `swap`, internal to `convertDocs`.
 #### .swapEmphasis
 `.swapEmphasis` assists in bidirectional conversion between Rmd and Rnw files.
 It swaps text formatting such as boldface and typewriter font.
-It is called directly by `swap`, internal to `convertDocs`.
+It is called directly by `.swap`, internal to `convertDocs`.
 
 
 
@@ -767,14 +774,14 @@ The project's `docs/Rmd` or `docs/Rnw` directory is specified.
 Any files of the same type as the directory are converted to the other type and saved to the other directory.
 The input files are not removed.
 
-This function speeds up the process of duplicating files, e.g., when wanting to make PDFs from Rnw files when only Rmd files exist.
+This function speeds up the process of duplicating files, e.g., when wanting to make pdf files from Rnw files when only Rmd files exist.
 This is almost exclusively what I use this function for.
-On less frequent occasions I have used it in the other direction when I have Rnw files which were once used to make PDFs but later I decide to put them on the web as a web page and not as a link to a PDF.
+On less frequent occasions I have used it in the other direction when I have Rnw files which were once used to make PDFs but later I decide to put them on the web as a web page and not as a link to a pdf files.
 
-The user still makes specific changes by hand, for example, any required changes to `knitr` code chunk options that must differ for PDF output vs. html output.
+The user still makes specific changes by hand, for example, any required changes to `knitr` code chunk options that must differ for pdf output vs. html output.
 The primary benefit is in not having to fuss with large amounts of standard substitutions which can be automated, such as swapping code chunk enclosure styles and common file metadata.
 Of course, this function is not perfect.
-It amounts to a text-parsing hack that is intended to handle the most common of idiosyncrasies and differences which exist between my own Rmd and Rnw files in the context of my own set of rules and assumptions, outlined below.
+It amounts to a text-parsing hack that is intended to handle the most common of idiosyncrasies and differences which exist between my own Rmd and Rnw files in the context of my own limited rule set.
 
 
 ```r
@@ -821,6 +828,8 @@ convertDocs <- function(path, rmdChunkID = c("```{r", "}", "```"), rnwChunkID = 
 }
 ```
 
+### Functions: Document organization
+
 #### moveDocs
 `moveDocs` relocates files by renaming with a new file path.
 Specifically, it scans for md and html files in the `docs/Rmd` directory and/or pdf files in the `docs/Rnw` directory.
@@ -845,6 +854,7 @@ these files will be removed if `remove.latex=TRUE` (default).
 If `FALSE`, the default `latexDir="LaTeX"` means that these files will be moved to the `docs/LaTeX` directory rather than deleted.
 If this directory does not exist, it will be created.
 An alternate location can be specified, such as "pdf" if you want to keep these files with the related pdf files after those are moved by `moveDocs` as well to `docs/pdf`.
+The directory of supplemental pdf figures, if any, which is creating during knitting, is not included in the file move at this time.
 
 
 ```r
@@ -915,6 +925,12 @@ moveDocs <- function(path.docs, type = c("md", "html", "pdf"), move = TRUE,
     }
 }
 ```
+
+### Functions: Project web sites
+
+Some functions in this section are also used in the generation of Github user pages (see next section).
+They appear here because they are used more generally for project pages even though some contain user page-specific code and arguments as well.
+Functions in the subsequent section are used more exclusively for user pages generation.
 
 #### buttonGroup
 `buttonGroup` is a helper function for `genNavbar`. I used it to place social media buttons in the right side of the navigation bar at the top of a web page.
@@ -989,7 +1005,7 @@ This is currently the only `rpm` function which attempts to handle multiple Boot
 
 If `media.button.args=NULL` (default), only the Github button will be included, and then only if `site.name="Github"` and site.url is not blank.
 I use this default for project pages and do not insert additional buttons.
-For user pages, the same defualt will work.
+For user pages, the same default will work.
 Alternatively, a list of arguments can passed on to `buttonGroup`.
 I have not checked yet to see if this also works for project pages.
 
@@ -1100,81 +1116,14 @@ genOutyaml <- function(file, theme = "cosmo", highlight = "zenburn", lib = NULL,
 }
 ```
 
-#### genAppDiv
-
-`genAppDiv` generates an html file storing a container div element which organizes Shiny web applications.
-The function scans a directory of Shiny app subdirectories.
-This apps directory should be a local repository.
-
-Specifically, `genAppDiv` looks for a named directory of image files.
-There should be one image per app, named exactly as the respective app directory is named.
-Only apps with corresponding images are built into the html container.
-If you wish to leave out, say, a developmental app from being linked to on you Github user website, do not include an image file for that app.
-
-The container element includes an image link to each app's url as well as a link to the source code on Github.
-Although the function scans for images in directory inside a local repository, the images referenced in the output html are of course not local.
-They point to the same images stored on Github, hence why it is useful for the local directory of apps to be a Github repository.
-As an example, a repository may contain the directories, `app1`, `app2`, `app3`, and `images`.
-
-This function will probably be removed in favor of the more general `genPanelDiv` function.
-
-
-
-```r
-# Functions for Github user website
-genAppDiv <- function(file = "C:/github/leonawicz.github.io/assets/apps_container.html", 
-    type = "apps", main = "Shiny Apps", apps.url = "http://shiny.snap.uaf.edu", 
-    github.url = "https://github.com/ua-snap/shiny-apps/tree/master", apps.dir = "C:/github/shiny-apps", 
-    img.loc = "_images/cropped", ...) {
-    
-    apps.img <- list.files(file.path(apps.dir, img.loc))
-    apps <- sapply(strsplit(apps.img, "\\."), "[[", 1)
-    x <- paste0("<div class=\"container\">\n  <div class=\"row\">\n    <div class=\"col-lg-12\">\n      <div class=\"page-header\">\n        <h3 id=\"", 
-        type, "\">", main, "</h3>\n      </div>\n    </div>\n  </div>\n  ")
-    
-    fillRow <- function(i, ...) {
-        app <- apps[i]
-        app.url <- file.path(apps.url, app)
-        dots <- list(...)
-        if (is.null(dots$col)) 
-            col <- "warning" else col <- dots$col
-        if (is.null(dots$panel.main)) 
-            panel.main <- gsub("_", " ", app) else panel.main <- dots$panel.main
-        if (length(panel.main) > 1) 
-            panel.main <- panel.main[i]
-        x <- paste0("<div class=\"col-lg-4\">\n\t\t  <div class=\"bs-component\">\n\t\t\t<div class=\"panel panel-", 
-            col, "\">\n\t\t\t  <div class=\"panel-heading\"><h3 class=\"panel-title\">", 
-            panel.main, "</h3>\n\t\t\t  </div>\n\t\t\t  <div class=\"panel-body\"><a href=\"", 
-            app.url, "\" target=\"_blank\"><img src=\"", file.path(gsub("/tree/", 
-                "/raw/", github.url), img.loc, apps.img[i]), "\" alt=\"", apps[i], 
-            "\" width=100% height=200px></a><p></p>\n\t\t\t\t<div class=\"btn-group btn-group-justified\">\n\t\t\t\t  <a href=\"", 
-            app.url, "\" target=\"_blank\" class=\"btn btn-success\">Launch</a>\n\t\t\t\t  <a href=\"", 
-            file.path(github.url, app), "\" target=\"_blank\" class=\"btn btn-info\">Github</a>\n\t\t\t\t</div>\n\t\t\t  </div>\n\t\t\t</div>\n\t\t  </div>\n\t\t</div>")
-    }
-    
-    n <- length(apps)
-    seq1 <- seq(1, n, by = 3)
-    y <- c()
-    for (j in 1:length(seq1)) {
-        ind <- seq1[j]:(seq1[j] + 2)
-        ind <- ind[ind %in% 1:n]
-        y <- c(y, paste0("<div class=\"row\">\n", paste0(sapply(ind, fillRow, 
-            ...), collapse = "\n"), "</div>\n"))
-    }
-    z <- "</div>\n"
-    sink(file)
-    sapply(c(x, y, z), cat)
-    sink()
-    cat("div container html created for Shiny Apps.\n")
-}
-```
+### Functions: Github user web sites
 
 #### genPanelDiv
 
-`genPanelDiv` generates an html file storing a container div element which in its current state of development organizes two types of content: **R** projects and Shiny web applications.
+`genPanelDiv` generates an html file storing a container div element which in its current state of development organizes four types of content: **R** projects, **R** Shiny web applications, data visualization galleries, and gallery images.
 
 The `type` argument can be one of `projects`, `apps`, `datavis`, or `gallery`.
-The purpose of the function is to generate an html file defining a container div element to display and reference either my **R** projects, my Shiny apps, or my example visualization galleries.
+The purpose of the function is to generate an html file defining a container element to display and reference either my **R** projects, my Shiny apps, or my example visualization galleries.
 
 ##### Projects
 
@@ -1202,7 +1151,7 @@ They point to the same images stored on Github, hence why it is useful for the l
 
 Whereas the first three types generate containers for the main Github user web page, I use `type="gallery"` to make a separate container html file of graphics for each panel occurring in my `datavis` container.
 These containers tend to be added to unique web pages.
-`datavis` is for highlighting a number of galleries whereas `gallery` is for the galleries' respective contents.
+`datavis` is for highlighting a number of galleries whereas `gallery` is for each highlighted gallery's respective contents.
 
 In order to use `type="datavis"` there must be a data visualization local repository.
 Mine is named `DataVisualizationExamples`, evident from the hardcoding currently in place within this function.
@@ -1356,7 +1305,7 @@ Stylesheet arguments can be passed along as well in proper order.
 ```r
 htmlHead <- function(author = "Matthew Leonawicz", title = author, script.paths = NULL, 
     stylesheet.paths, stylesheet.args = vector("list", length(path.stylesheets)), 
-    ...) {
+    include.ga = TRUE, ...) {
     x <- paste0("<!DOCTYPE html>\n\n<html xmlns=\"http://www.w3.org/1999/xhtml\">\n\n<head>\n\n<meta charset=\"utf-8\">\n<meta http-equiv=\"Content-Type\" content=\"text/html; charset=utf-8\" />\n\n<meta name=\"author\" content=", 
         author, " />\n\n<title>", title, "</title>\n")
     
@@ -1382,6 +1331,10 @@ htmlHead <- function(author = "Matthew Leonawicz", title = author, script.paths 
             x <- c(x, paste0("<link rel=\"stylesheet\" href=\"", stylesheet.paths[i], 
                 "\"", string, ">\n"))
         }
+    }
+    
+    if (include.ga) {
+        x <- c(x, "<script>\n  (function(i,s,o,g,r,a,m){i['GoogleAnalyticsObject']=r;i[r]=i[r]||function(){\n  (i[r].q=i[r].q||[]).push(arguments)},i[r].l=1*new Date();a=s.createElement(o),\n  m=s.getElementsByTagName(o)[0];a.async=1;a.src=g;m.parentNode.insertBefore(a,m)\n  })(window,document,'script','//www.google-analytics.com/analytics.js','ga');\n\n  ga('create', 'UA-46129458-3', 'auto');\n  ga('send', 'pageview');\n\n</script>\n\n")
     }
     
     x <- c(x, "</head>\n")
@@ -1427,7 +1380,7 @@ htmlBodyTop <- function(css.file = NULL, css.string = NULL, background.image = "
 ```r
 htmlBottom <- function(...) {
     # temporary
-    "</body>\n\t</html>"
+    "<div class=\"container\">Site made with <a href=\"http://leonawicz.github.io/ProjectManagement\">rpm</a></div>\n</body>\n</html>"
 }
 ```
 

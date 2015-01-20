@@ -54,7 +54,7 @@ However, this is obviously not something I can make account for the content and 
 ##### R, Rstudio, knitr, rmarkdown, MikTeX, Pandoc, Windows, Linux,... OH MY!
 And I'm not particularly interested in thinking about Mac.
 Anyway, this is my own limitation, an area where my current knowledge of cross-system use and third party software integration is not strong.
-When using `knit` and/or `rmakrdown`, I tend to have more success avoiding crashes while knitting documents if I do all the file generation in the same directory as the source files.
+When using `knitr` and/or `rmakrdown`, I tend to have more success avoiding crashes while knitting documents if I do all the file generation in the same directory as the source files.
 This is why `rpm` has code for moving output files after knitting them.
 I don't know why this problem exists, but for context, it is convenient for me to do the knitting with **R** on my Windows pc.
 I have `MikTeX` and `Pandoc` for Windows installed.

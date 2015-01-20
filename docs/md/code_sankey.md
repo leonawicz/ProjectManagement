@@ -12,7 +12,7 @@ It does make use of supplemental libraries for formatting during html document g
 `drg.R` is used to assist in dynamic report generation.
 
 ### Code flow
-The Sankey diagram has become part of project management.
+The Sankey diagram has become part of my project management.
 Each project has its own, detailing the relationships among **R** code and data relevant to the project,
 and in some cases, how they relate to code and data files which are more general and span multiple projects.
 In general, for my projects I would only provide the code flow diagram here among the rest of the project documentation,
@@ -138,7 +138,7 @@ p$show("iframesrc", cdn=T)
   &lt;/head&gt;
   &lt;body &gt;
     
-    &lt;div id = &#039;chart1f9c29bd6ee6&#039; class = &#039;rChart d3_sankey&#039;&gt;&lt;/div&gt;    
+    &lt;div id = &#039;chart4506e516892&#039; class = &#039;rChart d3_sankey&#039;&gt;&lt;/div&gt;    
     ï»¿&lt;!--Attribution:
 Mike Bostock https://github.com/d3/d3-plugins/tree/master/sankey
 Mike Bostock http://bost.ocks.org/mike/sankey/
@@ -147,7 +147,7 @@ Mike Bostock http://bost.ocks.org/mike/sankey/
 &lt;script&gt;
 (function(){
 var params = {
- &quot;dom&quot;: &quot;chart1f9c29bd6ee6&quot;,
+ &quot;dom&quot;: &quot;chart4506e516892&quot;,
 &quot;width&quot;:    900,
 &quot;height&quot;:    800,
 &quot;data&quot;: {
@@ -165,7 +165,7 @@ var params = {
 &quot;top&quot;:     50 
 },
 &quot;title&quot;: &quot;Code Flow&quot;,
-&quot;id&quot;: &quot;chart1f9c29bd6ee6&quot; 
+&quot;id&quot;: &quot;chart4506e516892&quot; 
 };
 
 params.units ? units = &quot; &quot; + params.units : units = &quot;&quot;;
@@ -285,11 +285,11 @@ node.append(&quot;text&quot;)
     
     &lt;script&gt;
       var cscale = d3.scale.category20b();
-      d3.selectAll(&#039;#chart1f9c29bd6ee6 svg path.link&#039;)
+      d3.selectAll(&#039;#chart4506e516892 svg path.link&#039;)
         .style(&#039;stroke&#039;, function(d){
           return cscale(d.source.name);
         })
-      d3.selectAll(&#039;#chart1f9c29bd6ee6 svg .node rect&#039;)
+      d3.selectAll(&#039;#chart4506e516892 svg .node rect&#039;)
         .style(&#039;fill&#039;, function(d){
           return cscale(d.name)
         })
@@ -297,7 +297,7 @@ node.append(&quot;text&quot;)
     &lt;/script&gt;
         
   &lt;/body&gt;
-&lt;/html&gt; ' scrolling='no' frameBorder='0' seamless class='rChart  http://timelyportfolio.github.io/rCharts_d3_sankey/libraries/widgets/d3_sankey  ' id='iframe-chart1f9c29bd6ee6'> </iframe>
+&lt;/html&gt; ' scrolling='no' frameBorder='0' seamless class='rChart  http://timelyportfolio.github.io/rCharts_d3_sankey/libraries/widgets/d3_sankey  ' id='iframe-chart4506e516892'> </iframe>
  <style>iframe.rChart{ width: 100%; height: 400px;}</style>
 <style>iframe.rChart{ width: 100%; height: 840px;}</style>
 

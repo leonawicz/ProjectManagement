@@ -157,6 +157,8 @@ code > span.er { color: #c3bf9f; }
 
 
 
+<div id="functions-project-creation" class="section level3">
+<h3>Functions: Project creation</h3>
 <div id="newproject" class="section level4">
 <h4>newProject</h4>
 <p><code>newProject</code> creates a new named project directory structure at the specified file path. If a directory with this project name already exists in this location on the file system and <code>overwrite=FALSE</code>, the function will abort. Default project subdirectories are created unless a different vector of folder names is explicitly passed to <code>newProject</code>. If one of the subdirectories is <code>docs</code> then the default vector of subdirectories under <code>docs</code> is also created. This argument can also be set explicitly. The current function only creates directories, not files, so <code>overwrite=TRUE</code> is safe to use on any existing project.</p>
@@ -180,6 +182,7 @@ code > span.er { color: #c3bf9f; }
     if (overwrite) 
         <span class="kw">cat</span>(<span class="st">&quot;Project directories updated.</span><span class="ch">\n</span><span class="st">&quot;</span>) else <span class="kw">cat</span>(<span class="st">&quot;Project directories created.</span><span class="ch">\n</span><span class="st">&quot;</span>)
 }</code></pre>
+</div>
 </div>
 
 

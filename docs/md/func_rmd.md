@@ -1,6 +1,8 @@
 
 
 
+### Functions: Rmd documents
+
 #### rmdHeader
 `rmdHeader` generates the yaml metadata header for Rmd files as a character string to be inserted at the top of a file.
 It has default arguments specific to my own projects but can be changed.
@@ -124,7 +126,7 @@ If no Rmd files have yet been generated, the function will abort.
 Otherwise, for the Rmd files which do exist (and this may correspond to a subset of the **R** files),
 these Rmd files are appended with a list of code chunk names found in the current corresponding **R** files
 which have not yet been integrated into the current state of the Rmd files.
-This fascilitates updating of Rmd documentation when it falls behind scripts which have been updated.
+This facilitates updating of Rmd documentation when it falls behind scripts which have been updated.
 
 
 ```r
