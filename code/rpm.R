@@ -544,54 +544,6 @@ insert_gatc <- function(file, gatc=NULL){
 	cat("Google Analytics tracking script inserted.\n")
 }
 
-
-# @knitr fun_genAppDiv
-# Functions for Github user website
-genAppDiv <- function(file="C:/github/leonawicz.github.io/assets/apps_container.html", type="apps", main="Shiny Apps",
-	apps.url="http://shiny.snap.uaf.edu", github.url="https://github.com/ua-snap/shiny-apps/tree/master", apps.dir="C:/github/shiny-apps", img.loc="_images/cropped", ...){
-	
-	apps.img <- list.files(file.path(apps.dir, img.loc))
-	apps <- sapply(strsplit(apps.img, "\\."), "[[", 1)
-	x <- paste0('<div class="container">\n  <div class="row">\n    <div class="col-lg-12">\n      <div class="page-header">\n        <h3 id="', type, '">', main, '</h3>\n      </div>\n    </div>\n  </div>\n  ')
-	
-    fillRow <- function(i, ...){
-		app <- apps[i]
-	    app.url <- file.path(apps.url, app)
-	    dots <- list(...)
-	    if(is.null(dots$col)) col <- "warning" else col <- dots$col
-	    if(is.null(dots$panel.main)) panel.main <- gsub("_", " ", app) else panel.main <- dots$panel.main
-	    if(length(panel.main) > 1) panel.main <- panel.main[i]
-	    x <- paste0('<div class="col-lg-4">
-		  <div class="bs-component">
-			<div class="panel panel-', col, '">
-			  <div class="panel-heading"><h3 class="panel-title">', panel.main, '</h3>
-			  </div>
-			  <div class="panel-body"><a href="', app.url, '" target="_blank"><img src="', file.path(gsub("/tree/", "/raw/", github.url), img.loc, apps.img[i]), '" alt="', apps[i], '" width=100% height=200px></a><p></p>
-				<div class="btn-group btn-group-justified">
-				  <a href="', app.url, '" target="_blank" class="btn btn-success">Launch</a>
-				  <a href="', file.path(github.url, app), '" target="_blank" class="btn btn-info">Github</a>
-				</div>
-			  </div>
-			</div>
-		  </div>
-		</div>')
-	}
-	
-	n <- length(apps)
-	seq1 <- seq(1, n, by=3)
-	y <- c()
-	for(j in 1:length(seq1)){
-		ind <- seq1[j]:(seq1[j] + 2)
-		ind <- ind[ind %in% 1:n]
-		y <- c(y, paste0('<div class="row">\n', paste0(sapply(ind, fillRow, ...), collapse="\n"), '</div>\n'))
-	}
-	z <- '</div>\n'
-	sink(file)
-	sapply(c(x, y, z), cat)
-	sink()
-	cat("div container html created for Shiny Apps.\n")
-}
-
 # @knitr fun_genPanelDiv
 genPanelDiv <- function(outDir, type="projects", main="Projects",
 	github.user="leonawicz", prjs.dir="C:/github", exclude=c("leonawicz.github.io", "shiny-apps", "DataVisExamples", ".git", "_images"),
