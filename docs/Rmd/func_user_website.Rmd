@@ -12,34 +12,14 @@ opts_chunk$set(cache=FALSE, eval=FALSE, tidy=TRUE, message=FALSE, warning=FALSE)
 read_chunk("../../code/rpm.R")
 ```
 
-#### genAppDiv
-
-`genAppDiv` generates an html file storing a container div element which organizes Shiny web applications.
-The function scans a directory of Shiny app subdirectories.
-This apps directory should be a local repository.
-
-Specifically, `genAppDiv` looks for a named directory of image files.
-There should be one image per app, named exactly as the respective app directory is named.
-Only apps with corresponding images are built into the html container.
-If you wish to leave out, say, a developmental app from being linked to on you Github user website, do not include an image file for that app.
-
-The container element includes an image link to each app's url as well as a link to the source code on Github.
-Although the function scans for images in directory inside a local repository, the images referenced in the output html are of course not local.
-They point to the same images stored on Github, hence why it is useful for the local directory of apps to be a Github repository.
-As an example, a repository may contain the directories, `app1`, `app2`, `app3`, and `images`.
-
-This function will probably be removed in favor of the more general `genPanelDiv` function.
-
-
-```{r fun_genAppDiv}
-```
+### Functions: Github user web sites
 
 #### genPanelDiv
 
-`genPanelDiv` generates an html file storing a container div element which in its current state of development organizes two types of content: **R** projects and Shiny web applications.
+`genPanelDiv` generates an html file storing a container div element which in its current state of development organizes four types of content: **R** projects, **R** Shiny web applications, data visualization galleries, and gallery images.
 
 The `type` argument can be one of `projects`, `apps`, `datavis`, or `gallery`.
-The purpose of the function is to generate an html file defining a container div element to display and reference either my **R** projects, my Shiny apps, or my example visualization galleries.
+The purpose of the function is to generate an html file defining a container element to display and reference either my **R** projects, my Shiny apps, or my example visualization galleries.
 
 ##### Projects
 
@@ -67,7 +47,7 @@ They point to the same images stored on Github, hence why it is useful for the l
 
 Whereas the first three types generate containers for the main Github user web page, I use `type="gallery"` to make a separate container html file of graphics for each panel occurring in my `datavis` container.
 These containers tend to be added to unique web pages.
-`datavis` is for highlighting a number of galleries whereas `gallery` is for the galleries' respective contents.
+`datavis` is for highlighting a number of galleries whereas `gallery` is for each highlighted gallery's respective contents.
 
 In order to use `type="datavis"` there must be a data visualization local repository.
 Mine is named `DataVisualizationExamples`, evident from the hardcoding currently in place within this function.

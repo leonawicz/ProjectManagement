@@ -20,7 +20,7 @@ It does make use of supplemental libraries for formatting during html document g
 `drg.R` is used to assist in dynamic report generation.
 
 ### Code flow
-The Sankey diagram has become part of project management.
+The Sankey diagram has become part of my project management.
 Each project has its own, detailing the relationships among **R** code and data relevant to the project,
 and in some cases, how they relate to code and data files which are more general and span multiple projects.
 In general, for my projects I would only provide the code flow diagram here among the rest of the project documentation,

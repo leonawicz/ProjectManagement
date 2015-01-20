@@ -12,6 +12,12 @@ opts_chunk$set(cache=FALSE, eval=FALSE, tidy=TRUE, message=FALSE, warning=FALSE)
 read_chunk("../../code/rpm.R")
 ```
 
+### Functions: Project web sites
+
+Some functions in this section are also used in the generation of Github user pages (see next section).
+They appear here because they are used more generally for project pages even though some contain user page-specific code and arguments as well.
+Functions in the subsequent section are used more exclusively for user pages generation.
+
 #### buttonGroup
 `buttonGroup` is a helper function for `genNavbar`. I used it to place social media buttons in the right side of the navigation bar at the top of a web page.
 For project pages I tend to only include a Github button linking to the project repo.
@@ -53,7 +59,7 @@ This is currently the only `rpm` function which attempts to handle multiple Boot
 
 If `media.button.args=NULL` (default), only the Github button will be included, and then only if `site.name="Github"` and site.url is not blank.
 I use this default for project pages and do not insert additional buttons.
-For user pages, the same defualt will work.
+For user pages, the same default will work.
 Alternatively, a list of arguments can passed on to `buttonGroup`.
 I have not checked yet to see if this also works for project pages.
 
