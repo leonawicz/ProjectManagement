@@ -192,7 +192,7 @@ code > span.er { color: #c3bf9f; }
 </div>
 <div id="code-flow" class="section level3">
 <h3>Code flow</h3>
-<p>The Sankey diagram has become part of project management. Each project has its own, detailing the relationships among <strong>R</strong> code and data relevant to the project, and in some cases, how they relate to code and data files which are more general and span multiple projects. In general, for my projects I would only provide the code flow diagram here among the rest of the project documentation, but since this is the project management project and I am introducing its use, in this case I will also show the <a href="code_sankey.html" title="code">code</a> I use to make the diagram.</p>
+<p>The Sankey diagram has become part of my project management. Each project has its own, detailing the relationships among <strong>R</strong> code and data relevant to the project, and in some cases, how they relate to code and data files which are more general and span multiple projects. In general, for my projects I would only provide the code flow diagram here among the rest of the project documentation, but since this is the project management project and I am introducing its use, in this case I will also show the <a href="code_sankey.html" title="code">code</a> I use to make the diagram.</p>
 </div>
 <div id="current-projects" class="section level3">
 <h3>Current projects</h3>
@@ -219,7 +219,7 @@ code > span.er { color: #c3bf9f; }
   &lt;/head&gt;
   &lt;body &gt;
     
-    &lt;div id = 'chart1f9c14485c52' class = 'rChart d3_sankey'&gt;&lt;/div&gt;    
+    &lt;div id = 'chart45050fe2cd4' class = 'rChart d3_sankey'&gt;&lt;/div&gt;    
     ï»¿&lt;!--Attribution:
 Mike Bostock https://github.com/d3/d3-plugins/tree/master/sankey
 Mike Bostock http://bost.ocks.org/mike/sankey/
@@ -228,7 +228,7 @@ Mike Bostock http://bost.ocks.org/mike/sankey/
 &lt;script&gt;
 (function(){
 var params = {
- &quot;dom&quot;: &quot;chart1f9c14485c52&quot;,
+ &quot;dom&quot;: &quot;chart45050fe2cd4&quot;,
 &quot;width&quot;:    900,
 &quot;height&quot;:    800,
 &quot;data&quot;: {
@@ -246,7 +246,7 @@ var params = {
 &quot;top&quot;:     20 
 },
 &quot;title&quot;: &quot;Matt's Projects&quot;,
-&quot;id&quot;: &quot;chart1f9c14485c52&quot; 
+&quot;id&quot;: &quot;chart45050fe2cd4&quot; 
 };
 
 params.units ? units = &quot; &quot; + params.units : units = &quot;&quot;;
@@ -366,11 +366,11 @@ node.append(&quot;text&quot;)
     
     &lt;script&gt;
       var cscale = d3.scale.category20b();
-      d3.selectAll('#chart1f9c14485c52 svg path.link')
+      d3.selectAll('#chart45050fe2cd4 svg path.link')
         .style('stroke', function(d){
           return cscale(d.source.name);
         })
-      d3.selectAll('#chart1f9c14485c52 svg .node rect')
+      d3.selectAll('#chart45050fe2cd4 svg .node rect')
         .style('fill', function(d){
           return cscale(d.name)
         })
@@ -378,7 +378,7 @@ node.append(&quot;text&quot;)
     &lt;/script&gt;
         
   &lt;/body&gt;
-&lt;/html&gt; " scrolling="no" frameBorder="0" seamless class="rChart  http://timelyportfolio.github.io/rCharts_d3_sankey/libraries/widgets/d3_sankey  " id="iframe-chart1f9c14485c52">
+&lt;/html&gt; " scrolling="no" frameBorder="0" seamless class="rChart  http://timelyportfolio.github.io/rCharts_d3_sankey/libraries/widgets/d3_sankey  " id="iframe-chart45050fe2cd4">
 </iframe>
 <style>iframe.rChart{ width: 100%; height: 400px;}</style>
 <style>iframe.rChart{ width: 100%; height: 840px;}</style>
@@ -388,7 +388,7 @@ node.append(&quot;text&quot;)
 <h2><strong>R</strong> code</h2>
 <div id="template-objects" class="section level3">
 <h3>Template objects</h3>
-<p>Character string objects are defined which are used to fill templates when generating new files for a project. A tentative default path is also included since this code relates to my own work.</p>
+<p>Character string objects are defined which are used to fill templates when generating new files for a project. A tentative default path is also included since this code relates to my own work. Realistically, any objects current shown here will most likely eventually be incorporated into package functions in some form. I prefer not to have many straggler objects floating around.</p>
 <pre class="sourceCode r"><code class="sourceCode r"><span class="co"># For package &#39;rpm&#39;</span>
 
 <span class="co"># data</span>
@@ -398,8 +398,8 @@ rmd.template &lt;-<span class="st"> &quot;</span><span class="ch">\n\n</span><sp
 <span class="co"># default path</span>
 matt.proj.path &lt;-<span class="st"> &quot;C:/github&quot;</span></code></pre>
 </div>
-<div id="package-functions" class="section level3">
-<h3>Package functions</h3>
+<div id="functions-project-creation" class="section level3">
+<h3>Functions: Project creation</h3>
 <p>Functions are defined for creating new projects, generating Rmd files for project <strong>R</strong> scripts, and appending these <strong>R</strong> Markdown files with updated information from the corresponding <strong>R</strong> scripts as their development continues. Additional functions will be incorporated later.</p>
 <div id="newproject" class="section level4">
 <h4>newProject</h4>
@@ -425,6 +425,9 @@ matt.proj.path &lt;-<span class="st"> &quot;C:/github&quot;</span></code></pre>
         <span class="kw">cat</span>(<span class="st">&quot;Project directories updated.</span><span class="ch">\n</span><span class="st">&quot;</span>) else <span class="kw">cat</span>(<span class="st">&quot;Project directories created.</span><span class="ch">\n</span><span class="st">&quot;</span>)
 }</code></pre>
 </div>
+</div>
+<div id="functions-rmd-documents" class="section level3">
+<h3>Functions: Rmd documents</h3>
 <div id="rmdheader" class="section level4">
 <h4>rmdHeader</h4>
 <p><code>rmdHeader</code> generates the yaml metadata header for Rmd files as a character string to be inserted at the top of a file. It has default arguments specific to my own projects but can be changed. The output from this function is passed directly to <code>genRmd</code> below.</p>
@@ -520,7 +523,7 @@ matt.proj.path &lt;-<span class="st"> &quot;C:/github&quot;</span></code></pre>
 <div id="chunknames" class="section level4">
 <h4>chunkNames</h4>
 <p><code>chunkNames</code> can be used in two ways. It can return a list with length equal to the number of <strong>R</strong> files, where each list element is a vector of <strong>R</strong> code chunk names found in each <strong>R</strong> script.</p>
-<p>Alternatively, with <code>append.new=TRUE</code>, this list has each vector matched element-wise against chunk names found in existing Rmd files. If no Rmd files have yet been generated, the function will abort. Otherwise, for the Rmd files which do exist (and this may correspond to a subset of the <strong>R</strong> files), these Rmd files are appended with a list of code chunk names found in the current corresponding <strong>R</strong> files which have not yet been integrated into the current state of the Rmd files. This fascilitates updating of Rmd documentation when it falls behind scripts which have been updated.</p>
+<p>Alternatively, with <code>append.new=TRUE</code>, this list has each vector matched element-wise against chunk names found in existing Rmd files. If no Rmd files have yet been generated, the function will abort. Otherwise, for the Rmd files which do exist (and this may correspond to a subset of the <strong>R</strong> files), these Rmd files are appended with a list of code chunk names found in the current corresponding <strong>R</strong> files which have not yet been integrated into the current state of the Rmd files. This facilitates updating of Rmd documentation when it falls behind scripts which have been updated.</p>
 <pre class="sourceCode r"><code class="sourceCode r">chunkNames &lt;-<span class="st"> </span>function(path, <span class="dt">rChunkID =</span> <span class="st">&quot;# @knitr&quot;</span>, <span class="dt">rmdChunkID =</span> <span class="st">&quot;```{r&quot;</span>, <span class="dt">append.new =</span> <span class="ot">FALSE</span>) {
     files &lt;-<span class="st"> </span><span class="kw">list.files</span>(path, <span class="dt">pattern =</span> <span class="st">&quot;.R$&quot;</span>, <span class="dt">full =</span> <span class="ot">TRUE</span>)
     <span class="kw">stopifnot</span>(<span class="kw">length</span>(files) &gt;<span class="st"> </span><span class="dv">0</span>)
@@ -562,14 +565,18 @@ matt.proj.path &lt;-<span class="st"> &quot;C:/github&quot;</span></code></pre>
         <span class="dt">rmdChunks =</span> l2, <span class="dt">ID =</span> rmdChunkID)
 }</code></pre>
 <p>Regarding the creation and updating of Rmd files, <code>rpm</code> simply assumes that there will be one <strong>R</strong> Markdown file corresponding to one <strong>R</strong> script. This is not always the case for a given project, but again, the purpose is to generate basic templates. Unnecessary files can always be deleted later, or edits made such that one <strong>R</strong> Markdown file reads multiple <strong>R</strong> scripts, as is the case with the Rmd file used to generate this document.</p>
+</div>
+</div>
+<div id="functions-document-conversion" class="section level3">
+<h3>Functions: Document conversion</h3>
 <p>The main function for conversion between Rmd and Rnw files is <code>convertDocs</code>. This function contains several internal support functions, each of which is somewhat limited in how much specific conversion it can achieve. The functions below were written with my particular style of Rmd and Rnw documentation in mind. As such they are necessarily a bit idiosyncratic and cannot account for every possible difference found between Rmd and Rnw formatting across any pair of documents. I only strived to speed up the process by which I convert my own documents, most of which follow a set of general rules and expectations most of the time. Anything atypical which doesn’t convert properly can be adjusted by hand afterward. This is still better than rewriting, copy-pasting, and search-and-replacing many sections of many files on a recurring basis. Further improvements in conversion will be added later.</p>
 <div id="rules-and-assumptions-regarding-these-functions" class="section level5">
 <h5>Rules and assumptions regarding these functions</h5>
 <ul>
-<li>All Rnw file lines beginning with a backslash which are in the main body of the code (beyond the title, author, etc.) and are not part of a code chunk identifier string are stripped rather than converted for Rmd.</li>
-<li>Only title and author are parsed from the Rnw lines prior to where the R code chunks begin. LaTeX libraries and such are dropped.</li>
-<li>Standard, minimal LaTeX libraries and other requirements prior to beginning the document are inserted in place of the Rmd yaml front-matter.</li>
-<li>Rmd files must have yaml front-matter, identified always by the second line in the document to begin with <code>---</code>.</li>
+<li>When converting to Rmd, all Rnw file lines beginning with a backslash which are in the main body of the code (beyond the title, author, etc.) and are not part of a code chunk identifier string are stripped rather than converted to anything.</li>
+<li>Only title and author are parsed from the Rnw lines prior to where the <strong>R</strong> code chunks begin. LaTeX libraries and such are dropped.</li>
+<li>When converting to Rnw, standard, minimal LaTeX libraries and other requirements prior to beginning the document are inserted by default in place of the Rmd yaml front-matter.</li>
+<li>Rmd files must have yaml front-matter prior to converting to Rnw, identified always by the second line in the document to begin with <code>---</code>. More generally, conversion aside, it is expected than any Rmd file has a yaml front-matter section in the context of <code>rpm</code>.</li>
 </ul>
 </div>
 <div id="formatting-rules" class="section level5">
@@ -577,25 +584,25 @@ matt.proj.path &lt;-<span class="st"> &quot;C:/github&quot;</span></code></pre>
 <ul>
 <li>I never use two consecutive asterisks or underscores except to indicate bold text</li>
 <li>Text with typewriter font in Rnw files is converted to text within backticks in Rmd files and vice versa.</li>
-<li>Italics or other formatting are not considered.</li>
+<li>Italics or other formatting are not considered at this time.</li>
+<li>Lists in Rmd files (like this one), are not yet addressed in conversion to Rnw and vice versa.</li>
+<li>In fact anything not explicitly mentioned here is not yet addressed.</li>
 </ul>
 </div>
 <div id="heading-rules" class="section level5">
 <h5>Heading rules</h5>
 <ul>
-<li>Lists in Rmd files (like this one), are not yet addressed in conversion to Rnw and vice versa.</li>
 <li>I never (intentionally) use the two most extreme headings in Rmd files, <code>#</code> and <code>######</code>. I only use <code>##</code> through <code>#####</code>.</li>
 <li>I never go beyond <code>subsubsubsection</code> in Rnw files.</li>
-<li>Any occurrence of one or two <code>#</code> is converted to a new <code>section</code> in an Rnw file whereas a section converts to a <code>##</code> heading.</li>
-<li>Similarly, five- or six-<code>#</code> identified heading in Rmd convert to the maximum <code>subsubsubsection</code> which back-converts to a <code>#####</code> heading.</li>
-<li>Three- and four-<code>#</code> identified Rmd headings convert to <code>subsection</code>- and <code>subsubsection</code>-identified Rnw headings, respectively, and vice versa. As such, these are the only true one-to-one heading conversions.</li>
+<li>Any occurrence of a one- or two-<code>#</code> identified heading is converted to a new <code>section</code> heading in an Rnw file whereas a <code>section</code> heading converts to a <code>##</code> heading.</li>
+<li>Similarly, five- or six-<code>#</code> identified headings in Rmd convert to the maximum <code>subsubsubsection</code> which back-converts to a <code>#####</code> heading.</li>
+<li>Three- and four-<code>#</code> identified Rmd headings convert to <code>subsection</code> and <code>subsubsection</code> identified Rnw headings, respectively, and vice versa. As such, these are the only true one-to-one heading conversions.</li>
 </ul>
 <p>This may all sound like a lot, but it’s not. It does a decent job for now. It’s not a true conversion and plenty of work may remain afterward. Again, the point is to make conversion much less tedious and hands-on, which it does well enough so far.</p>
 </div>
-</div>
 <div id="swapheadings" class="section level4">
 <h4>.swapHeadings</h4>
-<p><code>.swapHeadings</code> assists in bidirectional conversion between Rmd and Rnw files. It swaps section headings formatting. It is called directly by <code>swap</code>, internal to <code>convertDocs</code>.</p>
+<p><code>.swapHeadings</code> assists in bidirectional conversion between Rmd and Rnw files. It swaps section headings formatting. It is called directly by <code>.swap</code>, internal to <code>convertDocs</code>.</p>
 <pre class="sourceCode r"><code class="sourceCode r"><span class="co"># Rmd &lt;-&gt; Rnw document conversion Conversion support functions called by</span>
 <span class="co"># .swap()</span>
 .swapHeadings &lt;-<span class="st"> </span>function(from, to, x) {
@@ -660,7 +667,7 @@ matt.proj.path &lt;-<span class="st"> &quot;C:/github&quot;</span></code></pre>
 </div>
 <div id="swapchunks" class="section level4">
 <h4>.swapChunks</h4>
-<p><code>.swapChunks</code> assists in bidirectional conversion between Rmd and Rnw files. It swaps code chunk formatting. It is called directly by <code>swap</code>, internal to <code>convertDocs</code>.</p>
+<p><code>.swapChunks</code> assists in bidirectional conversion between Rmd and Rnw files. It swaps code chunk formatting. It is called directly by <code>.swap</code>, internal to <code>convertDocs</code>.</p>
 <pre class="sourceCode r"><code class="sourceCode r"><span class="co"># Rmd &lt;-&gt; Rnw document conversion Conversion support functions called by</span>
 <span class="co"># .swap()</span>
 .swapChunks &lt;-<span class="st"> </span>function(from, to, x, <span class="dt">offset.end =</span> <span class="dv">1</span>) {
@@ -681,7 +688,7 @@ matt.proj.path &lt;-<span class="st"> &quot;C:/github&quot;</span></code></pre>
 </div>
 <div id="swapemphasis" class="section level4">
 <h4>.swapEmphasis</h4>
-<p><code>.swapEmphasis</code> assists in bidirectional conversion between Rmd and Rnw files. It swaps text formatting such as boldface and typewriter font. It is called directly by <code>swap</code>, internal to <code>convertDocs</code>.</p>
+<p><code>.swapEmphasis</code> assists in bidirectional conversion between Rmd and Rnw files. It swaps text formatting such as boldface and typewriter font. It is called directly by <code>.swap</code>, internal to <code>convertDocs</code>.</p>
 <pre class="sourceCode r"><code class="sourceCode r"><span class="co"># Rmd &lt;-&gt; Rnw document conversion Conversion support functions called by</span>
 <span class="co"># .swap() I know I use &#39;**&#39; strictly for bold font in Rmd files.  For now,</span>
 <span class="co"># this function assumes: 1. The only emphasis in a doc is boldface or</span>
@@ -816,8 +823,8 @@ matt.proj.path &lt;-<span class="st"> &quot;C:/github&quot;</span></code></pre>
 <div id="convertdocs" class="section level4">
 <h4>convertDocs</h4>
 <p><code>convertDocs</code> converts between Rmd and Rnw files. The project’s <code>docs/Rmd</code> or <code>docs/Rnw</code> directory is specified. Any files of the same type as the directory are converted to the other type and saved to the other directory. The input files are not removed.</p>
-<p>This function speeds up the process of duplicating files, e.g., when wanting to make PDFs from Rnw files when only Rmd files exist. This is almost exclusively what I use this function for. On less frequent occasions I have used it in the other direction when I have Rnw files which were once used to make PDFs but later I decide to put them on the web as a web page and not as a link to a PDF.</p>
-<p>The user still makes specific changes by hand, for example, any required changes to <code>knitr</code> code chunk options that must differ for PDF output vs. html output. The primary benefit is in not having to fuss with large amounts of standard substitutions which can be automated, such as swapping code chunk enclosure styles and common file metadata. Of course, this function is not perfect. It amounts to a text-parsing hack that is intended to handle the most common of idiosyncrasies and differences which exist between my own Rmd and Rnw files in the context of my own set of rules and assumptions, outlined below.</p>
+<p>This function speeds up the process of duplicating files, e.g., when wanting to make pdf files from Rnw files when only Rmd files exist. This is almost exclusively what I use this function for. On less frequent occasions I have used it in the other direction when I have Rnw files which were once used to make PDFs but later I decide to put them on the web as a web page and not as a link to a pdf files.</p>
+<p>The user still makes specific changes by hand, for example, any required changes to <code>knitr</code> code chunk options that must differ for pdf output vs. html output. The primary benefit is in not having to fuss with large amounts of standard substitutions which can be automated, such as swapping code chunk enclosure styles and common file metadata. Of course, this function is not perfect. It amounts to a text-parsing hack that is intended to handle the most common of idiosyncrasies and differences which exist between my own Rmd and Rnw files in the context of my own limited rule set.</p>
 <pre class="sourceCode r"><code class="sourceCode r"><span class="co"># Rmd &lt;-&gt; Rnw document conversion Main conversion function</span>
 convertDocs &lt;-<span class="st"> </span>function(path, <span class="dt">rmdChunkID =</span> <span class="kw">c</span>(<span class="st">&quot;```{r&quot;</span>, <span class="st">&quot;}&quot;</span>, <span class="st">&quot;```&quot;</span>), <span class="dt">rnwChunkID =</span> <span class="kw">c</span>(<span class="st">&quot;&lt;&lt;&quot;</span>, 
     <span class="st">&quot;&gt;&gt;=&quot;</span>, <span class="st">&quot;@&quot;</span>), <span class="dt">emphasis =</span> <span class="st">&quot;replace&quot;</span>, <span class="dt">overwrite =</span> <span class="ot">FALSE</span>, ...) {
@@ -860,13 +867,16 @@ convertDocs &lt;-<span class="st"> </span>function(path, <span class="dt">rmdChu
     }
 }</code></pre>
 </div>
+</div>
+<div id="functions-document-organization" class="section level3">
+<h3>Functions: Document organization</h3>
 <div id="movedocs" class="section level4">
 <h4>moveDocs</h4>
 <p><code>moveDocs</code> relocates files by renaming with a new file path. Specifically, it scans for md and html files in the <code>docs/Rmd</code> directory and/or pdf files in the <code>docs/Rnw</code> directory. If such files are found in the respective locations, they are moved to <code>docs/md</code>, <code>docs/html</code>, and <code>docs/pdf</code>, respectively.</p>
 <p>The intent is to clean up the Rmd and Rnw directories after <code>knitr</code> has been used to knit documents in place. I do this because I have more success knitting documents with the confluence of <code>RStudio</code>, <code>rmarkdown</code>, <code>knitr</code>, <code>pandoc</code>, and <code>LaTeX</code> when the knitting occurs all within the directory of the originating files. The process is more prone to throwing errors when trying to specify alternate locations for outputs.</p>
 <p><code>moveDocs</code> makes a nominal effort to replace a possible relative path with a full file path before proceeding, if the former is supplied. Default arguments include <code>move=TRUE</code> which will call <code>file.rename</code> and <code>copy=FALSE</code> which, if <code>TRUE</code> (and <code>move=FALSE</code>), will alternatively call <code>file.copy</code>. If both are <code>TRUE</code>, any files found are moved.</p>
 <p>This function will always overwrite any existing file versions previously moved to the output directories, by way of <code>file.rename</code>. To keep the behavior consistent, when <code>move=FALSE</code> and <code>copy=TRUE</code>, <code>file.copy</code> always executes with its argument, <code>overwrite=TRUE</code>. This should never cause problems because in the context I intend for this function, the types of files being moved or copied from <code>docs/Rmd</code> and <code>docs/Rnw</code> are never used as inputs to other files, functions, or processes, nor are they meant to be edited by hand after being generated.</p>
-<p>If there are LaTeX-associated files present (.TeX, .aux, and .txt files with the same file names as local pdf files.), these files will be removed if <code>remove.latex=TRUE</code> (default). If <code>FALSE</code>, the default <code>latexDir=&quot;LaTeX&quot;</code> means that these files will be moved to the <code>docs/LaTeX</code> directory rather than deleted. If this directory does not exist, it will be created. An alternate location can be specified, such as “pdf” if you want to keep these files with the related pdf files after those are moved by <code>moveDocs</code> as well to <code>docs/pdf</code>.</p>
+<p>If there are LaTeX-associated files present (.TeX, .aux, and .txt files with the same file names as local pdf files.), these files will be removed if <code>remove.latex=TRUE</code> (default). If <code>FALSE</code>, the default <code>latexDir=&quot;LaTeX&quot;</code> means that these files will be moved to the <code>docs/LaTeX</code> directory rather than deleted. If this directory does not exist, it will be created. An alternate location can be specified, such as “pdf” if you want to keep these files with the related pdf files after those are moved by <code>moveDocs</code> as well to <code>docs/pdf</code>. The directory of supplemental pdf figures, if any, which is creating during knitting, is not included in the file move at this time.</p>
 <pre class="sourceCode r"><code class="sourceCode r"><span class="co"># Organization documentation</span>
 moveDocs &lt;-<span class="st"> </span>function(path.docs, <span class="dt">type =</span> <span class="kw">c</span>(<span class="st">&quot;md&quot;</span>, <span class="st">&quot;html&quot;</span>, <span class="st">&quot;pdf&quot;</span>), <span class="dt">move =</span> <span class="ot">TRUE</span>, 
     <span class="dt">copy =</span> <span class="ot">FALSE</span>, <span class="dt">remove.latex =</span> <span class="ot">TRUE</span>, <span class="dt">latexDir =</span> <span class="st">&quot;latex&quot;</span>) {
@@ -934,6 +944,10 @@ moveDocs &lt;-<span class="st"> </span>function(path.docs, <span class="dt">type
     }
 }</code></pre>
 </div>
+</div>
+<div id="functions-project-web-sites" class="section level3">
+<h3>Functions: Project web sites</h3>
+<p>Some functions in this section are also used in the generation of Github user pages (see next section). They appear here because they are used more generally for project pages even though some contain user page-specific code and arguments as well. Functions in the subsequent section are used more exclusively for user pages generation.</p>
 <div id="buttongroup" class="section level4">
 <h4>buttonGroup</h4>
 <p><code>buttonGroup</code> is a helper function for <code>genNavbar</code>. I used it to place social media buttons in the right side of the navigation bar at the top of a web page. For project pages I tend to only include a Github button linking to the project repo. For my Github user pages, I include more buttons. The function generates an html snippet defining a group of buttons. Typical use is to pass a list of the below arguments to <code>genNavbar</code>.</p>
@@ -977,7 +991,7 @@ buttonGroup &lt;-<span class="st"> </span>function(txt, urls, <span class="dt">f
 <p><code>genNavbar</code> generates a navigation bar for a web page. The html file created is generally written to the project’s <code>docs/Rmd/include</code> directory. However, if this function is used to create a navbar for a Github user web page, the html file should be stored in a sensible location inside the user pages repository, e.g., <code>leonawicz.github.io/assets</code>.</p>
 <p>The common navigation bar html is included at the beginning of the body of the html for each web page in the project’s website. <code>menu</code> is a vector of names for each dropdown menu. <code>submenus</code> is a list of vectors of menu options corresponding to each menu. <code>files</code> is a similar list of vectors. Each element is either an html file for a web page to be associated with the submenu link, “header” to indicate the corresponding name in <code>submenus</code> is only a group label and not a link to a web page, or “divider” to indicate placement of a bar for separating groups in a dropdown menu.</p>
 <p><code>theme</code> can be either <code>united</code> (default) or <code>cyborg</code>. Both are from Bootswatch. The function must apply some internal differentiation in the construction of the html navigation bar between themes. This is currently the only <code>rpm</code> function which attempts to handle multiple Bootswatch themes with different CSS tags.</p>
-<p>If <code>media.button.args=NULL</code> (default), only the Github button will be included, and then only if <code>site.name=&quot;Github&quot;</code> and site.url is not blank. I use this default for project pages and do not insert additional buttons. For user pages, the same defualt will work. Alternatively, a list of arguments can passed on to <code>buttonGroup</code>. I have not checked yet to see if this also works for project pages.</p>
+<p>If <code>media.button.args=NULL</code> (default), only the Github button will be included, and then only if <code>site.name=&quot;Github&quot;</code> and site.url is not blank. I use this default for project pages and do not insert additional buttons. For user pages, the same default will work. Alternatively, a list of arguments can passed on to <code>buttonGroup</code>. I have not checked yet to see if this also works for project pages.</p>
 <pre class="sourceCode r"><code class="sourceCode r">genNavbar &lt;-<span class="st"> </span>function(<span class="dt">htmlfile =</span> <span class="st">&quot;navbar.html&quot;</span>, title, menu, submenus, files, 
     <span class="dt">title.url =</span> <span class="st">&quot;index.html&quot;</span>, <span class="dt">home.url =</span> <span class="st">&quot;index.html&quot;</span>, <span class="dt">site.url =</span> <span class="st">&quot;&quot;</span>, <span class="dt">site.name =</span> <span class="st">&quot;Github&quot;</span>, 
     <span class="dt">media.button.args =</span> <span class="ot">NULL</span>, <span class="dt">theme =</span> <span class="st">&quot;united&quot;</span>, <span class="dt">include.home =</span> <span class="ot">FALSE</span>) {
@@ -1072,63 +1086,13 @@ buttonGroup &lt;-<span class="st"> </span>function(txt, urls, <span class="dt">f
     output.yaml
 }</code></pre>
 </div>
-<div id="genappdiv" class="section level4">
-<h4>genAppDiv</h4>
-<p><code>genAppDiv</code> generates an html file storing a container div element which organizes Shiny web applications. The function scans a directory of Shiny app subdirectories. This apps directory should be a local repository.</p>
-<p>Specifically, <code>genAppDiv</code> looks for a named directory of image files. There should be one image per app, named exactly as the respective app directory is named. Only apps with corresponding images are built into the html container. If you wish to leave out, say, a developmental app from being linked to on you Github user website, do not include an image file for that app.</p>
-<p>The container element includes an image link to each app’s url as well as a link to the source code on Github. Although the function scans for images in directory inside a local repository, the images referenced in the output html are of course not local. They point to the same images stored on Github, hence why it is useful for the local directory of apps to be a Github repository. As an example, a repository may contain the directories, <code>app1</code>, <code>app2</code>, <code>app3</code>, and <code>images</code>.</p>
-<p>This function will probably be removed in favor of the more general <code>genPanelDiv</code> function.</p>
-<pre class="sourceCode r"><code class="sourceCode r"><span class="co"># Functions for Github user website</span>
-genAppDiv &lt;-<span class="st"> </span>function(<span class="dt">file =</span> <span class="st">&quot;C:/github/leonawicz.github.io/assets/apps_container.html&quot;</span>, 
-    <span class="dt">type =</span> <span class="st">&quot;apps&quot;</span>, <span class="dt">main =</span> <span class="st">&quot;Shiny Apps&quot;</span>, <span class="dt">apps.url =</span> <span class="st">&quot;http://shiny.snap.uaf.edu&quot;</span>, 
-    <span class="dt">github.url =</span> <span class="st">&quot;https://github.com/ua-snap/shiny-apps/tree/master&quot;</span>, <span class="dt">apps.dir =</span> <span class="st">&quot;C:/github/shiny-apps&quot;</span>, 
-    <span class="dt">img.loc =</span> <span class="st">&quot;_images/cropped&quot;</span>, ...) {
-    
-    apps.img &lt;-<span class="st"> </span><span class="kw">list.files</span>(<span class="kw">file.path</span>(apps.dir, img.loc))
-    apps &lt;-<span class="st"> </span><span class="kw">sapply</span>(<span class="kw">strsplit</span>(apps.img, <span class="st">&quot;</span><span class="ch">\\</span><span class="st">.&quot;</span>), <span class="st">&quot;[[&quot;</span>, <span class="dv">1</span>)
-    x &lt;-<span class="st"> </span><span class="kw">paste0</span>(<span class="st">&quot;&lt;div class=</span><span class="ch">\&quot;</span><span class="st">container</span><span class="ch">\&quot;</span><span class="st">&gt;</span><span class="ch">\n</span><span class="st">  &lt;div class=</span><span class="ch">\&quot;</span><span class="st">row</span><span class="ch">\&quot;</span><span class="st">&gt;</span><span class="ch">\n</span><span class="st">    &lt;div class=</span><span class="ch">\&quot;</span><span class="st">col-lg-12</span><span class="ch">\&quot;</span><span class="st">&gt;</span><span class="ch">\n</span><span class="st">      &lt;div class=</span><span class="ch">\&quot;</span><span class="st">page-header</span><span class="ch">\&quot;</span><span class="st">&gt;</span><span class="ch">\n</span><span class="st">        &lt;h3 id=</span><span class="ch">\&quot;</span><span class="st">&quot;</span>, 
-        type, <span class="st">&quot;</span><span class="ch">\&quot;</span><span class="st">&gt;&quot;</span>, main, <span class="st">&quot;&lt;/h3&gt;</span><span class="ch">\n</span><span class="st">      &lt;/div&gt;</span><span class="ch">\n</span><span class="st">    &lt;/div&gt;</span><span class="ch">\n</span><span class="st">  &lt;/div&gt;</span><span class="ch">\n</span><span class="st">  &quot;</span>)
-    
-    fillRow &lt;-<span class="st"> </span>function(i, ...) {
-        app &lt;-<span class="st"> </span>apps[i]
-        app.url &lt;-<span class="st"> </span><span class="kw">file.path</span>(apps.url, app)
-        dots &lt;-<span class="st"> </span><span class="kw">list</span>(...)
-        if (<span class="kw">is.null</span>(dots$col)) 
-            col &lt;-<span class="st"> &quot;warning&quot;</span> else col &lt;-<span class="st"> </span>dots$col
-        if (<span class="kw">is.null</span>(dots$panel.main)) 
-            panel.main &lt;-<span class="st"> </span><span class="kw">gsub</span>(<span class="st">&quot;_&quot;</span>, <span class="st">&quot; &quot;</span>, app) else panel.main &lt;-<span class="st"> </span>dots$panel.main
-        if (<span class="kw">length</span>(panel.main) &gt;<span class="st"> </span><span class="dv">1</span>) 
-            panel.main &lt;-<span class="st"> </span>panel.main[i]
-        x &lt;-<span class="st"> </span><span class="kw">paste0</span>(<span class="st">&quot;&lt;div class=</span><span class="ch">\&quot;</span><span class="st">col-lg-4</span><span class="ch">\&quot;</span><span class="st">&gt;</span><span class="ch">\n\t\t</span><span class="st">  &lt;div class=</span><span class="ch">\&quot;</span><span class="st">bs-component</span><span class="ch">\&quot;</span><span class="st">&gt;</span><span class="ch">\n\t\t\t</span><span class="st">&lt;div class=</span><span class="ch">\&quot;</span><span class="st">panel panel-&quot;</span>, 
-            col, <span class="st">&quot;</span><span class="ch">\&quot;</span><span class="st">&gt;</span><span class="ch">\n\t\t\t</span><span class="st">  &lt;div class=</span><span class="ch">\&quot;</span><span class="st">panel-heading</span><span class="ch">\&quot;</span><span class="st">&gt;&lt;h3 class=</span><span class="ch">\&quot;</span><span class="st">panel-title</span><span class="ch">\&quot;</span><span class="st">&gt;&quot;</span>, 
-            panel.main, <span class="st">&quot;&lt;/h3&gt;</span><span class="ch">\n\t\t\t</span><span class="st">  &lt;/div&gt;</span><span class="ch">\n\t\t\t</span><span class="st">  &lt;div class=</span><span class="ch">\&quot;</span><span class="st">panel-body</span><span class="ch">\&quot;</span><span class="st">&gt;&lt;a href=</span><span class="ch">\&quot;</span><span class="st">&quot;</span>, 
-            app.url, <span class="st">&quot;</span><span class="ch">\&quot;</span><span class="st"> target=</span><span class="ch">\&quot;</span><span class="st">_blank</span><span class="ch">\&quot;</span><span class="st">&gt;&lt;img src=</span><span class="ch">\&quot;</span><span class="st">&quot;</span>, <span class="kw">file.path</span>(<span class="kw">gsub</span>(<span class="st">&quot;/tree/&quot;</span>, 
-                <span class="st">&quot;/raw/&quot;</span>, github.url), img.loc, apps.img[i]), <span class="st">&quot;</span><span class="ch">\&quot;</span><span class="st"> alt=</span><span class="ch">\&quot;</span><span class="st">&quot;</span>, apps[i], 
-            <span class="st">&quot;</span><span class="ch">\&quot;</span><span class="st"> width=100% height=200px&gt;&lt;/a&gt;&lt;p&gt;&lt;/p&gt;</span><span class="ch">\n\t\t\t\t</span><span class="st">&lt;div class=</span><span class="ch">\&quot;</span><span class="st">btn-group btn-group-justified</span><span class="ch">\&quot;</span><span class="st">&gt;</span><span class="ch">\n\t\t\t\t</span><span class="st">  &lt;a href=</span><span class="ch">\&quot;</span><span class="st">&quot;</span>, 
-            app.url, <span class="st">&quot;</span><span class="ch">\&quot;</span><span class="st"> target=</span><span class="ch">\&quot;</span><span class="st">_blank</span><span class="ch">\&quot;</span><span class="st"> class=</span><span class="ch">\&quot;</span><span class="st">btn btn-success</span><span class="ch">\&quot;</span><span class="st">&gt;Launch&lt;/a&gt;</span><span class="ch">\n\t\t\t\t</span><span class="st">  &lt;a href=</span><span class="ch">\&quot;</span><span class="st">&quot;</span>, 
-            <span class="kw">file.path</span>(github.url, app), <span class="st">&quot;</span><span class="ch">\&quot;</span><span class="st"> target=</span><span class="ch">\&quot;</span><span class="st">_blank</span><span class="ch">\&quot;</span><span class="st"> class=</span><span class="ch">\&quot;</span><span class="st">btn btn-info</span><span class="ch">\&quot;</span><span class="st">&gt;Github&lt;/a&gt;</span><span class="ch">\n\t\t\t\t</span><span class="st">&lt;/div&gt;</span><span class="ch">\n\t\t\t</span><span class="st">  &lt;/div&gt;</span><span class="ch">\n\t\t\t</span><span class="st">&lt;/div&gt;</span><span class="ch">\n\t\t</span><span class="st">  &lt;/div&gt;</span><span class="ch">\n\t\t</span><span class="st">&lt;/div&gt;&quot;</span>)
-    }
-    
-    n &lt;-<span class="st"> </span><span class="kw">length</span>(apps)
-    seq1 &lt;-<span class="st"> </span><span class="kw">seq</span>(<span class="dv">1</span>, n, <span class="dt">by =</span> <span class="dv">3</span>)
-    y &lt;-<span class="st"> </span><span class="kw">c</span>()
-    for (j in <span class="dv">1</span>:<span class="kw">length</span>(seq1)) {
-        ind &lt;-<span class="st"> </span>seq1[j]:(seq1[j] +<span class="st"> </span><span class="dv">2</span>)
-        ind &lt;-<span class="st"> </span>ind[ind %in%<span class="st"> </span><span class="dv">1</span>:n]
-        y &lt;-<span class="st"> </span><span class="kw">c</span>(y, <span class="kw">paste0</span>(<span class="st">&quot;&lt;div class=</span><span class="ch">\&quot;</span><span class="st">row</span><span class="ch">\&quot;</span><span class="st">&gt;</span><span class="ch">\n</span><span class="st">&quot;</span>, <span class="kw">paste0</span>(<span class="kw">sapply</span>(ind, fillRow, 
-            ...), <span class="dt">collapse =</span> <span class="st">&quot;</span><span class="ch">\n</span><span class="st">&quot;</span>), <span class="st">&quot;&lt;/div&gt;</span><span class="ch">\n</span><span class="st">&quot;</span>))
-    }
-    z &lt;-<span class="st"> &quot;&lt;/div&gt;</span><span class="ch">\n</span><span class="st">&quot;</span>
-    <span class="kw">sink</span>(file)
-    <span class="kw">sapply</span>(<span class="kw">c</span>(x, y, z), cat)
-    <span class="kw">sink</span>()
-    <span class="kw">cat</span>(<span class="st">&quot;div container html created for Shiny Apps.</span><span class="ch">\n</span><span class="st">&quot;</span>)
-}</code></pre>
 </div>
+<div id="functions-github-user-web-sites" class="section level3">
+<h3>Functions: Github user web sites</h3>
 <div id="genpaneldiv" class="section level4">
 <h4>genPanelDiv</h4>
-<p><code>genPanelDiv</code> generates an html file storing a container div element which in its current state of development organizes two types of content: <strong>R</strong> projects and Shiny web applications.</p>
-<p>The <code>type</code> argument can be one of <code>projects</code>, <code>apps</code>, <code>datavis</code>, or <code>gallery</code>. The purpose of the function is to generate an html file defining a container div element to display and reference either my <strong>R</strong> projects, my Shiny apps, or my example visualization galleries.</p>
+<p><code>genPanelDiv</code> generates an html file storing a container div element which in its current state of development organizes four types of content: <strong>R</strong> projects, <strong>R</strong> Shiny web applications, data visualization galleries, and gallery images.</p>
+<p>The <code>type</code> argument can be one of <code>projects</code>, <code>apps</code>, <code>datavis</code>, or <code>gallery</code>. The purpose of the function is to generate an html file defining a container element to display and reference either my <strong>R</strong> projects, my Shiny apps, or my example visualization galleries.</p>
 <div id="projects" class="section level5">
 <h5>Projects</h5>
 <p>For projects, the function scans a directory of local repositories and takes any directories found to be the names of projects. There is an <code>exclude</code> argument for dropping any known directories that are to be avoided. My defaults are <code>exclude=&quot;leonawicz.github.io&quot;, &quot;shiny-apps&quot;</code> since the first is just a local repository for my Github user account web site and not a “project” in the same sense of my other projects and the second is the local repository which is scanned by <code>genPanelDiv</code> when <code>type=&quot;apps&quot;</code>.</p>
@@ -1141,7 +1105,7 @@ genAppDiv &lt;-<span class="st"> </span>function(<span class="dt">file =</span> 
 </div>
 <div id="datavis-and-galleries" class="section level5">
 <h5>DataVis and Galleries</h5>
-<p>Whereas the first three types generate containers for the main Github user web page, I use <code>type=&quot;gallery&quot;</code> to make a separate container html file of graphics for each panel occurring in my <code>datavis</code> container. These containers tend to be added to unique web pages. <code>datavis</code> is for highlighting a number of galleries whereas <code>gallery</code> is for the galleries’ respective contents.</p>
+<p>Whereas the first three types generate containers for the main Github user web page, I use <code>type=&quot;gallery&quot;</code> to make a separate container html file of graphics for each panel occurring in my <code>datavis</code> container. These containers tend to be added to unique web pages. <code>datavis</code> is for highlighting a number of galleries whereas <code>gallery</code> is for each highlighted gallery’s respective contents.</p>
 <p>In order to use <code>type=&quot;datavis&quot;</code> there must be a data visualization local repository. Mine is named <code>DataVisualizationExamples</code>, evident from the hardcoding currently in place within this function. Similar to when <code>type=&quot;apps&quot;</code>, this repository includes a directory of images, in t his case one image for each gallery. Each image in this directory is named such that it identically matches another the name of a gallery images directory containing multiple images. As with <code>type=&quot;apps&quot;</code>, gallery directories are only included if a corresponding thumbnail image in the images directory exists.</p>
 <p>When <code>type=&quot;gallery&quot;</code>, the behavior of <code>genPanelDiv</code> is most unique. For each gallery which exists, the function will make a unique html file with a gallery container element.</p>
 <p>This function makes the more specific <code>genAppDiv</code> redundant and will likely replace it.</p>
@@ -1280,7 +1244,7 @@ genAppDiv &lt;-<span class="st"> </span>function(<span class="dt">file =</span> 
 <p><code>htmlHead</code> is useful for including javascript and CSS stylesheets in the head of an html document. Stylesheet arguments can be passed along as well in proper order.</p>
 <pre class="sourceCode r"><code class="sourceCode r">htmlHead &lt;-<span class="st"> </span>function(<span class="dt">author =</span> <span class="st">&quot;Matthew Leonawicz&quot;</span>, <span class="dt">title =</span> author, <span class="dt">script.paths =</span> <span class="ot">NULL</span>, 
     stylesheet.paths, <span class="dt">stylesheet.args =</span> <span class="kw">vector</span>(<span class="st">&quot;list&quot;</span>, <span class="kw">length</span>(path.stylesheets)), 
-    ...) {
+    <span class="dt">include.ga =</span> <span class="ot">TRUE</span>, ...) {
     x &lt;-<span class="st"> </span><span class="kw">paste0</span>(<span class="st">&quot;&lt;!DOCTYPE html&gt;</span><span class="ch">\n\n</span><span class="st">&lt;html xmlns=</span><span class="ch">\&quot;</span><span class="st">http://www.w3.org/1999/xhtml</span><span class="ch">\&quot;</span><span class="st">&gt;</span><span class="ch">\n\n</span><span class="st">&lt;head&gt;</span><span class="ch">\n\n</span><span class="st">&lt;meta charset=</span><span class="ch">\&quot;</span><span class="st">utf-8</span><span class="ch">\&quot;</span><span class="st">&gt;</span><span class="ch">\n</span><span class="st">&lt;meta http-equiv=</span><span class="ch">\&quot;</span><span class="st">Content-Type</span><span class="ch">\&quot;</span><span class="st"> content=</span><span class="ch">\&quot;</span><span class="st">text/html; charset=utf-8</span><span class="ch">\&quot;</span><span class="st"> /&gt;</span><span class="ch">\n\n</span><span class="st">&lt;meta name=</span><span class="ch">\&quot;</span><span class="st">author</span><span class="ch">\&quot;</span><span class="st"> content=&quot;</span>, 
         author, <span class="st">&quot; /&gt;</span><span class="ch">\n\n</span><span class="st">&lt;title&gt;&quot;</span>, title, <span class="st">&quot;&lt;/title&gt;</span><span class="ch">\n</span><span class="st">&quot;</span>)
     
@@ -1306,6 +1270,10 @@ genAppDiv &lt;-<span class="st"> </span>function(<span class="dt">file =</span> 
             x &lt;-<span class="st"> </span><span class="kw">c</span>(x, <span class="kw">paste0</span>(<span class="st">&quot;&lt;link rel=</span><span class="ch">\&quot;</span><span class="st">stylesheet</span><span class="ch">\&quot;</span><span class="st"> href=</span><span class="ch">\&quot;</span><span class="st">&quot;</span>, stylesheet.paths[i], 
                 <span class="st">&quot;</span><span class="ch">\&quot;</span><span class="st">&quot;</span>, string, <span class="st">&quot;&gt;</span><span class="ch">\n</span><span class="st">&quot;</span>))
         }
+    }
+    
+    if (include.ga) {
+        x &lt;-<span class="st"> </span><span class="kw">c</span>(x, <span class="st">&quot;&lt;script&gt;</span><span class="ch">\n</span><span class="st">  (function(i,s,o,g,r,a,m){i[&#39;GoogleAnalyticsObject&#39;]=r;i[r]=i[r]||function(){</span><span class="ch">\n</span><span class="st">  (i[r].q=i[r].q||[]).push(arguments)},i[r].l=1*new Date();a=s.createElement(o),</span><span class="ch">\n</span><span class="st">  m=s.getElementsByTagName(o)[0];a.async=1;a.src=g;m.parentNode.insertBefore(a,m)</span><span class="ch">\n</span><span class="st">  })(window,document,&#39;script&#39;,&#39;//www.google-analytics.com/analytics.js&#39;,&#39;ga&#39;);</span><span class="ch">\n\n</span><span class="st">  ga(&#39;create&#39;, &#39;UA-46129458-3&#39;, &#39;auto&#39;);</span><span class="ch">\n</span><span class="st">  ga(&#39;send&#39;, &#39;pageview&#39;);</span><span class="ch">\n\n</span><span class="st">&lt;/script&gt;</span><span class="ch">\n\n</span><span class="st">&quot;</span>)
     }
     
     x &lt;-<span class="st"> </span><span class="kw">c</span>(x, <span class="st">&quot;&lt;/head&gt;</span><span class="ch">\n</span><span class="st">&quot;</span>)
@@ -1340,7 +1308,7 @@ genAppDiv &lt;-<span class="st"> </span>function(<span class="dt">file =</span> 
 <p><code>htmlBottom</code> does not do anything else at this time other than close up the html document.</p>
 <pre class="sourceCode r"><code class="sourceCode r">htmlBottom &lt;-<span class="st"> </span>function(...) {
     <span class="co"># temporary</span>
-    <span class="st">&quot;&lt;/body&gt;</span><span class="ch">\n\t</span><span class="st">&lt;/html&gt;&quot;</span>
+    <span class="st">&quot;&lt;div class=</span><span class="ch">\&quot;</span><span class="st">container</span><span class="ch">\&quot;</span><span class="st">&gt;Site made with &lt;a href=</span><span class="ch">\&quot;</span><span class="st">http://leonawicz.github.io/ProjectManagement</span><span class="ch">\&quot;</span><span class="st">&gt;rpm&lt;/a&gt;&lt;/div&gt;</span><span class="ch">\n</span><span class="st">&lt;/body&gt;</span><span class="ch">\n</span><span class="st">&lt;/html&gt;&quot;</span>
 }</code></pre>
 </div>
 <div id="genuserpage" class="section level4">

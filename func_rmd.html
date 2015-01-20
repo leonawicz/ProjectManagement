@@ -157,6 +157,8 @@ code > span.er { color: #c3bf9f; }
 
 
 
+<div id="functions-rmd-documents" class="section level3">
+<h3>Functions: Rmd documents</h3>
 <div id="rmdheader" class="section level4">
 <h4>rmdHeader</h4>
 <p><code>rmdHeader</code> generates the yaml metadata header for Rmd files as a character string to be inserted at the top of a file. It has default arguments specific to my own projects but can be changed. The output from this function is passed directly to <code>genRmd</code> below.</p>
@@ -252,7 +254,7 @@ code > span.er { color: #c3bf9f; }
 <div id="chunknames" class="section level4">
 <h4>chunkNames</h4>
 <p><code>chunkNames</code> can be used in two ways. It can return a list with length equal to the number of <strong>R</strong> files, where each list element is a vector of <strong>R</strong> code chunk names found in each <strong>R</strong> script.</p>
-<p>Alternatively, with <code>append.new=TRUE</code>, this list has each vector matched element-wise against chunk names found in existing Rmd files. If no Rmd files have yet been generated, the function will abort. Otherwise, for the Rmd files which do exist (and this may correspond to a subset of the <strong>R</strong> files), these Rmd files are appended with a list of code chunk names found in the current corresponding <strong>R</strong> files which have not yet been integrated into the current state of the Rmd files. This fascilitates updating of Rmd documentation when it falls behind scripts which have been updated.</p>
+<p>Alternatively, with <code>append.new=TRUE</code>, this list has each vector matched element-wise against chunk names found in existing Rmd files. If no Rmd files have yet been generated, the function will abort. Otherwise, for the Rmd files which do exist (and this may correspond to a subset of the <strong>R</strong> files), these Rmd files are appended with a list of code chunk names found in the current corresponding <strong>R</strong> files which have not yet been integrated into the current state of the Rmd files. This facilitates updating of Rmd documentation when it falls behind scripts which have been updated.</p>
 <pre class="sourceCode r"><code class="sourceCode r">chunkNames &lt;-<span class="st"> </span>function(path, <span class="dt">rChunkID =</span> <span class="st">&quot;# @knitr&quot;</span>, <span class="dt">rmdChunkID =</span> <span class="st">&quot;```{r&quot;</span>, <span class="dt">append.new =</span> <span class="ot">FALSE</span>) {
     files &lt;-<span class="st"> </span><span class="kw">list.files</span>(path, <span class="dt">pattern =</span> <span class="st">&quot;.R$&quot;</span>, <span class="dt">full =</span> <span class="ot">TRUE</span>)
     <span class="kw">stopifnot</span>(<span class="kw">length</span>(files) &gt;<span class="st"> </span><span class="dv">0</span>)
@@ -294,6 +296,7 @@ code > span.er { color: #c3bf9f; }
         <span class="dt">rmdChunks =</span> l2, <span class="dt">ID =</span> rmdChunkID)
 }</code></pre>
 <p>Regarding the creation and updating of Rmd files, <code>rpm</code> simply assumes that there will be one <strong>R</strong> Markdown file corresponding to one <strong>R</strong> script. This is not always the case for a given project, but again, the purpose is to generate basic templates. Unnecessary files can always be deleted later, or edits made such that one <strong>R</strong> Markdown file reads multiple <strong>R</strong> scripts, as is the case with the Rmd file used to generate this document.</p>
+</div>
 </div>
 
 

@@ -171,7 +171,7 @@ code > span.er { color: #c3bf9f; }
 </div>
 <div id="code-flow" class="section level3">
 <h3>Code flow</h3>
-<p>The Sankey diagram has become part of project management. Each project has its own, detailing the relationships among <strong>R</strong> code and data relevant to the project, and in some cases, how they relate to code and data files which are more general and span multiple projects. In general, for my projects I would only provide the code flow diagram here among the rest of the project documentation, but since this is the project management project and I am introducing its use, in this case I will also show the code I use to make the diagram.</p>
+<p>The Sankey diagram has become part of my project management. Each project has its own, detailing the relationships among <strong>R</strong> code and data relevant to the project, and in some cases, how they relate to code and data files which are more general and span multiple projects. In general, for my projects I would only provide the code flow diagram here among the rest of the project documentation, but since this is the project management project and I am introducing its use, in this case I will also show the code I use to make the diagram.</p>
 </div>
 </div>
 <div id="r-code" class="section level2">
@@ -254,7 +254,7 @@ p$<span class="kw">setTemplate</span>(<span class="dt">afterScript =</span> <spa
   &lt;/head&gt;
   &lt;body &gt;
     
-    &lt;div id = 'chart1f9c29bd6ee6' class = 'rChart d3_sankey'&gt;&lt;/div&gt;    
+    &lt;div id = 'chart4506e516892' class = 'rChart d3_sankey'&gt;&lt;/div&gt;    
     ï»¿&lt;!--Attribution:
 Mike Bostock https://github.com/d3/d3-plugins/tree/master/sankey
 Mike Bostock http://bost.ocks.org/mike/sankey/
@@ -263,7 +263,7 @@ Mike Bostock http://bost.ocks.org/mike/sankey/
 &lt;script&gt;
 (function(){
 var params = {
- &quot;dom&quot;: &quot;chart1f9c29bd6ee6&quot;,
+ &quot;dom&quot;: &quot;chart4506e516892&quot;,
 &quot;width&quot;:    900,
 &quot;height&quot;:    800,
 &quot;data&quot;: {
@@ -281,7 +281,7 @@ var params = {
 &quot;top&quot;:     50 
 },
 &quot;title&quot;: &quot;Code Flow&quot;,
-&quot;id&quot;: &quot;chart1f9c29bd6ee6&quot; 
+&quot;id&quot;: &quot;chart4506e516892&quot; 
 };
 
 params.units ? units = &quot; &quot; + params.units : units = &quot;&quot;;
@@ -401,11 +401,11 @@ node.append(&quot;text&quot;)
     
     &lt;script&gt;
       var cscale = d3.scale.category20b();
-      d3.selectAll('#chart1f9c29bd6ee6 svg path.link')
+      d3.selectAll('#chart4506e516892 svg path.link')
         .style('stroke', function(d){
           return cscale(d.source.name);
         })
-      d3.selectAll('#chart1f9c29bd6ee6 svg .node rect')
+      d3.selectAll('#chart4506e516892 svg .node rect')
         .style('fill', function(d){
           return cscale(d.name)
         })
@@ -413,7 +413,7 @@ node.append(&quot;text&quot;)
     &lt;/script&gt;
         
   &lt;/body&gt;
-&lt;/html&gt; " scrolling="no" frameBorder="0" seamless class="rChart  http://timelyportfolio.github.io/rCharts_d3_sankey/libraries/widgets/d3_sankey  " id="iframe-chart1f9c29bd6ee6">
+&lt;/html&gt; " scrolling="no" frameBorder="0" seamless class="rChart  http://timelyportfolio.github.io/rCharts_d3_sankey/libraries/widgets/d3_sankey  " id="iframe-chart4506e516892">
 </iframe>
 <style>iframe.rChart{ width: 100%; height: 400px;}</style>
 <style>iframe.rChart{ width: 100%; height: 840px;}</style>

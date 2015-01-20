@@ -157,14 +157,16 @@ code > span.er { color: #c3bf9f; }
 
 
 
+<div id="functions-document-conversion" class="section level3">
+<h3>Functions: Document conversion</h3>
 <p>The main function for conversion between Rmd and Rnw files is <code>convertDocs</code>. This function contains several internal support functions, each of which is somewhat limited in how much specific conversion it can achieve. The functions below were written with my particular style of Rmd and Rnw documentation in mind. As such they are necessarily a bit idiosyncratic and cannot account for every possible difference found between Rmd and Rnw formatting across any pair of documents. I only strived to speed up the process by which I convert my own documents, most of which follow a set of general rules and expectations most of the time. Anything atypical which doesn’t convert properly can be adjusted by hand afterward. This is still better than rewriting, copy-pasting, and search-and-replacing many sections of many files on a recurring basis. Further improvements in conversion will be added later.</p>
 <div id="rules-and-assumptions-regarding-these-functions" class="section level5">
 <h5>Rules and assumptions regarding these functions</h5>
 <ul>
-<li>All Rnw file lines beginning with a backslash which are in the main body of the code (beyond the title, author, etc.) and are not part of a code chunk identifier string are stripped rather than converted for Rmd.</li>
-<li>Only title and author are parsed from the Rnw lines prior to where the R code chunks begin. LaTeX libraries and such are dropped.</li>
-<li>Standard, minimal LaTeX libraries and other requirements prior to beginning the document are inserted in place of the Rmd yaml front-matter.</li>
-<li>Rmd files must have yaml front-matter, identified always by the second line in the document to begin with <code>---</code>.</li>
+<li>When converting to Rmd, all Rnw file lines beginning with a backslash which are in the main body of the code (beyond the title, author, etc.) and are not part of a code chunk identifier string are stripped rather than converted to anything.</li>
+<li>Only title and author are parsed from the Rnw lines prior to where the <strong>R</strong> code chunks begin. LaTeX libraries and such are dropped.</li>
+<li>When converting to Rnw, standard, minimal LaTeX libraries and other requirements prior to beginning the document are inserted by default in place of the Rmd yaml front-matter.</li>
+<li>Rmd files must have yaml front-matter prior to converting to Rnw, identified always by the second line in the document to begin with <code>---</code>. More generally, conversion aside, it is expected than any Rmd file has a yaml front-matter section in the context of <code>rpm</code>.</li>
 </ul>
 </div>
 <div id="formatting-rules" class="section level5">
@@ -172,24 +174,25 @@ code > span.er { color: #c3bf9f; }
 <ul>
 <li>I never use two consecutive asterisks or underscores except to indicate bold text</li>
 <li>Text with typewriter font in Rnw files is converted to text within backticks in Rmd files and vice versa.</li>
-<li>Italics or other formatting are not considered.</li>
+<li>Italics or other formatting are not considered at this time.</li>
+<li>Lists in Rmd files (like this one), are not yet addressed in conversion to Rnw and vice versa.</li>
+<li>In fact anything not explicitly mentioned here is not yet addressed.</li>
 </ul>
 </div>
 <div id="heading-rules" class="section level5">
 <h5>Heading rules</h5>
 <ul>
-<li>Lists in Rmd files (like this one), are not yet addressed in conversion to Rnw and vice versa.</li>
 <li>I never (intentionally) use the two most extreme headings in Rmd files, <code>#</code> and <code>######</code>. I only use <code>##</code> through <code>#####</code>.</li>
 <li>I never go beyond <code>subsubsubsection</code> in Rnw files.</li>
-<li>Any occurrence of one or two <code>#</code> is converted to a new <code>section</code> in an Rnw file whereas a section converts to a <code>##</code> heading.</li>
-<li>Similarly, five- or six-<code>#</code> identified heading in Rmd convert to the maximum <code>subsubsubsection</code> which back-converts to a <code>#####</code> heading.</li>
-<li>Three- and four-<code>#</code> identified Rmd headings convert to <code>subsection</code>- and <code>subsubsection</code>-identified Rnw headings, respectively, and vice versa. As such, these are the only true one-to-one heading conversions.</li>
+<li>Any occurrence of a one- or two-<code>#</code> identified heading is converted to a new <code>section</code> heading in an Rnw file whereas a <code>section</code> heading converts to a <code>##</code> heading.</li>
+<li>Similarly, five- or six-<code>#</code> identified headings in Rmd convert to the maximum <code>subsubsubsection</code> which back-converts to a <code>#####</code> heading.</li>
+<li>Three- and four-<code>#</code> identified Rmd headings convert to <code>subsection</code> and <code>subsubsection</code> identified Rnw headings, respectively, and vice versa. As such, these are the only true one-to-one heading conversions.</li>
 </ul>
 <p>This may all sound like a lot, but it’s not. It does a decent job for now. It’s not a true conversion and plenty of work may remain afterward. Again, the point is to make conversion much less tedious and hands-on, which it does well enough so far.</p>
 </div>
 <div id="swapheadings" class="section level4">
 <h4>.swapHeadings</h4>
-<p><code>.swapHeadings</code> assists in bidirectional conversion between Rmd and Rnw files. It swaps section headings formatting. It is called directly by <code>swap</code>, internal to <code>convertDocs</code>.</p>
+<p><code>.swapHeadings</code> assists in bidirectional conversion between Rmd and Rnw files. It swaps section headings formatting. It is called directly by <code>.swap</code>, internal to <code>convertDocs</code>.</p>
 <pre class="sourceCode r"><code class="sourceCode r"><span class="co"># Rmd &lt;-&gt; Rnw document conversion Conversion support functions called by</span>
 <span class="co"># .swap()</span>
 .swapHeadings &lt;-<span class="st"> </span>function(from, to, x) {
@@ -254,7 +257,7 @@ code > span.er { color: #c3bf9f; }
 </div>
 <div id="swapchunks" class="section level4">
 <h4>.swapChunks</h4>
-<p><code>.swapChunks</code> assists in bidirectional conversion between Rmd and Rnw files. It swaps code chunk formatting. It is called directly by <code>swap</code>, internal to <code>convertDocs</code>.</p>
+<p><code>.swapChunks</code> assists in bidirectional conversion between Rmd and Rnw files. It swaps code chunk formatting. It is called directly by <code>.swap</code>, internal to <code>convertDocs</code>.</p>
 <pre class="sourceCode r"><code class="sourceCode r"><span class="co"># Rmd &lt;-&gt; Rnw document conversion Conversion support functions called by</span>
 <span class="co"># .swap()</span>
 .swapChunks &lt;-<span class="st"> </span>function(from, to, x, <span class="dt">offset.end =</span> <span class="dv">1</span>) {
@@ -275,7 +278,7 @@ code > span.er { color: #c3bf9f; }
 </div>
 <div id="swapemphasis" class="section level4">
 <h4>.swapEmphasis</h4>
-<p><code>.swapEmphasis</code> assists in bidirectional conversion between Rmd and Rnw files. It swaps text formatting such as boldface and typewriter font. It is called directly by <code>swap</code>, internal to <code>convertDocs</code>.</p>
+<p><code>.swapEmphasis</code> assists in bidirectional conversion between Rmd and Rnw files. It swaps text formatting such as boldface and typewriter font. It is called directly by <code>.swap</code>, internal to <code>convertDocs</code>.</p>
 <pre class="sourceCode r"><code class="sourceCode r"><span class="co"># Rmd &lt;-&gt; Rnw document conversion Conversion support functions called by</span>
 <span class="co"># .swap() I know I use &#39;**&#39; strictly for bold font in Rmd files.  For now,</span>
 <span class="co"># this function assumes: 1. The only emphasis in a doc is boldface or</span>
@@ -410,8 +413,8 @@ code > span.er { color: #c3bf9f; }
 <div id="convertdocs" class="section level4">
 <h4>convertDocs</h4>
 <p><code>convertDocs</code> converts between Rmd and Rnw files. The project’s <code>docs/Rmd</code> or <code>docs/Rnw</code> directory is specified. Any files of the same type as the directory are converted to the other type and saved to the other directory. The input files are not removed.</p>
-<p>This function speeds up the process of duplicating files, e.g., when wanting to make PDFs from Rnw files when only Rmd files exist. This is almost exclusively what I use this function for. On less frequent occasions I have used it in the other direction when I have Rnw files which were once used to make PDFs but later I decide to put them on the web as a web page and not as a link to a PDF.</p>
-<p>The user still makes specific changes by hand, for example, any required changes to <code>knitr</code> code chunk options that must differ for PDF output vs. html output. The primary benefit is in not having to fuss with large amounts of standard substitutions which can be automated, such as swapping code chunk enclosure styles and common file metadata. Of course, this function is not perfect. It amounts to a text-parsing hack that is intended to handle the most common of idiosyncrasies and differences which exist between my own Rmd and Rnw files in the context of my own set of rules and assumptions, outlined below.</p>
+<p>This function speeds up the process of duplicating files, e.g., when wanting to make pdf files from Rnw files when only Rmd files exist. This is almost exclusively what I use this function for. On less frequent occasions I have used it in the other direction when I have Rnw files which were once used to make PDFs but later I decide to put them on the web as a web page and not as a link to a pdf files.</p>
+<p>The user still makes specific changes by hand, for example, any required changes to <code>knitr</code> code chunk options that must differ for pdf output vs. html output. The primary benefit is in not having to fuss with large amounts of standard substitutions which can be automated, such as swapping code chunk enclosure styles and common file metadata. Of course, this function is not perfect. It amounts to a text-parsing hack that is intended to handle the most common of idiosyncrasies and differences which exist between my own Rmd and Rnw files in the context of my own limited rule set.</p>
 <pre class="sourceCode r"><code class="sourceCode r"><span class="co"># Rmd &lt;-&gt; Rnw document conversion Main conversion function</span>
 convertDocs &lt;-<span class="st"> </span>function(path, <span class="dt">rmdChunkID =</span> <span class="kw">c</span>(<span class="st">&quot;```{r&quot;</span>, <span class="st">&quot;}&quot;</span>, <span class="st">&quot;```&quot;</span>), <span class="dt">rnwChunkID =</span> <span class="kw">c</span>(<span class="st">&quot;&lt;&lt;&quot;</span>, 
     <span class="st">&quot;&gt;&gt;=&quot;</span>, <span class="st">&quot;@&quot;</span>), <span class="dt">emphasis =</span> <span class="st">&quot;replace&quot;</span>, <span class="dt">overwrite =</span> <span class="ot">FALSE</span>, ...) {
@@ -453,6 +456,7 @@ convertDocs &lt;-<span class="st"> </span>function(path, <span class="dt">rmdChu
         <span class="kw">cat</span>(<span class="st">&quot;.Rnw to .Rmd file conversion complete.</span><span class="ch">\n</span><span class="st">&quot;</span>)
     }
 }</code></pre>
+</div>
 </div>
 
 

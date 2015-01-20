@@ -157,63 +157,12 @@ code > span.er { color: #c3bf9f; }
 
 
 
-<div id="genappdiv" class="section level4">
-<h4>genAppDiv</h4>
-<p><code>genAppDiv</code> generates an html file storing a container div element which organizes Shiny web applications. The function scans a directory of Shiny app subdirectories. This apps directory should be a local repository.</p>
-<p>Specifically, <code>genAppDiv</code> looks for a named directory of image files. There should be one image per app, named exactly as the respective app directory is named. Only apps with corresponding images are built into the html container. If you wish to leave out, say, a developmental app from being linked to on you Github user website, do not include an image file for that app.</p>
-<p>The container element includes an image link to each app’s url as well as a link to the source code on Github. Although the function scans for images in directory inside a local repository, the images referenced in the output html are of course not local. They point to the same images stored on Github, hence why it is useful for the local directory of apps to be a Github repository. As an example, a repository may contain the directories, <code>app1</code>, <code>app2</code>, <code>app3</code>, and <code>images</code>.</p>
-<p>This function will probably be removed in favor of the more general <code>genPanelDiv</code> function.</p>
-<pre class="sourceCode r"><code class="sourceCode r"><span class="co"># Functions for Github user website</span>
-genAppDiv &lt;-<span class="st"> </span>function(<span class="dt">file =</span> <span class="st">&quot;C:/github/leonawicz.github.io/assets/apps_container.html&quot;</span>, 
-    <span class="dt">type =</span> <span class="st">&quot;apps&quot;</span>, <span class="dt">main =</span> <span class="st">&quot;Shiny Apps&quot;</span>, <span class="dt">apps.url =</span> <span class="st">&quot;http://shiny.snap.uaf.edu&quot;</span>, 
-    <span class="dt">github.url =</span> <span class="st">&quot;https://github.com/ua-snap/shiny-apps/tree/master&quot;</span>, <span class="dt">apps.dir =</span> <span class="st">&quot;C:/github/shiny-apps&quot;</span>, 
-    <span class="dt">img.loc =</span> <span class="st">&quot;_images/cropped&quot;</span>, ...) {
-    
-    apps.img &lt;-<span class="st"> </span><span class="kw">list.files</span>(<span class="kw">file.path</span>(apps.dir, img.loc))
-    apps &lt;-<span class="st"> </span><span class="kw">sapply</span>(<span class="kw">strsplit</span>(apps.img, <span class="st">&quot;</span><span class="ch">\\</span><span class="st">.&quot;</span>), <span class="st">&quot;[[&quot;</span>, <span class="dv">1</span>)
-    x &lt;-<span class="st"> </span><span class="kw">paste0</span>(<span class="st">&quot;&lt;div class=</span><span class="ch">\&quot;</span><span class="st">container</span><span class="ch">\&quot;</span><span class="st">&gt;</span><span class="ch">\n</span><span class="st">  &lt;div class=</span><span class="ch">\&quot;</span><span class="st">row</span><span class="ch">\&quot;</span><span class="st">&gt;</span><span class="ch">\n</span><span class="st">    &lt;div class=</span><span class="ch">\&quot;</span><span class="st">col-lg-12</span><span class="ch">\&quot;</span><span class="st">&gt;</span><span class="ch">\n</span><span class="st">      &lt;div class=</span><span class="ch">\&quot;</span><span class="st">page-header</span><span class="ch">\&quot;</span><span class="st">&gt;</span><span class="ch">\n</span><span class="st">        &lt;h3 id=</span><span class="ch">\&quot;</span><span class="st">&quot;</span>, 
-        type, <span class="st">&quot;</span><span class="ch">\&quot;</span><span class="st">&gt;&quot;</span>, main, <span class="st">&quot;&lt;/h3&gt;</span><span class="ch">\n</span><span class="st">      &lt;/div&gt;</span><span class="ch">\n</span><span class="st">    &lt;/div&gt;</span><span class="ch">\n</span><span class="st">  &lt;/div&gt;</span><span class="ch">\n</span><span class="st">  &quot;</span>)
-    
-    fillRow &lt;-<span class="st"> </span>function(i, ...) {
-        app &lt;-<span class="st"> </span>apps[i]
-        app.url &lt;-<span class="st"> </span><span class="kw">file.path</span>(apps.url, app)
-        dots &lt;-<span class="st"> </span><span class="kw">list</span>(...)
-        if (<span class="kw">is.null</span>(dots$col)) 
-            col &lt;-<span class="st"> &quot;warning&quot;</span> else col &lt;-<span class="st"> </span>dots$col
-        if (<span class="kw">is.null</span>(dots$panel.main)) 
-            panel.main &lt;-<span class="st"> </span><span class="kw">gsub</span>(<span class="st">&quot;_&quot;</span>, <span class="st">&quot; &quot;</span>, app) else panel.main &lt;-<span class="st"> </span>dots$panel.main
-        if (<span class="kw">length</span>(panel.main) &gt;<span class="st"> </span><span class="dv">1</span>) 
-            panel.main &lt;-<span class="st"> </span>panel.main[i]
-        x &lt;-<span class="st"> </span><span class="kw">paste0</span>(<span class="st">&quot;&lt;div class=</span><span class="ch">\&quot;</span><span class="st">col-lg-4</span><span class="ch">\&quot;</span><span class="st">&gt;</span><span class="ch">\n\t\t</span><span class="st">  &lt;div class=</span><span class="ch">\&quot;</span><span class="st">bs-component</span><span class="ch">\&quot;</span><span class="st">&gt;</span><span class="ch">\n\t\t\t</span><span class="st">&lt;div class=</span><span class="ch">\&quot;</span><span class="st">panel panel-&quot;</span>, 
-            col, <span class="st">&quot;</span><span class="ch">\&quot;</span><span class="st">&gt;</span><span class="ch">\n\t\t\t</span><span class="st">  &lt;div class=</span><span class="ch">\&quot;</span><span class="st">panel-heading</span><span class="ch">\&quot;</span><span class="st">&gt;&lt;h3 class=</span><span class="ch">\&quot;</span><span class="st">panel-title</span><span class="ch">\&quot;</span><span class="st">&gt;&quot;</span>, 
-            panel.main, <span class="st">&quot;&lt;/h3&gt;</span><span class="ch">\n\t\t\t</span><span class="st">  &lt;/div&gt;</span><span class="ch">\n\t\t\t</span><span class="st">  &lt;div class=</span><span class="ch">\&quot;</span><span class="st">panel-body</span><span class="ch">\&quot;</span><span class="st">&gt;&lt;a href=</span><span class="ch">\&quot;</span><span class="st">&quot;</span>, 
-            app.url, <span class="st">&quot;</span><span class="ch">\&quot;</span><span class="st"> target=</span><span class="ch">\&quot;</span><span class="st">_blank</span><span class="ch">\&quot;</span><span class="st">&gt;&lt;img src=</span><span class="ch">\&quot;</span><span class="st">&quot;</span>, <span class="kw">file.path</span>(<span class="kw">gsub</span>(<span class="st">&quot;/tree/&quot;</span>, 
-                <span class="st">&quot;/raw/&quot;</span>, github.url), img.loc, apps.img[i]), <span class="st">&quot;</span><span class="ch">\&quot;</span><span class="st"> alt=</span><span class="ch">\&quot;</span><span class="st">&quot;</span>, apps[i], 
-            <span class="st">&quot;</span><span class="ch">\&quot;</span><span class="st"> width=100% height=200px&gt;&lt;/a&gt;&lt;p&gt;&lt;/p&gt;</span><span class="ch">\n\t\t\t\t</span><span class="st">&lt;div class=</span><span class="ch">\&quot;</span><span class="st">btn-group btn-group-justified</span><span class="ch">\&quot;</span><span class="st">&gt;</span><span class="ch">\n\t\t\t\t</span><span class="st">  &lt;a href=</span><span class="ch">\&quot;</span><span class="st">&quot;</span>, 
-            app.url, <span class="st">&quot;</span><span class="ch">\&quot;</span><span class="st"> target=</span><span class="ch">\&quot;</span><span class="st">_blank</span><span class="ch">\&quot;</span><span class="st"> class=</span><span class="ch">\&quot;</span><span class="st">btn btn-success</span><span class="ch">\&quot;</span><span class="st">&gt;Launch&lt;/a&gt;</span><span class="ch">\n\t\t\t\t</span><span class="st">  &lt;a href=</span><span class="ch">\&quot;</span><span class="st">&quot;</span>, 
-            <span class="kw">file.path</span>(github.url, app), <span class="st">&quot;</span><span class="ch">\&quot;</span><span class="st"> target=</span><span class="ch">\&quot;</span><span class="st">_blank</span><span class="ch">\&quot;</span><span class="st"> class=</span><span class="ch">\&quot;</span><span class="st">btn btn-info</span><span class="ch">\&quot;</span><span class="st">&gt;Github&lt;/a&gt;</span><span class="ch">\n\t\t\t\t</span><span class="st">&lt;/div&gt;</span><span class="ch">\n\t\t\t</span><span class="st">  &lt;/div&gt;</span><span class="ch">\n\t\t\t</span><span class="st">&lt;/div&gt;</span><span class="ch">\n\t\t</span><span class="st">  &lt;/div&gt;</span><span class="ch">\n\t\t</span><span class="st">&lt;/div&gt;&quot;</span>)
-    }
-    
-    n &lt;-<span class="st"> </span><span class="kw">length</span>(apps)
-    seq1 &lt;-<span class="st"> </span><span class="kw">seq</span>(<span class="dv">1</span>, n, <span class="dt">by =</span> <span class="dv">3</span>)
-    y &lt;-<span class="st"> </span><span class="kw">c</span>()
-    for (j in <span class="dv">1</span>:<span class="kw">length</span>(seq1)) {
-        ind &lt;-<span class="st"> </span>seq1[j]:(seq1[j] +<span class="st"> </span><span class="dv">2</span>)
-        ind &lt;-<span class="st"> </span>ind[ind %in%<span class="st"> </span><span class="dv">1</span>:n]
-        y &lt;-<span class="st"> </span><span class="kw">c</span>(y, <span class="kw">paste0</span>(<span class="st">&quot;&lt;div class=</span><span class="ch">\&quot;</span><span class="st">row</span><span class="ch">\&quot;</span><span class="st">&gt;</span><span class="ch">\n</span><span class="st">&quot;</span>, <span class="kw">paste0</span>(<span class="kw">sapply</span>(ind, fillRow, 
-            ...), <span class="dt">collapse =</span> <span class="st">&quot;</span><span class="ch">\n</span><span class="st">&quot;</span>), <span class="st">&quot;&lt;/div&gt;</span><span class="ch">\n</span><span class="st">&quot;</span>))
-    }
-    z &lt;-<span class="st"> &quot;&lt;/div&gt;</span><span class="ch">\n</span><span class="st">&quot;</span>
-    <span class="kw">sink</span>(file)
-    <span class="kw">sapply</span>(<span class="kw">c</span>(x, y, z), cat)
-    <span class="kw">sink</span>()
-    <span class="kw">cat</span>(<span class="st">&quot;div container html created for Shiny Apps.</span><span class="ch">\n</span><span class="st">&quot;</span>)
-}</code></pre>
-</div>
+<div id="functions-github-user-web-sites" class="section level3">
+<h3>Functions: Github user web sites</h3>
 <div id="genpaneldiv" class="section level4">
 <h4>genPanelDiv</h4>
-<p><code>genPanelDiv</code> generates an html file storing a container div element which in its current state of development organizes two types of content: <strong>R</strong> projects and Shiny web applications.</p>
-<p>The <code>type</code> argument can be one of <code>projects</code>, <code>apps</code>, <code>datavis</code>, or <code>gallery</code>. The purpose of the function is to generate an html file defining a container div element to display and reference either my <strong>R</strong> projects, my Shiny apps, or my example visualization galleries.</p>
+<p><code>genPanelDiv</code> generates an html file storing a container div element which in its current state of development organizes four types of content: <strong>R</strong> projects, <strong>R</strong> Shiny web applications, data visualization galleries, and gallery images.</p>
+<p>The <code>type</code> argument can be one of <code>projects</code>, <code>apps</code>, <code>datavis</code>, or <code>gallery</code>. The purpose of the function is to generate an html file defining a container element to display and reference either my <strong>R</strong> projects, my Shiny apps, or my example visualization galleries.</p>
 <div id="projects" class="section level5">
 <h5>Projects</h5>
 <p>For projects, the function scans a directory of local repositories and takes any directories found to be the names of projects. There is an <code>exclude</code> argument for dropping any known directories that are to be avoided. My defaults are <code>exclude=&quot;leonawicz.github.io&quot;, &quot;shiny-apps&quot;</code> since the first is just a local repository for my Github user account web site and not a “project” in the same sense of my other projects and the second is the local repository which is scanned by <code>genPanelDiv</code> when <code>type=&quot;apps&quot;</code>.</p>
@@ -226,7 +175,7 @@ genAppDiv &lt;-<span class="st"> </span>function(<span class="dt">file =</span> 
 </div>
 <div id="datavis-and-galleries" class="section level5">
 <h5>DataVis and Galleries</h5>
-<p>Whereas the first three types generate containers for the main Github user web page, I use <code>type=&quot;gallery&quot;</code> to make a separate container html file of graphics for each panel occurring in my <code>datavis</code> container. These containers tend to be added to unique web pages. <code>datavis</code> is for highlighting a number of galleries whereas <code>gallery</code> is for the galleries’ respective contents.</p>
+<p>Whereas the first three types generate containers for the main Github user web page, I use <code>type=&quot;gallery&quot;</code> to make a separate container html file of graphics for each panel occurring in my <code>datavis</code> container. These containers tend to be added to unique web pages. <code>datavis</code> is for highlighting a number of galleries whereas <code>gallery</code> is for each highlighted gallery’s respective contents.</p>
 <p>In order to use <code>type=&quot;datavis&quot;</code> there must be a data visualization local repository. Mine is named <code>DataVisualizationExamples</code>, evident from the hardcoding currently in place within this function. Similar to when <code>type=&quot;apps&quot;</code>, this repository includes a directory of images, in t his case one image for each gallery. Each image in this directory is named such that it identically matches another the name of a gallery images directory containing multiple images. As with <code>type=&quot;apps&quot;</code>, gallery directories are only included if a corresponding thumbnail image in the images directory exists.</p>
 <p>When <code>type=&quot;gallery&quot;</code>, the behavior of <code>genPanelDiv</code> is most unique. For each gallery which exists, the function will make a unique html file with a gallery container element.</p>
 <p>This function makes the more specific <code>genAppDiv</code> redundant and will likely replace it.</p>
@@ -365,7 +314,7 @@ genAppDiv &lt;-<span class="st"> </span>function(<span class="dt">file =</span> 
 <p><code>htmlHead</code> is useful for including javascript and CSS stylesheets in the head of an html document. Stylesheet arguments can be passed along as well in proper order.</p>
 <pre class="sourceCode r"><code class="sourceCode r">htmlHead &lt;-<span class="st"> </span>function(<span class="dt">author =</span> <span class="st">&quot;Matthew Leonawicz&quot;</span>, <span class="dt">title =</span> author, <span class="dt">script.paths =</span> <span class="ot">NULL</span>, 
     stylesheet.paths, <span class="dt">stylesheet.args =</span> <span class="kw">vector</span>(<span class="st">&quot;list&quot;</span>, <span class="kw">length</span>(path.stylesheets)), 
-    ...) {
+    <span class="dt">include.ga =</span> <span class="ot">TRUE</span>, ...) {
     x &lt;-<span class="st"> </span><span class="kw">paste0</span>(<span class="st">&quot;&lt;!DOCTYPE html&gt;</span><span class="ch">\n\n</span><span class="st">&lt;html xmlns=</span><span class="ch">\&quot;</span><span class="st">http://www.w3.org/1999/xhtml</span><span class="ch">\&quot;</span><span class="st">&gt;</span><span class="ch">\n\n</span><span class="st">&lt;head&gt;</span><span class="ch">\n\n</span><span class="st">&lt;meta charset=</span><span class="ch">\&quot;</span><span class="st">utf-8</span><span class="ch">\&quot;</span><span class="st">&gt;</span><span class="ch">\n</span><span class="st">&lt;meta http-equiv=</span><span class="ch">\&quot;</span><span class="st">Content-Type</span><span class="ch">\&quot;</span><span class="st"> content=</span><span class="ch">\&quot;</span><span class="st">text/html; charset=utf-8</span><span class="ch">\&quot;</span><span class="st"> /&gt;</span><span class="ch">\n\n</span><span class="st">&lt;meta name=</span><span class="ch">\&quot;</span><span class="st">author</span><span class="ch">\&quot;</span><span class="st"> content=&quot;</span>, 
         author, <span class="st">&quot; /&gt;</span><span class="ch">\n\n</span><span class="st">&lt;title&gt;&quot;</span>, title, <span class="st">&quot;&lt;/title&gt;</span><span class="ch">\n</span><span class="st">&quot;</span>)
     
@@ -391,6 +340,10 @@ genAppDiv &lt;-<span class="st"> </span>function(<span class="dt">file =</span> 
             x &lt;-<span class="st"> </span><span class="kw">c</span>(x, <span class="kw">paste0</span>(<span class="st">&quot;&lt;link rel=</span><span class="ch">\&quot;</span><span class="st">stylesheet</span><span class="ch">\&quot;</span><span class="st"> href=</span><span class="ch">\&quot;</span><span class="st">&quot;</span>, stylesheet.paths[i], 
                 <span class="st">&quot;</span><span class="ch">\&quot;</span><span class="st">&quot;</span>, string, <span class="st">&quot;&gt;</span><span class="ch">\n</span><span class="st">&quot;</span>))
         }
+    }
+    
+    if (include.ga) {
+        x &lt;-<span class="st"> </span><span class="kw">c</span>(x, <span class="st">&quot;&lt;script&gt;</span><span class="ch">\n</span><span class="st">  (function(i,s,o,g,r,a,m){i[&#39;GoogleAnalyticsObject&#39;]=r;i[r]=i[r]||function(){</span><span class="ch">\n</span><span class="st">  (i[r].q=i[r].q||[]).push(arguments)},i[r].l=1*new Date();a=s.createElement(o),</span><span class="ch">\n</span><span class="st">  m=s.getElementsByTagName(o)[0];a.async=1;a.src=g;m.parentNode.insertBefore(a,m)</span><span class="ch">\n</span><span class="st">  })(window,document,&#39;script&#39;,&#39;//www.google-analytics.com/analytics.js&#39;,&#39;ga&#39;);</span><span class="ch">\n\n</span><span class="st">  ga(&#39;create&#39;, &#39;UA-46129458-3&#39;, &#39;auto&#39;);</span><span class="ch">\n</span><span class="st">  ga(&#39;send&#39;, &#39;pageview&#39;);</span><span class="ch">\n\n</span><span class="st">&lt;/script&gt;</span><span class="ch">\n\n</span><span class="st">&quot;</span>)
     }
     
     x &lt;-<span class="st"> </span><span class="kw">c</span>(x, <span class="st">&quot;&lt;/head&gt;</span><span class="ch">\n</span><span class="st">&quot;</span>)
@@ -425,7 +378,7 @@ genAppDiv &lt;-<span class="st"> </span>function(<span class="dt">file =</span> 
 <p><code>htmlBottom</code> does not do anything else at this time other than close up the html document.</p>
 <pre class="sourceCode r"><code class="sourceCode r">htmlBottom &lt;-<span class="st"> </span>function(...) {
     <span class="co"># temporary</span>
-    <span class="st">&quot;&lt;/body&gt;</span><span class="ch">\n\t</span><span class="st">&lt;/html&gt;&quot;</span>
+    <span class="st">&quot;&lt;div class=</span><span class="ch">\&quot;</span><span class="st">container</span><span class="ch">\&quot;</span><span class="st">&gt;Site made with &lt;a href=</span><span class="ch">\&quot;</span><span class="st">http://leonawicz.github.io/ProjectManagement</span><span class="ch">\&quot;</span><span class="st">&gt;rpm&lt;/a&gt;&lt;/div&gt;</span><span class="ch">\n</span><span class="st">&lt;/body&gt;</span><span class="ch">\n</span><span class="st">&lt;/html&gt;&quot;</span>
 }</code></pre>
 </div>
 <div id="genuserpage" class="section level4">
@@ -447,6 +400,7 @@ genAppDiv &lt;-<span class="st"> </span>function(<span class="dt">file =</span> 
     <span class="kw">sink</span>()
     <span class="kw">cat</span>(<span class="st">&quot;Github User page html file created.</span><span class="ch">\n</span><span class="st">&quot;</span>)
 }</code></pre>
+</div>
 </div>
 
 
