@@ -14,18 +14,25 @@ read_chunk("../../code/rpm.R")
 
 ### Functions: Rmd documents
 
-#### rmdHeader
-`rmdHeader` generates the yaml metadata header for Rmd files as a character string to be inserted at the top of a file.
-It has default arguments specific to my own projects but can be changed.
-The output from this function is passed directly to `genRmd` below.
+The main function for Rmd document generation is `genRmd`.
+This function makes use of helper functions for the Rmd yaml front-matter and `knitr` global options code chunk generation.
+
+#### .rmdHeader
+`.rmdHeader` generates the yaml metadata header for Rmd files as a character string to be inserted at the top of a file.
+It has several default arguments specific to my own projects but can be changed.
+If `title` or `author` are set to `NULL`, these fields will not occur in the generated yaml front-matter.
+The function is called directly by `genRmd`, which is passed an arguments list for this function.
+If `title=="filenames"`, the names of individual files passed to `genRmd` are substituted, respectively.
+Any other character string represents a single, fixed title for all Rmd files generated from the vector of **R** scripts passed to `genRmd`.
 
 ```{r fun_rmdHeader}
 ```
 
-#### rmdknitrSetup
-`rmdknitrSetup` generates the `knitr` global options setup code cunk for Rmd files as a character string to be inserted at the top of a file following the yaml header.
-The only option at this time is the ability to include or exclude a source reference to a project-related code flow diagram **R** script via `include.sankey`.
-The output from this function is passed directly to `genRmd` below.
+#### .rmdknitrSetup
+`.rmdknitrSetup` generates the `knitr` global options setup code chunk for Rmd files as a character string to be inserted at the top of a file following the yaml header.
+The only option at this time is the ability to include or exclude a source reference to a project-related code flow diagram **R** script via `include.sankey`, which defaults to `TRUE`.
+The function is called directly by `genRmd`.
+The `...` argument to `genRmd` is passed to `.rmdknitrSetup`, currently accepting the `include.sankey` argument. This is not vectorized across files read by `genRmd`.
 
 ```{r fun_rmdknitrSetup}
 ```
@@ -42,6 +49,10 @@ in this case strictly updating the yaml metadata header at the top of each Rmd f
 
 The Rmd files are placed in the `/docs/Rmd` directory.
 This function assumes this project directory exists.
+
+This function calls `.rmdHeader` and `.rmdknitrSetup`.
+It includes defaults for all arguments to these functions.
+However, it will generally be necessary to pass a custom arguments list to `header.args` to be used internally by `.rmdHeader`.
 
 ```{r fun_genRmd}
 ```
