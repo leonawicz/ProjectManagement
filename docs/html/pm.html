@@ -143,6 +143,7 @@ code > span.er { color: #c3bf9f; }
               <li><a href="func_rmd.html">Working with Rmd files</a></li>
               <li><a href="func_convert.html">Document conversion</a></li>
               <li><a href="func_organize.html">Organize documents</a></li>
+              <li><a href="func_stats.html">Project statistics</a></li>
               <li><a href="func_website.html">Make a project website</a></li>
               <li><a href="func_user_website.html">Github user website</a></li>
             </ul>
@@ -271,6 +272,7 @@ files.Rmd &lt;-<span class="st"> </span><span class="kw">list.files</span>(<span
 <pre class="sourceCode r"><code class="sourceCode r"><span class="co"># write all yaml front-matter-specified outputs to Rmd directory for all Rmd</span>
 <span class="co"># files</span>
 <span class="kw">lapply</span>(files.Rmd, render, <span class="dt">output_format =</span> <span class="st">&quot;all&quot;</span>)
+<span class="kw">insert_gatc</span>(<span class="kw">list.files</span>(<span class="dt">pattern =</span> <span class="st">&quot;.html$&quot;</span>))
 <span class="kw">moveDocs</span>(<span class="dt">path.docs =</span> docs.path)
 
 <span class="co"># if also making PDFs for a project, speed up the Rmd to Rnw file</span>

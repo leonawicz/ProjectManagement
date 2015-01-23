@@ -143,6 +143,7 @@ code > span.er { color: #c3bf9f; }
               <li><a href="func_rmd.html">Working with Rmd files</a></li>
               <li><a href="func_convert.html">Document conversion</a></li>
               <li><a href="func_organize.html">Organize documents</a></li>
+              <li><a href="func_stats.html">Project statistics</a></li>
               <li><a href="func_website.html">Make a project website</a></li>
               <li><a href="func_user_website.html">Github user website</a></li>
             </ul>
@@ -231,7 +232,7 @@ code > span.er { color: #c3bf9f; }
   &lt;/head&gt;
   &lt;body &gt;
     
-    &lt;div id = 'chart45050fe2cd4' class = 'rChart d3_sankey'&gt;&lt;/div&gt;    
+    &lt;div id = 'chartf84c066b2a' class = 'rChart d3_sankey'&gt;&lt;/div&gt;    
     ï»¿&lt;!--Attribution:
 Mike Bostock https://github.com/d3/d3-plugins/tree/master/sankey
 Mike Bostock http://bost.ocks.org/mike/sankey/
@@ -240,7 +241,7 @@ Mike Bostock http://bost.ocks.org/mike/sankey/
 &lt;script&gt;
 (function(){
 var params = {
- &quot;dom&quot;: &quot;chart45050fe2cd4&quot;,
+ &quot;dom&quot;: &quot;chartf84c066b2a&quot;,
 &quot;width&quot;:    900,
 &quot;height&quot;:    800,
 &quot;data&quot;: {
@@ -258,7 +259,7 @@ var params = {
 &quot;top&quot;:     20 
 },
 &quot;title&quot;: &quot;Matt's Projects&quot;,
-&quot;id&quot;: &quot;chart45050fe2cd4&quot; 
+&quot;id&quot;: &quot;chartf84c066b2a&quot; 
 };
 
 params.units ? units = &quot; &quot; + params.units : units = &quot;&quot;;
@@ -378,11 +379,11 @@ node.append(&quot;text&quot;)
     
     &lt;script&gt;
       var cscale = d3.scale.category20b();
-      d3.selectAll('#chart45050fe2cd4 svg path.link')
+      d3.selectAll('#chartf84c066b2a svg path.link')
         .style('stroke', function(d){
           return cscale(d.source.name);
         })
-      d3.selectAll('#chart45050fe2cd4 svg .node rect')
+      d3.selectAll('#chartf84c066b2a svg .node rect')
         .style('fill', function(d){
           return cscale(d.name)
         })
@@ -390,7 +391,7 @@ node.append(&quot;text&quot;)
     &lt;/script&gt;
         
   &lt;/body&gt;
-&lt;/html&gt; " scrolling="no" frameBorder="0" seamless class="rChart  http://timelyportfolio.github.io/rCharts_d3_sankey/libraries/widgets/d3_sankey  " id="iframe-chart45050fe2cd4">
+&lt;/html&gt; " scrolling="no" frameBorder="0" seamless class="rChart  http://timelyportfolio.github.io/rCharts_d3_sankey/libraries/widgets/d3_sankey  " id="iframe-chartf84c066b2a">
 </iframe>
 <style>iframe.rChart{ width: 100%; height: 400px;}</style>
 <style>iframe.rChart{ width: 100%; height: 840px;}</style>
@@ -440,12 +441,13 @@ matt.proj.path &lt;-<span class="st"> &quot;C:/github&quot;</span></code></pre>
 </div>
 <div id="functions-rmd-documents" class="section level3">
 <h3>Functions: Rmd documents</h3>
+<p>The main function for Rmd document generation is <code>genRmd</code>. This function makes use of helper functions for the Rmd yaml front-matter and <code>knitr</code> global options code chunk generation.</p>
 <div id="rmdheader" class="section level4">
-<h4>rmdHeader</h4>
-<p><code>rmdHeader</code> generates the yaml metadata header for Rmd files as a character string to be inserted at the top of a file. It has default arguments specific to my own projects but can be changed. The output from this function is passed directly to <code>genRmd</code> below.</p>
-<pre class="sourceCode r"><code class="sourceCode r">rmdHeader &lt;-<span class="st"> </span>function(<span class="dt">title =</span> <span class="st">&quot;INSERT_TITLE_HERE&quot;</span>, <span class="dt">author =</span> <span class="st">&quot;Matthew Leonawicz&quot;</span>, 
-    <span class="dt">theme =</span> <span class="st">&quot;united&quot;</span>, <span class="dt">highlight =</span> <span class="st">&quot;zenburn&quot;</span>, <span class="dt">toc =</span> <span class="ot">FALSE</span>, <span class="dt">keep.md =</span> <span class="ot">TRUE</span>, <span class="dt">ioslides =</span> <span class="ot">FALSE</span>, 
-    <span class="dt">include.pdf =</span> <span class="ot">FALSE</span>) {
+<h4>.rmdHeader</h4>
+<p><code>.rmdHeader</code> generates the yaml metadata header for Rmd files as a character string to be inserted at the top of a file. It has several default arguments specific to my own projects but can be changed. If <code>title</code> or <code>author</code> are set to <code>NULL</code>, these fields will not occur in the generated yaml front-matter. The function is called directly by <code>genRmd</code>, which is passed an arguments list for this function. If <code>title==&quot;filenames&quot;</code>, the names of individual files passed to <code>genRmd</code> are substituted, respectively. Any other character string represents a single, fixed title for all Rmd files generated from the vector of <strong>R</strong> scripts passed to <code>genRmd</code>.</p>
+<pre class="sourceCode r"><code class="sourceCode r"><span class="co"># Generate Rmd files Rmd yaml front-matter called by genRmd</span>
+.rmdHeader &lt;-<span class="st"> </span>function(<span class="dt">title =</span> <span class="st">&quot;filenames&quot;</span>, <span class="dt">author =</span> <span class="st">&quot;Matthew Leonawicz&quot;</span>, <span class="dt">theme =</span> <span class="st">&quot;united&quot;</span>, 
+    <span class="dt">highlight =</span> <span class="st">&quot;zenburn&quot;</span>, <span class="dt">toc =</span> <span class="ot">FALSE</span>, <span class="dt">keep.md =</span> <span class="ot">TRUE</span>, <span class="dt">ioslides =</span> <span class="ot">FALSE</span>, <span class="dt">include.pdf =</span> <span class="ot">FALSE</span>) {
     if (toc) 
         toc &lt;-<span class="st"> &quot;true&quot;</span> else toc &lt;-<span class="st"> &quot;false&quot;</span>
     if (keep.md) 
@@ -470,9 +472,10 @@ matt.proj.path &lt;-<span class="st"> &quot;C:/github&quot;</span></code></pre>
 }</code></pre>
 </div>
 <div id="rmdknitrsetup" class="section level4">
-<h4>rmdknitrSetup</h4>
-<p><code>rmdknitrSetup</code> generates the <code>knitr</code> global options setup code cunk for Rmd files as a character string to be inserted at the top of a file following the yaml header. The only option at this time is the ability to include or exclude a source reference to a project-related code flow diagram <strong>R</strong> script via <code>include.sankey</code>. The output from this function is passed directly to <code>genRmd</code> below.</p>
-<pre class="sourceCode r"><code class="sourceCode r">rmdknitrSetup &lt;-<span class="st"> </span>function(file, <span class="dt">include.sankey =</span> <span class="ot">TRUE</span>) {
+<h4>.rmdknitrSetup</h4>
+<p><code>.rmdknitrSetup</code> generates the <code>knitr</code> global options setup code chunk for Rmd files as a character string to be inserted at the top of a file following the yaml header. The only option at this time is the ability to include or exclude a source reference to a project-related code flow diagram <strong>R</strong> script via <code>include.sankey</code>, which defaults to <code>TRUE</code>. The function is called directly by <code>genRmd</code>. The <code>...</code> argument to <code>genRmd</code> is passed to <code>.rmdknitrSetup</code>, currently accepting the <code>include.sankey</code> argument. This is not vectorized across files read by <code>genRmd</code>.</p>
+<pre class="sourceCode r"><code class="sourceCode r"><span class="co"># Rmd knitr setup chunk called by genRmd</span>
+.rmdknitrSetup &lt;-<span class="st"> </span>function(file, <span class="dt">include.sankey =</span> <span class="ot">FALSE</span>) {
     x &lt;-<span class="st"> </span><span class="kw">paste0</span>(<span class="st">&quot;</span><span class="ch">\n</span><span class="st">```{r knitr_setup, echo=FALSE}</span><span class="ch">\n</span><span class="st">opts_chunk$set(cache=FALSE, eval=FALSE, tidy=TRUE, message=FALSE, warning=FALSE)</span><span class="ch">\n</span><span class="st">&quot;</span>)
     if (include.sankey) 
         x &lt;-<span class="st"> </span><span class="kw">paste0</span>(x, <span class="st">&quot;read_chunk(</span><span class="ch">\&quot;</span><span class="st">../../code/proj_sankey.R</span><span class="ch">\&quot;</span><span class="st">)</span><span class="ch">\n</span><span class="st">&quot;</span>)
@@ -485,8 +488,11 @@ matt.proj.path &lt;-<span class="st"> &quot;C:/github&quot;</span></code></pre>
 <p><code>genRmd</code> works on existing projects. It checks for existing <strong>R</strong> scripts. If no <strong>R</strong> files exist in the project’s <code>code</code> directory, the function will abort. Otherwise it will generate Rmd template files for each of the <strong>R</strong> scripts it finds.</p>
 <p>With <code>replace=TRUE</code> any existing Rmd files are regenerated with the provided template - be careful! With <code>replace=FALSE</code> (default) Rmd files are generated only for <strong>R</strong> scripts which do not yet have corresponding Rmd files. If <code>update.header=TRUE</code>, <code>replace</code> is ignored, and only existing Rmd files are regenerated, in this case strictly updating the yaml metadata header at the top of each Rmd file without altering any other Rmd content/documentation.</p>
 <p>The Rmd files are placed in the <code>/docs/Rmd</code> directory. This function assumes this project directory exists.</p>
-<pre class="sourceCode r"><code class="sourceCode r">genRmd &lt;-<span class="st"> </span>function(path, <span class="dt">replace =</span> <span class="ot">FALSE</span>, <span class="dt">header =</span> <span class="kw">rmdHeader</span>(), <span class="dt">knitrSetupChunk =</span> <span class="kw">rmdknitrSetup</span>(), 
-    <span class="dt">update.header =</span> <span class="ot">FALSE</span>, ...) {
+<p>This function calls <code>.rmdHeader</code> and <code>.rmdknitrSetup</code>. It includes defaults for all arguments to these functions. However, it will generally be necessary to pass a custom arguments list to <code>header.args</code> to be used internally by <code>.rmdHeader</code>.</p>
+<pre class="sourceCode r"><code class="sourceCode r">genRmd &lt;-<span class="st"> </span>function(path, <span class="dt">replace =</span> <span class="ot">FALSE</span>, <span class="dt">header.args =</span> <span class="kw">list</span>(<span class="dt">title =</span> <span class="st">&quot;filename&quot;</span>, 
+    <span class="dt">author =</span> <span class="ot">NULL</span>, <span class="dt">theme =</span> <span class="st">&quot;united&quot;</span>, <span class="dt">highlight =</span> <span class="st">&quot;zenburn&quot;</span>, <span class="dt">toc =</span> <span class="ot">FALSE</span>, <span class="dt">keep.md =</span> <span class="ot">TRUE</span>, 
+    <span class="dt">ioslides =</span> <span class="ot">FALSE</span>, <span class="dt">include.pdf =</span> <span class="ot">FALSE</span>), <span class="dt">update.header =</span> <span class="ot">FALSE</span>, ...) {
+    
     <span class="kw">stopifnot</span>(<span class="kw">is.character</span>(path))
     files &lt;-<span class="st"> </span><span class="kw">list.files</span>(path, <span class="dt">pattern =</span> <span class="st">&quot;.R$&quot;</span>, <span class="dt">full =</span> <span class="ot">TRUE</span>)
     <span class="kw">stopifnot</span>(<span class="kw">length</span>(files) &gt;<span class="st"> </span><span class="dv">0</span>)
@@ -498,14 +504,12 @@ matt.proj.path &lt;-<span class="st"> &quot;C:/github&quot;</span></code></pre>
         rmd &lt;-<span class="st"> </span>rmd[<span class="kw">sapply</span>(rmd, file.exists)]
     <span class="kw">stopifnot</span>(<span class="kw">length</span>(rmd) &gt;<span class="st"> </span><span class="dv">0</span>)
     
-    sinkRmd &lt;-<span class="st"> </span>function(x, ...) {
-        y1 &lt;-<span class="st"> </span>header
-        y2 &lt;-<span class="st"> </span>kniterSetupChunk
+    sinkRmd &lt;-<span class="st"> </span>function(x, arglist, ...) {
+        if (arglist$title ==<span class="st"> &quot;filename&quot;</span>) 
+            arglist$title &lt;-<span class="st"> </span><span class="kw">basename</span>(x)
+        y1 &lt;-<span class="st"> </span><span class="kw">do.call</span>(.rmdHeader, arglist)
+        y2 &lt;-<span class="st"> </span><span class="kw">.rmdknitrSetup</span>(<span class="dt">file =</span> x, ...)
         y3 &lt;-<span class="st"> </span><span class="kw">list</span>(...)$rmd.template
-        if (<span class="kw">is.null</span>(y1)) 
-            y1 &lt;-<span class="st"> </span>rmd.header
-        if (<span class="kw">is.null</span>(y2)) 
-            y2 &lt;-<span class="st"> </span><span class="kw">rmd.knitr.setup</span>(<span class="kw">gsub</span>(<span class="st">&quot;.Rmd&quot;</span>, <span class="st">&quot;.R&quot;</span>, <span class="kw">basename</span>(x)))
         if (<span class="kw">is.null</span>(y3)) 
             y3 &lt;-<span class="st"> </span>rmd.template
         <span class="kw">sink</span>(x)
@@ -513,7 +517,10 @@ matt.proj.path &lt;-<span class="st"> &quot;C:/github&quot;</span></code></pre>
         <span class="kw">sink</span>()
     }
     
-    swapHeader &lt;-<span class="st"> </span>function(x) {
+    swapHeader &lt;-<span class="st"> </span>function(x, arglist) {
+        if (arglist$title ==<span class="st"> &quot;filename&quot;</span>) 
+            arglist$title &lt;-<span class="st"> </span><span class="kw">basename</span>(x)
+        header &lt;-<span class="st"> </span><span class="kw">do.call</span>(.rmdHeader, arglist)
         l &lt;-<span class="st"> </span><span class="kw">readLines</span>(x)
         ind &lt;-<span class="st"> </span><span class="kw">which</span>(l ==<span class="st"> &quot;---&quot;</span>)
         l &lt;-<span class="st"> </span>l[(ind[<span class="dv">2</span>] +<span class="st"> </span><span class="dv">1</span>):<span class="kw">length</span>(l)]
@@ -524,7 +531,7 @@ matt.proj.path &lt;-<span class="st"> &quot;C:/github&quot;</span></code></pre>
     }
     
     if (update.header) {
-        <span class="kw">sapply</span>(rmd, swapHeader, ...)
+        <span class="kw">sapply</span>(rmd, swapHeader, <span class="dt">arglist =</span> header.args)
         <span class="kw">cat</span>(<span class="st">&quot;yaml header updated for each .Rmd file.</span><span class="ch">\n</span><span class="st">&quot;</span>)
     } else {
         <span class="kw">sapply</span>(rmd, sinkRmd, ...)
@@ -954,6 +961,118 @@ moveDocs &lt;-<span class="st"> </span>function(path.docs, <span class="dt">type
             }
         }
     }
+}</code></pre>
+</div>
+</div>
+<div id="functions-project-statistics" class="section level3">
+<h3>Functions: Project statistics</h3>
+<div id="getprojectstats" class="section level4">
+<h4>getProjectStats</h4>
+<p><code>getProjectStats</code> parses text from <strong>R</strong> project scripts and documentation files to return basic descriptive statistics and data including:</p>
+<ul>
+<li>total number of files</li>
+<li>number of <strong>R</strong> scripts</li>
+<li>number of unique Rmd documents (Rnw companions, or knitted documents such as html, md or pdf are ignored)</li>
+<li>number of lines of code</li>
+<li>number of lines of documentation</li>
+<li>number of unique <strong>R</strong> functions defined in the global environment by the parsed scripts</li>
+<li>a 2-column matrix describing the hierarchical chain of project functions, to be used, e.g., in a directed graph or tree diagram</li>
+</ul>
+<p>Functions defined internal to other project functions are excluded entirely. Of the list of globally defined functions, only these functions are checked for internal references to other functions. Likewise, only these functions are considered as possible nested references.</p>
+<p><code>getProjectStats</code> uses unsophisticated text parsing and in places relies of some excessively strong assumptions about how my <strong>R</strong> code is written. It does not require loading scripts into an <strong>R</strong> workspace or checking object modes and environments. See the <code>foodweb</code> function in the <code>mvbutils</code> package for something along these lines. It sounds completely unrelated, I know, but it may be just what you are looking for.</p>
+<p>Regarding strong assumptions, for example, although the first line of a function is easy to find, I must search for the closing curly brace of a function in order to know the sequence of lines in a file the function pertains to. There is risk of finding the closure to a <code>for</code> loop instead. I avoid this kind of problem by taking the first closing curly brace following a function’s opening line, which also meets the requirement of being a single-character line. If a for loop occurs inside this function, my own style is to tab inward to make the code more readable, so a loop ending with a closing curly brace would never be a single-character line. The brace would at least be preceded by one or more spaces if not one or more a tab characters. I can only expect such strong rules to work for my own code.</p>
+<p>On the other hand, sometimes functions are on a single line, and may have no curly braces at all. My code below would fail in such cases, still seeking a closing brace when there isn’t one, either returning improper function line indices or throwing an error.</p>
+<p>I would really like to have a function which returns hierarchical data describing the reactivity chain of an entire Shiny app, but I do not know how to do this. Also, at this time I have not yet added any code for simply parsing text from <strong>R</strong> scripts to count the number of instances of reactive expressions and other Shiny code elements of interest.</p>
+<pre class="sourceCode r"><code class="sourceCode r"><span class="co"># Compile project code and documentation statistics and other metadataR</span>
+<span class="co"># Count R scripts, standard functions, lines of code, hierarchical function</span>
+<span class="co"># tree, number of Rmd documents, lines of documentation, Shiny app reactive</span>
+<span class="co"># expressions not yet included, e.g., input references, output references,</span>
+<span class="co"># render* calls other references of interest in the code, e.g., number of</span>
+<span class="co"># conditional panels in a Shiny app These instances would be easy to count</span>
+<span class="co"># but a hierarchical reactive elements tree would be challenging &#39;type&#39;</span>
+<span class="co"># argument not currently in use</span>
+getProjectStats &lt;-<span class="st"> </span>function(path, <span class="dt">type =</span> <span class="kw">c</span>(<span class="st">&quot;project&quot;</span>, <span class="st">&quot;app&quot;</span>), <span class="dt">code =</span> <span class="ot">TRUE</span>, <span class="dt">docs =</span> <span class="ot">TRUE</span>, 
+    <span class="dt">exclude =</span> <span class="ot">NULL</span>) {
+    
+    if (!(code |<span class="st"> </span>docs)) 
+        <span class="kw">stop</span>(<span class="st">&quot;At least one of &#39;code&#39; or &#39;docs&#39; must be TRUE.&quot;</span>)
+    r.files &lt;-<span class="st"> </span>if (code) 
+        <span class="kw">list.files</span>(path, <span class="dt">pattern =</span> <span class="st">&quot;.R$&quot;</span>, <span class="dt">full =</span> <span class="ot">TRUE</span>, <span class="dt">recursive =</span> <span class="ot">TRUE</span>) else <span class="ot">NULL</span>
+    rmd.files &lt;-<span class="st"> </span>if (docs) 
+        <span class="kw">list.files</span>(path, <span class="dt">pattern =</span> <span class="st">&quot;.Rmd$&quot;</span>, <span class="dt">full =</span> <span class="ot">TRUE</span>, <span class="dt">recursive =</span> <span class="ot">TRUE</span>) else <span class="ot">NULL</span>
+    
+    getFunctionInfo &lt;-<span class="st"> </span>function(x, <span class="dt">func.names =</span> <span class="ot">NULL</span>, <span class="dt">func.lines =</span> <span class="ot">NULL</span>) {
+        if (<span class="kw">is.null</span>(func.names) &amp;<span class="st"> </span><span class="kw">is.null</span>(func.lines)) {
+            x.split &lt;-<span class="st"> </span><span class="kw">strsplit</span>(<span class="kw">gsub</span>(<span class="st">&quot; &quot;</span>, <span class="st">&quot;&quot;</span>, x), <span class="st">&quot;&lt;-function</span><span class="ch">\\</span><span class="st">(&quot;</span>)
+            func.ind &lt;-<span class="st"> </span><span class="kw">which</span>(<span class="kw">sapply</span>(x.split, length) &gt;<span class="st"> </span><span class="dv">1</span> &amp;<span class="st"> </span>!(<span class="kw">substr</span>(x, <span class="dv">1</span>, <span class="dv">1</span>) %in%<span class="st"> </span>
+<span class="st">                </span><span class="kw">c</span>(<span class="st">&quot; &quot;</span>, <span class="st">&quot;</span><span class="ch">\t</span><span class="st">&quot;</span>)))
+            n &lt;-<span class="st"> </span><span class="kw">length</span>(func.ind)
+            func.names &lt;-<span class="st"> </span>if (n &gt;<span class="st"> </span><span class="dv">0</span>) 
+                <span class="kw">sapply</span>(x.split[func.ind], <span class="st">&quot;[[&quot;</span>, <span class="dv">1</span>) else <span class="kw">stop</span>(<span class="st">&quot;No functions found.&quot;</span>)
+            func.close &lt;-<span class="st"> </span><span class="kw">rep</span>(<span class="ot">NA</span>, n)
+            for (i in <span class="dv">1</span>:n) {
+                func.ind2 &lt;-<span class="st"> </span>if (i &lt;<span class="st"> </span>n) 
+                  <span class="kw">min</span>(func.ind[i +<span class="st"> </span><span class="dv">1</span>] -<span class="st"> </span><span class="dv">1</span>, <span class="kw">length</span>(x)) else <span class="kw">length</span>(x)
+                ind &lt;-<span class="st"> </span>func.ind[i]:func.ind2
+                func.close[i] &lt;-<span class="st"> </span>ind[<span class="kw">which</span>(<span class="kw">nchar</span>(x[ind]) ==<span class="st"> </span><span class="dv">1</span> &amp;<span class="st"> </span>x[ind] ==<span class="st"> &quot;}&quot;</span>)[<span class="dv">1</span>]]
+            }
+            func.lines &lt;-<span class="st"> </span><span class="kw">mapply</span>(seq, func.ind, func.close)
+            if (!<span class="kw">is.list</span>(func.lines)) 
+                func.lines &lt;-<span class="st"> </span><span class="kw">as.list</span>(<span class="kw">data.frame</span>(func.lines))
+            <span class="kw">return</span>(<span class="kw">list</span>(<span class="dt">func.names =</span> func.names, <span class="dt">func.lines =</span> func.lines, <span class="dt">n.func =</span> n))
+        } else {
+            m &lt;-<span class="st"> </span><span class="kw">c</span>()
+            n &lt;-<span class="st"> </span><span class="kw">length</span>(func.names)
+            for (i in <span class="dv">1</span>:n) {
+                func.ref &lt;-<span class="st"> </span><span class="kw">rep</span>(<span class="ot">NA</span>, n)
+                for (j in <span class="kw">c</span>(<span class="dv">1</span>:n)[-i]) {
+                  x.tmp &lt;-<span class="st"> </span>x[func.lines[[i]]]
+                  x.tmp &lt;-<span class="st"> </span><span class="kw">gsub</span>(<span class="kw">paste0</span>(func.names[j], <span class="st">&quot;</span><span class="ch">\\</span><span class="st">(&quot;</span>), <span class="st">&quot;_1_SOMETHING_TO_SPLIT_ON_2_&quot;</span>, 
+                    x.tmp)  <span class="co"># standard function usage</span>
+                  x.tmp &lt;-<span class="st"> </span><span class="kw">gsub</span>(<span class="kw">paste0</span>(<span class="st">&quot;do.call</span><span class="ch">\\</span><span class="st">(&quot;</span>, func.names[j]), <span class="st">&quot;_1_SOMETHING_TO_SPLIT_ON_2_&quot;</span>, 
+                    x.tmp)  <span class="co"># function reference inside do.call()</span>
+                  x.tmp &lt;-<span class="st"> </span><span class="kw">gsub</span>(<span class="kw">paste0</span>(func.names[j], <span class="st">&quot;,&quot;</span>), <span class="st">&quot;_1_SOMETHING_TO_SPLIT_ON_2_&quot;</span>, 
+                    x.tmp)  <span class="co"># function reference followed by mere comma, e.g., in *apply functions: NOT IDEAL</span>
+                  x.tmp.split &lt;-<span class="st"> </span><span class="kw">strsplit</span>(x.tmp, <span class="st">&quot;SOMETHING_TO_SPLIT_ON&quot;</span>)
+                  func.ref[j] &lt;-<span class="st"> </span><span class="kw">any</span>(<span class="kw">sapply</span>(x.tmp.split, length) &gt;<span class="st"> </span><span class="dv">1</span>)
+                }
+                m.tmp &lt;-<span class="st"> </span>if (<span class="kw">any</span>(func.ref, <span class="dt">na.rm =</span> <span class="ot">TRUE</span>)) 
+                  <span class="kw">cbind</span>(func.names[i], func.names[<span class="kw">which</span>(func.ref)]) else <span class="kw">cbind</span>(func.names[i], <span class="ot">NA</span>)
+                m &lt;-<span class="st"> </span><span class="kw">rbind</span>(m, m.tmp)
+            }
+            <span class="kw">return</span>(<span class="dt">flow =</span> m)
+        }
+    }
+    
+    if (<span class="kw">is.character</span>(exclude) &amp;<span class="st"> </span><span class="kw">length</span>(r.files)) 
+        r.files &lt;-<span class="st"> </span>r.files[!(<span class="kw">basename</span>(r.files) %in%<span class="st"> </span>exclude)]
+    n.scripts &lt;-<span class="st"> </span><span class="kw">length</span>(r.files)
+    if (n.scripts &gt;<span class="st"> </span><span class="dv">0</span>) {
+        l &lt;-<span class="st"> </span><span class="kw">unlist</span>(<span class="kw">lapply</span>(r.files, readLines))
+        n.codelines &lt;-<span class="st"> </span><span class="kw">length</span>(l[l !=<span class="st"> &quot;&quot;</span>])
+        func.info &lt;-<span class="st"> </span><span class="kw">getFunctionInfo</span>(l)
+        func.names &lt;-<span class="st"> </span>func.info$func.names
+        n.func &lt;-<span class="st"> </span>func.info$n.func
+        func.mat &lt;-<span class="st"> </span><span class="kw">getFunctionInfo</span>(l, <span class="dt">func.names =</span> func.names, <span class="dt">func.lines =</span> func.info$func.lines)
+    } else {
+        n.codelines &lt;-<span class="st"> </span>n.func &lt;-<span class="st"> </span><span class="dv">0</span>
+        func.names &lt;-<span class="st"> </span>func.mat &lt;-<span class="st"> </span><span class="ot">NULL</span>
+    }
+    
+    if (<span class="kw">is.character</span>(exclude) &amp;<span class="st"> </span><span class="kw">length</span>(rmd.files)) 
+        rmd.files &lt;-<span class="st"> </span>rmd.files[!(<span class="kw">basename</span>(r.files) %in%<span class="st"> </span>exclude)]
+    n.docs &lt;-<span class="st"> </span><span class="kw">length</span>(rmd.files)
+    if (n.docs &gt;<span class="st"> </span><span class="dv">0</span>) {
+        l &lt;-<span class="st"> </span><span class="kw">unlist</span>(<span class="kw">lapply</span>(rmd.files, readLines))
+        n.doclines &lt;-<span class="st"> </span><span class="kw">length</span>(l[l !=<span class="st"> &quot;&quot;</span>])
+    } else {
+        n.doclines &lt;-<span class="st"> </span><span class="dv">0</span>
+    }
+    
+    total.files &lt;-<span class="st"> </span><span class="kw">length</span>(<span class="kw">list.files</span>(path, <span class="dt">recursive =</span> <span class="ot">TRUE</span>))
+    
+    <span class="kw">return</span>(<span class="kw">list</span>(<span class="dt">total.files =</span> total.files, <span class="dt">n.docs =</span> n.docs, <span class="dt">n.doclines =</span> n.doclines, 
+        <span class="dt">n.scripts =</span> n.scripts, <span class="dt">n.codelines =</span> n.codelines, <span class="dt">n.func =</span> n.func, <span class="dt">func.mat =</span> func.mat))
 }</code></pre>
 </div>
 </div>

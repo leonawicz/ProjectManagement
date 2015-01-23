@@ -3,16 +3,22 @@
 
 ### Functions: Rmd documents
 
-#### rmdHeader
-`rmdHeader` generates the yaml metadata header for Rmd files as a character string to be inserted at the top of a file.
-It has default arguments specific to my own projects but can be changed.
-The output from this function is passed directly to `genRmd` below.
+The main function for Rmd document generation is `genRmd`.
+This function makes use of helper functions for the Rmd yaml front-matter and `knitr` global options code chunk generation.
+
+#### .rmdHeader
+`.rmdHeader` generates the yaml metadata header for Rmd files as a character string to be inserted at the top of a file.
+It has several default arguments specific to my own projects but can be changed.
+If `title` or `author` are set to `NULL`, these fields will not occur in the generated yaml front-matter.
+The function is called directly by `genRmd`, which is passed an arguments list for this function.
+If `title=="filenames"`, the names of individual files passed to `genRmd` are substituted, respectively.
+Any other character string represents a single, fixed title for all Rmd files generated from the vector of **R** scripts passed to `genRmd`.
 
 
 ```r
-rmdHeader <- function(title = "INSERT_TITLE_HERE", author = "Matthew Leonawicz", 
-    theme = "united", highlight = "zenburn", toc = FALSE, keep.md = TRUE, ioslides = FALSE, 
-    include.pdf = FALSE) {
+# Generate Rmd files Rmd yaml front-matter called by genRmd
+.rmdHeader <- function(title = "filenames", author = "Matthew Leonawicz", theme = "united", 
+    highlight = "zenburn", toc = FALSE, keep.md = TRUE, ioslides = FALSE, include.pdf = FALSE) {
     if (toc) 
         toc <- "true" else toc <- "false"
     if (keep.md) 
@@ -37,14 +43,16 @@ rmdHeader <- function(title = "INSERT_TITLE_HERE", author = "Matthew Leonawicz",
 }
 ```
 
-#### rmdknitrSetup
-`rmdknitrSetup` generates the `knitr` global options setup code cunk for Rmd files as a character string to be inserted at the top of a file following the yaml header.
-The only option at this time is the ability to include or exclude a source reference to a project-related code flow diagram **R** script via `include.sankey`.
-The output from this function is passed directly to `genRmd` below.
+#### .rmdknitrSetup
+`.rmdknitrSetup` generates the `knitr` global options setup code chunk for Rmd files as a character string to be inserted at the top of a file following the yaml header.
+The only option at this time is the ability to include or exclude a source reference to a project-related code flow diagram **R** script via `include.sankey`, which defaults to `TRUE`.
+The function is called directly by `genRmd`.
+The `...` argument to `genRmd` is passed to `.rmdknitrSetup`, currently accepting the `include.sankey` argument. This is not vectorized across files read by `genRmd`.
 
 
 ```r
-rmdknitrSetup <- function(file, include.sankey = TRUE) {
+# Rmd knitr setup chunk called by genRmd
+.rmdknitrSetup <- function(file, include.sankey = FALSE) {
     x <- paste0("\n```{r knitr_setup, echo=FALSE}\nopts_chunk$set(cache=FALSE, eval=FALSE, tidy=TRUE, message=FALSE, warning=FALSE)\n")
     if (include.sankey) 
         x <- paste0(x, "read_chunk(\"../../code/proj_sankey.R\")\n")
@@ -66,10 +74,16 @@ in this case strictly updating the yaml metadata header at the top of each Rmd f
 The Rmd files are placed in the `/docs/Rmd` directory.
 This function assumes this project directory exists.
 
+This function calls `.rmdHeader` and `.rmdknitrSetup`.
+It includes defaults for all arguments to these functions.
+However, it will generally be necessary to pass a custom arguments list to `header.args` to be used internally by `.rmdHeader`.
+
 
 ```r
-genRmd <- function(path, replace = FALSE, header = rmdHeader(), knitrSetupChunk = rmdknitrSetup(), 
-    update.header = FALSE, ...) {
+genRmd <- function(path, replace = FALSE, header.args = list(title = "filename", 
+    author = NULL, theme = "united", highlight = "zenburn", toc = FALSE, keep.md = TRUE, 
+    ioslides = FALSE, include.pdf = FALSE), update.header = FALSE, ...) {
+    
     stopifnot(is.character(path))
     files <- list.files(path, pattern = ".R$", full = TRUE)
     stopifnot(length(files) > 0)
@@ -81,14 +95,12 @@ genRmd <- function(path, replace = FALSE, header = rmdHeader(), knitrSetupChunk 
         rmd <- rmd[sapply(rmd, file.exists)]
     stopifnot(length(rmd) > 0)
     
-    sinkRmd <- function(x, ...) {
-        y1 <- header
-        y2 <- kniterSetupChunk
+    sinkRmd <- function(x, arglist, ...) {
+        if (arglist$title == "filename") 
+            arglist$title <- basename(x)
+        y1 <- do.call(.rmdHeader, arglist)
+        y2 <- .rmdknitrSetup(file = x, ...)
         y3 <- list(...)$rmd.template
-        if (is.null(y1)) 
-            y1 <- rmd.header
-        if (is.null(y2)) 
-            y2 <- rmd.knitr.setup(gsub(".Rmd", ".R", basename(x)))
         if (is.null(y3)) 
             y3 <- rmd.template
         sink(x)
@@ -96,7 +108,10 @@ genRmd <- function(path, replace = FALSE, header = rmdHeader(), knitrSetupChunk 
         sink()
     }
     
-    swapHeader <- function(x) {
+    swapHeader <- function(x, arglist) {
+        if (arglist$title == "filename") 
+            arglist$title <- basename(x)
+        header <- do.call(.rmdHeader, arglist)
         l <- readLines(x)
         ind <- which(l == "---")
         l <- l[(ind[2] + 1):length(l)]
@@ -107,7 +122,7 @@ genRmd <- function(path, replace = FALSE, header = rmdHeader(), knitrSetupChunk 
     }
     
     if (update.header) {
-        sapply(rmd, swapHeader, ...)
+        sapply(rmd, swapHeader, arglist = header.args)
         cat("yaml header updated for each .Rmd file.\n")
     } else {
         sapply(rmd, sinkRmd, ...)
