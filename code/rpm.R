@@ -426,6 +426,79 @@ moveDocs <- function(path.docs, type=c("md", "html","pdf"), move=TRUE, copy=FALS
 	}
 }
 
+# @knitr fun_getProjectStats
+# Compile project code and documentation statistics and other metadataR
+# Count R scripts, standard functions, lines of code, hierarchical function tree,
+# number of Rmd documents, lines of documentation,
+# Shiny app reactive expressions not yet included, e.g.,
+# input references, output references, render* calls
+# other references of interest in the code, e.g., number of conditional panels in a Shiny app
+# These instances would be easy to count but a hierarchical reactive elements tree would be challenging
+# 'type' argument not currently in use
+getProjectStats <- function(path, type=c("project", "app"), code=TRUE, docs=TRUE, exclude=NULL){
+
+	if(!(code | docs)) stop("At least one of 'code' or 'docs' must be TRUE.")
+	r.files <- if(code) list.files(path, pattern=".R$", full=TRUE, recursive=TRUE) else NULL
+	rmd.files <- if(docs) list.files(path, pattern=".Rmd$", full=TRUE, recursive=TRUE) else NULL
+	
+	getFunctionInfo <- function(x, func.names=NULL, func.lines=NULL){
+		if(is.null(func.names) & is.null(func.lines)){
+			x.split <- strsplit(gsub(" ", "", x), "<-function\\(")
+			func.ind <- which(sapply(x.split, length) > 1 & !(substr(x, 1, 1) %in% c(" ", "\t")))
+			n <- length(func.ind)
+			func.names <- if(n > 0) sapply(x.split[func.ind], "[[", 1) else stop("No functions found.")
+			func.close <- rep(NA, n)
+			for(i in 1:n){
+				func.ind2 <- if(i < n) min(func.ind[i+1] - 1, length(x)) else length(x)
+				ind <- func.ind[i]:func.ind2
+				func.close[i] <- ind[which(nchar(x[ind])==1 & x[ind]=="}")[1]]
+			}
+			func.lines <- mapply(seq, func.ind, func.close)
+			if(!is.list(func.lines)) func.lines <- as.list(data.frame(func.lines))
+			return(list(func.names=func.names, func.lines=func.lines, n.func=n))
+		} else {
+			m <- c()
+			n <- length(func.names)
+			for(i in 1:n){
+				func.ref <- rep(NA, n)
+				for(j in c(1:n)[-i]){
+					x.tmp <- x[func.lines[[i]]]
+					x.tmp <- gsub(paste0(func.names[j], "\\("), "_1_SOMETHING_TO_SPLIT_ON_2_", x.tmp) # standard function usage
+					x.tmp <- gsub(paste0("do.call\\(", func.names[j]), "_1_SOMETHING_TO_SPLIT_ON_2_", x.tmp) # function reference inside do.call()
+					x.tmp <- gsub(paste0(func.names[j], ","), "_1_SOMETHING_TO_SPLIT_ON_2_", x.tmp) # function reference followed by mere comma, e.g., in *apply functions: NOT IDEAL
+					x.tmp.split <- strsplit(x.tmp, "SOMETHING_TO_SPLIT_ON")
+					func.ref[j] <- any(sapply(x.tmp.split, length) > 1)
+				}
+				m.tmp <- if(any(func.ref, na.rm=TRUE)) cbind(func.names[i], func.names[which(func.ref)]) else cbind(func.names[i], NA)
+				m <- rbind(m, m.tmp)
+			}
+			return(flow=m)
+		}
+	}
+	
+	if(is.character(exclude) & length(r.files)) r.files <- r.files[!(basename(r.files) %in% exclude)]
+	n.scripts <- length(r.files)
+	if(n.scripts > 0){
+		l <- unlist(lapply(r.files, readLines))
+		n.codelines <- length(l[l != ""])
+		func.info <- getFunctionInfo(l)
+		func.names <- func.info$func.names
+		n.func <- func.info$n.func
+		func.mat <- getFunctionInfo(l, func.names=func.names, func.lines=func.info$func.lines)
+	} else { n.codelines <- n.func <- 0; func.names <- func.mat <- NULL }
+	
+	if(is.character(exclude) & length(rmd.files)) rmd.files <- rmd.files[!(basename(r.files) %in% exclude)]
+	n.docs <- length(rmd.files)
+	if(n.docs > 0){
+		l <- unlist(lapply(rmd.files, readLines))
+		n.doclines <- length(l[l != ""])
+	} else { n.doclines <- 0 }
+	
+	total.files <- length(list.files(path, recursive=TRUE))	
+	
+	return(list(total.files=total.files, n.docs=n.docs, n.doclines=n.doclines, n.scripts=n.scripts, n.codelines=n.codelines, n.func=n.func, func.mat=func.mat))
+}
+
 # @knitr fun_buttonGroup
 # Functions for Github websites
 buttonGroup <- function(txt, urls, fa.icons=NULL, colors="primary", solid.group=FALSE){
