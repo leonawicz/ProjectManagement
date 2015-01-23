@@ -65,7 +65,10 @@ newProject <- function(name, path,
 }
 
 # @knitr fun_rmdHeader
-rmdHeader <- function(title="INSERT_TITLE_HERE", author="Matthew Leonawicz", theme="united", highlight="zenburn", toc=FALSE, keep.md=TRUE, ioslides=FALSE, include.pdf=FALSE){
+# Generate Rmd files
+# Rmd yaml front-matter
+# called by genRmd
+.rmdHeader <- function(title="filenames", author="Matthew Leonawicz", theme="united", highlight="zenburn", toc=FALSE, keep.md=TRUE, ioslides=FALSE, include.pdf=FALSE){
 	if(toc) toc <- "true" else toc <- "false"
 	if(keep.md) keep.md <- "true" else keep.md <- "false"
 	if(ioslides) hdoc <- "ioslides_presentation" else hdoc <- "html_document"
@@ -80,7 +83,9 @@ rmdHeader <- function(title="INSERT_TITLE_HERE", author="Matthew Leonawicz", the
 }
 
 # @knitr fun_rmdknitrSetup
-rmdknitrSetup <- function(file, include.sankey=TRUE){
+# Rmd knitr setup chunk
+# called by genRmd
+.rmdknitrSetup <- function(file, include.sankey=FALSE){
 	x <- paste0('\n```{r knitr_setup, echo=FALSE}\nopts_chunk$set(cache=FALSE, eval=FALSE, tidy=TRUE, message=FALSE, warning=FALSE)\n')
 	if(include.sankey) x <- paste0(x, 'read_chunk("../../code/proj_sankey.R")\n')
 	x <- paste0(x, 'read_chunk("../../code/', file, '")\n```\n')
@@ -88,7 +93,10 @@ rmdknitrSetup <- function(file, include.sankey=TRUE){
 }
 
 # @knitr fun_genRmd
-genRmd <- function(path, replace=FALSE, header=rmdHeader(), knitrSetupChunk=rmdknitrSetup(), update.header=FALSE, ...){
+genRmd <- function(path, replace=FALSE,
+	header.args=list(title="filename", author=NULL, theme="united", highlight="zenburn", toc=FALSE, keep.md=TRUE, ioslides=FALSE, include.pdf=FALSE),
+	update.header=FALSE, ...){
+	
 	stopifnot(is.character(path))
 	files <- list.files(path, pattern=".R$", full=TRUE)
 	stopifnot(length(files) > 0)
@@ -98,19 +106,20 @@ genRmd <- function(path, replace=FALSE, header=rmdHeader(), knitrSetupChunk=rmdk
 	if(update.header) rmd <- rmd[sapply(rmd, file.exists)]
 	stopifnot(length(rmd) > 0)
 	
-	sinkRmd <- function(x, ...){
-		y1 <- header
-		y2 <- kniterSetupChunk
+	sinkRmd <- function(x, arglist,  ...){
+		if(arglist$title=="filename") arglist$title <- basename(x)
+		y1 <- do.call(.rmdHeader, arglist)
+		y2 <- .rmdknitrSetup(file=x, ...)
 		y3 <- list(...)$rmd.template
-		if(is.null(y1)) y1 <- rmd.header
-		if(is.null(y2)) y2 <- rmd.knitr.setup(gsub(".Rmd", ".R", basename(x)))
 		if(is.null(y3)) y3 <- rmd.template
 		sink(x)
 		sapply(c(y1, y2, y3), cat)
 		sink()
 	}
 	
-	swapHeader <- function(x){
+	swapHeader <- function(x, arglist){
+		if(arglist$title=="filename") arglist$title <- basename(x)
+		header <- do.call(.rmdHeader, arglist)
 		l <- readLines(x)
 		ind <- which(l=="---")
 		l <- l[(ind[2] + 1):length(l)]
@@ -121,7 +130,7 @@ genRmd <- function(path, replace=FALSE, header=rmdHeader(), knitrSetupChunk=rmdk
 	}
 	
 	if(update.header){
-		sapply(rmd, swapHeader, ...)
+		sapply(rmd, swapHeader, arglist=header.args)
 		cat("yaml header updated for each .Rmd file.\n")
 	} else {
 		sapply(rmd, sinkRmd, ...)
