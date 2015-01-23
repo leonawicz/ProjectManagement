@@ -1,0 +1,300 @@
+<!DOCTYPE html>
+
+<html xmlns="http://www.w3.org/1999/xhtml">
+
+<head>
+
+<meta charset="utf-8">
+<meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+<meta name="generator" content="pandoc" />
+
+
+
+<title></title>
+
+<script src="libs/jquery-1.11.0/jquery.min.js"></script>
+<meta name="viewport" content="width=device-width, initial-scale=1.0" />
+<link href="libs/bootstrap-2.3.2/css/united.min.css" rel="stylesheet" />
+<link href="libs/bootstrap-2.3.2/css/bootstrap-responsive.min.css" rel="stylesheet" />
+<script src="libs/bootstrap-2.3.2/js/bootstrap.min.js"></script>
+<style type="text/css">
+
+/* padding for bootstrap navbar */
+body {
+  padding-top: 50px;
+  padding-bottom: 40px;
+}
+@media (max-width: 979px) {
+  body {
+    padding-top: 0;
+  }
+}
+
+/* offset scroll position for anchor links (for fixed navbar)  */
+@media (min-width: 980px) {
+  .section h2 {
+    padding-top: 52px;
+    margin-top: -52px;
+  }
+  .section h3 {
+    padding-top: 52px;
+    margin-top: -52px;
+  }
+}
+
+
+/* don't use link color in navbar */
+.dropdown-menu>li>a {
+  color: black;
+}
+
+/* some padding for disqus */
+#disqus_thread {
+  margin-top: 45px;
+}
+
+</style>
+
+<link rel="stylesheet" href="libs/font-awesome-4.1.0/css/font-awesome.min.css"/>
+
+
+<style type="text/css">code{white-space: pre;}</style>
+<style type="text/css">
+table.sourceCode, tr.sourceCode, td.lineNumbers, td.sourceCode {
+  margin: 0; padding: 0; vertical-align: baseline; border: none; }
+table.sourceCode { width: 100%; line-height: 100%; background-color: #303030; color: #cccccc; }
+td.lineNumbers { text-align: right; padding-right: 4px; padding-left: 4px; }
+td.sourceCode { padding-left: 5px; }
+pre, code { color: #cccccc; background-color: #303030; }
+code > span.kw { color: #f0dfaf; }
+code > span.dt { color: #dfdfbf; }
+code > span.dv { color: #dcdccc; }
+code > span.bn { color: #dca3a3; }
+code > span.fl { color: #c0bed1; }
+code > span.ch { color: #dca3a3; }
+code > span.st { color: #cc9393; }
+code > span.co { color: #7f9f7f; }
+code > span.ot { color: #efef8f; }
+code > span.al { color: #ffcfaf; }
+code > span.fu { color: #efef8f; }
+code > span.er { color: #c3bf9f; }
+</style>
+<style type="text/css">
+  pre:not([class]) {
+    background-color: white;
+  }
+</style>
+
+
+
+<script>
+  (function(i,s,o,g,r,a,m){i['GoogleAnalyticsObject']=r;i[r]=i[r]||function(){
+  (i[r].q=i[r].q||[]).push(arguments)},i[r].l=1*new Date();a=s.createElement(o),
+  m=s.getElementsByTagName(o)[0];a.async=1;a.src=g;m.parentNode.insertBefore(a,m)
+  })(window,document,'script','//www.google-analytics.com/analytics.js','ga');
+
+  ga('create', 'UA-46129458-3', 'auto');
+  ga('send', 'pageview');
+
+</script>
+
+
+</head>
+
+<body>
+
+<style type = "text/css">
+.main-container {
+  max-width: 940px;
+  margin-left: auto;
+  margin-right: auto;
+}
+</style>
+<div class="container-fluid main-container">
+
+<div class="navbar navbar-default navbar-fixed-top">
+  <div class="navbar-inner">
+    <div class="container">
+      <button type="button" class="btn btn-navbar" data-toggle="collapse" data-target=".nav-collapse">
+        <span class="icon-bar"></span>
+        <span class="icon-bar"></span>
+        <span class="icon-bar"></span>
+      </button>
+      <a class="brand" href="index.html">Project Management</a>
+      <div class="nav-collapse collapse">
+        <ul class="nav">
+          <li class="dropdown">
+            <a href="rpm" class="dropdown-toggle" data-toggle="dropdown">rpm <b class="caret"></b></a>
+            <ul class="dropdown-menu">
+              <li class="nav-header">About rpm</li>
+              <li><a href="index.html">Introduction</a></li>
+              <li><a href="code_sankey.html">Related items</a></li>
+              <li><a href="pm.html">Example usage</a></li>
+            </ul>
+
+          <li class="dropdown">
+            <a href="r-code" class="dropdown-toggle" data-toggle="dropdown">R Code <b class="caret"></b></a>
+            <ul class="dropdown-menu">
+              <li><a href="objects.html">Default objects</a></li>
+              <li class="divider"></li>
+              <li class="nav-header">Functions</li>
+              <li><a href="func_new.html">Start a new project</a></li>
+              <li><a href="func_rmd.html">Working with Rmd files</a></li>
+              <li><a href="func_convert.html">Document conversion</a></li>
+              <li><a href="func_organize.html">Organize documents</a></li>
+              <li><a href="func_stats.html">Project statistics</a></li>
+              <li><a href="func_website.html">Make a project website</a></li>
+              <li><a href="func_user_website.html">Github user website</a></li>
+            </ul>
+
+          <li class="dropdown">
+            <a href="all-projects" class="dropdown-toggle" data-toggle="dropdown">All Projects <b class="caret"></b></a>
+            <ul class="dropdown-menu">
+              <li class="nav-header">Hierarchy of current projects</li>
+              <li><a href="proj_sankey.html">Projects diagram</a></li>
+              <li class="divider"></li>
+              <li class="nav-header">Access all projects</li>
+              <li><a href="http://leonawicz.github.io">leonawicz.github.io</a></li>
+            </ul>
+        </ul>
+        <ul class="nav pull-right">
+          <a class="btn btn-primary" href="https://github.com/leonawicz/ProjectManagement">
+            <i class="fa fa-github fa-lg"></i>
+            Github
+          </a>
+        </ul>
+      </div><!--/.nav-collapse -->
+    </div>
+  </div>
+</div>
+
+
+
+<div id="functions-project-statistics" class="section level3">
+<h3>Functions: Project statistics</h3>
+<div id="getprojectstats" class="section level4">
+<h4>getProjectStats</h4>
+<p><code>getProjectStats</code> parses text from <strong>R</strong> project scripts and documentation files to return basic descriptive statistics and data including:</p>
+<ul>
+<li>total number of files</li>
+<li>number of <strong>R</strong> scripts</li>
+<li>number of unique Rmd documents (Rnw companions, or knitted documents such as html, md or pdf are ignored)</li>
+<li>number of lines of code</li>
+<li>number of lines of documentation</li>
+<li>number of unique <strong>R</strong> functions defined in the global environment by the parsed scripts</li>
+<li>a 2-column matrix describing the hierarchical chain of project functions, to be used, e.g., in a directed graph or tree diagram</li>
+</ul>
+<p>Functions defined internal to other project functions are excluded entirely. Of the list of globally defined functions, only these functions are checked for internal references to other functions. Likewise, only these functions are considered as possible nested references.</p>
+<p><code>getProjectStats</code> uses unsophisticated text parsing and in places relies of some excessively strong assumptions about how my <strong>R</strong> code is written. It does not require loading scripts into an <strong>R</strong> workspace or checking object modes and environments. See the <code>foodweb</code> function in the <code>mvbutils</code> package for something along these lines. It sounds completely unrelated, I know, but it may be just what you are looking for.</p>
+<p>Regarding strong assumptions, for example, although the first line of a function is easy to find, I must search for the closing curly brace of a function in order to know the sequence of lines in a file the function pertains to. There is risk of finding the closure to a <code>for</code> loop instead. I avoid this kind of problem by taking the first closing curly brace following a function’s opening line, which also meets the requirement of being a single-character line. If a for loop occurs inside this function, my own style is to tab inward to make the code more readable, so a loop ending with a closing curly brace would never be a single-character line. The brace would at least be preceded by one or more spaces if not one or more a tab characters. I can only expect such strong rules to work for my own code.</p>
+<p>On the other hand, sometimes functions are on a single line, and may have no curly braces at all. My code below would fail in such cases, still seeking a closing brace when there isn’t one, either returning improper function line indices or throwing an error.</p>
+<p>I would really like to have a function which returns hierarchical data describing the reactivity chain of an entire Shiny app, but I do not know how to do this. Also, at this time I have not yet added any code for simply parsing text from <strong>R</strong> scripts to count the number of instances of reactive expressions and other Shiny code elements of interest.</p>
+<pre class="sourceCode r"><code class="sourceCode r"><span class="co"># Compile project code and documentation statistics and other metadataR</span>
+<span class="co"># Count R scripts, standard functions, lines of code, hierarchical function</span>
+<span class="co"># tree, number of Rmd documents, lines of documentation, Shiny app reactive</span>
+<span class="co"># expressions not yet included, e.g., input references, output references,</span>
+<span class="co"># render* calls other references of interest in the code, e.g., number of</span>
+<span class="co"># conditional panels in a Shiny app These instances would be easy to count</span>
+<span class="co"># but a hierarchical reactive elements tree would be challenging &#39;type&#39;</span>
+<span class="co"># argument not currently in use</span>
+getProjectStats &lt;-<span class="st"> </span>function(path, <span class="dt">type =</span> <span class="kw">c</span>(<span class="st">&quot;project&quot;</span>, <span class="st">&quot;app&quot;</span>), <span class="dt">code =</span> <span class="ot">TRUE</span>, <span class="dt">docs =</span> <span class="ot">TRUE</span>, 
+    <span class="dt">exclude =</span> <span class="ot">NULL</span>) {
+    
+    if (!(code |<span class="st"> </span>docs)) 
+        <span class="kw">stop</span>(<span class="st">&quot;At least one of &#39;code&#39; or &#39;docs&#39; must be TRUE.&quot;</span>)
+    r.files &lt;-<span class="st"> </span>if (code) 
+        <span class="kw">list.files</span>(path, <span class="dt">pattern =</span> <span class="st">&quot;.R$&quot;</span>, <span class="dt">full =</span> <span class="ot">TRUE</span>, <span class="dt">recursive =</span> <span class="ot">TRUE</span>) else <span class="ot">NULL</span>
+    rmd.files &lt;-<span class="st"> </span>if (docs) 
+        <span class="kw">list.files</span>(path, <span class="dt">pattern =</span> <span class="st">&quot;.Rmd$&quot;</span>, <span class="dt">full =</span> <span class="ot">TRUE</span>, <span class="dt">recursive =</span> <span class="ot">TRUE</span>) else <span class="ot">NULL</span>
+    
+    getFunctionInfo &lt;-<span class="st"> </span>function(x, <span class="dt">func.names =</span> <span class="ot">NULL</span>, <span class="dt">func.lines =</span> <span class="ot">NULL</span>) {
+        if (<span class="kw">is.null</span>(func.names) &amp;<span class="st"> </span><span class="kw">is.null</span>(func.lines)) {
+            x.split &lt;-<span class="st"> </span><span class="kw">strsplit</span>(<span class="kw">gsub</span>(<span class="st">&quot; &quot;</span>, <span class="st">&quot;&quot;</span>, x), <span class="st">&quot;&lt;-function</span><span class="ch">\\</span><span class="st">(&quot;</span>)
+            func.ind &lt;-<span class="st"> </span><span class="kw">which</span>(<span class="kw">sapply</span>(x.split, length) &gt;<span class="st"> </span><span class="dv">1</span> &amp;<span class="st"> </span>!(<span class="kw">substr</span>(x, <span class="dv">1</span>, <span class="dv">1</span>) %in%<span class="st"> </span>
+<span class="st">                </span><span class="kw">c</span>(<span class="st">&quot; &quot;</span>, <span class="st">&quot;</span><span class="ch">\t</span><span class="st">&quot;</span>)))
+            n &lt;-<span class="st"> </span><span class="kw">length</span>(func.ind)
+            func.names &lt;-<span class="st"> </span>if (n &gt;<span class="st"> </span><span class="dv">0</span>) 
+                <span class="kw">sapply</span>(x.split[func.ind], <span class="st">&quot;[[&quot;</span>, <span class="dv">1</span>) else <span class="kw">stop</span>(<span class="st">&quot;No functions found.&quot;</span>)
+            func.close &lt;-<span class="st"> </span><span class="kw">rep</span>(<span class="ot">NA</span>, n)
+            for (i in <span class="dv">1</span>:n) {
+                func.ind2 &lt;-<span class="st"> </span>if (i &lt;<span class="st"> </span>n) 
+                  <span class="kw">min</span>(func.ind[i +<span class="st"> </span><span class="dv">1</span>] -<span class="st"> </span><span class="dv">1</span>, <span class="kw">length</span>(x)) else <span class="kw">length</span>(x)
+                ind &lt;-<span class="st"> </span>func.ind[i]:func.ind2
+                func.close[i] &lt;-<span class="st"> </span>ind[<span class="kw">which</span>(<span class="kw">nchar</span>(x[ind]) ==<span class="st"> </span><span class="dv">1</span> &amp;<span class="st"> </span>x[ind] ==<span class="st"> &quot;}&quot;</span>)[<span class="dv">1</span>]]
+            }
+            func.lines &lt;-<span class="st"> </span><span class="kw">mapply</span>(seq, func.ind, func.close)
+            if (!<span class="kw">is.list</span>(func.lines)) 
+                func.lines &lt;-<span class="st"> </span><span class="kw">as.list</span>(<span class="kw">data.frame</span>(func.lines))
+            <span class="kw">return</span>(<span class="kw">list</span>(<span class="dt">func.names =</span> func.names, <span class="dt">func.lines =</span> func.lines, <span class="dt">n.func =</span> n))
+        } else {
+            m &lt;-<span class="st"> </span><span class="kw">c</span>()
+            n &lt;-<span class="st"> </span><span class="kw">length</span>(func.names)
+            for (i in <span class="dv">1</span>:n) {
+                func.ref &lt;-<span class="st"> </span><span class="kw">rep</span>(<span class="ot">NA</span>, n)
+                for (j in <span class="kw">c</span>(<span class="dv">1</span>:n)[-i]) {
+                  x.tmp &lt;-<span class="st"> </span>x[func.lines[[i]]]
+                  x.tmp &lt;-<span class="st"> </span><span class="kw">gsub</span>(<span class="kw">paste0</span>(func.names[j], <span class="st">&quot;</span><span class="ch">\\</span><span class="st">(&quot;</span>), <span class="st">&quot;_1_SOMETHING_TO_SPLIT_ON_2_&quot;</span>, 
+                    x.tmp)  <span class="co"># standard function usage</span>
+                  x.tmp &lt;-<span class="st"> </span><span class="kw">gsub</span>(<span class="kw">paste0</span>(<span class="st">&quot;do.call</span><span class="ch">\\</span><span class="st">(&quot;</span>, func.names[j]), <span class="st">&quot;_1_SOMETHING_TO_SPLIT_ON_2_&quot;</span>, 
+                    x.tmp)  <span class="co"># function reference inside do.call()</span>
+                  x.tmp &lt;-<span class="st"> </span><span class="kw">gsub</span>(<span class="kw">paste0</span>(func.names[j], <span class="st">&quot;,&quot;</span>), <span class="st">&quot;_1_SOMETHING_TO_SPLIT_ON_2_&quot;</span>, 
+                    x.tmp)  <span class="co"># function reference followed by mere comma, e.g., in *apply functions: NOT IDEAL</span>
+                  x.tmp.split &lt;-<span class="st"> </span><span class="kw">strsplit</span>(x.tmp, <span class="st">&quot;SOMETHING_TO_SPLIT_ON&quot;</span>)
+                  func.ref[j] &lt;-<span class="st"> </span><span class="kw">any</span>(<span class="kw">sapply</span>(x.tmp.split, length) &gt;<span class="st"> </span><span class="dv">1</span>)
+                }
+                m.tmp &lt;-<span class="st"> </span>if (<span class="kw">any</span>(func.ref, <span class="dt">na.rm =</span> <span class="ot">TRUE</span>)) 
+                  <span class="kw">cbind</span>(func.names[i], func.names[<span class="kw">which</span>(func.ref)]) else <span class="kw">cbind</span>(func.names[i], <span class="ot">NA</span>)
+                m &lt;-<span class="st"> </span><span class="kw">rbind</span>(m, m.tmp)
+            }
+            <span class="kw">return</span>(<span class="dt">flow =</span> m)
+        }
+    }
+    
+    if (<span class="kw">is.character</span>(exclude) &amp;<span class="st"> </span><span class="kw">length</span>(r.files)) 
+        r.files &lt;-<span class="st"> </span>r.files[!(<span class="kw">basename</span>(r.files) %in%<span class="st"> </span>exclude)]
+    n.scripts &lt;-<span class="st"> </span><span class="kw">length</span>(r.files)
+    if (n.scripts &gt;<span class="st"> </span><span class="dv">0</span>) {
+        l &lt;-<span class="st"> </span><span class="kw">unlist</span>(<span class="kw">lapply</span>(r.files, readLines))
+        n.codelines &lt;-<span class="st"> </span><span class="kw">length</span>(l[l !=<span class="st"> &quot;&quot;</span>])
+        func.info &lt;-<span class="st"> </span><span class="kw">getFunctionInfo</span>(l)
+        func.names &lt;-<span class="st"> </span>func.info$func.names
+        n.func &lt;-<span class="st"> </span>func.info$n.func
+        func.mat &lt;-<span class="st"> </span><span class="kw">getFunctionInfo</span>(l, <span class="dt">func.names =</span> func.names, <span class="dt">func.lines =</span> func.info$func.lines)
+    } else {
+        n.codelines &lt;-<span class="st"> </span>n.func &lt;-<span class="st"> </span><span class="dv">0</span>
+        func.names &lt;-<span class="st"> </span>func.mat &lt;-<span class="st"> </span><span class="ot">NULL</span>
+    }
+    
+    if (<span class="kw">is.character</span>(exclude) &amp;<span class="st"> </span><span class="kw">length</span>(rmd.files)) 
+        rmd.files &lt;-<span class="st"> </span>rmd.files[!(<span class="kw">basename</span>(r.files) %in%<span class="st"> </span>exclude)]
+    n.docs &lt;-<span class="st"> </span><span class="kw">length</span>(rmd.files)
+    if (n.docs &gt;<span class="st"> </span><span class="dv">0</span>) {
+        l &lt;-<span class="st"> </span><span class="kw">unlist</span>(<span class="kw">lapply</span>(rmd.files, readLines))
+        n.doclines &lt;-<span class="st"> </span><span class="kw">length</span>(l[l !=<span class="st"> &quot;&quot;</span>])
+    } else {
+        n.doclines &lt;-<span class="st"> </span><span class="dv">0</span>
+    }
+    
+    total.files &lt;-<span class="st"> </span><span class="kw">length</span>(<span class="kw">list.files</span>(path, <span class="dt">recursive =</span> <span class="ot">TRUE</span>))
+    
+    <span class="kw">return</span>(<span class="kw">list</span>(<span class="dt">total.files =</span> total.files, <span class="dt">n.docs =</span> n.docs, <span class="dt">n.doclines =</span> n.doclines, 
+        <span class="dt">n.scripts =</span> n.scripts, <span class="dt">n.codelines =</span> n.codelines, <span class="dt">n.func =</span> n.func, <span class="dt">func.mat =</span> func.mat))
+}</code></pre>
+</div>
+</div>
+
+
+</div>
+
+<script>
+
+// add bootstrap table styles to pandoc tables
+$(document).ready(function () {
+  $('tr.header').parent('thead').parent('table').addClass('table table-condensed');
+});
+
+</script>
+
+
+</body>
+</html>
