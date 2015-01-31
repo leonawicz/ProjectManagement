@@ -11,11 +11,11 @@ docs.path <- file.path(proj.location, proj.name, "docs")
 rmd.path <- file.path(docs.path, "Rmd")
 
 # generate Rmd files from existing R scripts using default yaml front-matter
-genRmd(path=rfile.path, header=rmdHeader())
+genRmd(path=rfile.path) # specify header.args list argument if necessary
 
-# @knitr ex_update_project
+# @knitr update_project
 # update yaml front-matter only
-genRmd(path=rfile.path, header=rmdHeader(), knitrSetupChunk=rmdknitrSetup(), update.header=TRUE)
+genRmd(path=rfile.path, update.header=TRUE)
 
 # obtain knitr code chunk names in existing R scripts
 chunkNames(path=file.path(proj.location, proj.name, "code"))
