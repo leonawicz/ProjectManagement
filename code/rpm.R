@@ -100,14 +100,14 @@ genRmd <- function(path, replace=FALSE,
 	stopifnot(is.character(path))
 	files <- list.files(path, pattern=".R$", full=TRUE)
 	stopifnot(length(files) > 0)
-	rmd <- gsub(".R", ".Rmd", basename(files))
+	rmd <- gsub("\\.R", "\\.Rmd", basename(files))
 	rmd <- file.path(dirname(path), "docs/Rmd", rmd)
 	if(!(replace | update.header)) rmd <- rmd[!sapply(rmd, file.exists)]
 	if(update.header) rmd <- rmd[sapply(rmd, file.exists)]
 	stopifnot(length(rmd) > 0)
 	
 	sinkRmd <- function(x, arglist,  ...){
-		if(arglist$title=="filename") arglist$title <- basename(x)
+		if(arglist$title=="filename") arglist$title <- gsub("\\.Rmd", "\\.R", basename(x))
 		y1 <- do.call(.rmdHeader, arglist)
 		y2 <- .rmdknitrSetup(file=x, ...)
 		y3 <- list(...)$rmd.template
@@ -118,7 +118,7 @@ genRmd <- function(path, replace=FALSE,
 	}
 	
 	swapHeader <- function(x, arglist){
-		if(arglist$title=="filename") arglist$title <- basename(x)
+		if(arglist$title=="filename") arglist$title <- gsub("\\.Rmd", "\\.R", basename(x))
 		header <- do.call(.rmdHeader, arglist)
 		l <- readLines(x)
 		ind <- which(l=="---")
@@ -133,7 +133,7 @@ genRmd <- function(path, replace=FALSE,
 		sapply(rmd, swapHeader, arglist=header.args)
 		cat("yaml header updated for each .Rmd file.\n")
 	} else {
-		sapply(rmd, sinkRmd, ...)
+		sapply(rmd, sinkRmd, arglist=header.args, ...)
 		cat(".Rmd files created for each .R file.\n")
 	}
 }
@@ -162,7 +162,7 @@ chunkNames <- function(path, rChunkID="# @knitr", rmdChunkID="```{r", append.new
 		else paste("No new chunk names appended to", basename(rmd.files[x]))
 	}
 	
-	rmd <- gsub(".R", ".Rmd", basename(files))
+	rmd <- gsub("\\.R", "\\.Rmd", basename(files))
 	rmd <- file.path(dirname(path), "docs/Rmd", rmd)
 	rmd <- rmd[sapply(rmd, file.exists)]
 	stopifnot(length(rmd) > 0) # Rmd files must exist
