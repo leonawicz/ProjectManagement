@@ -14,10 +14,11 @@
 <title>Project Management</title>
 
 <script src="libs/jquery-1.11.0/jquery.min.js"></script>
-<meta name="viewport" content="width=device-width, initial-scale=1.0" />
-<link href="libs/bootstrap-2.3.2/css/united.min.css" rel="stylesheet" />
-<link href="libs/bootstrap-2.3.2/css/bootstrap-responsive.min.css" rel="stylesheet" />
-<script src="libs/bootstrap-2.3.2/js/bootstrap.min.js"></script>
+<meta name="viewport" content="width=device-width, initial-scale=1" />
+<link href="libs/bootstrap-3.3.1/css/united.min.css" rel="stylesheet" />
+<script src="libs/bootstrap-3.3.1/js/bootstrap.min.js"></script>
+<script src="libs/bootstrap-3.3.1/shim/html5shiv.min.js"></script>
+<script src="libs/bootstrap-3.3.1/shim/respond.min.js"></script>
 <style type="text/css">
 
 /* padding for bootstrap navbar */
@@ -109,6 +110,14 @@ code > span.er { color: #c3bf9f; }
   max-width: 940px;
   margin-left: auto;
   margin-right: auto;
+}
+code {
+  color: inherit;
+  background-color: rgba(0, 0, 0, 0.04);
+}
+img { 
+  max-width:100%; 
+  height: auto; 
 }
 </style>
 <div class="container-fluid main-container">
@@ -204,21 +213,11 @@ docs.path &lt;-<span class="st"> </span><span class="kw">file.path</span>(proj.l
 rmd.path &lt;-<span class="st"> </span><span class="kw">file.path</span>(docs.path, <span class="st">&quot;Rmd&quot;</span>)
 
 <span class="co"># generate Rmd files from existing R scripts using default yaml front-matter</span>
-<span class="kw">genRmd</span>(<span class="dt">path =</span> rfile.path, <span class="dt">header =</span> <span class="kw">rmdHeader</span>())</code></pre>
+<span class="kw">genRmd</span>(<span class="dt">path =</span> rfile.path)  <span class="co"># specify header.args list argument if necessary</span></code></pre>
 </div>
 <div id="update-a-project" class="section level3">
 <h3>Update a project</h3>
 <p>Functions can be used to create, read, or update. See <a href="func_rmd.html" title="Rmd-related functions">Rmd-related functions</a>.</p>
-<pre class="sourceCode r"><code class="sourceCode r"><span class="co"># update yaml front-matter only</span>
-<span class="kw">genRmd</span>(<span class="dt">path =</span> rfile.path, <span class="dt">header =</span> <span class="kw">rmdHeader</span>(), <span class="dt">knitrSetupChunk =</span> <span class="kw">rmdknitrSetup</span>(), 
-    <span class="dt">update.header =</span> <span class="ot">TRUE</span>)
-
-<span class="co"># obtain knitr code chunk names in existing R scripts</span>
-<span class="kw">chunkNames</span>(<span class="dt">path =</span> <span class="kw">file.path</span>(proj.location, proj.name, <span class="st">&quot;code&quot;</span>))
-
-<span class="co"># append new knitr code chunk names found in existing R scripts to any Rmd</span>
-<span class="co"># files which are outdated</span>
-<span class="kw">chunkNames</span>(<span class="dt">path =</span> <span class="kw">file.path</span>(proj.location, proj.name, <span class="st">&quot;code&quot;</span>), <span class="dt">append.new =</span> <span class="ot">TRUE</span>)</code></pre>
 </div>
 <div id="prepare-a-project-website" class="section level3">
 <h3>Prepare a project website</h3>
@@ -229,14 +228,15 @@ proj.menu &lt;-<span class="st"> </span><span class="kw">c</span>(<span class="s
 
 proj.submenu &lt;-<span class="st"> </span><span class="kw">list</span>(<span class="kw">c</span>(<span class="st">&quot;About rpm&quot;</span>, <span class="st">&quot;Introduction&quot;</span>, <span class="st">&quot;Related items&quot;</span>, <span class="st">&quot;Example usage&quot;</span>), 
     <span class="kw">c</span>(<span class="st">&quot;Default objects&quot;</span>, <span class="st">&quot;divider&quot;</span>, <span class="st">&quot;Functions&quot;</span>, <span class="st">&quot;Start a new project&quot;</span>, <span class="st">&quot;Working with Rmd files&quot;</span>, 
-        <span class="st">&quot;Document conversion&quot;</span>, <span class="st">&quot;Organize documents&quot;</span>, <span class="st">&quot;Make a project website&quot;</span>, 
+        <span class="st">&quot;Document conversion&quot;</span>, <span class="st">&quot;Organize documents&quot;</span>, <span class="st">&quot;Project statistics&quot;</span>, <span class="st">&quot;Make a project website&quot;</span>, 
         <span class="st">&quot;Github user website&quot;</span>), <span class="kw">c</span>(<span class="st">&quot;Hierarchy of current projects&quot;</span>, <span class="st">&quot;Projects diagram&quot;</span>, 
         <span class="st">&quot;divider&quot;</span>, <span class="st">&quot;Access all projects&quot;</span>, <span class="st">&quot;leonawicz.github.io&quot;</span>))
 
 proj.files &lt;-<span class="st"> </span><span class="kw">list</span>(<span class="kw">c</span>(<span class="st">&quot;header&quot;</span>, <span class="st">&quot;index.html&quot;</span>, <span class="st">&quot;code_sankey.html&quot;</span>, <span class="st">&quot;pm.html&quot;</span>), 
     <span class="kw">c</span>(<span class="st">&quot;objects.html&quot;</span>, <span class="st">&quot;divider&quot;</span>, <span class="st">&quot;header&quot;</span>, <span class="st">&quot;func_new.html&quot;</span>, <span class="st">&quot;func_rmd.html&quot;</span>, 
-        <span class="st">&quot;func_convert.html&quot;</span>, <span class="st">&quot;func_organize.html&quot;</span>, <span class="st">&quot;func_website.html&quot;</span>, <span class="st">&quot;func_user_website.html&quot;</span>), 
-    <span class="kw">c</span>(<span class="st">&quot;header&quot;</span>, <span class="st">&quot;proj_sankey.html&quot;</span>, <span class="st">&quot;divider&quot;</span>, <span class="st">&quot;header&quot;</span>, <span class="st">&quot;http://leonawicz.github.io&quot;</span>))
+        <span class="st">&quot;func_convert.html&quot;</span>, <span class="st">&quot;func_organize.html&quot;</span>, <span class="st">&quot;func_stats.html&quot;</span>, <span class="st">&quot;func_website.html&quot;</span>, 
+        <span class="st">&quot;func_user_website.html&quot;</span>), <span class="kw">c</span>(<span class="st">&quot;header&quot;</span>, <span class="st">&quot;proj_sankey.html&quot;</span>, <span class="st">&quot;divider&quot;</span>, 
+        <span class="st">&quot;header&quot;</span>, <span class="st">&quot;http://leonawicz.github.io&quot;</span>))
 
 user &lt;-<span class="st"> &quot;leonawicz&quot;</span>
 proj.github &lt;-<span class="st"> </span><span class="kw">file.path</span>(<span class="st">&quot;https://github.com&quot;</span>, user, proj.name)

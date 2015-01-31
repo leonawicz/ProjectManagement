@@ -90,7 +90,7 @@ Here is a project hierarchy diagram showing the relationships among all my curre
   &lt;/head&gt;
   &lt;body &gt;
     
-    &lt;div id = &#039;chartf84c066b2a&#039; class = &#039;rChart d3_sankey&#039;&gt;&lt;/div&gt;    
+    &lt;div id = &#039;chart5502180564c&#039; class = &#039;rChart d3_sankey&#039;&gt;&lt;/div&gt;    
     ï»¿&lt;!--Attribution:
 Mike Bostock https://github.com/d3/d3-plugins/tree/master/sankey
 Mike Bostock http://bost.ocks.org/mike/sankey/
@@ -99,7 +99,7 @@ Mike Bostock http://bost.ocks.org/mike/sankey/
 &lt;script&gt;
 (function(){
 var params = {
- &quot;dom&quot;: &quot;chartf84c066b2a&quot;,
+ &quot;dom&quot;: &quot;chart5502180564c&quot;,
 &quot;width&quot;:    900,
 &quot;height&quot;:    800,
 &quot;data&quot;: {
@@ -117,7 +117,7 @@ var params = {
 &quot;top&quot;:     20 
 },
 &quot;title&quot;: &quot;Matt&#039;s Projects&quot;,
-&quot;id&quot;: &quot;chartf84c066b2a&quot; 
+&quot;id&quot;: &quot;chart5502180564c&quot; 
 };
 
 params.units ? units = &quot; &quot; + params.units : units = &quot;&quot;;
@@ -237,11 +237,11 @@ node.append(&quot;text&quot;)
     
     &lt;script&gt;
       var cscale = d3.scale.category20b();
-      d3.selectAll(&#039;#chartf84c066b2a svg path.link&#039;)
+      d3.selectAll(&#039;#chart5502180564c svg path.link&#039;)
         .style(&#039;stroke&#039;, function(d){
           return cscale(d.source.name);
         })
-      d3.selectAll(&#039;#chartf84c066b2a svg .node rect&#039;)
+      d3.selectAll(&#039;#chart5502180564c svg .node rect&#039;)
         .style(&#039;fill&#039;, function(d){
           return cscale(d.name)
         })
@@ -249,7 +249,7 @@ node.append(&quot;text&quot;)
     &lt;/script&gt;
         
   &lt;/body&gt;
-&lt;/html&gt; ' scrolling='no' frameBorder='0' seamless class='rChart  http://timelyportfolio.github.io/rCharts_d3_sankey/libraries/widgets/d3_sankey  ' id='iframe-chartf84c066b2a'> </iframe>
+&lt;/html&gt; ' scrolling='no' frameBorder='0' seamless class='rChart  http://timelyportfolio.github.io/rCharts_d3_sankey/libraries/widgets/d3_sankey  ' id='iframe-chart5502180564c'> </iframe>
  <style>iframe.rChart{ width: 100%; height: 400px;}</style>
 <style>iframe.rChart{ width: 100%; height: 840px;}</style>
 
@@ -398,7 +398,7 @@ genRmd <- function(path, replace = FALSE, header.args = list(title = "filename",
     stopifnot(is.character(path))
     files <- list.files(path, pattern = ".R$", full = TRUE)
     stopifnot(length(files) > 0)
-    rmd <- gsub(".R", ".Rmd", basename(files))
+    rmd <- gsub("\\.R", "\\.Rmd", basename(files))
     rmd <- file.path(dirname(path), "docs/Rmd", rmd)
     if (!(replace | update.header)) 
         rmd <- rmd[!sapply(rmd, file.exists)]
@@ -408,7 +408,7 @@ genRmd <- function(path, replace = FALSE, header.args = list(title = "filename",
     
     sinkRmd <- function(x, arglist, ...) {
         if (arglist$title == "filename") 
-            arglist$title <- basename(x)
+            arglist$title <- gsub("\\.Rmd", "\\.R", basename(x))
         y1 <- do.call(.rmdHeader, arglist)
         y2 <- .rmdknitrSetup(file = x, ...)
         y3 <- list(...)$rmd.template
@@ -421,7 +421,7 @@ genRmd <- function(path, replace = FALSE, header.args = list(title = "filename",
     
     swapHeader <- function(x, arglist) {
         if (arglist$title == "filename") 
-            arglist$title <- basename(x)
+            arglist$title <- gsub("\\.Rmd", "\\.R", basename(x))
         header <- do.call(.rmdHeader, arglist)
         l <- readLines(x)
         ind <- which(l == "---")
@@ -436,7 +436,7 @@ genRmd <- function(path, replace = FALSE, header.args = list(title = "filename",
         sapply(rmd, swapHeader, arglist = header.args)
         cat("yaml header updated for each .Rmd file.\n")
     } else {
-        sapply(rmd, sinkRmd, ...)
+        sapply(rmd, sinkRmd, arglist = header.args, ...)
         cat(".Rmd files created for each .R file.\n")
     }
 }
@@ -481,7 +481,7 @@ chunkNames <- function(path, rChunkID = "# @knitr", rmdChunkID = "```{r", append
         } else paste("No new chunk names appended to", basename(rmd.files[x]))
     }
     
-    rmd <- gsub(".R", ".Rmd", basename(files))
+    rmd <- gsub("\\.R", "\\.Rmd", basename(files))
     rmd <- file.path(dirname(path), "docs/Rmd", rmd)
     rmd <- rmd[sapply(rmd, file.exists)]
     stopifnot(length(rmd) > 0)  # Rmd files must exist

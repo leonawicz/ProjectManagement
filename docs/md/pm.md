@@ -37,25 +37,13 @@ docs.path <- file.path(proj.location, proj.name, "docs")
 rmd.path <- file.path(docs.path, "Rmd")
 
 # generate Rmd files from existing R scripts using default yaml front-matter
-genRmd(path = rfile.path, header = rmdHeader())
+genRmd(path = rfile.path)  # specify header.args list argument if necessary
 ```
 
 ### Update a project
 Functions can be used to create, read, or update. See [Rmd-related functions](func_rmd.html "Rmd-related functions").
 
 
-```r
-# update yaml front-matter only
-genRmd(path = rfile.path, header = rmdHeader(), knitrSetupChunk = rmdknitrSetup(), 
-    update.header = TRUE)
-
-# obtain knitr code chunk names in existing R scripts
-chunkNames(path = file.path(proj.location, proj.name, "code"))
-
-# append new knitr code chunk names found in existing R scripts to any Rmd
-# files which are outdated
-chunkNames(path = file.path(proj.location, proj.name, "code"), append.new = TRUE)
-```
 
 ### Prepare a project website
 With some additional project-specific setup, files can be generated which will assist in creating a project website.
@@ -69,14 +57,15 @@ proj.menu <- c("rpm", "R Code", "All Projects")
 
 proj.submenu <- list(c("About rpm", "Introduction", "Related items", "Example usage"), 
     c("Default objects", "divider", "Functions", "Start a new project", "Working with Rmd files", 
-        "Document conversion", "Organize documents", "Make a project website", 
+        "Document conversion", "Organize documents", "Project statistics", "Make a project website", 
         "Github user website"), c("Hierarchy of current projects", "Projects diagram", 
         "divider", "Access all projects", "leonawicz.github.io"))
 
 proj.files <- list(c("header", "index.html", "code_sankey.html", "pm.html"), 
     c("objects.html", "divider", "header", "func_new.html", "func_rmd.html", 
-        "func_convert.html", "func_organize.html", "func_website.html", "func_user_website.html"), 
-    c("header", "proj_sankey.html", "divider", "header", "http://leonawicz.github.io"))
+        "func_convert.html", "func_organize.html", "func_stats.html", "func_website.html", 
+        "func_user_website.html"), c("header", "proj_sankey.html", "divider", 
+        "header", "http://leonawicz.github.io"))
 
 user <- "leonawicz"
 proj.github <- file.path("https://github.com", user, proj.name)
