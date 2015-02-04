@@ -17,7 +17,8 @@ and a code flow diagram based on the current development of this project, and a 
 This project does not use any data.
 It does make use of supplemental libraries for formatting during html document generation.
 `proj_sankey.R` and `code_sankey.R` are used to produce of project hierarchy diagram of my current projects and a code flow diagram for this project, respectively.
-`drg.R` is used to assist in dynamic report generation.
+`pm.R` is used to assist in dynamic report generation by way of `rpm`.
+Each project has a `pm.R` script.
 
 ### Code flow
 The Sankey diagram has become part of my project management.
