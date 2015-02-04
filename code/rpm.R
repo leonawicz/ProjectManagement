@@ -628,7 +628,7 @@ insert_gatc <- function(file, gatc=NULL){
 
 # @knitr fun_genPanelDiv
 genPanelDiv <- function(outDir, type="projects", main="Projects",
-	github.user="leonawicz", prjs.dir="C:/github", exclude=c("leonawicz.github.io", "shiny-apps", "DataVisExamples", ".git", "_images"),
+	github.user="leonawicz", prjs.dir="C:/github", exclude=c("leonawicz.github.io", "shiny-apps", "eris2", "DataVisExamples", ".git", "_images"),
 	img.loc="_images/small", lightbox=FALSE, include.buttons=TRUE, include.titles=TRUE, ...){
 	
 	stopifnot(github.user %in% c("leonawicz", "ua-snap"))
