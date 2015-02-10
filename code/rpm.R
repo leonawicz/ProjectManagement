@@ -166,7 +166,7 @@ chunkNames <- function(path, rChunkID="# @knitr", rmdChunkID="```{r", append.new
 	rmd <- file.path(dirname(path), "docs/Rmd", rmd)
 	rmd <- rmd[sapply(rmd, file.exists)]
 	stopifnot(length(rmd) > 0) # Rmd files must exist
-	files.ind <- match(gsub(".Rmd", "", basename(rmd)), gsub(".R", "", basename(files))) # Rmd exist for which R script
+	files.ind <- match(gsub("\\.Rmd", "", basename(rmd)), gsub("\\.R", "", basename(files))) # Rmd exist for which R script
 	l2 <- lapply(rmd, readLines)
 	l2 <- rapply(l2, function(x) x[substr(x, 1, nchar(rmdChunkID))==rmdChunkID], how="replace")
 	l2 <- rapply(l2, function(x, p) gsub(paste0(p, " "), "", x), how="replace", p=gsub("\\{", "\\\\{", rmdChunkID))
