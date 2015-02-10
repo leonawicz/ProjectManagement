@@ -13,10 +13,11 @@
 <title></title>
 
 <script src="libs/jquery-1.11.0/jquery.min.js"></script>
-<meta name="viewport" content="width=device-width, initial-scale=1.0" />
-<link href="libs/bootstrap-2.3.2/css/united.min.css" rel="stylesheet" />
-<link href="libs/bootstrap-2.3.2/css/bootstrap-responsive.min.css" rel="stylesheet" />
-<script src="libs/bootstrap-2.3.2/js/bootstrap.min.js"></script>
+<meta name="viewport" content="width=device-width, initial-scale=1" />
+<link href="libs/bootstrap-3.3.1/css/united.min.css" rel="stylesheet" />
+<script src="libs/bootstrap-3.3.1/js/bootstrap.min.js"></script>
+<script src="libs/bootstrap-3.3.1/shim/html5shiv.min.js"></script>
+<script src="libs/bootstrap-3.3.1/shim/respond.min.js"></script>
 <style type="text/css">
 
 /* padding for bootstrap navbar */
@@ -109,24 +110,33 @@ code > span.er { color: #c3bf9f; }
   margin-left: auto;
   margin-right: auto;
 }
+code {
+  color: inherit;
+  background-color: rgba(0, 0, 0, 0.04);
+}
+img { 
+  max-width:100%; 
+  height: auto; 
+}
 </style>
 <div class="container-fluid main-container">
 
 <div class="navbar navbar-default navbar-fixed-top">
-  <div class="navbar-inner">
-    <div class="container">
-      <button type="button" class="btn btn-navbar" data-toggle="collapse" data-target=".nav-collapse">
+  <div class="container">
+    <div class="navbar-header">
+      <button type="button" class="navbar-toggle" data-toggle="collapse" data-target=".navbar-responsive-collapse">
         <span class="icon-bar"></span>
         <span class="icon-bar"></span>
         <span class="icon-bar"></span>
       </button>
-      <a class="brand" href="index.html">Project Management</a>
-      <div class="nav-collapse collapse">
-        <ul class="nav">
+      <a class="navbar-brand" href="index.html">Project Management</a>
+      </div>
+      <div class="navbar-collapse collapse navbar-responsive-collapse">
+        <ul class="nav navbar-nav">
           <li class="dropdown">
             <a href="rpm" class="dropdown-toggle" data-toggle="dropdown">rpm <b class="caret"></b></a>
             <ul class="dropdown-menu">
-              <li class="nav-header">About rpm</li>
+              <li class="dropdown-header">About rpm</li>
               <li><a href="index.html">Introduction</a></li>
               <li><a href="code_sankey.html">Related items</a></li>
               <li><a href="pm.html">Example usage</a></li>
@@ -137,7 +147,7 @@ code > span.er { color: #c3bf9f; }
             <ul class="dropdown-menu">
               <li><a href="objects.html">Default objects</a></li>
               <li class="divider"></li>
-              <li class="nav-header">Functions</li>
+              <li class="dropdown-header">Functions</li>
               <li><a href="func_new.html">Start a new project</a></li>
               <li><a href="func_rmd.html">Working with Rmd files</a></li>
               <li><a href="func_convert.html">Document conversion</a></li>
@@ -150,15 +160,15 @@ code > span.er { color: #c3bf9f; }
           <li class="dropdown">
             <a href="all-projects" class="dropdown-toggle" data-toggle="dropdown">All Projects <b class="caret"></b></a>
             <ul class="dropdown-menu">
-              <li class="nav-header">Hierarchy of current projects</li>
+              <li class="dropdown-header">Hierarchy of current projects</li>
               <li><a href="proj_sankey.html">Projects diagram</a></li>
               <li class="divider"></li>
-              <li class="nav-header">Access all projects</li>
+              <li class="dropdown-header">Access all projects</li>
               <li><a href="http://leonawicz.github.io">leonawicz.github.io</a></li>
             </ul>
         </ul>
-        <ul class="nav pull-right">
-          <a class="btn btn-primary" href="https://github.com/leonawicz/ProjectManagement">
+        <ul class="nav navbar-nav navbar-right">
+          <a class="btn btn-link" href="https://github.com/leonawicz/ProjectManagement">
             <i class="fa fa-github fa-lg"></i>
             Github
           </a>
@@ -166,7 +176,6 @@ code > span.er { color: #c3bf9f; }
       </div><!--/.nav-collapse -->
     </div>
   </div>
-</div>
 
 
 
@@ -210,7 +219,8 @@ code > span.er { color: #c3bf9f; }
     x &lt;-<span class="st"> </span><span class="kw">paste0</span>(<span class="st">&quot;</span><span class="ch">\n</span><span class="st">```{r knitr_setup, echo=FALSE}</span><span class="ch">\n</span><span class="st">opts_chunk$set(cache=FALSE, eval=FALSE, tidy=TRUE, message=FALSE, warning=FALSE)</span><span class="ch">\n</span><span class="st">&quot;</span>)
     if (include.sankey) 
         x &lt;-<span class="st"> </span><span class="kw">paste0</span>(x, <span class="st">&quot;read_chunk(</span><span class="ch">\&quot;</span><span class="st">../../code/proj_sankey.R</span><span class="ch">\&quot;</span><span class="st">)</span><span class="ch">\n</span><span class="st">&quot;</span>)
-    x &lt;-<span class="st"> </span><span class="kw">paste0</span>(x, <span class="st">&quot;read_chunk(</span><span class="ch">\&quot;</span><span class="st">../../code/&quot;</span>, file, <span class="st">&quot;</span><span class="ch">\&quot;</span><span class="st">)</span><span class="ch">\n</span><span class="st">```</span><span class="ch">\n</span><span class="st">&quot;</span>)
+    x &lt;-<span class="st"> </span><span class="kw">paste0</span>(x, <span class="st">&quot;read_chunk(</span><span class="ch">\&quot;</span><span class="st">../../code/&quot;</span>, <span class="kw">gsub</span>(<span class="st">&quot;</span><span class="ch">\\</span><span class="st">.Rmd&quot;</span>, <span class="st">&quot;</span><span class="ch">\\</span><span class="st">.R&quot;</span>, <span class="kw">basename</span>(file)), 
+        <span class="st">&quot;</span><span class="ch">\&quot;</span><span class="st">)</span><span class="ch">\n</span><span class="st">```</span><span class="ch">\n</span><span class="st">&quot;</span>)
     x
 }</code></pre>
 </div>
@@ -227,7 +237,7 @@ code > span.er { color: #c3bf9f; }
     <span class="kw">stopifnot</span>(<span class="kw">is.character</span>(path))
     files &lt;-<span class="st"> </span><span class="kw">list.files</span>(path, <span class="dt">pattern =</span> <span class="st">&quot;.R$&quot;</span>, <span class="dt">full =</span> <span class="ot">TRUE</span>)
     <span class="kw">stopifnot</span>(<span class="kw">length</span>(files) &gt;<span class="st"> </span><span class="dv">0</span>)
-    rmd &lt;-<span class="st"> </span><span class="kw">gsub</span>(<span class="st">&quot;.R&quot;</span>, <span class="st">&quot;.Rmd&quot;</span>, <span class="kw">basename</span>(files))
+    rmd &lt;-<span class="st"> </span><span class="kw">gsub</span>(<span class="st">&quot;</span><span class="ch">\\</span><span class="st">.R&quot;</span>, <span class="st">&quot;</span><span class="ch">\\</span><span class="st">.Rmd&quot;</span>, <span class="kw">basename</span>(files))
     rmd &lt;-<span class="st"> </span><span class="kw">file.path</span>(<span class="kw">dirname</span>(path), <span class="st">&quot;docs/Rmd&quot;</span>, rmd)
     if (!(replace |<span class="st"> </span>update.header)) 
         rmd &lt;-<span class="st"> </span>rmd[!<span class="kw">sapply</span>(rmd, file.exists)]
@@ -237,7 +247,7 @@ code > span.er { color: #c3bf9f; }
     
     sinkRmd &lt;-<span class="st"> </span>function(x, arglist, ...) {
         if (arglist$title ==<span class="st"> &quot;filename&quot;</span>) 
-            arglist$title &lt;-<span class="st"> </span><span class="kw">basename</span>(x)
+            arglist$title &lt;-<span class="st"> </span><span class="kw">gsub</span>(<span class="st">&quot;</span><span class="ch">\\</span><span class="st">.Rmd&quot;</span>, <span class="st">&quot;</span><span class="ch">\\</span><span class="st">.R&quot;</span>, <span class="kw">basename</span>(x))
         y1 &lt;-<span class="st"> </span><span class="kw">do.call</span>(.rmdHeader, arglist)
         y2 &lt;-<span class="st"> </span><span class="kw">.rmdknitrSetup</span>(<span class="dt">file =</span> x, ...)
         y3 &lt;-<span class="st"> </span><span class="kw">list</span>(...)$rmd.template
@@ -250,7 +260,7 @@ code > span.er { color: #c3bf9f; }
     
     swapHeader &lt;-<span class="st"> </span>function(x, arglist) {
         if (arglist$title ==<span class="st"> &quot;filename&quot;</span>) 
-            arglist$title &lt;-<span class="st"> </span><span class="kw">basename</span>(x)
+            arglist$title &lt;-<span class="st"> </span><span class="kw">gsub</span>(<span class="st">&quot;</span><span class="ch">\\</span><span class="st">.Rmd&quot;</span>, <span class="st">&quot;</span><span class="ch">\\</span><span class="st">.R&quot;</span>, <span class="kw">basename</span>(x))
         header &lt;-<span class="st"> </span><span class="kw">do.call</span>(.rmdHeader, arglist)
         l &lt;-<span class="st"> </span><span class="kw">readLines</span>(x)
         ind &lt;-<span class="st"> </span><span class="kw">which</span>(l ==<span class="st"> &quot;---&quot;</span>)
@@ -265,7 +275,7 @@ code > span.er { color: #c3bf9f; }
         <span class="kw">sapply</span>(rmd, swapHeader, <span class="dt">arglist =</span> header.args)
         <span class="kw">cat</span>(<span class="st">&quot;yaml header updated for each .Rmd file.</span><span class="ch">\n</span><span class="st">&quot;</span>)
     } else {
-        <span class="kw">sapply</span>(rmd, sinkRmd, ...)
+        <span class="kw">sapply</span>(rmd, sinkRmd, <span class="dt">arglist =</span> header.args, ...)
         <span class="kw">cat</span>(<span class="st">&quot;.Rmd files created for each .R file.</span><span class="ch">\n</span><span class="st">&quot;</span>)
     }
 }</code></pre>
@@ -299,11 +309,11 @@ code > span.er { color: #c3bf9f; }
         } else <span class="kw">paste</span>(<span class="st">&quot;No new chunk names appended to&quot;</span>, <span class="kw">basename</span>(rmd.files[x]))
     }
     
-    rmd &lt;-<span class="st"> </span><span class="kw">gsub</span>(<span class="st">&quot;.R&quot;</span>, <span class="st">&quot;.Rmd&quot;</span>, <span class="kw">basename</span>(files))
+    rmd &lt;-<span class="st"> </span><span class="kw">gsub</span>(<span class="st">&quot;</span><span class="ch">\\</span><span class="st">.R&quot;</span>, <span class="st">&quot;</span><span class="ch">\\</span><span class="st">.Rmd&quot;</span>, <span class="kw">basename</span>(files))
     rmd &lt;-<span class="st"> </span><span class="kw">file.path</span>(<span class="kw">dirname</span>(path), <span class="st">&quot;docs/Rmd&quot;</span>, rmd)
     rmd &lt;-<span class="st"> </span>rmd[<span class="kw">sapply</span>(rmd, file.exists)]
     <span class="kw">stopifnot</span>(<span class="kw">length</span>(rmd) &gt;<span class="st"> </span><span class="dv">0</span>)  <span class="co"># Rmd files must exist</span>
-    files.ind &lt;-<span class="st"> </span><span class="kw">match</span>(<span class="kw">gsub</span>(<span class="st">&quot;.Rmd&quot;</span>, <span class="st">&quot;&quot;</span>, <span class="kw">basename</span>(rmd)), <span class="kw">gsub</span>(<span class="st">&quot;.R&quot;</span>, <span class="st">&quot;&quot;</span>, <span class="kw">basename</span>(files)))  <span class="co"># Rmd exist for which R script</span>
+    files.ind &lt;-<span class="st"> </span><span class="kw">match</span>(<span class="kw">gsub</span>(<span class="st">&quot;</span><span class="ch">\\</span><span class="st">.Rmd&quot;</span>, <span class="st">&quot;&quot;</span>, <span class="kw">basename</span>(rmd)), <span class="kw">gsub</span>(<span class="st">&quot;</span><span class="ch">\\</span><span class="st">.R&quot;</span>, <span class="st">&quot;&quot;</span>, <span class="kw">basename</span>(files)))  <span class="co"># Rmd exist for which R script</span>
     l2 &lt;-<span class="st"> </span><span class="kw">lapply</span>(rmd, readLines)
     l2 &lt;-<span class="st"> </span><span class="kw">rapply</span>(l2, function(x) x[<span class="kw">substr</span>(x, <span class="dv">1</span>, <span class="kw">nchar</span>(rmdChunkID)) ==<span class="st"> </span>rmdChunkID], 
         <span class="dt">how =</span> <span class="st">&quot;replace&quot;</span>)
