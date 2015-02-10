@@ -526,25 +526,27 @@ buttonGroup <- function(txt, urls, fa.icons=NULL, colors="primary", solid.group=
 
 # @knitr fun_genNavbar
 genNavbar <- function(htmlfile="navbar.html", title, menu, submenus, files, title.url="index.html", home.url="index.html", site.url="", site.name="Github", media.button.args=NULL, theme="united", include.home=FALSE){
-	if(!(theme %in% c("united", "cyborg"))) stop("Only the following themes supported: united, cyborg.")
+	#if(!(theme %in% c("united", "cyborg"))) stop("Only the following themes supported: united, cyborg.")
 	
-	navClassStrings <- function(x){
-		switch(x,
-		united=c("brand", "nav-collapse collapse", "nav", "nav pull-right", "navbar-inner", "container", "", "btn btn-navbar", ".nav-collapse", "</div>\n"),
-		cyborg=c("navbar-brand", "navbar-collapse collapse navbar-responsive-collapse", "nav navbar-nav", "nav navbar-nav navbar-right", "container", "navbar-header", "      </div>\n", "navbar-toggle", ".navbar-responsive-collapse", "")
-		)
-	}
+	#navClassStrings <- function(x){
+	#	switch(x,
+	#	united=c("brand", "nav-collapse collapse", "nav", "nav pull-right", "navbar-inner", "container", "", "btn btn-navbar", ".nav-collapse", "</div>\n"),
+	#	cyborg=c("navbar-brand", "navbar-collapse collapse navbar-responsive-collapse", "nav navbar-nav", "nav navbar-nav navbar-right", "container", "navbar-header", "      </div>\n", "navbar-toggle", ".navbar-responsive-collapse", "")
+	#	)
+	#}
 	
-	ncs <- navClassStrings(theme)
+	#ncs <- navClassStrings(theme)
+	ncs <- c("navbar-brand", "navbar-collapse collapse navbar-responsive-collapse", "nav navbar-nav", "nav navbar-nav navbar-right", "container", "navbar-header", "      </div>\n", "navbar-toggle", ".navbar-responsive-collapse", "")
 	
 	if(!is.null(media.button.args)){
 		media.buttons <- do.call(buttonGroup, media.button.args)
 	} else if(site.name=="Github" & site.url!="") {
-		media.buttons <- paste0('<a class="btn btn-primary" href="', site.url, '">\n            <i class="fa fa-github fa-lg"></i>\n            ',site.name,'\n          </a>\n')
+		media.buttons <- paste0('<a class="btn btn-link" href="', site.url, '">\n            <i class="fa fa-github fa-lg"></i>\n            ',site.name,'\n          </a>\n')
 	} else media.buttons <- ""
 	
 	fillSubmenu <- function(x, name, file, theme){
-		if(theme=="united") dd.menu.header <- "nav-header" else if(theme=="cyborg") dd.menu.header <- "dropdown-header"
+		#if(theme=="united") dd.menu.header <- "nav-header" else if(theme=="cyborg") dd.menu.header <- "dropdown-header"
+		dd.menu.header <- "dropdown-header"
 		if(file[x]=="divider") return('              <li class="divider"></li>\n')
 		if(file[x]=="header") return(paste0('              <li class="', dd.menu.header, '">', name[x], '</li>\n'))
 		paste0('              <li><a href="', file[x], '">', name[x], '</a></li>\n')
