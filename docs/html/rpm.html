@@ -123,20 +123,21 @@ img {
 <div class="container-fluid main-container">
 
 <div class="navbar navbar-default navbar-fixed-top">
-  <div class="navbar-inner">
-    <div class="container">
-      <button type="button" class="btn btn-navbar" data-toggle="collapse" data-target=".nav-collapse">
+  <div class="container">
+    <div class="navbar-header">
+      <button type="button" class="navbar-toggle" data-toggle="collapse" data-target=".navbar-responsive-collapse">
         <span class="icon-bar"></span>
         <span class="icon-bar"></span>
         <span class="icon-bar"></span>
       </button>
-      <a class="brand" href="index.html">Project Management</a>
-      <div class="nav-collapse collapse">
-        <ul class="nav">
+      <a class="navbar-brand" href="index.html">Project Management</a>
+      </div>
+      <div class="navbar-collapse collapse navbar-responsive-collapse">
+        <ul class="nav navbar-nav">
           <li class="dropdown">
             <a href="rpm" class="dropdown-toggle" data-toggle="dropdown">rpm <b class="caret"></b></a>
             <ul class="dropdown-menu">
-              <li class="nav-header">About rpm</li>
+              <li class="dropdown-header">About rpm</li>
               <li><a href="index.html">Introduction</a></li>
               <li><a href="code_sankey.html">Related items</a></li>
               <li><a href="pm.html">Example usage</a></li>
@@ -147,7 +148,7 @@ img {
             <ul class="dropdown-menu">
               <li><a href="objects.html">Default objects</a></li>
               <li class="divider"></li>
-              <li class="nav-header">Functions</li>
+              <li class="dropdown-header">Functions</li>
               <li><a href="func_new.html">Start a new project</a></li>
               <li><a href="func_rmd.html">Working with Rmd files</a></li>
               <li><a href="func_convert.html">Document conversion</a></li>
@@ -160,15 +161,15 @@ img {
           <li class="dropdown">
             <a href="all-projects" class="dropdown-toggle" data-toggle="dropdown">All Projects <b class="caret"></b></a>
             <ul class="dropdown-menu">
-              <li class="nav-header">Hierarchy of current projects</li>
+              <li class="dropdown-header">Hierarchy of current projects</li>
               <li><a href="proj_sankey.html">Projects diagram</a></li>
               <li class="divider"></li>
-              <li class="nav-header">Access all projects</li>
+              <li class="dropdown-header">Access all projects</li>
               <li><a href="http://leonawicz.github.io">leonawicz.github.io</a></li>
             </ul>
         </ul>
-        <ul class="nav pull-right">
-          <a class="btn btn-primary" href="https://github.com/leonawicz/ProjectManagement">
+        <ul class="nav navbar-nav navbar-right">
+          <a class="btn btn-link" href="https://github.com/leonawicz/ProjectManagement">
             <i class="fa fa-github fa-lg"></i>
             Github
           </a>
@@ -176,7 +177,6 @@ img {
       </div><!--/.nav-collapse -->
     </div>
   </div>
-</div>
 
 <div id="header">
 <h1 class="title">Project Management</h1>
@@ -241,7 +241,7 @@ img {
   &lt;/head&gt;
   &lt;body &gt;
     
-    &lt;div id = 'chart5502180564c' class = 'rChart d3_sankey'&gt;&lt;/div&gt;    
+    &lt;div id = 'chart81838962f6a' class = 'rChart d3_sankey'&gt;&lt;/div&gt;    
     ï»¿&lt;!--Attribution:
 Mike Bostock https://github.com/d3/d3-plugins/tree/master/sankey
 Mike Bostock http://bost.ocks.org/mike/sankey/
@@ -250,7 +250,7 @@ Mike Bostock http://bost.ocks.org/mike/sankey/
 &lt;script&gt;
 (function(){
 var params = {
- &quot;dom&quot;: &quot;chart5502180564c&quot;,
+ &quot;dom&quot;: &quot;chart81838962f6a&quot;,
 &quot;width&quot;:    900,
 &quot;height&quot;:    800,
 &quot;data&quot;: {
@@ -268,7 +268,7 @@ var params = {
 &quot;top&quot;:     20 
 },
 &quot;title&quot;: &quot;Matt's Projects&quot;,
-&quot;id&quot;: &quot;chart5502180564c&quot; 
+&quot;id&quot;: &quot;chart81838962f6a&quot; 
 };
 
 params.units ? units = &quot; &quot; + params.units : units = &quot;&quot;;
@@ -388,11 +388,11 @@ node.append(&quot;text&quot;)
     
     &lt;script&gt;
       var cscale = d3.scale.category20b();
-      d3.selectAll('#chart5502180564c svg path.link')
+      d3.selectAll('#chart81838962f6a svg path.link')
         .style('stroke', function(d){
           return cscale(d.source.name);
         })
-      d3.selectAll('#chart5502180564c svg .node rect')
+      d3.selectAll('#chart81838962f6a svg .node rect')
         .style('fill', function(d){
           return cscale(d.name)
         })
@@ -400,7 +400,7 @@ node.append(&quot;text&quot;)
     &lt;/script&gt;
         
   &lt;/body&gt;
-&lt;/html&gt; " scrolling="no" frameBorder="0" seamless class="rChart  http://timelyportfolio.github.io/rCharts_d3_sankey/libraries/widgets/d3_sankey  " id="iframe-chart5502180564c">
+&lt;/html&gt; " scrolling="no" frameBorder="0" seamless class="rChart  http://timelyportfolio.github.io/rCharts_d3_sankey/libraries/widgets/d3_sankey  " id="iframe-chart81838962f6a">
 </iframe>
 <style>iframe.rChart{ width: 100%; height: 400px;}</style>
 <style>iframe.rChart{ width: 100%; height: 840px;}</style>
@@ -488,7 +488,8 @@ matt.proj.path &lt;-<span class="st"> &quot;C:/github&quot;</span></code></pre>
     x &lt;-<span class="st"> </span><span class="kw">paste0</span>(<span class="st">&quot;</span><span class="ch">\n</span><span class="st">```{r knitr_setup, echo=FALSE}</span><span class="ch">\n</span><span class="st">opts_chunk$set(cache=FALSE, eval=FALSE, tidy=TRUE, message=FALSE, warning=FALSE)</span><span class="ch">\n</span><span class="st">&quot;</span>)
     if (include.sankey) 
         x &lt;-<span class="st"> </span><span class="kw">paste0</span>(x, <span class="st">&quot;read_chunk(</span><span class="ch">\&quot;</span><span class="st">../../code/proj_sankey.R</span><span class="ch">\&quot;</span><span class="st">)</span><span class="ch">\n</span><span class="st">&quot;</span>)
-    x &lt;-<span class="st"> </span><span class="kw">paste0</span>(x, <span class="st">&quot;read_chunk(</span><span class="ch">\&quot;</span><span class="st">../../code/&quot;</span>, file, <span class="st">&quot;</span><span class="ch">\&quot;</span><span class="st">)</span><span class="ch">\n</span><span class="st">```</span><span class="ch">\n</span><span class="st">&quot;</span>)
+    x &lt;-<span class="st"> </span><span class="kw">paste0</span>(x, <span class="st">&quot;read_chunk(</span><span class="ch">\&quot;</span><span class="st">../../code/&quot;</span>, <span class="kw">gsub</span>(<span class="st">&quot;</span><span class="ch">\\</span><span class="st">.Rmd&quot;</span>, <span class="st">&quot;</span><span class="ch">\\</span><span class="st">.R&quot;</span>, <span class="kw">basename</span>(file)), 
+        <span class="st">&quot;</span><span class="ch">\&quot;</span><span class="st">)</span><span class="ch">\n</span><span class="st">```</span><span class="ch">\n</span><span class="st">&quot;</span>)
     x
 }</code></pre>
 </div>
@@ -581,7 +582,7 @@ matt.proj.path &lt;-<span class="st"> &quot;C:/github&quot;</span></code></pre>
     rmd &lt;-<span class="st"> </span><span class="kw">file.path</span>(<span class="kw">dirname</span>(path), <span class="st">&quot;docs/Rmd&quot;</span>, rmd)
     rmd &lt;-<span class="st"> </span>rmd[<span class="kw">sapply</span>(rmd, file.exists)]
     <span class="kw">stopifnot</span>(<span class="kw">length</span>(rmd) &gt;<span class="st"> </span><span class="dv">0</span>)  <span class="co"># Rmd files must exist</span>
-    files.ind &lt;-<span class="st"> </span><span class="kw">match</span>(<span class="kw">gsub</span>(<span class="st">&quot;.Rmd&quot;</span>, <span class="st">&quot;&quot;</span>, <span class="kw">basename</span>(rmd)), <span class="kw">gsub</span>(<span class="st">&quot;.R&quot;</span>, <span class="st">&quot;&quot;</span>, <span class="kw">basename</span>(files)))  <span class="co"># Rmd exist for which R script</span>
+    files.ind &lt;-<span class="st"> </span><span class="kw">match</span>(<span class="kw">gsub</span>(<span class="st">&quot;</span><span class="ch">\\</span><span class="st">.Rmd&quot;</span>, <span class="st">&quot;&quot;</span>, <span class="kw">basename</span>(rmd)), <span class="kw">gsub</span>(<span class="st">&quot;</span><span class="ch">\\</span><span class="st">.R&quot;</span>, <span class="st">&quot;&quot;</span>, <span class="kw">basename</span>(files)))  <span class="co"># Rmd exist for which R script</span>
     l2 &lt;-<span class="st"> </span><span class="kw">lapply</span>(rmd, readLines)
     l2 &lt;-<span class="st"> </span><span class="kw">rapply</span>(l2, function(x) x[<span class="kw">substr</span>(x, <span class="dv">1</span>, <span class="kw">nchar</span>(rmdChunkID)) ==<span class="st"> </span>rmdChunkID], 
         <span class="dt">how =</span> <span class="st">&quot;replace&quot;</span>)
@@ -1135,32 +1136,33 @@ buttonGroup &lt;-<span class="st"> </span>function(txt, urls, <span class="dt">f
 <pre class="sourceCode r"><code class="sourceCode r">genNavbar &lt;-<span class="st"> </span>function(<span class="dt">htmlfile =</span> <span class="st">&quot;navbar.html&quot;</span>, title, menu, submenus, files, 
     <span class="dt">title.url =</span> <span class="st">&quot;index.html&quot;</span>, <span class="dt">home.url =</span> <span class="st">&quot;index.html&quot;</span>, <span class="dt">site.url =</span> <span class="st">&quot;&quot;</span>, <span class="dt">site.name =</span> <span class="st">&quot;Github&quot;</span>, 
     <span class="dt">media.button.args =</span> <span class="ot">NULL</span>, <span class="dt">theme =</span> <span class="st">&quot;united&quot;</span>, <span class="dt">include.home =</span> <span class="ot">FALSE</span>) {
-    if (!(theme %in%<span class="st"> </span><span class="kw">c</span>(<span class="st">&quot;united&quot;</span>, <span class="st">&quot;cyborg&quot;</span>))) 
-        <span class="kw">stop</span>(<span class="st">&quot;Only the following themes supported: united, cyborg.&quot;</span>)
+    <span class="co"># if(!(theme %in% c(&#39;united&#39;, &#39;cyborg&#39;))) stop(&#39;Only the following themes</span>
+    <span class="co"># supported: united, cyborg.&#39;)</span>
     
-    navClassStrings &lt;-<span class="st"> </span>function(x) {
-        switch(x, <span class="dt">united =</span> <span class="kw">c</span>(<span class="st">&quot;brand&quot;</span>, <span class="st">&quot;nav-collapse collapse&quot;</span>, <span class="st">&quot;nav&quot;</span>, <span class="st">&quot;nav pull-right&quot;</span>, 
-            <span class="st">&quot;navbar-inner&quot;</span>, <span class="st">&quot;container&quot;</span>, <span class="st">&quot;&quot;</span>, <span class="st">&quot;btn btn-navbar&quot;</span>, <span class="st">&quot;.nav-collapse&quot;</span>, 
-            <span class="st">&quot;&lt;/div&gt;</span><span class="ch">\n</span><span class="st">&quot;</span>), <span class="dt">cyborg =</span> <span class="kw">c</span>(<span class="st">&quot;navbar-brand&quot;</span>, <span class="st">&quot;navbar-collapse collapse navbar-responsive-collapse&quot;</span>, 
-            <span class="st">&quot;nav navbar-nav&quot;</span>, <span class="st">&quot;nav navbar-nav navbar-right&quot;</span>, <span class="st">&quot;container&quot;</span>, <span class="st">&quot;navbar-header&quot;</span>, 
-            <span class="st">&quot;      &lt;/div&gt;</span><span class="ch">\n</span><span class="st">&quot;</span>, <span class="st">&quot;navbar-toggle&quot;</span>, <span class="st">&quot;.navbar-responsive-collapse&quot;</span>, 
-            <span class="st">&quot;&quot;</span>))
-    }
+    <span class="co"># navClassStrings &lt;- function(x){ switch(x, united=c(&#39;brand&#39;, &#39;nav-collapse</span>
+    <span class="co"># collapse&#39;, &#39;nav&#39;, &#39;nav pull-right&#39;, &#39;navbar-inner&#39;, &#39;container&#39;, &#39;&#39;, &#39;btn</span>
+    <span class="co"># btn-navbar&#39;, &#39;.nav-collapse&#39;, &#39;&lt;/div&gt;\n&#39;), cyborg=c(&#39;navbar-brand&#39;,</span>
+    <span class="co"># &#39;navbar-collapse collapse navbar-responsive-collapse&#39;, &#39;nav navbar-nav&#39;,</span>
+    <span class="co"># &#39;nav navbar-nav navbar-right&#39;, &#39;container&#39;, &#39;navbar-header&#39;, &#39; &lt;/div&gt;\n&#39;,</span>
+    <span class="co"># &#39;navbar-toggle&#39;, &#39;.navbar-responsive-collapse&#39;, &#39;&#39;) ) }</span>
     
-    ncs &lt;-<span class="st"> </span><span class="kw">navClassStrings</span>(theme)
+    <span class="co"># ncs &lt;- navClassStrings(theme)</span>
+    ncs &lt;-<span class="st"> </span><span class="kw">c</span>(<span class="st">&quot;navbar-brand&quot;</span>, <span class="st">&quot;navbar-collapse collapse navbar-responsive-collapse&quot;</span>, 
+        <span class="st">&quot;nav navbar-nav&quot;</span>, <span class="st">&quot;nav navbar-nav navbar-right&quot;</span>, <span class="st">&quot;container&quot;</span>, <span class="st">&quot;navbar-header&quot;</span>, 
+        <span class="st">&quot;      &lt;/div&gt;</span><span class="ch">\n</span><span class="st">&quot;</span>, <span class="st">&quot;navbar-toggle&quot;</span>, <span class="st">&quot;.navbar-responsive-collapse&quot;</span>, <span class="st">&quot;&quot;</span>)
     
     if (!<span class="kw">is.null</span>(media.button.args)) {
         media.buttons &lt;-<span class="st"> </span><span class="kw">do.call</span>(buttonGroup, media.button.args)
     } else if (site.name ==<span class="st"> &quot;Github&quot;</span> &amp;<span class="st"> </span>site.url !=<span class="st"> &quot;&quot;</span>) {
-        media.buttons &lt;-<span class="st"> </span><span class="kw">paste0</span>(<span class="st">&quot;&lt;a class=</span><span class="ch">\&quot;</span><span class="st">btn btn-primary</span><span class="ch">\&quot;</span><span class="st"> href=</span><span class="ch">\&quot;</span><span class="st">&quot;</span>, site.url, 
+        media.buttons &lt;-<span class="st"> </span><span class="kw">paste0</span>(<span class="st">&quot;&lt;a class=</span><span class="ch">\&quot;</span><span class="st">btn btn-link</span><span class="ch">\&quot;</span><span class="st"> href=</span><span class="ch">\&quot;</span><span class="st">&quot;</span>, site.url, 
             <span class="st">&quot;</span><span class="ch">\&quot;</span><span class="st">&gt;</span><span class="ch">\n</span><span class="st">            &lt;i class=</span><span class="ch">\&quot;</span><span class="st">fa fa-github fa-lg</span><span class="ch">\&quot;</span><span class="st">&gt;&lt;/i&gt;</span><span class="ch">\n</span><span class="st">            &quot;</span>, 
             site.name, <span class="st">&quot;</span><span class="ch">\n</span><span class="st">          &lt;/a&gt;</span><span class="ch">\n</span><span class="st">&quot;</span>)
     } else media.buttons &lt;-<span class="st"> &quot;&quot;</span>
     
     fillSubmenu &lt;-<span class="st"> </span>function(x, name, file, theme) {
-        if (theme ==<span class="st"> &quot;united&quot;</span>) 
-            dd.menu.header &lt;-<span class="st"> &quot;nav-header&quot;</span> else if (theme ==<span class="st"> &quot;cyborg&quot;</span>) 
-            dd.menu.header &lt;-<span class="st"> &quot;dropdown-header&quot;</span>
+        <span class="co"># if(theme==&#39;united&#39;) dd.menu.header &lt;- &#39;nav-header&#39; else</span>
+        <span class="co"># if(theme==&#39;cyborg&#39;) dd.menu.header &lt;- &#39;dropdown-header&#39;</span>
+        dd.menu.header &lt;-<span class="st"> &quot;dropdown-header&quot;</span>
         if (file[x] ==<span class="st"> &quot;divider&quot;</span>) 
             <span class="kw">return</span>(<span class="st">&quot;              &lt;li class=</span><span class="ch">\&quot;</span><span class="st">divider</span><span class="ch">\&quot;</span><span class="st">&gt;&lt;/li&gt;</span><span class="ch">\n</span><span class="st">&quot;</span>)
         if (file[x] ==<span class="st"> &quot;header&quot;</span>) 
@@ -1251,8 +1253,8 @@ buttonGroup &lt;-<span class="st"> </span>function(txt, urls, <span class="dt">f
 <p>This function makes the more specific <code>genAppDiv</code> redundant and will likely replace it.</p>
 <pre class="sourceCode r"><code class="sourceCode r">genPanelDiv &lt;-<span class="st"> </span>function(outDir, <span class="dt">type =</span> <span class="st">&quot;projects&quot;</span>, <span class="dt">main =</span> <span class="st">&quot;Projects&quot;</span>, <span class="dt">github.user =</span> <span class="st">&quot;leonawicz&quot;</span>, 
     <span class="dt">prjs.dir =</span> <span class="st">&quot;C:/github&quot;</span>, <span class="dt">exclude =</span> <span class="kw">c</span>(<span class="st">&quot;leonawicz.github.io&quot;</span>, <span class="st">&quot;shiny-apps&quot;</span>, 
-        <span class="st">&quot;DataVisExamples&quot;</span>, <span class="st">&quot;.git&quot;</span>, <span class="st">&quot;_images&quot;</span>), <span class="dt">img.loc =</span> <span class="st">&quot;_images/small&quot;</span>, <span class="dt">lightbox =</span> <span class="ot">FALSE</span>, 
-    <span class="dt">include.buttons =</span> <span class="ot">TRUE</span>, <span class="dt">include.titles =</span> <span class="ot">TRUE</span>, ...) {
+        <span class="st">&quot;eris2&quot;</span>, <span class="st">&quot;DataVisExamples&quot;</span>, <span class="st">&quot;.git&quot;</span>, <span class="st">&quot;_images&quot;</span>), <span class="dt">img.loc =</span> <span class="st">&quot;_images/small&quot;</span>, 
+    <span class="dt">lightbox =</span> <span class="ot">FALSE</span>, <span class="dt">include.buttons =</span> <span class="ot">TRUE</span>, <span class="dt">include.titles =</span> <span class="ot">TRUE</span>, ...) {
     
     <span class="kw">stopifnot</span>(github.user %in%<span class="st"> </span><span class="kw">c</span>(<span class="st">&quot;leonawicz&quot;</span>, <span class="st">&quot;ua-snap&quot;</span>))
     if (type ==<span class="st"> &quot;apps&quot;</span>) {

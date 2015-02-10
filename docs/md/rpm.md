@@ -90,7 +90,7 @@ Here is a project hierarchy diagram showing the relationships among all my curre
   &lt;/head&gt;
   &lt;body &gt;
     
-    &lt;div id = &#039;chart5502180564c&#039; class = &#039;rChart d3_sankey&#039;&gt;&lt;/div&gt;    
+    &lt;div id = &#039;chart81838962f6a&#039; class = &#039;rChart d3_sankey&#039;&gt;&lt;/div&gt;    
     ï»¿&lt;!--Attribution:
 Mike Bostock https://github.com/d3/d3-plugins/tree/master/sankey
 Mike Bostock http://bost.ocks.org/mike/sankey/
@@ -99,7 +99,7 @@ Mike Bostock http://bost.ocks.org/mike/sankey/
 &lt;script&gt;
 (function(){
 var params = {
- &quot;dom&quot;: &quot;chart5502180564c&quot;,
+ &quot;dom&quot;: &quot;chart81838962f6a&quot;,
 &quot;width&quot;:    900,
 &quot;height&quot;:    800,
 &quot;data&quot;: {
@@ -117,7 +117,7 @@ var params = {
 &quot;top&quot;:     20 
 },
 &quot;title&quot;: &quot;Matt&#039;s Projects&quot;,
-&quot;id&quot;: &quot;chart5502180564c&quot; 
+&quot;id&quot;: &quot;chart81838962f6a&quot; 
 };
 
 params.units ? units = &quot; &quot; + params.units : units = &quot;&quot;;
@@ -237,11 +237,11 @@ node.append(&quot;text&quot;)
     
     &lt;script&gt;
       var cscale = d3.scale.category20b();
-      d3.selectAll(&#039;#chart5502180564c svg path.link&#039;)
+      d3.selectAll(&#039;#chart81838962f6a svg path.link&#039;)
         .style(&#039;stroke&#039;, function(d){
           return cscale(d.source.name);
         })
-      d3.selectAll(&#039;#chart5502180564c svg .node rect&#039;)
+      d3.selectAll(&#039;#chart81838962f6a svg .node rect&#039;)
         .style(&#039;fill&#039;, function(d){
           return cscale(d.name)
         })
@@ -249,7 +249,7 @@ node.append(&quot;text&quot;)
     &lt;/script&gt;
         
   &lt;/body&gt;
-&lt;/html&gt; ' scrolling='no' frameBorder='0' seamless class='rChart  http://timelyportfolio.github.io/rCharts_d3_sankey/libraries/widgets/d3_sankey  ' id='iframe-chart5502180564c'> </iframe>
+&lt;/html&gt; ' scrolling='no' frameBorder='0' seamless class='rChart  http://timelyportfolio.github.io/rCharts_d3_sankey/libraries/widgets/d3_sankey  ' id='iframe-chart81838962f6a'> </iframe>
  <style>iframe.rChart{ width: 100%; height: 400px;}</style>
 <style>iframe.rChart{ width: 100%; height: 840px;}</style>
 
@@ -367,7 +367,8 @@ The `...` argument to `genRmd` is passed to `.rmdknitrSetup`, currently acceptin
     x <- paste0("\n```{r knitr_setup, echo=FALSE}\nopts_chunk$set(cache=FALSE, eval=FALSE, tidy=TRUE, message=FALSE, warning=FALSE)\n")
     if (include.sankey) 
         x <- paste0(x, "read_chunk(\"../../code/proj_sankey.R\")\n")
-    x <- paste0(x, "read_chunk(\"../../code/", file, "\")\n```\n")
+    x <- paste0(x, "read_chunk(\"../../code/", gsub("\\.Rmd", "\\.R", basename(file)), 
+        "\")\n```\n")
     x
 }
 ```
@@ -485,7 +486,7 @@ chunkNames <- function(path, rChunkID = "# @knitr", rmdChunkID = "```{r", append
     rmd <- file.path(dirname(path), "docs/Rmd", rmd)
     rmd <- rmd[sapply(rmd, file.exists)]
     stopifnot(length(rmd) > 0)  # Rmd files must exist
-    files.ind <- match(gsub(".Rmd", "", basename(rmd)), gsub(".R", "", basename(files)))  # Rmd exist for which R script
+    files.ind <- match(gsub("\\.Rmd", "", basename(rmd)), gsub("\\.R", "", basename(files)))  # Rmd exist for which R script
     l2 <- lapply(rmd, readLines)
     l2 <- rapply(l2, function(x) x[substr(x, 1, nchar(rmdChunkID)) == rmdChunkID], 
         how = "replace")
@@ -1161,32 +1162,33 @@ I have not checked yet to see if this also works for project pages.
 genNavbar <- function(htmlfile = "navbar.html", title, menu, submenus, files, 
     title.url = "index.html", home.url = "index.html", site.url = "", site.name = "Github", 
     media.button.args = NULL, theme = "united", include.home = FALSE) {
-    if (!(theme %in% c("united", "cyborg"))) 
-        stop("Only the following themes supported: united, cyborg.")
+    # if(!(theme %in% c('united', 'cyborg'))) stop('Only the following themes
+    # supported: united, cyborg.')
     
-    navClassStrings <- function(x) {
-        switch(x, united = c("brand", "nav-collapse collapse", "nav", "nav pull-right", 
-            "navbar-inner", "container", "", "btn btn-navbar", ".nav-collapse", 
-            "</div>\n"), cyborg = c("navbar-brand", "navbar-collapse collapse navbar-responsive-collapse", 
-            "nav navbar-nav", "nav navbar-nav navbar-right", "container", "navbar-header", 
-            "      </div>\n", "navbar-toggle", ".navbar-responsive-collapse", 
-            ""))
-    }
+    # navClassStrings <- function(x){ switch(x, united=c('brand', 'nav-collapse
+    # collapse', 'nav', 'nav pull-right', 'navbar-inner', 'container', '', 'btn
+    # btn-navbar', '.nav-collapse', '</div>\n'), cyborg=c('navbar-brand',
+    # 'navbar-collapse collapse navbar-responsive-collapse', 'nav navbar-nav',
+    # 'nav navbar-nav navbar-right', 'container', 'navbar-header', ' </div>\n',
+    # 'navbar-toggle', '.navbar-responsive-collapse', '') ) }
     
-    ncs <- navClassStrings(theme)
+    # ncs <- navClassStrings(theme)
+    ncs <- c("navbar-brand", "navbar-collapse collapse navbar-responsive-collapse", 
+        "nav navbar-nav", "nav navbar-nav navbar-right", "container", "navbar-header", 
+        "      </div>\n", "navbar-toggle", ".navbar-responsive-collapse", "")
     
     if (!is.null(media.button.args)) {
         media.buttons <- do.call(buttonGroup, media.button.args)
     } else if (site.name == "Github" & site.url != "") {
-        media.buttons <- paste0("<a class=\"btn btn-primary\" href=\"", site.url, 
+        media.buttons <- paste0("<a class=\"btn btn-link\" href=\"", site.url, 
             "\">\n            <i class=\"fa fa-github fa-lg\"></i>\n            ", 
             site.name, "\n          </a>\n")
     } else media.buttons <- ""
     
     fillSubmenu <- function(x, name, file, theme) {
-        if (theme == "united") 
-            dd.menu.header <- "nav-header" else if (theme == "cyborg") 
-            dd.menu.header <- "dropdown-header"
+        # if(theme=='united') dd.menu.header <- 'nav-header' else
+        # if(theme=='cyborg') dd.menu.header <- 'dropdown-header'
+        dd.menu.header <- "dropdown-header"
         if (file[x] == "divider") 
             return("              <li class=\"divider\"></li>\n")
         if (file[x] == "header") 
@@ -1315,8 +1317,8 @@ This function makes the more specific `genAppDiv` redundant and will likely repl
 ```r
 genPanelDiv <- function(outDir, type = "projects", main = "Projects", github.user = "leonawicz", 
     prjs.dir = "C:/github", exclude = c("leonawicz.github.io", "shiny-apps", 
-        "DataVisExamples", ".git", "_images"), img.loc = "_images/small", lightbox = FALSE, 
-    include.buttons = TRUE, include.titles = TRUE, ...) {
+        "eris2", "DataVisExamples", ".git", "_images"), img.loc = "_images/small", 
+    lightbox = FALSE, include.buttons = TRUE, include.titles = TRUE, ...) {
     
     stopifnot(github.user %in% c("leonawicz", "ua-snap"))
     if (type == "apps") {
