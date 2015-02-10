@@ -4,6 +4,8 @@
 
 code/
 docs/
+data/
+workspaces/
 .Rhistory
 *.pydevproject
 .project
