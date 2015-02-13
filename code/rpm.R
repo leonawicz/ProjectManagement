@@ -525,17 +525,7 @@ buttonGroup <- function(txt, urls, fa.icons=NULL, colors="primary", solid.group=
 }
 
 # @knitr fun_genNavbar
-genNavbar <- function(htmlfile="navbar.html", title, menu, submenus, files, title.url="index.html", home.url="index.html", site.url="", site.name="Github", media.button.args=NULL, theme="united", include.home=FALSE){
-	#if(!(theme %in% c("united", "cyborg"))) stop("Only the following themes supported: united, cyborg.")
-	
-	#navClassStrings <- function(x){
-	#	switch(x,
-	#	united=c("brand", "nav-collapse collapse", "nav", "nav pull-right", "navbar-inner", "container", "", "btn btn-navbar", ".nav-collapse", "</div>\n"),
-	#	cyborg=c("navbar-brand", "navbar-collapse collapse navbar-responsive-collapse", "nav navbar-nav", "nav navbar-nav navbar-right", "container", "navbar-header", "      </div>\n", "navbar-toggle", ".navbar-responsive-collapse", "")
-	#	)
-	#}
-	
-	#ncs <- navClassStrings(theme)
+genNavbar <- function(htmlfile="navbar.html", title, menu, submenus, files, title.url="index.html", home.url="index.html", site.url="", site.name="Github", media.button.args=NULL, include.home=FALSE){
 	ncs <- c("navbar-brand", "navbar-collapse collapse navbar-responsive-collapse", "nav navbar-nav", "nav navbar-nav navbar-right", "container", "navbar-header", "      </div>\n", "navbar-toggle", ".navbar-responsive-collapse", "")
 	
 	if(!is.null(media.button.args)){
@@ -544,15 +534,14 @@ genNavbar <- function(htmlfile="navbar.html", title, menu, submenus, files, titl
 		media.buttons <- paste0('<a class="btn btn-link" href="', site.url, '">\n            <i class="fa fa-github fa-lg"></i>\n            ',site.name,'\n          </a>\n')
 	} else media.buttons <- ""
 	
-	fillSubmenu <- function(x, name, file, theme){
-		#if(theme=="united") dd.menu.header <- "nav-header" else if(theme=="cyborg") dd.menu.header <- "dropdown-header"
+	fillSubmenu <- function(x, name, file){
 		dd.menu.header <- "dropdown-header"
 		if(file[x]=="divider") return('              <li class="divider"></li>\n')
 		if(file[x]=="header") return(paste0('              <li class="', dd.menu.header, '">', name[x], '</li>\n'))
 		paste0('              <li><a href="', file[x], '">', name[x], '</a></li>\n')
 	}
 	
-	fillMenu <- function(x, menu, submenus, files, theme){
+	fillMenu <- function(x, menu, submenus, files){
 		m <- menu[x]
 		gs.menu <- gsub(" ", "-", tolower(m))
 		s <- submenus[[x]]
@@ -565,7 +554,7 @@ genNavbar <- function(htmlfile="navbar.html", title, menu, submenus, files, titl
 				gs.menu, 
 				'" class="dropdown-toggle" data-toggle="dropdown">', m, 
 				' <b class="caret"></b></a>\n            <ul class="dropdown-menu">\n',
-				paste(sapply(1:length(s), fillSubmenu, name=s, file=f, theme=theme), sep="", collapse=""),
+				paste(sapply(1:length(s), fillSubmenu, name=s, file=f), sep="", collapse=""),
 				'            </ul>\n', collapse="")
 		}
 	}
@@ -574,7 +563,7 @@ genNavbar <- function(htmlfile="navbar.html", title, menu, submenus, files, titl
 	x <- paste0(
 		'<div class="navbar navbar-default navbar-fixed-top">\n  <div class="', ncs[5], '">\n    <div class="', ncs[6], '">\n      <button type="button" class="', ncs[8], '" data-toggle="collapse" data-target="', ncs[9], '">\n        <span class="icon-bar"></span>\n        <span class="icon-bar"></span>\n        <span class="icon-bar"></span>\n      </button>\n      <a class="', ncs[1], '" href="', title.url, '">', title, '</a>\n', ncs[7], '      <div class="', ncs[2], '">\n        <ul class="', ncs[3], '">\n          ',
 		home,
-		paste(sapply(1:length(menu), fillMenu, menu=menu, submenus=submenus, files=files, theme=theme), sep="", collapse="\n          "),
+		paste(sapply(1:length(menu), fillMenu, menu=menu, submenus=submenus, files=files), sep="", collapse="\n          "),
 		'        </ul>\n        <ul class="', ncs[4], '">\n          ', media.buttons, '        </ul>\n      </div><!--/.nav-collapse -->\n    </div>\n  ', ncs[10], '</div>\n',
 		collpase="")
 	sink(htmlfile)
