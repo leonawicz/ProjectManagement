@@ -93,7 +93,10 @@ setwd(file.path(mainDir, "assets"))
 # create projects container html file
 genPanelDiv(outDir=getwd(), type="projects", main="Projects", github.user=user, col="primary")
 # create Shiny apps container html file
-genPanelDiv(outDir=getwd(), type="apps", main="Shiny Apps", github.user="ua-snap")
+apps <- sapply(strsplit(list.files("../../shiny-apps/_images/small"), "\\."), "[[", 1)
+btn.lab <- rep("Launch", length(apps))
+btn.lab[apps %in% c("cmip3_cmip5", "run_alfresco")] <- "UAF ONLY"
+genPanelDiv(outDir=getwd(), type="apps", main="Shiny Apps", github.user="ua-snap", go.label=btn.lab)
 # create Data Visualizations master container html file
 genPanelDiv(outDir=getwd(), type="datavis", main="Data Visualizations", github.user=user, col="default")
 # create all Gallery container html files
