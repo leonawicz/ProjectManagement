@@ -525,7 +525,7 @@ buttonGroup <- function(txt, urls, fa.icons=NULL, colors="primary", solid.group=
 }
 
 # @knitr fun_genNavbar
-genNavbar <- function(htmlfile="navbar.html", title, menu, submenus, files, title.url="index.html", home.url="index.html", site.url="", site.name="Github", media.button.args=NULL, include.home=FALSE){
+genNavbar <- function(htmlfile="navbar.html", before_body=NULL, title, menu, submenus, files, title.url="index.html", home.url="index.html", site.url="", site.name="Github", media.button.args=NULL, include.home=FALSE){
 	ncs <- c("navbar-brand", "navbar-collapse collapse navbar-responsive-collapse", "nav navbar-nav", "nav navbar-nav navbar-right", "container", "navbar-header", "      </div>\n", "navbar-toggle", ".navbar-responsive-collapse", "")
 	
 	if(!is.null(media.button.args)){
@@ -566,6 +566,9 @@ genNavbar <- function(htmlfile="navbar.html", title, menu, submenus, files, titl
 		paste(sapply(1:length(menu), fillMenu, menu=menu, submenus=submenus, files=files), sep="", collapse="\n          "),
 		'        </ul>\n        <ul class="', ncs[4], '">\n          ', media.buttons, '        </ul>\n      </div><!--/.nav-collapse -->\n    </div>\n  ', ncs[10], '</div>\n',
 		collpase="")
+		
+	if(!is.null(before_body)) x <- paste0(readLines(before_body), x)
+	
 	sink(htmlfile)
 	cat(x)
 	sink()
