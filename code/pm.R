@@ -51,22 +51,15 @@ genNavbar(htmlfile=file.path(proj.location, proj.name, "docs/Rmd/include/navbar.
 yaml.out <- file.path(proj.location, proj.name, "docs/Rmd/_output.yaml")
 libs <- "libs"
 common.header <- "include/in_header.html"
-genOutyaml(file=yaml.out, lib=libs, header=common.header, before_body="include/navbar.html")
+genOutyaml(file=yaml.out, lib=libs, header=common.header, before_body="include/navbar.html", after_body="include/after_body.html")
 
 # @knitr knit_setup
 library(rmarkdown)
 library(knitr)
 setwd(rmd.path)
 
-# R scripts
-#files.r <- list.files("../../code", pattern=".R$", full=T)
-
 # Rmd files
 files.Rmd <- list.files(pattern=".Rmd$", full=T)
-
-# potential non-Rmd directories for writing various output files
-#outtype <- file.path(dirname(getwd()), list.dirs("../", full=F, recursive=F))
-#outtype <- outtype[basename(outtype)!="Rmd"]
 
 # @knitr save
 # write all yaml front-matter-specified outputs to Rmd directory for all Rmd files
@@ -95,7 +88,7 @@ genPanelDiv(outDir=getwd(), type="projects", main="Projects", github.user=user, 
 # create Shiny apps container html file
 apps <- sapply(strsplit(list.files("../../shiny-apps/_images/small"), "\\."), "[[", 1)
 btn.lab <- rep("Launch", length(apps))
-btn.lab[apps %in% c("cmip3_cmip5", "run_alfresco")] <- "UAF ONLY"
+btn.lab[apps %in% c("ar4ar5", "run_alfresco")] <- "UAF ONLY"
 genPanelDiv(outDir=getwd(), type="apps", main="Shiny Apps", github.user="ua-snap", go.label=btn.lab)
 # create Data Visualizations master container html file
 genPanelDiv(outDir=getwd(), type="datavis", main="Data Visualizations", github.user=user, col="default")
