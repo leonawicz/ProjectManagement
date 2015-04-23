@@ -20,43 +20,29 @@
 <script src="libs/bootstrap-3.3.1/shim/html5shiv.min.js"></script>
 <script src="libs/bootstrap-3.3.1/shim/respond.min.js"></script>
 <style type="text/css">
-
 /* padding for bootstrap navbar */
 body {
-  padding-top: 50px;
-  padding-bottom: 40px;
+padding-top: 50px;
+padding-bottom: 40px;
 }
-@media (max-width: 979px) {
-  body {
-    padding-top: 0;
-  }
+/* offset scroll position for anchor links (for fixed navbar) */
+.section h2 {
+padding-top: 55px;
+margin-top: -55px;
 }
-
-/* offset scroll position for anchor links (for fixed navbar)  */
-@media (min-width: 980px) {
-  .section h2 {
-    padding-top: 52px;
-    margin-top: -52px;
-  }
-  .section h3 {
-    padding-top: 52px;
-    margin-top: -52px;
-  }
+.section h3 {
+padding-top: 55px;
+margin-top: -55px;
 }
-
-
 /* don't use link color in navbar */
 .dropdown-menu>li>a {
-  color: black;
+color: black;
 }
-
 /* some padding for disqus */
 #disqus_thread {
-  margin-top: 45px;
+margin-top: 45px;
 }
-
 </style>
-
 <link rel="stylesheet" href="libs/font-awesome-4.1.0/css/font-awesome.min.css"/>
 
 
@@ -296,7 +282,7 @@ p$<span class="kw">setTemplate</span>(<span class="dt">afterScript =</span> <spa
   &lt;/head&gt;
   &lt;body &gt;
     
-    &lt;div id = 'chart818525f1ed6' class = 'rChart d3_sankey'&gt;&lt;/div&gt;    
+    &lt;div id = 'chart8bc6d931f5a' class = 'rChart d3_sankey'&gt;&lt;/div&gt;    
     ï»¿&lt;!--Attribution:
 Mike Bostock https://github.com/d3/d3-plugins/tree/master/sankey
 Mike Bostock http://bost.ocks.org/mike/sankey/
@@ -305,7 +291,7 @@ Mike Bostock http://bost.ocks.org/mike/sankey/
 &lt;script&gt;
 (function(){
 var params = {
- &quot;dom&quot;: &quot;chart818525f1ed6&quot;,
+ &quot;dom&quot;: &quot;chart8bc6d931f5a&quot;,
 &quot;width&quot;:    900,
 &quot;height&quot;:    800,
 &quot;data&quot;: {
@@ -323,7 +309,7 @@ var params = {
 &quot;top&quot;:     20 
 },
 &quot;title&quot;: &quot;Matt's Projects&quot;,
-&quot;id&quot;: &quot;chart818525f1ed6&quot; 
+&quot;id&quot;: &quot;chart8bc6d931f5a&quot; 
 };
 
 params.units ? units = &quot; &quot; + params.units : units = &quot;&quot;;
@@ -443,11 +429,11 @@ node.append(&quot;text&quot;)
     
     &lt;script&gt;
       var cscale = d3.scale.category20b();
-      d3.selectAll('#chart818525f1ed6 svg path.link')
+      d3.selectAll('#chart8bc6d931f5a svg path.link')
         .style('stroke', function(d){
           return cscale(d.source.name);
         })
-      d3.selectAll('#chart818525f1ed6 svg .node rect')
+      d3.selectAll('#chart8bc6d931f5a svg .node rect')
         .style('fill', function(d){
           return cscale(d.name)
         })
@@ -455,12 +441,33 @@ node.append(&quot;text&quot;)
     &lt;/script&gt;
         
   &lt;/body&gt;
-&lt;/html&gt; " scrolling="no" frameBorder="0" seamless class="rChart  http://timelyportfolio.github.io/rCharts_d3_sankey/libraries/widgets/d3_sankey  " id="iframe-chart818525f1ed6">
+&lt;/html&gt; " scrolling="no" frameBorder="0" seamless class="rChart  http://timelyportfolio.github.io/rCharts_d3_sankey/libraries/widgets/d3_sankey  " id="iframe-chart8bc6d931f5a">
 </iframe>
 <style>iframe.rChart{ width: 100%; height: 400px;}</style>
 <style>iframe.rChart{ width: 100%; height: 840px;}</style>
 </div>
 
+<!-- some extra javascript for older browsers -->
+<script type="text/javascript" src="libs/polyfill.js"></script>
+<script>
+  // manage active state of menu based on current page
+  $(document).ready(function () {
+  
+    // active menu
+    href = window.location.pathname
+    href = href.substr(href.lastIndexOf('/') + 1)
+    $('a[href="' + href + '"]').parent().addClass('active');
+    
+    // manage active menu header
+    if (href.startsWith('authoring_'))
+      $('a[href="' + 'authoring' + '"]').parent().addClass('active');
+    else if (href.endsWith('_format.html'))
+      $('a[href="' + 'formats' + '"]').parent().addClass('active');
+    else if (href.startsWith('developer_'))
+      $('a[href="' + 'developer' + '"]').parent().addClass('active');
+	  
+  });
+</script>
 
 </div>
 

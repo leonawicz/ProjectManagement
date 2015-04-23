@@ -90,7 +90,7 @@ Here is a project hierarchy diagram showing the relationships among all my curre
   &lt;/head&gt;
   &lt;body &gt;
     
-    &lt;div id = &#039;chart81838962f6a&#039; class = &#039;rChart d3_sankey&#039;&gt;&lt;/div&gt;    
+    &lt;div id = &#039;chart8bc339361fb&#039; class = &#039;rChart d3_sankey&#039;&gt;&lt;/div&gt;    
     ï»¿&lt;!--Attribution:
 Mike Bostock https://github.com/d3/d3-plugins/tree/master/sankey
 Mike Bostock http://bost.ocks.org/mike/sankey/
@@ -99,7 +99,7 @@ Mike Bostock http://bost.ocks.org/mike/sankey/
 &lt;script&gt;
 (function(){
 var params = {
- &quot;dom&quot;: &quot;chart81838962f6a&quot;,
+ &quot;dom&quot;: &quot;chart8bc339361fb&quot;,
 &quot;width&quot;:    900,
 &quot;height&quot;:    800,
 &quot;data&quot;: {
@@ -117,7 +117,7 @@ var params = {
 &quot;top&quot;:     20 
 },
 &quot;title&quot;: &quot;Matt&#039;s Projects&quot;,
-&quot;id&quot;: &quot;chart81838962f6a&quot; 
+&quot;id&quot;: &quot;chart8bc339361fb&quot; 
 };
 
 params.units ? units = &quot; &quot; + params.units : units = &quot;&quot;;
@@ -237,11 +237,11 @@ node.append(&quot;text&quot;)
     
     &lt;script&gt;
       var cscale = d3.scale.category20b();
-      d3.selectAll(&#039;#chart81838962f6a svg path.link&#039;)
+      d3.selectAll(&#039;#chart8bc339361fb svg path.link&#039;)
         .style(&#039;stroke&#039;, function(d){
           return cscale(d.source.name);
         })
-      d3.selectAll(&#039;#chart81838962f6a svg .node rect&#039;)
+      d3.selectAll(&#039;#chart8bc339361fb svg .node rect&#039;)
         .style(&#039;fill&#039;, function(d){
           return cscale(d.name)
         })
@@ -249,7 +249,7 @@ node.append(&quot;text&quot;)
     &lt;/script&gt;
         
   &lt;/body&gt;
-&lt;/html&gt; ' scrolling='no' frameBorder='0' seamless class='rChart  http://timelyportfolio.github.io/rCharts_d3_sankey/libraries/widgets/d3_sankey  ' id='iframe-chart81838962f6a'> </iframe>
+&lt;/html&gt; ' scrolling='no' frameBorder='0' seamless class='rChart  http://timelyportfolio.github.io/rCharts_d3_sankey/libraries/widgets/d3_sankey  ' id='iframe-chart8bc339361fb'> </iframe>
  <style>iframe.rChart{ width: 100%; height: 400px;}</style>
 <style>iframe.rChart{ width: 100%; height: 840px;}</style>
 
@@ -1159,20 +1159,9 @@ I have not checked yet to see if this also works for project pages.
 
 
 ```r
-genNavbar <- function(htmlfile = "navbar.html", title, menu, submenus, files, 
-    title.url = "index.html", home.url = "index.html", site.url = "", site.name = "Github", 
-    media.button.args = NULL, theme = "united", include.home = FALSE) {
-    # if(!(theme %in% c('united', 'cyborg'))) stop('Only the following themes
-    # supported: united, cyborg.')
-    
-    # navClassStrings <- function(x){ switch(x, united=c('brand', 'nav-collapse
-    # collapse', 'nav', 'nav pull-right', 'navbar-inner', 'container', '', 'btn
-    # btn-navbar', '.nav-collapse', '</div>\n'), cyborg=c('navbar-brand',
-    # 'navbar-collapse collapse navbar-responsive-collapse', 'nav navbar-nav',
-    # 'nav navbar-nav navbar-right', 'container', 'navbar-header', ' </div>\n',
-    # 'navbar-toggle', '.navbar-responsive-collapse', '') ) }
-    
-    # ncs <- navClassStrings(theme)
+genNavbar <- function(htmlfile = "navbar.html", before_body = NULL, title, menu, 
+    submenus, files, title.url = "index.html", home.url = "index.html", site.url = "", 
+    site.name = "Github", media.button.args = NULL, include.home = FALSE) {
     ncs <- c("navbar-brand", "navbar-collapse collapse navbar-responsive-collapse", 
         "nav navbar-nav", "nav navbar-nav navbar-right", "container", "navbar-header", 
         "      </div>\n", "navbar-toggle", ".navbar-responsive-collapse", "")
@@ -1185,9 +1174,7 @@ genNavbar <- function(htmlfile = "navbar.html", title, menu, submenus, files,
             site.name, "\n          </a>\n")
     } else media.buttons <- ""
     
-    fillSubmenu <- function(x, name, file, theme) {
-        # if(theme=='united') dd.menu.header <- 'nav-header' else
-        # if(theme=='cyborg') dd.menu.header <- 'dropdown-header'
+    fillSubmenu <- function(x, name, file) {
         dd.menu.header <- "dropdown-header"
         if (file[x] == "divider") 
             return("              <li class=\"divider\"></li>\n")
@@ -1197,7 +1184,7 @@ genNavbar <- function(htmlfile = "navbar.html", title, menu, submenus, files,
         paste0("              <li><a href=\"", file[x], "\">", name[x], "</a></li>\n")
     }
     
-    fillMenu <- function(x, menu, submenus, files, theme) {
+    fillMenu <- function(x, menu, submenus, files) {
         m <- menu[x]
         gs.menu <- gsub(" ", "-", tolower(m))
         s <- submenus[[x]]
@@ -1208,7 +1195,7 @@ genNavbar <- function(htmlfile = "navbar.html", title, menu, submenus, files,
             y <- paste0("<li class=\"dropdown\">\n            <a href=\"", gs.menu, 
                 "\" class=\"dropdown-toggle\" data-toggle=\"dropdown\">", m, 
                 " <b class=\"caret\"></b></a>\n            <ul class=\"dropdown-menu\">\n", 
-                paste(sapply(1:length(s), fillSubmenu, name = s, file = f, theme = theme), 
+                paste(sapply(1:length(s), fillSubmenu, name = s, file = f), 
                   sep = "", collapse = ""), "            </ul>\n", collapse = "")
         }
     }
@@ -1221,10 +1208,13 @@ genNavbar <- function(htmlfile = "navbar.html", title, menu, submenus, files,
         ncs[1], "\" href=\"", title.url, "\">", title, "</a>\n", ncs[7], "      <div class=\"", 
         ncs[2], "\">\n        <ul class=\"", ncs[3], "\">\n          ", home, 
         paste(sapply(1:length(menu), fillMenu, menu = menu, submenus = submenus, 
-            files = files, theme = theme), sep = "", collapse = "\n          "), 
-        "        </ul>\n        <ul class=\"", ncs[4], "\">\n          ", media.buttons, 
-        "        </ul>\n      </div><!--/.nav-collapse -->\n    </div>\n  ", 
+            files = files), sep = "", collapse = "\n          "), "        </ul>\n        <ul class=\"", 
+        ncs[4], "\">\n          ", media.buttons, "        </ul>\n      </div><!--/.nav-collapse -->\n    </div>\n  ", 
         ncs[10], "</div>\n", collpase = "")
+    
+    if (!is.null(before_body)) 
+        x <- paste0(readLines(before_body), x)
+    
     sink(htmlfile)
     cat(x)
     sink()
@@ -1321,6 +1311,8 @@ genPanelDiv <- function(outDir, type = "projects", main = "Projects", github.use
     lightbox = FALSE, include.buttons = TRUE, include.titles = TRUE, ...) {
     
     stopifnot(github.user %in% c("leonawicz", "ua-snap"))
+    dots <- list(...)
+    
     if (type == "apps") {
         filename <- "apps_container.html"
         web.url <- "http://shiny.snap.uaf.edu"
@@ -1372,13 +1364,9 @@ genPanelDiv <- function(outDir, type = "projects", main = "Projects", github.use
     
     fillRow <- function(i, ...) {
         prj <- panels[i]
-        dots <- list(...)
-        if (is.null(dots$col)) 
-            col <- "warning" else col <- dots$col
-        if (is.null(dots$panel.main)) 
-            panel.main <- gsub(" - ", ": ", gsub("_", " ", prj)) else panel.main <- dots$panel.main
-        if (length(panel.main) > 1) 
-            panel.main <- panel.main[i]
+        go.label <- go.label[i]
+        col <- col[i]
+        panel.main <- panel.main[i]
         if (type == "apps") 
             img.src <- file.path(gsub("/tree/", "/raw/", gh.url), img.loc, prjs.img[i])
         if (type == "projects") 
@@ -1409,8 +1397,13 @@ genPanelDiv <- function(outDir, type = "projects", main = "Projects", github.use
                 panel.main, "</h3>\n          </div>\n          ")
         } else panel.title <- ""
         if (include.buttons) {
+            if (go.label == "UAF ONLY") {
+                web.url <- "#apps"
+                atts <- ""
+                go.btn <- "danger"
+            } else go.btn <- "success"
             panel.buttons <- paste0("<div class=\"btn-group btn-group-justified\">\n\t\t\t<a href=\"", 
-                web.url, "\"", atts, " class=\"btn btn-success\">", go.label, 
+                web.url, "\"", atts, " class=\"btn btn-", go.btn, "\">", go.label, 
                 "</a>\n\t\t\t<a href=\"", file.path(gh.url, prj), "\" class=\"btn btn-info\">Github</a>\n\t\t  </div>\n        ")
         } else panel.buttons <- ""
         x <- paste0("    <div class=\"col-lg-4\">\n      <div class=\"bs-component\">\n        <div class=\"panel panel-", 
@@ -1426,6 +1419,12 @@ genPanelDiv <- function(outDir, type = "projects", main = "Projects", github.use
             main <- gsub(" - ", ": ", gsub("_", " ", prjs[p]))
         } else panels <- prjs
         n <- length(panels)
+        if (is.null(dots$go.label)) 
+            go.label <- rep(go.label, length = n) else go.label <- rep(dots$go.label, length = n)
+        if (is.null(dots$col)) 
+            col <- rep("warning", length = n) else col <- rep(dots$col, length = n)
+        if (is.null(dots$panel.main)) 
+            panel.main <- gsub(" - ", ": ", gsub("_", " ", panels)) else panel.main <- rep(dots$panel.main, length = n)
         seq1 <- seq(1, n, by = 3)
         x <- paste0("<div class=\"container\">\n  <div class=\"row\">\n    <div class=\"col-lg-12\">\n      <div class=\"page-header\">\n        <h3 id=\"", 
             type, "\">", main, "</h3>\n      </div>\n    </div>\n  </div>\n  ")
@@ -1434,7 +1433,8 @@ genPanelDiv <- function(outDir, type = "projects", main = "Projects", github.use
             ind <- seq1[j]:(seq1[j] + 2)
             ind <- ind[ind %in% 1:n]
             y <- c(y, paste0("<div class=\"row\">\n", paste0(sapply(ind, fillRow, 
-                ...), collapse = "\n"), "</div>\n"))
+                panels = panels, go.label = go.label, col = col, panel.main = panel.main), 
+                collapse = "\n"), "</div>\n"))
         }
         z <- "</div>\n"
         sink(file.path(outDir, filename[p]))

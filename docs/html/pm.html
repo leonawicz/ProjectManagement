@@ -20,43 +20,29 @@
 <script src="libs/bootstrap-3.3.1/shim/html5shiv.min.js"></script>
 <script src="libs/bootstrap-3.3.1/shim/respond.min.js"></script>
 <style type="text/css">
-
 /* padding for bootstrap navbar */
 body {
-  padding-top: 50px;
-  padding-bottom: 40px;
+padding-top: 50px;
+padding-bottom: 40px;
 }
-@media (max-width: 979px) {
-  body {
-    padding-top: 0;
-  }
+/* offset scroll position for anchor links (for fixed navbar) */
+.section h2 {
+padding-top: 55px;
+margin-top: -55px;
 }
-
-/* offset scroll position for anchor links (for fixed navbar)  */
-@media (min-width: 980px) {
-  .section h2 {
-    padding-top: 52px;
-    margin-top: -52px;
-  }
-  .section h3 {
-    padding-top: 52px;
-    margin-top: -52px;
-  }
+.section h3 {
+padding-top: 55px;
+margin-top: -55px;
 }
-
-
 /* don't use link color in navbar */
 .dropdown-menu>li>a {
-  color: black;
+color: black;
 }
-
 /* some padding for disqus */
 #disqus_thread {
-  margin-top: 45px;
+margin-top: 45px;
 }
-
 </style>
-
 <link rel="stylesheet" href="libs/font-awesome-4.1.0/css/font-awesome.min.css"/>
 
 
@@ -252,7 +238,8 @@ proj.github &lt;-<span class="st"> </span><span class="kw">file.path</span>(<spa
 yaml.out &lt;-<span class="st"> </span><span class="kw">file.path</span>(proj.location, proj.name, <span class="st">&quot;docs/Rmd/_output.yaml&quot;</span>)
 libs &lt;-<span class="st"> &quot;libs&quot;</span>
 common.header &lt;-<span class="st"> &quot;include/in_header.html&quot;</span>
-<span class="kw">genOutyaml</span>(<span class="dt">file =</span> yaml.out, <span class="dt">lib =</span> libs, <span class="dt">header =</span> common.header, <span class="dt">before_body =</span> <span class="st">&quot;include/navbar.html&quot;</span>)</code></pre>
+<span class="kw">genOutyaml</span>(<span class="dt">file =</span> yaml.out, <span class="dt">lib =</span> libs, <span class="dt">header =</span> common.header, <span class="dt">before_body =</span> <span class="st">&quot;include/navbar.html&quot;</span>, 
+    <span class="dt">after_body =</span> <span class="st">&quot;include/after_body.html&quot;</span>)</code></pre>
 </div>
 <div id="knit-documents" class="section level3">
 <h3>Knit documents</h3>
@@ -261,14 +248,8 @@ common.header &lt;-<span class="st"> &quot;include/in_header.html&quot;</span>
 <span class="kw">library</span>(knitr)
 <span class="kw">setwd</span>(rmd.path)
 
-<span class="co"># R scripts files.r &lt;- list.files(&#39;../../code&#39;, pattern=&#39;.R$&#39;, full=T)</span>
-
 <span class="co"># Rmd files</span>
-files.Rmd &lt;-<span class="st"> </span><span class="kw">list.files</span>(<span class="dt">pattern =</span> <span class="st">&quot;.Rmd$&quot;</span>, <span class="dt">full =</span> T)
-
-<span class="co"># potential non-Rmd directories for writing various output files outtype &lt;-</span>
-<span class="co"># file.path(dirname(getwd()), list.dirs(&#39;../&#39;, full=F, recursive=F)) outtype</span>
-<span class="co"># &lt;- outtype[basename(outtype)!=&#39;Rmd&#39;]</span></code></pre>
+files.Rmd &lt;-<span class="st"> </span><span class="kw">list.files</span>(<span class="dt">pattern =</span> <span class="st">&quot;.Rmd$&quot;</span>, <span class="dt">full =</span> T)</code></pre>
 <pre class="sourceCode r"><code class="sourceCode r"><span class="co"># write all yaml front-matter-specified outputs to Rmd directory for all Rmd</span>
 <span class="co"># files</span>
 <span class="kw">lapply</span>(files.Rmd, render, <span class="dt">output_format =</span> <span class="st">&quot;all&quot;</span>)
@@ -299,7 +280,12 @@ mainDir &lt;-<span class="st"> </span><span class="kw">file.path</span>(proj.loc
 <span class="kw">genPanelDiv</span>(<span class="dt">outDir =</span> <span class="kw">getwd</span>(), <span class="dt">type =</span> <span class="st">&quot;projects&quot;</span>, <span class="dt">main =</span> <span class="st">&quot;Projects&quot;</span>, <span class="dt">github.user =</span> user, 
     <span class="dt">col =</span> <span class="st">&quot;primary&quot;</span>)
 <span class="co"># create Shiny apps container html file</span>
-<span class="kw">genPanelDiv</span>(<span class="dt">outDir =</span> <span class="kw">getwd</span>(), <span class="dt">type =</span> <span class="st">&quot;apps&quot;</span>, <span class="dt">main =</span> <span class="st">&quot;Shiny Apps&quot;</span>, <span class="dt">github.user =</span> <span class="st">&quot;ua-snap&quot;</span>)
+apps &lt;-<span class="st"> </span><span class="kw">sapply</span>(<span class="kw">strsplit</span>(<span class="kw">list.files</span>(<span class="st">&quot;../../shiny-apps/_images/small&quot;</span>), <span class="st">&quot;</span><span class="ch">\\</span><span class="st">.&quot;</span>), 
+    <span class="st">&quot;[[&quot;</span>, <span class="dv">1</span>)
+btn.lab &lt;-<span class="st"> </span><span class="kw">rep</span>(<span class="st">&quot;Launch&quot;</span>, <span class="kw">length</span>(apps))
+btn.lab[apps %in%<span class="st"> </span><span class="kw">c</span>(<span class="st">&quot;ar4ar5&quot;</span>, <span class="st">&quot;run_alfresco&quot;</span>)] &lt;-<span class="st"> &quot;UAF ONLY&quot;</span>
+<span class="kw">genPanelDiv</span>(<span class="dt">outDir =</span> <span class="kw">getwd</span>(), <span class="dt">type =</span> <span class="st">&quot;apps&quot;</span>, <span class="dt">main =</span> <span class="st">&quot;Shiny Apps&quot;</span>, <span class="dt">github.user =</span> <span class="st">&quot;ua-snap&quot;</span>, 
+    <span class="dt">go.label =</span> btn.lab)
 <span class="co"># create Data Visualizations master container html file</span>
 <span class="kw">genPanelDiv</span>(<span class="dt">outDir =</span> <span class="kw">getwd</span>(), <span class="dt">type =</span> <span class="st">&quot;datavis&quot;</span>, <span class="dt">main =</span> <span class="st">&quot;Data Visualizations&quot;</span>, 
     <span class="dt">github.user =</span> user, <span class="dt">col =</span> <span class="st">&quot;default&quot;</span>)
@@ -347,8 +333,8 @@ btn.args &lt;-<span class="st"> </span><span class="kw">list</span>(<span class=
 <span class="kw">do.call</span>(buttonGroup, btn.args)
 
 <span class="kw">genNavbar</span>(<span class="dt">htmlfile =</span> <span class="st">&quot;navbar.html&quot;</span>, <span class="dt">title =</span> user.site, <span class="dt">menu =</span> nb.menu, <span class="dt">submenus =</span> sub.menu, 
-    <span class="dt">files =</span> files.menu, <span class="dt">theme =</span> <span class="st">&quot;cyborg&quot;</span>, <span class="dt">title.url =</span> <span class="st">&quot;index.html&quot;</span>, <span class="dt">home.url =</span> <span class="st">&quot;index.html&quot;</span>, 
-    <span class="dt">site.url =</span> github.url, <span class="dt">media.button.args =</span> btn.args, <span class="dt">include.home =</span> <span class="ot">FALSE</span>)
+    <span class="dt">files =</span> files.menu, <span class="dt">title.url =</span> <span class="st">&quot;index.html&quot;</span>, <span class="dt">home.url =</span> <span class="st">&quot;index.html&quot;</span>, <span class="dt">site.url =</span> github.url, 
+    <span class="dt">media.button.args =</span> btn.args, <span class="dt">include.home =</span> <span class="ot">FALSE</span>)
 
 <span class="co"># check</span>
 <span class="kw">htmlBottom</span>()
@@ -376,6 +362,27 @@ for (i in <span class="dv">1</span>:<span class="kw">length</span>(gallery.conta
 </div>
 </div>
 
+<!-- some extra javascript for older browsers -->
+<script type="text/javascript" src="libs/polyfill.js"></script>
+<script>
+  // manage active state of menu based on current page
+  $(document).ready(function () {
+  
+    // active menu
+    href = window.location.pathname
+    href = href.substr(href.lastIndexOf('/') + 1)
+    $('a[href="' + href + '"]').parent().addClass('active');
+    
+    // manage active menu header
+    if (href.startsWith('authoring_'))
+      $('a[href="' + 'authoring' + '"]').parent().addClass('active');
+    else if (href.endsWith('_format.html'))
+      $('a[href="' + 'formats' + '"]').parent().addClass('active');
+    else if (href.startsWith('developer_'))
+      $('a[href="' + 'developer' + '"]').parent().addClass('active');
+	  
+  });
+</script>
 
 </div>
 

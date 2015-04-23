@@ -20,43 +20,29 @@
 <script src="libs/bootstrap-3.3.1/shim/html5shiv.min.js"></script>
 <script src="libs/bootstrap-3.3.1/shim/respond.min.js"></script>
 <style type="text/css">
-
 /* padding for bootstrap navbar */
 body {
-  padding-top: 50px;
-  padding-bottom: 40px;
+padding-top: 50px;
+padding-bottom: 40px;
 }
-@media (max-width: 979px) {
-  body {
-    padding-top: 0;
-  }
+/* offset scroll position for anchor links (for fixed navbar) */
+.section h2 {
+padding-top: 55px;
+margin-top: -55px;
 }
-
-/* offset scroll position for anchor links (for fixed navbar)  */
-@media (min-width: 980px) {
-  .section h2 {
-    padding-top: 52px;
-    margin-top: -52px;
-  }
-  .section h3 {
-    padding-top: 52px;
-    margin-top: -52px;
-  }
+.section h3 {
+padding-top: 55px;
+margin-top: -55px;
 }
-
-
 /* don't use link color in navbar */
 .dropdown-menu>li>a {
-  color: black;
+color: black;
 }
-
 /* some padding for disqus */
 #disqus_thread {
-  margin-top: 45px;
+margin-top: 45px;
 }
-
 </style>
-
 <link rel="stylesheet" href="libs/font-awesome-4.1.0/css/font-awesome.min.css"/>
 
 
@@ -241,7 +227,7 @@ img {
   &lt;/head&gt;
   &lt;body &gt;
     
-    &lt;div id = 'chart81838962f6a' class = 'rChart d3_sankey'&gt;&lt;/div&gt;    
+    &lt;div id = 'chart8bc339361fb' class = 'rChart d3_sankey'&gt;&lt;/div&gt;    
     ï»¿&lt;!--Attribution:
 Mike Bostock https://github.com/d3/d3-plugins/tree/master/sankey
 Mike Bostock http://bost.ocks.org/mike/sankey/
@@ -250,7 +236,7 @@ Mike Bostock http://bost.ocks.org/mike/sankey/
 &lt;script&gt;
 (function(){
 var params = {
- &quot;dom&quot;: &quot;chart81838962f6a&quot;,
+ &quot;dom&quot;: &quot;chart8bc339361fb&quot;,
 &quot;width&quot;:    900,
 &quot;height&quot;:    800,
 &quot;data&quot;: {
@@ -268,7 +254,7 @@ var params = {
 &quot;top&quot;:     20 
 },
 &quot;title&quot;: &quot;Matt's Projects&quot;,
-&quot;id&quot;: &quot;chart81838962f6a&quot; 
+&quot;id&quot;: &quot;chart8bc339361fb&quot; 
 };
 
 params.units ? units = &quot; &quot; + params.units : units = &quot;&quot;;
@@ -388,11 +374,11 @@ node.append(&quot;text&quot;)
     
     &lt;script&gt;
       var cscale = d3.scale.category20b();
-      d3.selectAll('#chart81838962f6a svg path.link')
+      d3.selectAll('#chart8bc339361fb svg path.link')
         .style('stroke', function(d){
           return cscale(d.source.name);
         })
-      d3.selectAll('#chart81838962f6a svg .node rect')
+      d3.selectAll('#chart8bc339361fb svg .node rect')
         .style('fill', function(d){
           return cscale(d.name)
         })
@@ -400,7 +386,7 @@ node.append(&quot;text&quot;)
     &lt;/script&gt;
         
   &lt;/body&gt;
-&lt;/html&gt; " scrolling="no" frameBorder="0" seamless class="rChart  http://timelyportfolio.github.io/rCharts_d3_sankey/libraries/widgets/d3_sankey  " id="iframe-chart81838962f6a">
+&lt;/html&gt; " scrolling="no" frameBorder="0" seamless class="rChart  http://timelyportfolio.github.io/rCharts_d3_sankey/libraries/widgets/d3_sankey  " id="iframe-chart8bc339361fb">
 </iframe>
 <style>iframe.rChart{ width: 100%; height: 400px;}</style>
 <style>iframe.rChart{ width: 100%; height: 840px;}</style>
@@ -1133,20 +1119,9 @@ buttonGroup &lt;-<span class="st"> </span>function(txt, urls, <span class="dt">f
 <p>The common navigation bar html is included at the beginning of the body of the html for each web page in the project’s website. <code>menu</code> is a vector of names for each dropdown menu. <code>submenus</code> is a list of vectors of menu options corresponding to each menu. <code>files</code> is a similar list of vectors. Each element is either an html file for a web page to be associated with the submenu link, “header” to indicate the corresponding name in <code>submenus</code> is only a group label and not a link to a web page, or “divider” to indicate placement of a bar for separating groups in a dropdown menu.</p>
 <p><code>theme</code> can be either <code>united</code> (default) or <code>cyborg</code>. Both are from Bootswatch. The function must apply some internal differentiation in the construction of the html navigation bar between themes. This is currently the only <code>rpm</code> function which attempts to handle multiple Bootswatch themes with different CSS tags.</p>
 <p>If <code>media.button.args=NULL</code> (default), only the Github button will be included, and then only if <code>site.name=&quot;Github&quot;</code> and site.url is not blank. I use this default for project pages and do not insert additional buttons. For user pages, the same default will work. Alternatively, a list of arguments can passed on to <code>buttonGroup</code>. I have not checked yet to see if this also works for project pages.</p>
-<pre class="sourceCode r"><code class="sourceCode r">genNavbar &lt;-<span class="st"> </span>function(<span class="dt">htmlfile =</span> <span class="st">&quot;navbar.html&quot;</span>, title, menu, submenus, files, 
-    <span class="dt">title.url =</span> <span class="st">&quot;index.html&quot;</span>, <span class="dt">home.url =</span> <span class="st">&quot;index.html&quot;</span>, <span class="dt">site.url =</span> <span class="st">&quot;&quot;</span>, <span class="dt">site.name =</span> <span class="st">&quot;Github&quot;</span>, 
-    <span class="dt">media.button.args =</span> <span class="ot">NULL</span>, <span class="dt">theme =</span> <span class="st">&quot;united&quot;</span>, <span class="dt">include.home =</span> <span class="ot">FALSE</span>) {
-    <span class="co"># if(!(theme %in% c(&#39;united&#39;, &#39;cyborg&#39;))) stop(&#39;Only the following themes</span>
-    <span class="co"># supported: united, cyborg.&#39;)</span>
-    
-    <span class="co"># navClassStrings &lt;- function(x){ switch(x, united=c(&#39;brand&#39;, &#39;nav-collapse</span>
-    <span class="co"># collapse&#39;, &#39;nav&#39;, &#39;nav pull-right&#39;, &#39;navbar-inner&#39;, &#39;container&#39;, &#39;&#39;, &#39;btn</span>
-    <span class="co"># btn-navbar&#39;, &#39;.nav-collapse&#39;, &#39;&lt;/div&gt;\n&#39;), cyborg=c(&#39;navbar-brand&#39;,</span>
-    <span class="co"># &#39;navbar-collapse collapse navbar-responsive-collapse&#39;, &#39;nav navbar-nav&#39;,</span>
-    <span class="co"># &#39;nav navbar-nav navbar-right&#39;, &#39;container&#39;, &#39;navbar-header&#39;, &#39; &lt;/div&gt;\n&#39;,</span>
-    <span class="co"># &#39;navbar-toggle&#39;, &#39;.navbar-responsive-collapse&#39;, &#39;&#39;) ) }</span>
-    
-    <span class="co"># ncs &lt;- navClassStrings(theme)</span>
+<pre class="sourceCode r"><code class="sourceCode r">genNavbar &lt;-<span class="st"> </span>function(<span class="dt">htmlfile =</span> <span class="st">&quot;navbar.html&quot;</span>, <span class="dt">before_body =</span> <span class="ot">NULL</span>, title, menu, 
+    submenus, files, <span class="dt">title.url =</span> <span class="st">&quot;index.html&quot;</span>, <span class="dt">home.url =</span> <span class="st">&quot;index.html&quot;</span>, <span class="dt">site.url =</span> <span class="st">&quot;&quot;</span>, 
+    <span class="dt">site.name =</span> <span class="st">&quot;Github&quot;</span>, <span class="dt">media.button.args =</span> <span class="ot">NULL</span>, <span class="dt">include.home =</span> <span class="ot">FALSE</span>) {
     ncs &lt;-<span class="st"> </span><span class="kw">c</span>(<span class="st">&quot;navbar-brand&quot;</span>, <span class="st">&quot;navbar-collapse collapse navbar-responsive-collapse&quot;</span>, 
         <span class="st">&quot;nav navbar-nav&quot;</span>, <span class="st">&quot;nav navbar-nav navbar-right&quot;</span>, <span class="st">&quot;container&quot;</span>, <span class="st">&quot;navbar-header&quot;</span>, 
         <span class="st">&quot;      &lt;/div&gt;</span><span class="ch">\n</span><span class="st">&quot;</span>, <span class="st">&quot;navbar-toggle&quot;</span>, <span class="st">&quot;.navbar-responsive-collapse&quot;</span>, <span class="st">&quot;&quot;</span>)
@@ -1159,9 +1134,7 @@ buttonGroup &lt;-<span class="st"> </span>function(txt, urls, <span class="dt">f
             site.name, <span class="st">&quot;</span><span class="ch">\n</span><span class="st">          &lt;/a&gt;</span><span class="ch">\n</span><span class="st">&quot;</span>)
     } else media.buttons &lt;-<span class="st"> &quot;&quot;</span>
     
-    fillSubmenu &lt;-<span class="st"> </span>function(x, name, file, theme) {
-        <span class="co"># if(theme==&#39;united&#39;) dd.menu.header &lt;- &#39;nav-header&#39; else</span>
-        <span class="co"># if(theme==&#39;cyborg&#39;) dd.menu.header &lt;- &#39;dropdown-header&#39;</span>
+    fillSubmenu &lt;-<span class="st"> </span>function(x, name, file) {
         dd.menu.header &lt;-<span class="st"> &quot;dropdown-header&quot;</span>
         if (file[x] ==<span class="st"> &quot;divider&quot;</span>) 
             <span class="kw">return</span>(<span class="st">&quot;              &lt;li class=</span><span class="ch">\&quot;</span><span class="st">divider</span><span class="ch">\&quot;</span><span class="st">&gt;&lt;/li&gt;</span><span class="ch">\n</span><span class="st">&quot;</span>)
@@ -1171,7 +1144,7 @@ buttonGroup &lt;-<span class="st"> </span>function(txt, urls, <span class="dt">f
         <span class="kw">paste0</span>(<span class="st">&quot;              &lt;li&gt;&lt;a href=</span><span class="ch">\&quot;</span><span class="st">&quot;</span>, file[x], <span class="st">&quot;</span><span class="ch">\&quot;</span><span class="st">&gt;&quot;</span>, name[x], <span class="st">&quot;&lt;/a&gt;&lt;/li&gt;</span><span class="ch">\n</span><span class="st">&quot;</span>)
     }
     
-    fillMenu &lt;-<span class="st"> </span>function(x, menu, submenus, files, theme) {
+    fillMenu &lt;-<span class="st"> </span>function(x, menu, submenus, files) {
         m &lt;-<span class="st"> </span>menu[x]
         gs.menu &lt;-<span class="st"> </span><span class="kw">gsub</span>(<span class="st">&quot; &quot;</span>, <span class="st">&quot;-&quot;</span>, <span class="kw">tolower</span>(m))
         s &lt;-<span class="st"> </span>submenus[[x]]
@@ -1182,7 +1155,7 @@ buttonGroup &lt;-<span class="st"> </span>function(txt, urls, <span class="dt">f
             y &lt;-<span class="st"> </span><span class="kw">paste0</span>(<span class="st">&quot;&lt;li class=</span><span class="ch">\&quot;</span><span class="st">dropdown</span><span class="ch">\&quot;</span><span class="st">&gt;</span><span class="ch">\n</span><span class="st">            &lt;a href=</span><span class="ch">\&quot;</span><span class="st">&quot;</span>, gs.menu, 
                 <span class="st">&quot;</span><span class="ch">\&quot;</span><span class="st"> class=</span><span class="ch">\&quot;</span><span class="st">dropdown-toggle</span><span class="ch">\&quot;</span><span class="st"> data-toggle=</span><span class="ch">\&quot;</span><span class="st">dropdown</span><span class="ch">\&quot;</span><span class="st">&gt;&quot;</span>, m, 
                 <span class="st">&quot; &lt;b class=</span><span class="ch">\&quot;</span><span class="st">caret</span><span class="ch">\&quot;</span><span class="st">&gt;&lt;/b&gt;&lt;/a&gt;</span><span class="ch">\n</span><span class="st">            &lt;ul class=</span><span class="ch">\&quot;</span><span class="st">dropdown-menu</span><span class="ch">\&quot;</span><span class="st">&gt;</span><span class="ch">\n</span><span class="st">&quot;</span>, 
-                <span class="kw">paste</span>(<span class="kw">sapply</span>(<span class="dv">1</span>:<span class="kw">length</span>(s), fillSubmenu, <span class="dt">name =</span> s, <span class="dt">file =</span> f, <span class="dt">theme =</span> theme), 
+                <span class="kw">paste</span>(<span class="kw">sapply</span>(<span class="dv">1</span>:<span class="kw">length</span>(s), fillSubmenu, <span class="dt">name =</span> s, <span class="dt">file =</span> f), 
                   <span class="dt">sep =</span> <span class="st">&quot;&quot;</span>, <span class="dt">collapse =</span> <span class="st">&quot;&quot;</span>), <span class="st">&quot;            &lt;/ul&gt;</span><span class="ch">\n</span><span class="st">&quot;</span>, <span class="dt">collapse =</span> <span class="st">&quot;&quot;</span>)
         }
     }
@@ -1195,10 +1168,13 @@ buttonGroup &lt;-<span class="st"> </span>function(txt, urls, <span class="dt">f
         ncs[<span class="dv">1</span>], <span class="st">&quot;</span><span class="ch">\&quot;</span><span class="st"> href=</span><span class="ch">\&quot;</span><span class="st">&quot;</span>, title.url, <span class="st">&quot;</span><span class="ch">\&quot;</span><span class="st">&gt;&quot;</span>, title, <span class="st">&quot;&lt;/a&gt;</span><span class="ch">\n</span><span class="st">&quot;</span>, ncs[<span class="dv">7</span>], <span class="st">&quot;      &lt;div class=</span><span class="ch">\&quot;</span><span class="st">&quot;</span>, 
         ncs[<span class="dv">2</span>], <span class="st">&quot;</span><span class="ch">\&quot;</span><span class="st">&gt;</span><span class="ch">\n</span><span class="st">        &lt;ul class=</span><span class="ch">\&quot;</span><span class="st">&quot;</span>, ncs[<span class="dv">3</span>], <span class="st">&quot;</span><span class="ch">\&quot;</span><span class="st">&gt;</span><span class="ch">\n</span><span class="st">          &quot;</span>, home, 
         <span class="kw">paste</span>(<span class="kw">sapply</span>(<span class="dv">1</span>:<span class="kw">length</span>(menu), fillMenu, <span class="dt">menu =</span> menu, <span class="dt">submenus =</span> submenus, 
-            <span class="dt">files =</span> files, <span class="dt">theme =</span> theme), <span class="dt">sep =</span> <span class="st">&quot;&quot;</span>, <span class="dt">collapse =</span> <span class="st">&quot;</span><span class="ch">\n</span><span class="st">          &quot;</span>), 
-        <span class="st">&quot;        &lt;/ul&gt;</span><span class="ch">\n</span><span class="st">        &lt;ul class=</span><span class="ch">\&quot;</span><span class="st">&quot;</span>, ncs[<span class="dv">4</span>], <span class="st">&quot;</span><span class="ch">\&quot;</span><span class="st">&gt;</span><span class="ch">\n</span><span class="st">          &quot;</span>, media.buttons, 
-        <span class="st">&quot;        &lt;/ul&gt;</span><span class="ch">\n</span><span class="st">      &lt;/div&gt;&lt;!--/.nav-collapse --&gt;</span><span class="ch">\n</span><span class="st">    &lt;/div&gt;</span><span class="ch">\n</span><span class="st">  &quot;</span>, 
+            <span class="dt">files =</span> files), <span class="dt">sep =</span> <span class="st">&quot;&quot;</span>, <span class="dt">collapse =</span> <span class="st">&quot;</span><span class="ch">\n</span><span class="st">          &quot;</span>), <span class="st">&quot;        &lt;/ul&gt;</span><span class="ch">\n</span><span class="st">        &lt;ul class=</span><span class="ch">\&quot;</span><span class="st">&quot;</span>, 
+        ncs[<span class="dv">4</span>], <span class="st">&quot;</span><span class="ch">\&quot;</span><span class="st">&gt;</span><span class="ch">\n</span><span class="st">          &quot;</span>, media.buttons, <span class="st">&quot;        &lt;/ul&gt;</span><span class="ch">\n</span><span class="st">      &lt;/div&gt;&lt;!--/.nav-collapse --&gt;</span><span class="ch">\n</span><span class="st">    &lt;/div&gt;</span><span class="ch">\n</span><span class="st">  &quot;</span>, 
         ncs[<span class="dv">10</span>], <span class="st">&quot;&lt;/div&gt;</span><span class="ch">\n</span><span class="st">&quot;</span>, <span class="dt">collpase =</span> <span class="st">&quot;&quot;</span>)
+    
+    if (!<span class="kw">is.null</span>(before_body)) 
+        x &lt;-<span class="st"> </span><span class="kw">paste0</span>(<span class="kw">readLines</span>(before_body), x)
+    
     <span class="kw">sink</span>(htmlfile)
     <span class="kw">cat</span>(x)
     <span class="kw">sink</span>()
@@ -1257,6 +1233,8 @@ buttonGroup &lt;-<span class="st"> </span>function(txt, urls, <span class="dt">f
     <span class="dt">lightbox =</span> <span class="ot">FALSE</span>, <span class="dt">include.buttons =</span> <span class="ot">TRUE</span>, <span class="dt">include.titles =</span> <span class="ot">TRUE</span>, ...) {
     
     <span class="kw">stopifnot</span>(github.user %in%<span class="st"> </span><span class="kw">c</span>(<span class="st">&quot;leonawicz&quot;</span>, <span class="st">&quot;ua-snap&quot;</span>))
+    dots &lt;-<span class="st"> </span><span class="kw">list</span>(...)
+    
     if (type ==<span class="st"> &quot;apps&quot;</span>) {
         filename &lt;-<span class="st"> &quot;apps_container.html&quot;</span>
         web.url &lt;-<span class="st"> &quot;http://shiny.snap.uaf.edu&quot;</span>
@@ -1308,13 +1286,9 @@ buttonGroup &lt;-<span class="st"> </span>function(txt, urls, <span class="dt">f
     
     fillRow &lt;-<span class="st"> </span>function(i, ...) {
         prj &lt;-<span class="st"> </span>panels[i]
-        dots &lt;-<span class="st"> </span><span class="kw">list</span>(...)
-        if (<span class="kw">is.null</span>(dots$col)) 
-            col &lt;-<span class="st"> &quot;warning&quot;</span> else col &lt;-<span class="st"> </span>dots$col
-        if (<span class="kw">is.null</span>(dots$panel.main)) 
-            panel.main &lt;-<span class="st"> </span><span class="kw">gsub</span>(<span class="st">&quot; - &quot;</span>, <span class="st">&quot;: &quot;</span>, <span class="kw">gsub</span>(<span class="st">&quot;_&quot;</span>, <span class="st">&quot; &quot;</span>, prj)) else panel.main &lt;-<span class="st"> </span>dots$panel.main
-        if (<span class="kw">length</span>(panel.main) &gt;<span class="st"> </span><span class="dv">1</span>) 
-            panel.main &lt;-<span class="st"> </span>panel.main[i]
+        go.label &lt;-<span class="st"> </span>go.label[i]
+        col &lt;-<span class="st"> </span>col[i]
+        panel.main &lt;-<span class="st"> </span>panel.main[i]
         if (type ==<span class="st"> &quot;apps&quot;</span>) 
             img.src &lt;-<span class="st"> </span><span class="kw">file.path</span>(<span class="kw">gsub</span>(<span class="st">&quot;/tree/&quot;</span>, <span class="st">&quot;/raw/&quot;</span>, gh.url), img.loc, prjs.img[i])
         if (type ==<span class="st"> &quot;projects&quot;</span>) 
@@ -1345,8 +1319,13 @@ buttonGroup &lt;-<span class="st"> </span>function(txt, urls, <span class="dt">f
                 panel.main, <span class="st">&quot;&lt;/h3&gt;</span><span class="ch">\n</span><span class="st">          &lt;/div&gt;</span><span class="ch">\n</span><span class="st">          &quot;</span>)
         } else panel.title &lt;-<span class="st"> &quot;&quot;</span>
         if (include.buttons) {
+            if (go.label ==<span class="st"> &quot;UAF ONLY&quot;</span>) {
+                web.url &lt;-<span class="st"> &quot;#apps&quot;</span>
+                atts &lt;-<span class="st"> &quot;&quot;</span>
+                go.btn &lt;-<span class="st"> &quot;danger&quot;</span>
+            } else go.btn &lt;-<span class="st"> &quot;success&quot;</span>
             panel.buttons &lt;-<span class="st"> </span><span class="kw">paste0</span>(<span class="st">&quot;&lt;div class=</span><span class="ch">\&quot;</span><span class="st">btn-group btn-group-justified</span><span class="ch">\&quot;</span><span class="st">&gt;</span><span class="ch">\n\t\t\t</span><span class="st">&lt;a href=</span><span class="ch">\&quot;</span><span class="st">&quot;</span>, 
-                web.url, <span class="st">&quot;</span><span class="ch">\&quot;</span><span class="st">&quot;</span>, atts, <span class="st">&quot; class=</span><span class="ch">\&quot;</span><span class="st">btn btn-success</span><span class="ch">\&quot;</span><span class="st">&gt;&quot;</span>, go.label, 
+                web.url, <span class="st">&quot;</span><span class="ch">\&quot;</span><span class="st">&quot;</span>, atts, <span class="st">&quot; class=</span><span class="ch">\&quot;</span><span class="st">btn btn-&quot;</span>, go.btn, <span class="st">&quot;</span><span class="ch">\&quot;</span><span class="st">&gt;&quot;</span>, go.label, 
                 <span class="st">&quot;&lt;/a&gt;</span><span class="ch">\n\t\t\t</span><span class="st">&lt;a href=</span><span class="ch">\&quot;</span><span class="st">&quot;</span>, <span class="kw">file.path</span>(gh.url, prj), <span class="st">&quot;</span><span class="ch">\&quot;</span><span class="st"> class=</span><span class="ch">\&quot;</span><span class="st">btn btn-info</span><span class="ch">\&quot;</span><span class="st">&gt;Github&lt;/a&gt;</span><span class="ch">\n\t\t</span><span class="st">  &lt;/div&gt;</span><span class="ch">\n</span><span class="st">        &quot;</span>)
         } else panel.buttons &lt;-<span class="st"> &quot;&quot;</span>
         x &lt;-<span class="st"> </span><span class="kw">paste0</span>(<span class="st">&quot;    &lt;div class=</span><span class="ch">\&quot;</span><span class="st">col-lg-4</span><span class="ch">\&quot;</span><span class="st">&gt;</span><span class="ch">\n</span><span class="st">      &lt;div class=</span><span class="ch">\&quot;</span><span class="st">bs-component</span><span class="ch">\&quot;</span><span class="st">&gt;</span><span class="ch">\n</span><span class="st">        &lt;div class=</span><span class="ch">\&quot;</span><span class="st">panel panel-&quot;</span>, 
@@ -1362,6 +1341,12 @@ buttonGroup &lt;-<span class="st"> </span>function(txt, urls, <span class="dt">f
             main &lt;-<span class="st"> </span><span class="kw">gsub</span>(<span class="st">&quot; - &quot;</span>, <span class="st">&quot;: &quot;</span>, <span class="kw">gsub</span>(<span class="st">&quot;_&quot;</span>, <span class="st">&quot; &quot;</span>, prjs[p]))
         } else panels &lt;-<span class="st"> </span>prjs
         n &lt;-<span class="st"> </span><span class="kw">length</span>(panels)
+        if (<span class="kw">is.null</span>(dots$go.label)) 
+            go.label &lt;-<span class="st"> </span><span class="kw">rep</span>(go.label, <span class="dt">length =</span> n) else go.label &lt;-<span class="st"> </span><span class="kw">rep</span>(dots$go.label, <span class="dt">length =</span> n)
+        if (<span class="kw">is.null</span>(dots$col)) 
+            col &lt;-<span class="st"> </span><span class="kw">rep</span>(<span class="st">&quot;warning&quot;</span>, <span class="dt">length =</span> n) else col &lt;-<span class="st"> </span><span class="kw">rep</span>(dots$col, <span class="dt">length =</span> n)
+        if (<span class="kw">is.null</span>(dots$panel.main)) 
+            panel.main &lt;-<span class="st"> </span><span class="kw">gsub</span>(<span class="st">&quot; - &quot;</span>, <span class="st">&quot;: &quot;</span>, <span class="kw">gsub</span>(<span class="st">&quot;_&quot;</span>, <span class="st">&quot; &quot;</span>, panels)) else panel.main &lt;-<span class="st"> </span><span class="kw">rep</span>(dots$panel.main, <span class="dt">length =</span> n)
         seq1 &lt;-<span class="st"> </span><span class="kw">seq</span>(<span class="dv">1</span>, n, <span class="dt">by =</span> <span class="dv">3</span>)
         x &lt;-<span class="st"> </span><span class="kw">paste0</span>(<span class="st">&quot;&lt;div class=</span><span class="ch">\&quot;</span><span class="st">container</span><span class="ch">\&quot;</span><span class="st">&gt;</span><span class="ch">\n</span><span class="st">  &lt;div class=</span><span class="ch">\&quot;</span><span class="st">row</span><span class="ch">\&quot;</span><span class="st">&gt;</span><span class="ch">\n</span><span class="st">    &lt;div class=</span><span class="ch">\&quot;</span><span class="st">col-lg-12</span><span class="ch">\&quot;</span><span class="st">&gt;</span><span class="ch">\n</span><span class="st">      &lt;div class=</span><span class="ch">\&quot;</span><span class="st">page-header</span><span class="ch">\&quot;</span><span class="st">&gt;</span><span class="ch">\n</span><span class="st">        &lt;h3 id=</span><span class="ch">\&quot;</span><span class="st">&quot;</span>, 
             type, <span class="st">&quot;</span><span class="ch">\&quot;</span><span class="st">&gt;&quot;</span>, main, <span class="st">&quot;&lt;/h3&gt;</span><span class="ch">\n</span><span class="st">      &lt;/div&gt;</span><span class="ch">\n</span><span class="st">    &lt;/div&gt;</span><span class="ch">\n</span><span class="st">  &lt;/div&gt;</span><span class="ch">\n</span><span class="st">  &quot;</span>)
@@ -1370,7 +1355,8 @@ buttonGroup &lt;-<span class="st"> </span>function(txt, urls, <span class="dt">f
             ind &lt;-<span class="st"> </span>seq1[j]:(seq1[j] +<span class="st"> </span><span class="dv">2</span>)
             ind &lt;-<span class="st"> </span>ind[ind %in%<span class="st"> </span><span class="dv">1</span>:n]
             y &lt;-<span class="st"> </span><span class="kw">c</span>(y, <span class="kw">paste0</span>(<span class="st">&quot;&lt;div class=</span><span class="ch">\&quot;</span><span class="st">row</span><span class="ch">\&quot;</span><span class="st">&gt;</span><span class="ch">\n</span><span class="st">&quot;</span>, <span class="kw">paste0</span>(<span class="kw">sapply</span>(ind, fillRow, 
-                ...), <span class="dt">collapse =</span> <span class="st">&quot;</span><span class="ch">\n</span><span class="st">&quot;</span>), <span class="st">&quot;&lt;/div&gt;</span><span class="ch">\n</span><span class="st">&quot;</span>))
+                <span class="dt">panels =</span> panels, <span class="dt">go.label =</span> go.label, <span class="dt">col =</span> col, <span class="dt">panel.main =</span> panel.main), 
+                <span class="dt">collapse =</span> <span class="st">&quot;</span><span class="ch">\n</span><span class="st">&quot;</span>), <span class="st">&quot;&lt;/div&gt;</span><span class="ch">\n</span><span class="st">&quot;</span>))
         }
         z &lt;-<span class="st"> &quot;&lt;/div&gt;</span><span class="ch">\n</span><span class="st">&quot;</span>
         <span class="kw">sink</span>(<span class="kw">file.path</span>(outDir, filename[p]))
@@ -1476,6 +1462,27 @@ buttonGroup &lt;-<span class="st"> </span>function(txt, urls, <span class="dt">f
 </div>
 </div>
 
+<!-- some extra javascript for older browsers -->
+<script type="text/javascript" src="libs/polyfill.js"></script>
+<script>
+  // manage active state of menu based on current page
+  $(document).ready(function () {
+  
+    // active menu
+    href = window.location.pathname
+    href = href.substr(href.lastIndexOf('/') + 1)
+    $('a[href="' + href + '"]').parent().addClass('active');
+    
+    // manage active menu header
+    if (href.startsWith('authoring_'))
+      $('a[href="' + 'authoring' + '"]').parent().addClass('active');
+    else if (href.endsWith('_format.html'))
+      $('a[href="' + 'formats' + '"]').parent().addClass('active');
+    else if (href.startsWith('developer_'))
+      $('a[href="' + 'developer' + '"]').parent().addClass('active');
+	  
+  });
+</script>
 
 </div>
 
