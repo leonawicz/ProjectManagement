@@ -700,7 +700,7 @@ genPanelDiv <- function(outDir, type="projects", main="Projects",
           </div>\n          ')
 		} else panel.title <- ""
 		if(include.buttons){
-			if(go.label=="UAF ONLY") { web.url <- "#apps"; atts <- ""; go.btn <- "danger" } else go.btn <- "success"
+			if(go.label=="UAF ONLY") { web.url <- "#"; atts <- ""; go.btn <- "danger" } else go.btn <- "success"
 			panel.buttons <- paste0('<div class="btn-group btn-group-justified">
 			<a href="', web.url, '"', atts, ' class="btn btn-', go.btn, '">', go.label, '</a>
 			<a href="', file.path(gh.url, prj), '" class="btn btn-info">Github</a>

@@ -121,9 +121,9 @@ sub.menu <- list(
 )
 
 files.menu <- list(
-	c("index.html#projects"),
-	c("index.html#apps"),
-	c("index.html#datavis")
+	c("projects.html"),
+	c("apps.html"),
+	c("data-visualizations.html")
 )
 
 
@@ -153,16 +153,18 @@ htmlBottom()
 
 # Specify div container elements to include in body
 all.containers <- list.files(pattern="_container.html$")
-keep.main <- c("about", "updates", "projects", "apps", "data-visualizations")
+keep.main <- c("about", "updates", "home")
+keep.pav <- c("projects", "apps", "data-visualizations")
 keep.main.ind <- match(keep.main, sapply(strsplit(all.containers, "_"), "[[", 1))
+keep.pav.ind <- match(keep.pav, sapply(strsplit(all.containers, "_"), "[[", 1))
 main.containers <- all.containers[keep.main.ind]
-
+pav.containers <- all.containers[keep.pav.ind]
 gallery.containers <- list.files(pattern="^gallery.*.html$")
 
 # Create web pages
 genUserPage(file=file.path(proj.location, user.site, "index.html"), navbar="navbar.html", containers=main.containers, script.paths=scripts, stylesheet.paths=styles, stylesheet.args=styles.args, background.image=back.img)
+files.out <- gsub("_container", "", pav.containers)
+for(i in 1:length(pav.containers)) genUserPage(file=file.path(proj.location, user.site, files.out[i]), navbar="navbar.html", containers=pav.containers[i], script.paths=scripts, stylesheet.paths=styles, stylesheet.args=styles.args, background.image=back.img)
 
 files.out <- gsub("_", "-", gsub("_-_", "-", gallery.containers))
-for(i in 1:length(gallery.containers)){
-	genUserPage(file=file.path(proj.location, user.site, files.out[i]), navbar="navbar.html", containers=gallery.containers[i], script.paths=scripts, stylesheet.paths=styles, stylesheet.args=styles.args, background.image=back.img)
-}
+for(i in 1:length(gallery.containers)) genUserPage(file=file.path(proj.location, user.site, files.out[i]), navbar="navbar.html", containers=gallery.containers[i], script.paths=scripts, stylesheet.paths=styles, stylesheet.args=styles.args, background.image=back.img)
