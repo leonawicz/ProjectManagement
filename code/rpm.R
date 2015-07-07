@@ -314,7 +314,7 @@ chunkNames <- function(path, rChunkID="# @knitr", rmdChunkID="```{r", append.new
 			if(!(h1 %in% knit_theme$get())) h1 <- hl.default
 		}
 		if(is.null(highlight) & length(highlight.ind)) highlight <- h1 else if(is.null(highlight)) highlight <- hl.default else if(!(highlight %in% knit_theme$get())) highlight <- hl.default
-		header <- rmdHeader(title=title, author=author, highlight=highlight)
+		header <- .rmdHeader(title=title, author=author, highlight=highlight)
 		h.chunks <- .swapChunks(from=from, to=to, x=h, offset.end=0)
 		header <- c(header, h.chunks[[1]][h.chunks[[2]]])
 	}
