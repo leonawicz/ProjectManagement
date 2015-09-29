@@ -12,6 +12,8 @@ opts_chunk$set(cache=FALSE, eval=FALSE, tidy=TRUE, message=FALSE, warning=FALSE)
 read_chunk("../../code/rpm.R")
 ```
 
+##
+##
 ### Functions: Document conversion
 
 The main function for conversion between Rmd and Rnw files is `convertDocs`.

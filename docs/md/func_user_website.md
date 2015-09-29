@@ -144,7 +144,7 @@ genPanelDiv <- function(outDir, type = "projects", main = "Projects", github.use
         } else panel.title <- ""
         if (include.buttons) {
             if (go.label == "UAF ONLY") {
-                web.url <- "#apps"
+                web.url <- "#"
                 atts <- ""
                 go.btn <- "danger"
             } else go.btn <- "success"

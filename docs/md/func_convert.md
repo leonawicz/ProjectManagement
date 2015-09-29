@@ -249,7 +249,7 @@ It is called internal to `convertDocs`.
             highlight <- h1 else if (is.null(highlight)) 
             highlight <- hl.default else if (!(highlight %in% knit_theme$get())) 
             highlight <- hl.default
-        header <- rmdHeader(title = title, author = author, highlight = highlight)
+        header <- .rmdHeader(title = title, author = author, highlight = highlight)
         h.chunks <- .swapChunks(from = from, to = to, x = h, offset.end = 0)
         header <- c(header, h.chunks[[1]][h.chunks[[2]]])
     }

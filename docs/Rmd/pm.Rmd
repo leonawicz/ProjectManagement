@@ -14,6 +14,8 @@ opts_chunk$set(cache=FALSE, eval=FALSE, tidy=TRUE, message=FALSE, warning=FALSE)
 read_chunk("../../code/pm.R")
 ```
 
+##
+##
 ## Example usage
 This is how `rpm` functions can be used to create and manipulate a project, using the `rpm` project itself as an example.
 The code below is not intended to be run in full directly, but serves as a guide.

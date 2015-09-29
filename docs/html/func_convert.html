@@ -41,6 +41,14 @@ color: black;
 #disqus_thread {
 margin-top: 45px;
 }
+p {
+  text-align: justify;
+}
+img.centered {
+  display: block;
+  margin-left: auto;
+  margin-right: auto;
+}
 </style>
 <link rel="stylesheet" href="libs/font-awesome-4.1.0/css/font-awesome.min.css"/>
 
@@ -387,7 +395,7 @@ img {
             highlight &lt;-<span class="st"> </span>h1 else if (<span class="kw">is.null</span>(highlight)) 
             highlight &lt;-<span class="st"> </span>hl.default else if (!(highlight %in%<span class="st"> </span>knit_theme$<span class="kw">get</span>())) 
             highlight &lt;-<span class="st"> </span>hl.default
-        header &lt;-<span class="st"> </span><span class="kw">rmdHeader</span>(<span class="dt">title =</span> title, <span class="dt">author =</span> author, <span class="dt">highlight =</span> highlight)
+        header &lt;-<span class="st"> </span><span class="kw">.rmdHeader</span>(<span class="dt">title =</span> title, <span class="dt">author =</span> author, <span class="dt">highlight =</span> highlight)
         h.chunks &lt;-<span class="st"> </span><span class="kw">.swapChunks</span>(<span class="dt">from =</span> from, <span class="dt">to =</span> to, <span class="dt">x =</span> h, <span class="dt">offset.end =</span> <span class="dv">0</span>)
         header &lt;-<span class="st"> </span><span class="kw">c</span>(header, h.chunks[[<span class="dv">1</span>]][h.chunks[[<span class="dv">2</span>]]])
     }

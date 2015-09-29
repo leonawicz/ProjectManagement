@@ -12,6 +12,8 @@ opts_chunk$set(cache=FALSE, eval=FALSE, tidy=TRUE, message=FALSE, warning=FALSE)
 read_chunk("../../code/rpm.R")
 ```
 
+##
+##
 ### Functions: Rmd documents
 
 The main function for Rmd document generation is `genRmd`.

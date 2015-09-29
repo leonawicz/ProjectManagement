@@ -14,7 +14,8 @@ opts_chunk$set(cache=FALSE, eval=TRUE, tidy=TRUE, message=FALSE, warning=FALSE)
 read_chunk("../../code/proj_sankey.R")
 ```
 
-
+##
+##
 ## Introduction
 I have begun using a Sankey diagram to illustrate various types of connections among my projects.
 Here the purpose is to show the code used to create the project hierarchy graph shows elsewhere (and below).
