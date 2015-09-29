@@ -42,6 +42,14 @@ color: black;
 #disqus_thread {
 margin-top: 45px;
 }
+p {
+  text-align: justify;
+}
+img.centered {
+  display: block;
+  margin-left: auto;
+  margin-right: auto;
+}
 </style>
 <link rel="stylesheet" href="libs/font-awesome-4.1.0/css/font-awesome.min.css"/>
 
@@ -170,6 +178,12 @@ img {
 </div>
 
 
+<div id="section" class="section level2">
+<h2></h2>
+</div>
+<div id="section-1" class="section level2">
+<h2></h2>
+</div>
 <div id="example-usage" class="section level2">
 <h2>Example usage</h2>
 <p>This is how <code>rpm</code> functions can be used to create and manipulate a project, using the <code>rpm</code> project itself as an example. The code below is not intended to be run in full directly, but serves as a guide.</p>
@@ -252,7 +266,7 @@ common.header &lt;-<span class="st"> &quot;include/in_header.html&quot;</span>
 files.Rmd &lt;-<span class="st"> </span><span class="kw">list.files</span>(<span class="dt">pattern =</span> <span class="st">&quot;.Rmd$&quot;</span>, <span class="dt">full =</span> T)</code></pre>
 <pre class="sourceCode r"><code class="sourceCode r"><span class="co"># write all yaml front-matter-specified outputs to Rmd directory for all Rmd</span>
 <span class="co"># files</span>
-<span class="kw">lapply</span>(files.Rmd, render, <span class="dt">output_format =</span> <span class="st">&quot;all&quot;</span>)
+for (i in <span class="dv">1</span>:<span class="kw">length</span>(files.Rmd)) <span class="kw">render</span>(files.Rmd[i], <span class="dt">output_format =</span> <span class="st">&quot;all&quot;</span>)
 <span class="kw">insert_gatc</span>(<span class="kw">list.files</span>(<span class="dt">pattern =</span> <span class="st">&quot;.html$&quot;</span>))
 <span class="kw">moveDocs</span>(<span class="dt">path.docs =</span> docs.path)
 
@@ -317,7 +331,7 @@ nb.menu &lt;-<span class="st"> </span><span class="kw">c</span>(<span class="st"
 
 sub.menu &lt;-<span class="st"> </span><span class="kw">list</span>(<span class="kw">c</span>(<span class="st">&quot;empty&quot;</span>), <span class="kw">c</span>(<span class="st">&quot;empty&quot;</span>), <span class="kw">c</span>(<span class="st">&quot;empty&quot;</span>))
 
-files.menu &lt;-<span class="st"> </span><span class="kw">list</span>(<span class="kw">c</span>(<span class="st">&quot;index.html#projects&quot;</span>), <span class="kw">c</span>(<span class="st">&quot;index.html#apps&quot;</span>), <span class="kw">c</span>(<span class="st">&quot;index.html#datavis&quot;</span>))
+files.menu &lt;-<span class="st"> </span><span class="kw">list</span>(<span class="kw">c</span>(<span class="st">&quot;projects.html&quot;</span>), <span class="kw">c</span>(<span class="st">&quot;apps.html&quot;</span>), <span class="kw">c</span>(<span class="st">&quot;data-visualizations.html&quot;</span>))
 
 
 <span class="co"># Create navbar.html</span>
@@ -341,24 +355,31 @@ btn.args &lt;-<span class="st"> </span><span class="kw">list</span>(<span class=
 
 <span class="co"># Specify div container elements to include in body</span>
 all.containers &lt;-<span class="st"> </span><span class="kw">list.files</span>(<span class="dt">pattern =</span> <span class="st">&quot;_container.html$&quot;</span>)
-keep.main &lt;-<span class="st"> </span><span class="kw">c</span>(<span class="st">&quot;about&quot;</span>, <span class="st">&quot;updates&quot;</span>, <span class="st">&quot;projects&quot;</span>, <span class="st">&quot;apps&quot;</span>, <span class="st">&quot;data-visualizations&quot;</span>)
+keep.main &lt;-<span class="st"> </span><span class="kw">c</span>(<span class="st">&quot;about&quot;</span>, <span class="st">&quot;updates&quot;</span>, <span class="st">&quot;home&quot;</span>)
+keep.pav &lt;-<span class="st"> </span><span class="kw">c</span>(<span class="st">&quot;projects&quot;</span>, <span class="st">&quot;apps&quot;</span>, <span class="st">&quot;data-visualizations&quot;</span>)
 keep.main.ind &lt;-<span class="st"> </span><span class="kw">match</span>(keep.main, <span class="kw">sapply</span>(<span class="kw">strsplit</span>(all.containers, <span class="st">&quot;_&quot;</span>), <span class="st">&quot;[[&quot;</span>, 
     <span class="dv">1</span>))
+keep.pav.ind &lt;-<span class="st"> </span><span class="kw">match</span>(keep.pav, <span class="kw">sapply</span>(<span class="kw">strsplit</span>(all.containers, <span class="st">&quot;_&quot;</span>), <span class="st">&quot;[[&quot;</span>, 
+    <span class="dv">1</span>))
 main.containers &lt;-<span class="st"> </span>all.containers[keep.main.ind]
-
+pav.containers &lt;-<span class="st"> </span>all.containers[keep.pav.ind]
 gallery.containers &lt;-<span class="st"> </span><span class="kw">list.files</span>(<span class="dt">pattern =</span> <span class="st">&quot;^gallery.*.html$&quot;</span>)
 
 <span class="co"># Create web pages</span>
 <span class="kw">genUserPage</span>(<span class="dt">file =</span> <span class="kw">file.path</span>(proj.location, user.site, <span class="st">&quot;index.html&quot;</span>), <span class="dt">navbar =</span> <span class="st">&quot;navbar.html&quot;</span>, 
     <span class="dt">containers =</span> main.containers, <span class="dt">script.paths =</span> scripts, <span class="dt">stylesheet.paths =</span> styles, 
     <span class="dt">stylesheet.args =</span> styles.args, <span class="dt">background.image =</span> back.img)
+files.out &lt;-<span class="st"> </span><span class="kw">gsub</span>(<span class="st">&quot;_container&quot;</span>, <span class="st">&quot;&quot;</span>, pav.containers)
+for (i in <span class="dv">1</span>:<span class="kw">length</span>(pav.containers)) <span class="kw">genUserPage</span>(<span class="dt">file =</span> <span class="kw">file.path</span>(proj.location, 
+    user.site, files.out[i]), <span class="dt">navbar =</span> <span class="st">&quot;navbar.html&quot;</span>, <span class="dt">containers =</span> pav.containers[i], 
+    <span class="dt">script.paths =</span> scripts, <span class="dt">stylesheet.paths =</span> styles, <span class="dt">stylesheet.args =</span> styles.args, 
+    <span class="dt">background.image =</span> back.img)
 
 files.out &lt;-<span class="st"> </span><span class="kw">gsub</span>(<span class="st">&quot;_&quot;</span>, <span class="st">&quot;-&quot;</span>, <span class="kw">gsub</span>(<span class="st">&quot;_-_&quot;</span>, <span class="st">&quot;-&quot;</span>, gallery.containers))
-for (i in <span class="dv">1</span>:<span class="kw">length</span>(gallery.containers)) {
-    <span class="kw">genUserPage</span>(<span class="dt">file =</span> <span class="kw">file.path</span>(proj.location, user.site, files.out[i]), <span class="dt">navbar =</span> <span class="st">&quot;navbar.html&quot;</span>, 
-        <span class="dt">containers =</span> gallery.containers[i], <span class="dt">script.paths =</span> scripts, <span class="dt">stylesheet.paths =</span> styles, 
-        <span class="dt">stylesheet.args =</span> styles.args, <span class="dt">background.image =</span> back.img)
-}</code></pre>
+for (i in <span class="dv">1</span>:<span class="kw">length</span>(gallery.containers)) <span class="kw">genUserPage</span>(<span class="dt">file =</span> <span class="kw">file.path</span>(proj.location, 
+    user.site, files.out[i]), <span class="dt">navbar =</span> <span class="st">&quot;navbar.html&quot;</span>, <span class="dt">containers =</span> gallery.containers[i], 
+    <span class="dt">script.paths =</span> scripts, <span class="dt">stylesheet.paths =</span> styles, <span class="dt">stylesheet.args =</span> styles.args, 
+    <span class="dt">background.image =</span> back.img)</code></pre>
 </div>
 </div>
 
