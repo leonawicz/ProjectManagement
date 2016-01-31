@@ -87,9 +87,14 @@ setwd(file.path(mainDir, "assets"))
 genPanelDiv(outDir=getwd(), type="projects", main="Projects", github.user=user, col="primary")
 # create Shiny apps container html file
 apps <- sapply(strsplit(list.files("../../shiny-apps/_images/small"), "\\."), "[[", 1)
+apps.metadata <- read.csv("../../shiny-apps/apps_metadata.csv", stringsAsFactors=F)
+apps.gen <- apps.metadata$Generation[match(apps, apps.metadata$App)]
+apps.list <- split(apps, apps.gen)
 btn.lab <- rep("Launch", length(apps))
 btn.lab[apps %in% c("ar4ar5", "run_alfresco")] <- "UAF ONLY"
-genPanelDiv(outDir=getwd(), type="apps", main="Shiny Apps", github.user="ua-snap", go.label=btn.lab)
+btn.list <- split(btn.lab, apps.gen)
+apps.append <- c(rep(T, length(apps.list)-1), F)
+for(i in length(apps.list):1) genPanelDiv(outDir=getwd(), type="apps", main=paste0("Shiny Apps - ", names(apps.list)[i]), github.user="ua-snap", go.label=btn.list[[i]], apps.subset=apps.list[[i]], apps.container.append=apps.append[i])
 # create Data Visualizations master container html file
 genPanelDiv(outDir=getwd(), type="datavis", main="Data Visualizations", github.user=user, col="default")
 # create all Gallery container html files
