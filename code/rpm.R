@@ -627,7 +627,10 @@ genPanelDiv <- function(outDir, type="projects", main="Projects",
 	
 	stopifnot(github.user %in% c("leonawicz", "ua-snap"))
 	dots <- list(...)
-	
+	apps.append <- list(...)$apps.container.append
+    if(type!="apps" || !is.logical(apps.append)) apps.append <- FALSE
+    apps.subset <- list(...)$apps.subset
+    
 	if(type=="apps"){
 		filename <- "apps_container.html"
 		web.url <- "http://shiny.snap.uaf.edu"
@@ -637,6 +640,9 @@ genPanelDiv <- function(outDir, type="projects", main="Projects",
 		prjs.dir <- file.path(prjs.dir, "shiny-apps")
 		prjs.img <- list.files(file.path(prjs.dir, img.loc))
 		prjs <- sapply(strsplit(prjs.img, "\\."), "[[", 1)
+        prjs.ind <- if(length(apps.subset)) match(apps.subset, prjs) else seq_along(prjs)
+        prjs <- prjs[prjs.ind]
+        prjs.img <- prjs.img[prjs.ind]
 	}
 	if(type=="projects"){
 		filename <- "projects_container.html"
@@ -731,7 +737,7 @@ genPanelDiv <- function(outDir, type="projects", main="Projects",
 			y <- c(y, paste0('<div class="row">\n', paste0(sapply(ind, fillRow, panels=panels, go.label=go.label, col=col, panel.main=panel.main), collapse="\n"), '</div>\n'))
 		}
 		z <- '</div>\n'
-		sink(file.path(outDir, filename[p]))
+		sink(file.path(outDir, filename[p]), append=apps.append)
 		sapply(c(x, y, z), cat)
 		sink()
 		cat("div container html file created.\n")
